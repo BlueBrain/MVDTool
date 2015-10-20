@@ -1,0 +1,16 @@
+
+MVD-PARSER
+
+** Info
+
+A simple C++ header-based parser for the MVD neuroscience file format
+
+- compatible with and MVD3 file formats 
+- No compilation needed, just add include/ to your include path
+
+
+** Authors
+
+Adrien Devresse <adrien.devresse@epfl.ch>
+
+
