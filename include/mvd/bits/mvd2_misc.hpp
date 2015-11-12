@@ -1,8 +1,10 @@
 #ifndef MVD2_MISC_HPP
 #define MVD2_MISC_HPP
 
-#include <cstdlib>
 #include <boost/algorithm/string.hpp>
+#include <cstdlib>
+#include <cstdio>
+#include <set>
 
 #include "../mvd2.hpp"
 #include "../mvd_except.hpp"
@@ -10,16 +12,6 @@
 
 namespace MVD2{
 
-
-enum DataSet{
-    None = 0,
-    NeuronLoaded = 1,
-    MicroBoxData = 2,
-    MiniColumnsPosition = 3,
-    CircuitSeeds = 4,
-    MorphTypes = 5,
-    ElectroTypes = 6
-};
 
 
 /// parse MVD2 file datatype section
@@ -46,12 +38,12 @@ inline DataSet getDataType(const char* line, const DataSet & prev_datatype){
 /// provided call back has to be with the signature void (DataSet type, const char* line)
 ///
 template <typename Callback>
-inline void parseFile(const std::string & filename, Callback & lineParser){
+inline void MVD2File::parse(Callback & lineParser){
     FILE *data;
 
     //Look for the file
-    if ((data = fopen(filename.c_str(), "r")) == NULL)
-        throw MVDParserException("Could not find the mvd file" + filename + "...\n");
+    if ((data = fopen(_filename.c_str(), "r")) == NULL)
+        throw MVDParserException("Could not find the mvd file" + _filename + "...\n");
 
     char line[1025] = {0};
 
@@ -96,6 +88,25 @@ inline void parseNeuronLine(const char* line, std::string & name, int& database,
 }
 
 
+// Precision force to float to maintain compability, need to switch to double in future
+inline void parseNeuronLine(const char* line, std::string & name, int& database, int &column, int &minicolumn, int &layer,
+                     int &morphologytype, int &electrophysiology_type,
+                     std::vector<double> & xyzr, std::string & metype){
+    char name_str[1025] = "";
+    char metype_str[1024] = "?";
+
+    xyzr.resize(4);
+    if( sscanf(line, "%s %d %d %d %d %d %d %lf %lf %lf %lf %s", name_str,
+           &database, &column, &minicolumn, &layer, &morphologytype, &electrophysiology_type,
+            &xyzr[0], &xyzr[1], &xyzr[2], &xyzr[3], metype_str) != 12){
+        throw MVDParserException(std::string("Impossible to parse MVD2 neuron line :") + line);
+    }
+
+    metype = metype_str;
+    name = name_str;
+}
+
+
 inline void parseSeedInitLine(const char *line, double &seed1, double &seed2, double &seed3){
     // TODO: parsing into simple precision done for compatibility, change in future MVD3
     float fseed1, fseed2, fseed3;
@@ -126,9 +137,9 @@ inline void parseElectroTypeLine(const char *line, std::string &electroType){
 
 
 struct Counter{
-    Counter(size_t & nb_neuron, size_t & morpho) :
+    Counter(size_t & nb_neuron, size_t & nb_morpho_type) :
         _nb_neuron(nb_neuron),
-        _morpho(morpho){
+        _nb_morpho_type(nb_morpho_type){
 
     }
 
@@ -137,10 +148,15 @@ struct Counter{
         switch(type){
             case NeuronLoaded:{
                 _nb_neuron +=1;
+                std::string morpho, metype;
+                int trash;
+                std::vector<float> pos;
+                parseNeuronLine(line, morpho, trash, trash, trash, trash, trash, trash, pos, metype);
+                morphos.insert(morpho);
                 break;
             }
             case MorphTypes:{
-                _morpho +=1;
+                _nb_morpho_type +=1;
                 break;
             }
             default:{
@@ -149,30 +165,37 @@ struct Counter{
         }
     }
 
-private:
     size_t & _nb_neuron;
-    size_t & _morpho;
+    size_t & _nb_morpho_type;
+    std::set<std::string> morphos;
 };
 
 
 
 inline size_t MVD2File::getNbNeuron(){
     init_counter();
-    return _nb_morpho;
+    return _nb_neuron;
 }
 
 
 
+inline size_t MVD2File::getNbMorphoType(){
+    init_counter();
+    return _nb_morpho_type;
+}
+
+
 inline size_t MVD2File::getNbMorpho(){
     init_counter();
-    return _nb_neuron;
+    return _nb_morpho;
 }
 
 
 inline void MVD2File::init_counter(){
     if(_nb_neuron == 0){
-        Counter c(_nb_neuron, _nb_morpho);
-        parseFile(_filename, c);
+        Counter c(_nb_neuron, _nb_morpho_type);
+        parse(c);
+        _nb_morpho = c.morphos.size();
     }
 }
 

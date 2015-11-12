@@ -13,7 +13,7 @@ namespace MVD3 {
 
 class MVD3File{
 public:
-    MVD3File(const std::string & str) : _filename(str) { }
+    MVD3File(const std::string & str) : _filename(str){ }
 
 
     size_t getNbNeuron();

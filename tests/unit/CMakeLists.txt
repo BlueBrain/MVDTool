@@ -1,6 +1,11 @@
 
+enable_testing()
+
+find_package(Boost 1.41 REQUIRED COMPONENTS filesystem system unit_test_framework)
+
 
 SET(MVD2_TEST_FILE ${CMAKE_SOURCE_DIR}/tests/circuit.mvd2)
+
 
 add_definitions(-DMVD2_FILENAME="${MVD2_TEST_FILE}")
 
