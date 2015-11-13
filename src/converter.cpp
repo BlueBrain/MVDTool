@@ -221,10 +221,23 @@ void converter(const std::string & mvd2, const std::string & mvd3){
         transform(mvd2_content, mvd3_content);
     }
 
-    File mvd3_file(mvd3, File::ReadWrite | File::Create | File::Truncate);
+    {
+        File mvd3_file(mvd3, File::ReadWrite | File::Create | File::Truncate);
+        Group cells = mvd3_file.createGroup("cells");
 
-    // create morphologies
-    mvd3_file.createDataSet< std::vector<std::string> >("/morphology", mvd3_content.morphologies).write(mvd3_content.morphologies);
+        Group properties = cells.createGroup("properties");
+
+        properties.createDataSet<std::vector<size_t> >("etype", mvd3_content.prop_etype).write(mvd3_content.prop_etype);
+
+        properties.createDataSet<std::vector<size_t> >("mtype", mvd3_content.prop_mtype).write(mvd3_content.prop_mtype);
+
+        properties.createDataSet<std::vector<size_t> >("morphology", mvd3_content.prop_morpho).write(mvd3_content.prop_morpho);
+
+        Group library = mvd3_file.createGroup("library");
+
+        // create morphologies
+        library.createDataSet< std::vector<std::string> >("morphology", mvd3_content.morphologies).write(mvd3_content.morphologies);
+    }
 
 
 
