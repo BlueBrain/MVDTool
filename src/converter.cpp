@@ -224,19 +224,29 @@ void converter(const std::string & mvd2, const std::string & mvd3){
     {
         File mvd3_file(mvd3, File::ReadWrite | File::Create | File::Truncate);
         Group cells = mvd3_file.createGroup("cells");
+        cells.createDataSet<double>("positions", DataSpace::From(mvd3_content.position)).write(mvd3_content.position);
+        cells.createDataSet<double>("orientations", DataSpace::From(mvd3_content.rotation)).write(mvd3_content.rotation);
 
         Group properties = cells.createGroup("properties");
 
-        properties.createDataSet<std::vector<size_t> >("etype", mvd3_content.prop_etype).write(mvd3_content.prop_etype);
+        properties.createDataSet<size_t>("etype", DataSpace::From(mvd3_content.prop_etype)).write(mvd3_content.prop_etype);
 
-        properties.createDataSet<std::vector<size_t> >("mtype", mvd3_content.prop_mtype).write(mvd3_content.prop_mtype);
+        properties.createDataSet<size_t>("mtype", DataSpace::From(mvd3_content.prop_mtype)).write(mvd3_content.prop_mtype);
 
-        properties.createDataSet<std::vector<size_t> >("morphology", mvd3_content.prop_morpho).write(mvd3_content.prop_morpho);
+        properties.createDataSet<size_t>("morphology", DataSpace::From(mvd3_content.prop_morpho)).write(mvd3_content.prop_morpho);
+
+        properties.createDataSet<size_t>("synapse_class", DataSpace::From(mvd3_content.prop_synclass)).write(mvd3_content.prop_synclass);
 
         Group library = mvd3_file.createGroup("library");
 
         // create morphologies
-        library.createDataSet< std::vector<std::string> >("morphology", mvd3_content.morphologies).write(mvd3_content.morphologies);
+        library.createDataSet<std::string>("morphology", DataSpace::From(mvd3_content.morphologies)).write(mvd3_content.morphologies);
+
+        library.createDataSet<std::string>("etype", DataSpace::From(mvd3_content.etypes)).write(mvd3_content.etypes);
+
+        library.createDataSet<std::string>("mtype", DataSpace::From(mvd3_content.mtypes)).write(mvd3_content.mtypes);
+
+        library.createDataSet<std::string>("synapse_class", DataSpace::From(mvd3_content.synapse_class)).write(mvd3_content.synapse_class);
     }
 
 

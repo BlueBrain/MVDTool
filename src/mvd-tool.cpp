@@ -15,7 +15,7 @@ namespace commands{
 
 void help(char** argv){
     std::cout << "Usage: " << argv[0] << " [COMMAND]\n";
-    std::cout << "  commands:\n";
+    std::cout << "  List of commands :\n";
     std::cout << "             convert [mvd2_file] [mvd3_file]";
     std::cout << " : Convert a MVD 2.0 file into the MVD 3.0 file format\n";
 
