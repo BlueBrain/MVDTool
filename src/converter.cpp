@@ -5,6 +5,10 @@
 #include <highfive/H5File.hpp>
 
 
+void converter_log(const std::string & msg){
+static size_t step = 0;
+    std::cout << step++ << ": " << msg << std::endl;
+}
 
 struct MVD2Infos{
     inline MVD2Infos(const size_t n_neurons) :
@@ -212,16 +216,24 @@ void converter(const std::string & mvd2, const std::string & mvd3){
     MVD3Infos mvd3_content;
 
     {
+        converter_log("Open MVD2 file " + mvd2);
         MVD2::MVD2File file(mvd2);
 
         const size_t n_neuron = file.getNbNeuron();
+
+        std::ostringstream ss;
+        ss << "Contains " << n_neuron << " neurons";
+        converter_log(ss.str());
         MVD2Infos mvd2_content(n_neuron);
 
+        converter_log("Parse MVD2");
         file.parse(mvd2_content);
+        converter_log("Transform data layout");
         transform(mvd2_content, mvd3_content);
     }
 
     {
+        converter_log("Create and write MVD3 "+ mvd3);
         File mvd3_file(mvd3, File::ReadWrite | File::Create | File::Truncate);
         Group cells = mvd3_file.createGroup("cells");
         cells.createDataSet<double>("positions", DataSpace::From(mvd3_content.position)).write(mvd3_content.position);
@@ -249,6 +261,6 @@ void converter(const std::string & mvd2, const std::string & mvd3){
         library.createDataSet<std::string>("synapse_class", DataSpace::From(mvd3_content.synapse_class)).write(mvd3_content.synapse_class);
     }
 
-
+    converter_log("Convert: Done");
 
 }
