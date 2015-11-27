@@ -19,6 +19,7 @@ namespace MVD3 {
 
 
 typedef boost::multi_array<double, 2> Positions;
+typedef boost::multi_array<double, 2> Rotations;
 
 class MVD3File{
 public:
@@ -41,17 +42,44 @@ public:
 
     ///
     /// \brief getPositions
-    /// \return a double vector of size [N][3] with the position of each neuron
+    /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
+    ///  of each selected neurons ( all by default )
     ///
     ///
     Positions getPositions();
 
+    ///
+    /// \brief getPositions
+    /// \return a double vector of size [N][4] with the rotations (x,y,z,w) coordinates
+    /// of each selected neurons ( all by default )
+    ///
+    Rotations getRotations();
+
 
     ///
     /// \brief getMorphologies
-    /// \return vector of string with the name of each morphology associated with each neuron
+    /// \return vector of string with the morphology name associated with each neuron
     ///
     std::vector<std::string> getMorphologies();
+
+    ///
+    /// \brief getEtypes
+    /// \return vector of string with the eEtype name associated with each neuron
+    ///
+    std::vector<std::string> getEtypes();
+
+    ///
+    /// \brief getMtypes
+    /// \return vector of string with the Mtype name associated with each neuron
+    ///
+    std::vector<std::string> getMtypes();
+
+
+    ///
+    /// \brief getSynapseClass
+    /// \return vector of string with the synapse type associated with each neuron
+    ///
+    std::vector<std::string> getSynapseClass();
 
 
 private:
