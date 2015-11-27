@@ -171,8 +171,8 @@ void move_morphologies(MVD2Infos & infos, MVD3Infos & result){
 }
 
 void move_etype(MVD2Infos & infos, MVD3Infos & result){
-    hdf5_index_create(infos.etypes, result.prop_etype, result.etypes);
-    infos.etypes.clear();
+    result.etypes.swap(infos.etypes);
+    result.prop_etype.swap(infos.prop_etype);
 }
 
 
