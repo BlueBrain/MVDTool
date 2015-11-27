@@ -23,16 +23,34 @@ typedef boost::multi_array<double, 2> Positions;
 class MVD3File{
 public:
 
+    ///
+    /// \brief MVD3File
+    /// \param filename
+    ///
+    /// Open an MVD3 file format at 'filename' path
+    /// throw MVDException, or HighFive::Exception in case of error
+    ///
+    MVD3File(const std::string & filename);
 
-    MVD3File(const std::string & str);
 
-
+    ///
+    /// \brief getNbNeuron
+    /// \return total number of neurons contained in the receipe
+    ///
     size_t getNbNeuron();
 
-
+    ///
+    /// \brief getPositions
+    /// \return a double vector of size [N][3] with the position of each neuron
+    ///
+    ///
     Positions getPositions();
 
 
+    ///
+    /// \brief getMorphologies
+    /// \return vector of string with the name of each morphology associated with each neuron
+    ///
     std::vector<std::string> getMorphologies();
 
 
