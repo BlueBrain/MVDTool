@@ -1,5 +1,5 @@
 
-MVD-PARSER
+MVD-tool
 
 ** Info
 
@@ -12,10 +12,10 @@ A simple C++ parser and tool for the MVD3 neuroscience file format
 
 ** compilation
 
-# fetch HighFive as submodule
-git submodule update --recursive
+# fetch HighFive as submodule ( if not already done )
+git submodule update --recursive --init
 
-# compile
+# configure, compile
 mkdir build; pushd build
 cmake ../
 make
@@ -23,7 +23,9 @@ make
 
 
 ** Authors
-
 Adrien Devresse <adrien.devresse@epfl.ch>
 
+
+** License
+LGPLv2.1+
 
