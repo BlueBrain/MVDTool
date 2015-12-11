@@ -1,5 +1,5 @@
 
-enable_testing()
+
 
 find_package(Boost 1.41 REQUIRED COMPONENTS filesystem system unit_test_framework)
 

@@ -1,6 +1,7 @@
 project(mvd-parser)
 cmake_minimum_required(VERSION 2.8)
 
+enable_testing()
 
 set(VERSION_MAJOR "0")
 set(VERSION_MINOR "9")

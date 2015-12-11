@@ -64,7 +64,23 @@ BOOST_AUTO_TEST_CASE( basicTestPosition )
 
 }
 
+BOOST_AUTO_TEST_CASE( basicTestPositionRange )
+{
+    using namespace MVD3;
 
+    MVD3File file(MVD3_FILENAME);
+
+    Positions neurons_pos = file.getPositions(Range(10,10));
+    Positions all_neurons_pos = file.getPositions();
+
+    BOOST_CHECK_EQUAL(neurons_pos.size(), 10);
+
+    for(int i =0; i < 10; ++i){
+        BOOST_CHECK_EQUAL_COLLECTIONS(neurons_pos[i].begin(), neurons_pos[i].end(),
+                                      all_neurons_pos[i+10].begin(), all_neurons_pos[i+10].end());
+    }
+
+}
 
 
 
@@ -85,6 +101,26 @@ BOOST_AUTO_TEST_CASE( basicTestRotations )
 }
 
 
+BOOST_AUTO_TEST_CASE( basicTestRotationRange )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    Positions neurons_rot = file.getRotations(Range(10,10));
+    Positions all_neurons_rot = file.getRotations();
+
+    BOOST_CHECK_EQUAL(neurons_rot.size(), 10);
+
+    for(int i =0; i < 10; ++i){
+        BOOST_CHECK_EQUAL_COLLECTIONS(neurons_rot[i].begin(), neurons_rot[i].end(),
+                                      all_neurons_rot[i+10].begin(), all_neurons_rot[i+10].end());
+    }
+
+}
+
+
+
 BOOST_AUTO_TEST_CASE( basicTestMorphologies )
 {
     using namespace MVD3;
@@ -100,6 +136,24 @@ BOOST_AUTO_TEST_CASE( basicTestMorphologies )
 }
 
 
+BOOST_AUTO_TEST_CASE( basicTestMorphologiesRange )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    std::vector<std::string> morpho = file.getMorphologies(Range(10,10));
+    std::vector<std::string> all_morpho = file.getMorphologies();
+
+    BOOST_CHECK_EQUAL(morpho.size(), 10);
+
+    for(int i =0; i < 10; ++i){
+        BOOST_CHECK_EQUAL(morpho[i], all_morpho[i+10]);
+    }
+
+}
+
+
 
 BOOST_AUTO_TEST_CASE( basicTestEtype )
 {
@@ -107,11 +161,30 @@ BOOST_AUTO_TEST_CASE( basicTestEtype )
 
     MVD3File file(MVD3_FILENAME);
 
-    std::vector<std::string> morpho = file.getEtypes();
+    std::vector<std::string> etype = file.getEtypes();
 
-    BOOST_CHECK_EQUAL(morpho[0], "cACint");
-    BOOST_CHECK_EQUAL(morpho[10], "cACint");
-    BOOST_CHECK_EQUAL(morpho[20], "cADpyr");
+    BOOST_CHECK_EQUAL(etype[0], "cACint");
+    BOOST_CHECK_EQUAL(etype[10], "cACint");
+    BOOST_CHECK_EQUAL(etype[20], "cADpyr");
+
+}
+
+
+
+BOOST_AUTO_TEST_CASE( basicTestEtypeRange )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    std::vector<std::string> etype = file.getEtypes(Range(10,10));
+    std::vector<std::string> etype_all = file.getEtypes();
+
+    BOOST_CHECK_EQUAL(etype.size(), 10);
+
+    for(int i =0; i < 10; ++i){
+        BOOST_CHECK_EQUAL(etype[i], etype_all[i+10]);
+    }
 
 }
 
@@ -122,13 +195,31 @@ BOOST_AUTO_TEST_CASE( basicTestMypes )
 
     MVD3File file(MVD3_FILENAME);
 
-    std::vector<std::string> morpho = file.getMtypes();
+    std::vector<std::string> mtype = file.getMtypes();
 
-    BOOST_CHECK_EQUAL(morpho[0], "L1_SLAC");
-    BOOST_CHECK_EQUAL(morpho[10], "L1_SLAC");
-    BOOST_CHECK_EQUAL(morpho[20], "L23_PC");
+    BOOST_CHECK_EQUAL(mtype[0], "L1_SLAC");
+    BOOST_CHECK_EQUAL(mtype[10], "L1_SLAC");
+    BOOST_CHECK_EQUAL(mtype[20], "L23_PC");
 
 }
+
+BOOST_AUTO_TEST_CASE( basicTestMtypeRange )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    std::vector<std::string> mtype = file.getMtypes(Range(10,10));
+    std::vector<std::string> mtype_all = file.getMtypes();
+
+    BOOST_CHECK_EQUAL(mtype.size(), 10);
+
+    for(int i =0; i < 10; ++i){
+        BOOST_CHECK_EQUAL(mtype[i], mtype_all[i+10]);
+    }
+
+}
+
 
 
 
@@ -143,5 +234,21 @@ BOOST_AUTO_TEST_CASE( basicTestSynClass )
     BOOST_CHECK_EQUAL(morpho[0], "INH");
     BOOST_CHECK_EQUAL(morpho[10], "INH");
     BOOST_CHECK_EQUAL(morpho[20], "EXC");
+
+}
+
+
+BOOST_AUTO_TEST_CASE( basicTestSynClassRange )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    std::vector<std::string> syn_class = file.getSynapseClass();
+    std::vector<std::string> syn_class_all = file.getSynapseClass();
+
+    for(int i =0; i < 10; ++i){
+        BOOST_CHECK_EQUAL(syn_class[i], syn_class_all[i+10]);
+    }
 
 }

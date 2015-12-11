@@ -33,6 +33,20 @@ namespace MVD3 {
 typedef boost::multi_array<double, 2> Positions;
 typedef boost::multi_array<double, 2> Rotations;
 
+
+struct Range{
+    Range(const size_t offset_, const size_t count_) : offset(offset_), count(count_) {}
+
+    size_t offset;
+    size_t count;
+};
+
+
+///
+/// \brief The MVD3File class
+///
+/// Represent a MVD 3.0 circuit file
+///
 class MVD3File{
 public:
 
@@ -54,44 +68,47 @@ public:
 
     ///
     /// \brief getPositions
+    /// \param range: selection range, the default range (0,0) select the entire dataset
     /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
     ///  of each selected neurons ( all by default )
     ///
-    ///
-    Positions getPositions();
+    Positions getPositions(const Range & range = Range(0,0));
 
     ///
     /// \brief getPositions
+    /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return a double vector of size [N][4] with the rotations (x,y,z,w) coordinates
     /// of each selected neurons ( all by default )
     ///
-    Rotations getRotations();
+    Rotations getRotations(const Range & range = Range(0,0));
 
 
     ///
     /// \brief getMorphologies
+    /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return vector of string with the morphology name associated with each neuron
     ///
-    std::vector<std::string> getMorphologies();
+    std::vector<std::string> getMorphologies(const Range & range = Range(0,0));
 
     ///
     /// \brief getEtypes
+    /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return vector of string with the eEtype name associated with each neuron
     ///
-    std::vector<std::string> getEtypes();
+    std::vector<std::string> getEtypes(const Range & range = Range(0,0));
 
     ///
     /// \brief getMtypes
     /// \return vector of string with the Mtype name associated with each neuron
     ///
-    std::vector<std::string> getMtypes();
+    std::vector<std::string> getMtypes(const Range & range = Range(0,0));
 
 
     ///
     /// \brief getSynapseClass
     /// \return vector of string with the synapse type associated with each neuron
     ///
-    std::vector<std::string> getSynapseClass();
+    std::vector<std::string> getSynapseClass(const Range & range = Range(0,0));
 
 
 private:

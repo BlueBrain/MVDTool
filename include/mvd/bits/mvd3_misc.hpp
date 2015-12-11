@@ -29,13 +29,34 @@
 
 using namespace HighFive;
 
+namespace{
+
+inline bool is_valid_range(const MVD3::Range & range){
+    return (range.count !=0);
+}
+
+inline std::vector<size_t> size_to_vec(size_t s){
+    return std::vector<size_t>(1, s);
+}
+
+inline std::vector<size_t> size2D_to_vec(size_t d1, size_t d2){
+    std::vector<size_t> res;
+    res.push_back(d1);
+    res.push_back(d2);
+    return res;
+}
 
 template<typename T>
-std::vector<T> resolve_index(DataSet & index, DataSet & data){
+inline std::vector<T> resolve_index(DataSet & index, const MVD3::Range & range, DataSet & data){
     std::vector<size_t> references;
     std::vector<T> full_data, result;
 
-    index.read(references);
+    if(is_valid_range(range)){
+        index.select(size_to_vec(range.offset), size_to_vec(range.count))
+                .read(references);
+    }else{
+        index.read(references);
+    }
     const size_t n_elem = data.getSpace().getDimensions()[0];
 
     data.read(full_data);
@@ -52,6 +73,25 @@ std::vector<T> resolve_index(DataSet & index, DataSet & data){
     return result;
 }
 
+
+// cells properties
+const std::string did_cells_positions = "/cells/positions";
+const std::string did_cells_rotations = "/cells/orientations";
+// cells index
+const std::string did_cells_index_morpho = "/cells/properties/morphology";
+const std::string did_cells_index_etypes = "/cells/properties/etype";
+const std::string did_cells_index_mtypes = "/cells/properties/mtype";
+const std::string did_cells_index_synapse_class = "/cells/properties/synapse_class";
+
+
+// data
+const std::string did_lib_data_morpho = "/library/morphology";
+const std::string did_lib_data_etypes = "/library/etype";
+const std::string did_lib_data_mtypes = "/library/mtype";
+const std::string did_lib_data_syn_class = "/library/synapse_class";
+
+}
+
 namespace MVD3 {
 
 MVD3File::MVD3File(const std::string &str) : _filename(str), _hdf5_file(str), _nb_neurons(0) {}
@@ -59,7 +99,7 @@ MVD3File::MVD3File(const std::string &str) : _filename(str), _hdf5_file(str), _n
 size_t MVD3File::getNbNeuron(){
     if(_nb_neurons == 0){
         try{
-            std::vector<size_t> dims = _hdf5_file.getDataSet("/cells/positions").getSpace().getDimensions();
+            std::vector<size_t> dims = _hdf5_file.getDataSet(did_cells_positions).getSpace().getDimensions();
             if(dims.size() < 1){
                 throw MVDParserException("Invalid Dataset dimension in MVD3 file");
             }
@@ -73,43 +113,59 @@ size_t MVD3File::getNbNeuron(){
    return _nb_neurons;
 }
 
-Positions MVD3File::getPositions(){
+
+Positions MVD3File::getPositions(const Range & range){
     Positions res;
-    _hdf5_file.getDataSet("/cells/positions").read(res);
+    DataSet set = _hdf5_file.getDataSet(did_cells_positions);
+    if(is_valid_range(range)){
+                set.select(size2D_to_vec(range.offset, 0), size2D_to_vec(range.count, 3))
+                .read(res);
+        return res;
+    }
+    set.read(res);
     return res;
 }
 
 
-Rotations MVD3File::getRotations(){
+Rotations MVD3File::getRotations(const Range & range){
     Rotations res;
-    _hdf5_file.getDataSet("/cells/orientations").read(res);
+    DataSet set = _hdf5_file.getDataSet(did_cells_rotations);
+    if(is_valid_range(range)){
+            set.select(size2D_to_vec(range.offset, 0), size2D_to_vec(range.count, 4))
+            .read(res);
+        return res;
+    }
+    set.read(res);
     return res;
 }
 
-std::vector<std::string> MVD3File::getMorphologies(){
-    DataSet index = _hdf5_file.getDataSet("/cells/properties/morphology");
-    DataSet data = _hdf5_file.getDataSet("/library/morphology");
-    return resolve_index<std::string>(index, data);
+
+std::vector<std::string> MVD3File::getMorphologies(const Range & range){
+    DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
+    DataSet data = _hdf5_file.getDataSet(did_lib_data_morpho);
+    return resolve_index<std::string>(index, range, data);
 }
 
 
-std::vector<std::string> MVD3File::getEtypes(){
-    DataSet index = _hdf5_file.getDataSet("/cells/properties/etype");
-    DataSet data = _hdf5_file.getDataSet("/library/etype");
-    return resolve_index<std::string>(index, data);
+
+
+std::vector<std::string> MVD3File::getEtypes(const Range & range){
+    DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
+    DataSet data = _hdf5_file.getDataSet(did_lib_data_etypes);
+    return resolve_index<std::string>(index, range, data);
 }
 
 
-std::vector<std::string> MVD3File::getMtypes(){
-    DataSet index = _hdf5_file.getDataSet("/cells/properties/mtype");
-    DataSet data = _hdf5_file.getDataSet("/library/mtype");
-    return resolve_index<std::string>(index, data);
+std::vector<std::string> MVD3File::getMtypes(const Range & range){
+    DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
+    DataSet data = _hdf5_file.getDataSet(did_lib_data_mtypes);
+    return resolve_index<std::string>(index, range, data);
 }
 
-std::vector<std::string> MVD3File::getSynapseClass(){
-    DataSet index = _hdf5_file.getDataSet("/cells/properties/synapse_class");
-    DataSet data = _hdf5_file.getDataSet("/library/synapse_class");
-    return resolve_index<std::string>(index, data);
+std::vector<std::string> MVD3File::getSynapseClass(const Range & range){
+    DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
+    DataSet data = _hdf5_file.getDataSet(did_lib_data_syn_class);
+    return resolve_index<std::string>(index, range, data);
 }
 
 
