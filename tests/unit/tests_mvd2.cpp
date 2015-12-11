@@ -31,6 +31,7 @@ BOOST_AUTO_TEST_CASE( parser_tests )
     BOOST_CHECK_EQUAL(file.getNbNeuron(), 1000);
     BOOST_CHECK_EQUAL(file.getNbMorphoType(), 9);
     BOOST_CHECK_EQUAL(file.getNbMorpho(), 52);
+    BOOST_CHECK_EQUAL(file.getNbColumns(), 10);
 }
 
 

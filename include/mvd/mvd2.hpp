@@ -57,6 +57,7 @@ class MVD2File{
 public:
     MVD2File(const std::string & filename) :
         _filename(filename),
+        _nb_columns(0),
         _nb_neuron(0),
         _nb_morpho_type(0),
         _nb_morpho(0){
@@ -78,6 +79,12 @@ public:
     size_t getNbNeuron();
 
     ///
+    /// \brief getNbColumns
+    /// \return number of columns in this MVD file
+    ///
+    size_t getNbColumns();
+
+    ///
     ///
     ///
     template <typename Callback>
@@ -85,6 +92,7 @@ public:
 
 private:
     std::string _filename;
+    size_t _nb_columns;
     size_t _nb_neuron;
     size_t _nb_morpho_type;
     size_t _nb_morpho;

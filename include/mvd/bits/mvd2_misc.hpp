@@ -155,7 +155,8 @@ inline void parseElectroTypeLine(const char *line, std::string &electroType){
 
 
 struct Counter{
-    Counter(size_t & nb_neuron, size_t & nb_morpho_type) :
+    Counter(size_t & nb_neuron, size_t & nb_morpho_type, size_t & columns) :
+        _nb_columns(columns),
         _nb_neuron(nb_neuron),
         _nb_morpho_type(nb_morpho_type){
 
@@ -177,12 +178,17 @@ struct Counter{
                 _nb_morpho_type +=1;
                 break;
             }
+            case(MiniColumnsPosition):{
+                _nb_columns +=1;
+                break;
+            }
             default:{
                 break;
             }
         }
     }
 
+    size_t & _nb_columns;
     size_t & _nb_neuron;
     size_t & _nb_morpho_type;
     std::set<std::string> morphos;
@@ -208,10 +214,15 @@ inline size_t MVD2File::getNbMorpho(){
     return _nb_morpho;
 }
 
+inline size_t MVD2File::getNbColumns(){
+    init_counter();
+    return _nb_columns;
+}
+
 
 inline void MVD2File::init_counter(){
     if(_nb_neuron == 0){
-        Counter c(_nb_neuron, _nb_morpho_type);
+        Counter c(_nb_neuron, _nb_morpho_type, _nb_columns);
         parse(c);
         _nb_morpho = c.morphos.size();
     }
