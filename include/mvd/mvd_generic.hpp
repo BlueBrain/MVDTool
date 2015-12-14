@@ -16,28 +16,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD_EXCEPT_HPP
-#define MVD_EXCEPT_HPP
+#ifndef MVD_GENERIC_HPP
+#define MVD_GENERIC_HPP
 
-#include <stdexcept>
 #include <string>
+#include <algorithm>
+#include "mvd_except.hpp"
 
-///
-/// \brief Generic MVD exception
-///
-class MVDException : public std::runtime_error{
-public:
-    MVDException(const std::string & str) : std::runtime_error(str) {}
+namespace MVD{
+
+namespace MVDType{
+
+enum MVDType{
+    UnknownFileType =0,
+    MVD2=20,
+    MVD3=30
 };
 
+}
+
 ///
-/// \brief Exception related to MVD file parsing
+/// \brief is_mvd_file
+/// \param filename mvd file name
+/// \return the type of the MVD file or UnknownFileType if not recognized
 ///
-class MVDParserException : public MVDException{
-public:
-    MVDParserException(const std::string & str) : MVDException(str) {}
-};
+inline MVDType::MVDType is_mvd_file(const std::string & filename){
+
+    // mvd2
+    const std::string mvd_ext = ".mvd2";
+    if(std::search(filename.rbegin(), filename.rend(), mvd_ext.rbegin(), mvd_ext.rend()) != filename.rend()){
+        return MVDType::MVD2;
+    }
+    // everything else mvd3 for now
+    return MVDType::MVD3;
+}
 
 
-#endif // MVD_EXCEPT_HPP
+} // MVD
 
+#endif // MVD_GENERIC_HPP

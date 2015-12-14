@@ -17,8 +17,19 @@
  *
  */
 #include <mvd/mvd3.hpp>
+#include <mvd/mvd_generic.hpp>
 #define BOOST_TEST_MAIN mvd3Parser
 #include <boost/test/included/unit_test.hpp>
+
+
+
+BOOST_AUTO_TEST_CASE( isFile )
+{
+    using namespace MVD;
+
+    BOOST_CHECK_EQUAL(MVD::is_mvd_file(MVD3_FILENAME), MVD::MVDType::MVD3);
+    BOOST_CHECK_EQUAL(MVD::is_mvd_file(MVD2_FILENAME), MVD::MVDType::MVD2);
+}
 
 
 
