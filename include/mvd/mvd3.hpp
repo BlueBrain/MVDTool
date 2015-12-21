@@ -111,6 +111,65 @@ public:
     std::vector<std::string> getSynapseClass(const Range & range = Range(0,0));
 
 
+    // index related infos
+
+    ///
+    /// \brief getIndexMorphologies
+    /// \param range
+    /// \return values of the morphology index for neurons in the range, default: entire dataset
+    ///
+    std::vector<size_t> getIndexMorphologies(const Range & range = Range(0,0));
+
+
+
+    ///
+    /// \brief getIndexEtypes
+    /// \param range
+    /// \return values of the Etypes index for neurons in the range, default: entire dataset
+    ///
+    std::vector<size_t> getIndexEtypes(const Range & range = Range(0,0));
+
+
+    ///
+    /// \brief getIndexMtypes
+    /// \param range
+    /// \return values of the Mtypes index for neurons in the range, default: entire dataset
+    ///
+    std::vector<size_t> getIndexMtypes(const Range & range = Range(0,0));
+
+    ///
+    /// \brief getIndexSynapseClass
+    /// \param range
+    /// \return values of the Synapse class index for neurons in the range, default: entire dataset
+    ///
+    std::vector<size_t> getIndexSynapseClass(const Range & range = Range(0,0));
+
+    // Data related infos
+
+    ///
+    /// \brief getDataMorphologies
+    /// \return vector of all unique morphologies ( mvd3 /library section )
+    ///
+    std::vector<std::string> listAllMorphologies();
+
+    ///
+    /// \brief listAllEtypes
+    /// \return vector of all unique Etypes ( mvd3 /library section )
+    ///
+    std::vector<std::string> listAllEtypes();
+
+    ///
+    /// \brief listAllMtypes
+    /// \return vector of all unique Mtypes ( mvd3 /library section )
+    ///
+    std::vector<std::string> listAllMtypes();
+
+    ///
+    /// \brief listSynapseClass
+    /// \return vector of all unique Synapse Class ( mvd3 /library section )
+    ///
+    std::vector<std::string> listAllSynapseClass();
+
 private:
     std::string _filename;
     HighFive::File _hdf5_file;

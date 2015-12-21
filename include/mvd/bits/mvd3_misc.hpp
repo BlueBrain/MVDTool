@@ -47,16 +47,23 @@ inline std::vector<size_t> size2D_to_vec(size_t d1, size_t d2){
 }
 
 template<typename T>
-inline std::vector<T> resolve_index(DataSet & index, const MVD3::Range & range, DataSet & data){
-    std::vector<size_t> references;
-    std::vector<T> full_data, result;
+inline std::vector<T> get_data_for_selection(DataSet & index, const MVD3::Range & range){
+    std::vector<T> index_values;
 
     if(is_valid_range(range)){
         index.select(size_to_vec(range.offset), size_to_vec(range.count))
-                .read(references);
+                .read(index_values);
     }else{
-        index.read(references);
+        index.read(index_values);
     }
+    return index_values;
+}
+
+template<typename T>
+inline std::vector<T> resolve_index(DataSet & index, const MVD3::Range & range, DataSet & data){
+    std::vector<T> full_data, result;
+    std::vector<size_t> references = get_data_for_selection<size_t>(index, range);
+
     const size_t n_elem = data.getSpace().getDimensions()[0];
 
     data.read(full_data);
@@ -82,8 +89,6 @@ const std::string did_cells_index_morpho = "/cells/properties/morphology";
 const std::string did_cells_index_etypes = "/cells/properties/etype";
 const std::string did_cells_index_mtypes = "/cells/properties/mtype";
 const std::string did_cells_index_synapse_class = "/cells/properties/synapse_class";
-
-
 // data
 const std::string did_lib_data_morpho = "/library/morphology";
 const std::string did_lib_data_etypes = "/library/etype";
@@ -166,6 +171,50 @@ std::vector<std::string> MVD3File::getSynapseClass(const Range & range){
     DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
     DataSet data = _hdf5_file.getDataSet(did_lib_data_syn_class);
     return resolve_index<std::string>(index, range, data);
+}
+
+
+std::vector<size_t> MVD3File::getIndexMorphologies(const Range & range){
+    DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
+    return get_data_for_selection<size_t>(index, range);
+}
+
+
+std::vector<size_t> MVD3File::getIndexEtypes(const Range &range){
+    DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
+    return get_data_for_selection<size_t>(index, range);
+}
+
+std::vector<size_t> MVD3File::getIndexMtypes(const Range &range){
+    DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
+    return get_data_for_selection<size_t>(index, range);
+}
+
+std::vector<size_t> MVD3File::getIndexSynapseClass(const Range &range){
+    DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
+    return get_data_for_selection<size_t>(index, range);
+}
+
+
+std::vector<std::string> MVD3File::listAllMorphologies(){
+    DataSet index = _hdf5_file.getDataSet(did_lib_data_morpho);
+    return get_data_for_selection<std::string>(index, Range(0,0));
+}
+
+
+std::vector<std::string> MVD3File::listAllEtypes(){
+    DataSet index = _hdf5_file.getDataSet(did_lib_data_etypes);
+    return get_data_for_selection<std::string>(index, Range(0,0));
+}
+
+std::vector<std::string> MVD3File::listAllMtypes(){
+    DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
+    return get_data_for_selection<std::string>(index, Range(0,0));
+}
+
+std::vector<std::string> MVD3File::listAllSynapseClass(){
+    DataSet index = _hdf5_file.getDataSet(did_lib_data_syn_class);
+    return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
 

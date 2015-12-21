@@ -155,11 +155,13 @@ BOOST_AUTO_TEST_CASE( basicTestMorphologiesRange )
 
     std::vector<std::string> morpho = file.getMorphologies(Range(10,10));
     std::vector<std::string> all_morpho = file.getMorphologies();
+    std::vector<std::string> list_morpho = file.listAllMorphologies();
 
     BOOST_CHECK_EQUAL(morpho.size(), 10);
 
     for(int i =0; i < 10; ++i){
         BOOST_CHECK_EQUAL(morpho[i], all_morpho[i+10]);
+        BOOST_CHECK_EQUAL(morpho[i], list_morpho[file.getIndexMorphologies(Range(i, 1))[0]]);
     }
 
 }
@@ -190,11 +192,13 @@ BOOST_AUTO_TEST_CASE( basicTestEtypeRange )
 
     std::vector<std::string> etype = file.getEtypes(Range(10,10));
     std::vector<std::string> etype_all = file.getEtypes();
+    std::vector<std::string> list_etypes = file.listAllEtypes();
 
     BOOST_CHECK_EQUAL(etype.size(), 10);
 
     for(int i =0; i < 10; ++i){
         BOOST_CHECK_EQUAL(etype[i], etype_all[i+10]);
+        BOOST_CHECK_EQUAL(etype[i], list_etypes[file.getIndexEtypes(Range(i, 1))[0]]);
     }
 
 }
@@ -222,11 +226,13 @@ BOOST_AUTO_TEST_CASE( basicTestMtypeRange )
 
     std::vector<std::string> mtype = file.getMtypes(Range(10,10));
     std::vector<std::string> mtype_all = file.getMtypes();
+    std::vector<std::string> list_mtype = file.listAllMtypes();
 
     BOOST_CHECK_EQUAL(mtype.size(), 10);
 
     for(int i =0; i < 10; ++i){
         BOOST_CHECK_EQUAL(mtype[i], mtype_all[i+10]);
+        BOOST_CHECK_EQUAL(mtype[i], list_mtype[file.getIndexMtypes(Range(i, 1))[0]]);
     }
 
 }
@@ -257,9 +263,11 @@ BOOST_AUTO_TEST_CASE( basicTestSynClassRange )
 
     std::vector<std::string> syn_class = file.getSynapseClass();
     std::vector<std::string> syn_class_all = file.getSynapseClass();
+    std::vector<std::string> list_syn_class = file.listAllSynapseClass();
 
     for(int i =0; i < 10; ++i){
         BOOST_CHECK_EQUAL(syn_class[i], syn_class_all[i+10]);
+        BOOST_CHECK_EQUAL(syn_class[i], list_syn_class[file.getIndexSynapseClass(Range(i, 1))[0]]);
     }
 
 }
