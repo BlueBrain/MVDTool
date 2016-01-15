@@ -1,0 +1,6 @@
+[gerrit]
+host=bbpcode.epfl.ch
+project=hpc/MVD-tool
+defaultbranch=master
+port=22
+
