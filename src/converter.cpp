@@ -18,8 +18,11 @@
  */
 #include "converter.hpp"
 
+#include <cmath>
 #include <map>
 #include <mvd/mvd2.hpp>
+#include <boost/array.hpp>
+#include <boost/math/constants/constants.hpp>
 #include <highfive/H5File.hpp>
 
 
@@ -163,8 +166,14 @@ void move_coordinates(MVD2Infos & infos, MVD3Infos & result){
         for(int j =0; j < 3; ++j){
             result.position[i][j] = infos.vec_xyzr[i][j];
         }
-        // set Y axis rotation value
-        result.rotation[i][1] = infos.vec_xyzr[i][3];
+
+        // MVD2 gives only rotation angle on axe Y and in degree
+        // convert to rad and construct quaternion
+        const double deg_rad_r = boost::math::constants::pi<double>() / 180.0;
+        const double angle_y = infos.vec_xyzr[i][3]*deg_rad_r;
+        result.rotation[i][0] = cos(angle_y/2);
+        result.rotation[i][1] = result.rotation[i][3] = 0;
+        result.rotation[i][2] = sin(angle_y/2);
     }
     infos.vec_xyzr.clear();
 }
