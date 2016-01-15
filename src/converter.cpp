@@ -37,7 +37,8 @@ struct MVD2Infos{
         vec_xyzr(n_neurons),
         prop_mtype(n_neurons),
         prop_etype(n_neurons),
-        morphologies(n_neurons)
+        morphologies(n_neurons),
+        seeds(4,0)
     {
         for(std::vector< std::vector<double> >::iterator it = vec_xyzr.begin(); it < vec_xyzr.end(); ++it){
             it->resize(4);
@@ -53,13 +54,18 @@ struct MVD2Infos{
                 }
                 break;
             case ElectroTypes:{
-                    parseElectro(line);
-                }
-                break;
-            case MorphTypes:{
-                    parseMorphType(line);
+                parseElectro(line);
             }
             break;
+            case MorphTypes:{
+                parseMorphType(line);
+
+            }
+            break;
+            case CircuitSeeds:{
+                MVD2::parseSeedInitLine(line, seeds[0], seeds[1], seeds[2]);
+            }
+                break;
             default:
                 break;
         }
@@ -112,6 +118,8 @@ struct MVD2Infos{
     std::vector<size_t> prop_etype;
     std::vector<std::string> morphologies;
 
+    std::vector<double> seeds;
+
     // etypes
     std::vector<std::string> etypes;
 
@@ -158,6 +166,9 @@ struct MVD3Infos{
     std::vector<std::string> morphologies;
     std::vector<std::string> synapse_class;
     std::vector<std::string> mtypes;
+
+    // circuit
+    std::vector<double> seeds;
 };
 
 
@@ -235,6 +246,8 @@ void transform(MVD2Infos & infos, MVD3Infos & result){
     move_etype(infos, result);
 
     move_mtype_and_syn_class(infos, result);
+
+    result.seeds = infos.seeds;
 }
 
 void converter(const std::string & mvd2, const std::string & mvd3){
@@ -286,6 +299,9 @@ void converter(const std::string & mvd2, const std::string & mvd3){
         library.createDataSet<std::string>("mtype", DataSpace::From(mvd3_content.mtypes)).write(mvd3_content.mtypes);
 
         library.createDataSet<std::string>("synapse_class", DataSpace::From(mvd3_content.synapse_class)).write(mvd3_content.synapse_class);
+
+        Group circuit = mvd3_file.createGroup("circuit");
+        circuit.createDataSet<double>("seeds", DataSpace::From(mvd3_content.seeds)).write(mvd3_content.seeds);
     }
 
     converter_log("Convert: Done");

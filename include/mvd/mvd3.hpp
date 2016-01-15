@@ -83,6 +83,8 @@ public:
     Rotations getRotations(const Range & range = Range(0,0));
 
 
+
+
     ///
     /// \brief getMorphologies
     /// \param range: selection range, a null range (0,0) select the entire dataset
@@ -169,6 +171,14 @@ public:
     /// \return vector of all unique Synapse Class ( mvd3 /library section )
     ///
     std::vector<std::string> listAllSynapseClass();
+
+    // circuit infos
+    ///
+    /// \brief getCircuitSeeds
+    /// \return return a vector of the circuit seeds to use for random initialization
+    /// the vector has to be at least 4 elements
+    ///
+    std::vector<double> getCircuitSeeds();
 
 private:
     std::string _filename;

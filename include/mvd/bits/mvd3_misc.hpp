@@ -94,7 +94,8 @@ const std::string did_lib_data_morpho = "/library/morphology";
 const std::string did_lib_data_etypes = "/library/etype";
 const std::string did_lib_data_mtypes = "/library/mtype";
 const std::string did_lib_data_syn_class = "/library/synapse_class";
-
+// circuit
+const std::string did_lib_circuit_seeds = "/circuit/seeds";
 }
 
 namespace MVD3 {
@@ -215,6 +216,16 @@ std::vector<std::string> MVD3File::listAllMtypes(){
 std::vector<std::string> MVD3File::listAllSynapseClass(){
     DataSet index = _hdf5_file.getDataSet(did_lib_data_syn_class);
     return get_data_for_selection<std::string>(index, Range(0,0));
+}
+
+std::vector<double> MVD3File::getCircuitSeeds(){
+        std::vector<double> seeds;
+        DataSet seeds_dataset = _hdf5_file.getDataSet(did_lib_circuit_seeds);
+        seeds_dataset.read(seeds);
+        if(seeds.size() < 4){
+            throw MVDParserException("Invalid MVD3 /circuit/seeds size, MVD3 should provide at least 4 seeds");
+        }
+        return seeds;
 }
 
 
