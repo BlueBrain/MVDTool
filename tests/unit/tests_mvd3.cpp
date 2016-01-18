@@ -104,10 +104,10 @@ BOOST_AUTO_TEST_CASE( basicTestRotations )
     Rotations neurons_rot = file.getRotations();
 
     BOOST_CHECK_EQUAL(neurons_rot.shape()[0], 1000);
-    BOOST_CHECK_EQUAL(neurons_rot[0][0], static_cast<double>(0));
-    BOOST_CHECK_EQUAL(neurons_rot[0][1], static_cast<double>(-1.146572));
-    BOOST_CHECK_EQUAL(neurons_rot[0][2], static_cast<double>(0));
-    BOOST_CHECK_EQUAL(neurons_rot[0][3], static_cast<double>(0));
+    BOOST_CHECK( std::abs(neurons_rot[0][0] - 0.99994994311865848) < std::numeric_limits<double>::epsilon()*10 );
+    BOOST_CHECK( std::abs(neurons_rot[0][1] - 0.) < std::numeric_limits<double>::epsilon()*10 );
+    BOOST_CHECK( std::abs(neurons_rot[0][2] - -0.010005561303180392) < std::numeric_limits<double>::epsilon()*10 );
+    BOOST_CHECK( std::abs(neurons_rot[0][3] - 0) < std::numeric_limits<double>::epsilon()*10 );
 
 }
 
@@ -268,6 +268,25 @@ BOOST_AUTO_TEST_CASE( basicTestSynClassRange )
     for(int i =0; i < 10; ++i){
         BOOST_CHECK_EQUAL(syn_class[i], syn_class_all[i+10]);
         BOOST_CHECK_EQUAL(syn_class[i], list_syn_class[file.getIndexSynapseClass(Range(i, 1))[0]]);
+    }
+
+}
+
+
+BOOST_AUTO_TEST_CASE( basicTestSeeds )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    std::vector<double> seeds = file.getCircuitSeeds();
+
+    BOOST_CHECK_EQUAL(seeds.size(), 4);
+
+    double values[] = { 837632.0, 2906729.0, 4236279.0, 0};
+
+    for(size_t i = 0; i < seeds.size(); ++i){
+        BOOST_CHECK_EQUAL(seeds[i], values[i]);
     }
 
 }
