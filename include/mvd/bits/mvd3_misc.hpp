@@ -100,9 +100,9 @@ const std::string did_lib_circuit_seeds = "/circuit/seeds";
 
 namespace MVD3 {
 
-MVD3File::MVD3File(const std::string &str) : _filename(str), _hdf5_file(str), _nb_neurons(0) {}
+inline MVD3File::MVD3File(const std::string &str) : _filename(str), _hdf5_file(str), _nb_neurons(0) {}
 
-size_t MVD3File::getNbNeuron(){
+inline size_t MVD3File::getNbNeuron(){
     if(_nb_neurons == 0){
         try{
             std::vector<size_t> dims = _hdf5_file.getDataSet(did_cells_positions).getSpace().getDimensions();
@@ -120,7 +120,7 @@ size_t MVD3File::getNbNeuron(){
 }
 
 
-Positions MVD3File::getPositions(const Range & range){
+inline Positions MVD3File::getPositions(const Range & range){
     Positions res;
     DataSet set = _hdf5_file.getDataSet(did_cells_positions);
     if(is_valid_range(range)){
@@ -133,7 +133,7 @@ Positions MVD3File::getPositions(const Range & range){
 }
 
 
-Rotations MVD3File::getRotations(const Range & range){
+inline Rotations MVD3File::getRotations(const Range & range){
     Rotations res;
     DataSet set = _hdf5_file.getDataSet(did_cells_rotations);
     if(is_valid_range(range)){
@@ -146,7 +146,7 @@ Rotations MVD3File::getRotations(const Range & range){
 }
 
 
-std::vector<std::string> MVD3File::getMorphologies(const Range & range){
+inline std::vector<std::string> MVD3File::getMorphologies(const Range & range){
     DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
     DataSet data = _hdf5_file.getDataSet(did_lib_data_morpho);
     return resolve_index<std::string>(index, range, data);
@@ -155,70 +155,70 @@ std::vector<std::string> MVD3File::getMorphologies(const Range & range){
 
 
 
-std::vector<std::string> MVD3File::getEtypes(const Range & range){
+inline std::vector<std::string> MVD3File::getEtypes(const Range & range){
     DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
     DataSet data = _hdf5_file.getDataSet(did_lib_data_etypes);
     return resolve_index<std::string>(index, range, data);
 }
 
 
-std::vector<std::string> MVD3File::getMtypes(const Range & range){
+inline std::vector<std::string> MVD3File::getMtypes(const Range & range){
     DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
     DataSet data = _hdf5_file.getDataSet(did_lib_data_mtypes);
     return resolve_index<std::string>(index, range, data);
 }
 
-std::vector<std::string> MVD3File::getSynapseClass(const Range & range){
+inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range){
     DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
     DataSet data = _hdf5_file.getDataSet(did_lib_data_syn_class);
     return resolve_index<std::string>(index, range, data);
 }
 
 
-std::vector<size_t> MVD3File::getIndexMorphologies(const Range & range){
+inline std::vector<size_t> MVD3File::getIndexMorphologies(const Range & range){
     DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
     return get_data_for_selection<size_t>(index, range);
 }
 
 
-std::vector<size_t> MVD3File::getIndexEtypes(const Range &range){
+inline std::vector<size_t> MVD3File::getIndexEtypes(const Range &range){
     DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
     return get_data_for_selection<size_t>(index, range);
 }
 
-std::vector<size_t> MVD3File::getIndexMtypes(const Range &range){
+inline std::vector<size_t> MVD3File::getIndexMtypes(const Range &range){
     DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
     return get_data_for_selection<size_t>(index, range);
 }
 
-std::vector<size_t> MVD3File::getIndexSynapseClass(const Range &range){
+inline std::vector<size_t> MVD3File::getIndexSynapseClass(const Range &range){
     DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
     return get_data_for_selection<size_t>(index, range);
 }
 
 
-std::vector<std::string> MVD3File::listAllMorphologies(){
+inline std::vector<std::string> MVD3File::listAllMorphologies(){
     DataSet index = _hdf5_file.getDataSet(did_lib_data_morpho);
     return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
 
-std::vector<std::string> MVD3File::listAllEtypes(){
+inline std::vector<std::string> MVD3File::listAllEtypes(){
     DataSet index = _hdf5_file.getDataSet(did_lib_data_etypes);
     return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
-std::vector<std::string> MVD3File::listAllMtypes(){
+inline std::vector<std::string> MVD3File::listAllMtypes(){
     DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
     return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
-std::vector<std::string> MVD3File::listAllSynapseClass(){
+inline std::vector<std::string> MVD3File::listAllSynapseClass(){
     DataSet index = _hdf5_file.getDataSet(did_lib_data_syn_class);
     return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
-std::vector<double> MVD3File::getCircuitSeeds(){
+inline std::vector<double> MVD3File::getCircuitSeeds(){
         std::vector<double> seeds;
         DataSet seeds_dataset = _hdf5_file.getDataSet(did_lib_circuit_seeds);
         seeds_dataset.read(seeds);
