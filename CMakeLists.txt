@@ -15,6 +15,11 @@ include(DefineInstallationPaths)
 include(ReleaseDebugAutoFlags)
 include(BlueGenePortability)
 
+
+option(UNIT_TESTS "Enable or disable unit tests" ON)
+option(MVD_TOOL_DISABLE_INSTALL "Enable or disable installation phase for embedded used" OFF)
+
+
 ## find dependencies
 find_package(Boost 1.41 REQUIRED COMPONENTS system)
 find_package(HDF5 REQUIRED)
@@ -33,11 +38,14 @@ add_executable(mvd-tool ${SRC_LIST} ${MVD_HEADERS} ${MVD_HEADERS_BITS})
 target_link_libraries(mvd-tool ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
 
 
+if(NOT MVD_TOOL_DISABLE_INSTALL)
+
 install(TARGETS mvd-tool
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} )
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd DESTINATION ${INCLUDE_INSTALL_DIR}/)
 
+endif()
 
 add_subdirectory(tests/unit)
 
