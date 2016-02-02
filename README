@@ -6,6 +6,7 @@ MVD-tool
 A simple C++ parser and tool for the MVD3 neuroscience file format
 
 - provide a tool to convert MVD2 to MVD3
+- provide a tool to export MVD to CSV
 - provide a simple header base parser for MVD2
 - provide a parser based on the HighFive library for MVD3
 
@@ -19,7 +20,6 @@ git submodule update --recursive --init
 mkdir build; pushd build
 cmake ../
 make
-
 
 
 ** Authors
