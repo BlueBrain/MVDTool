@@ -4,8 +4,8 @@ if(UNIT_TESTS)
 find_package(Boost 1.41 REQUIRED COMPONENTS filesystem system unit_test_framework)
 
 
-SET(MVD2_TEST_FILE ${CMAKE_SOURCE_DIR}/tests/circuit.mvd2)
-SET(MVD3_TEST_FILE ${CMAKE_SOURCE_DIR}/tests/circuit.mvd3)
+SET(MVD2_TEST_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../circuit.mvd2)
+SET(MVD3_TEST_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../circuit.mvd3)
 
 
 add_definitions(-DMVD2_FILENAME="${MVD2_TEST_FILE}")
