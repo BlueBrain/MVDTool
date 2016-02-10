@@ -11,19 +11,16 @@
 #
 with import <BBPpkgs> { };
 
-{ testExec ? false} : {
 
 
-    func = stdenv.mkDerivation rec {
+stdenv.mkDerivation rec {
       name = "functionalizer-DEV_ENV";
       src = ./.;
-      buildInputs = [stdenv pkgconfig boost cmake hdf5 doxygen zlib]
-      ++ stdenv.lib.optional ( testExec == true) [ bbptestdata ];
+      buildInputs = [stdenv pkgconfig boost cmake hdf5 doxygen zlib];
 
-      doCheck = testExec;
-
-    };
+      doCheck = true;
+      checkPhase = "ctest -V";
+      
 
 }
-
 
