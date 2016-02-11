@@ -57,7 +57,7 @@ void print_csv(const std::string & filename){
 
     const size_t n_neuron = file.getNbNeuron();
 
-    std::cout << "GID; POSITION_X; POSITION_Y; POSITION_Z; ROTATION_Q0; ROTATION_Q1; ROTATION_Q2; ROTATION_Q3; ROTATION_Q4;";
+    std::cout << "GID; POSITION_X; POSITION_Y; POSITION_Z; ROTATION_Q0; ROTATION_Q1; ROTATION_Q2; ROTATION_Q3;";
     std::cout << " MORPHO; MTYPE; ETYPE; SYNCLASS;" << "\n";
 
     size_t offset=0, size_read=0;
