@@ -17,35 +17,48 @@ include(BlueGenePortability)
 
 
 option(UNIT_TESTS "Enable or disable unit tests" ON)
-option(MVD_TOOL_DISABLE_INSTALL "Enable or disable installation phase for embedded used" OFF)
-
 
 ## find dependencies
-find_package(Boost 1.41 REQUIRED COMPONENTS system)
-find_package(HDF5 REQUIRED)
+find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
+find_package(HDF5 QUIET REQUIRED)
 
 
 file(GLOB MVD_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*)
 file(GLOB MVD_HEADERS_BITS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*/*)
 
+add_library(MVDTool INTERFACE)
+target_include_directories(MVDTool INTERFACE
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include>")
+target_include_directories(MVDTool SYSTEM INTERFACE
+  ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS})
 
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include/ ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include)
-
-add_definitions( -DH5_USE_BOOST -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\" -DMVD_VERSION_MINOR=\"${VERSION_MINOR}\" )
+target_compile_definitions(MVDTool INTERFACE
+  -DH5_USE_BOOST
+  -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\"
+  -DMVD_VERSION_MINOR=\"${VERSION_MINOR}\")
 
 aux_source_directory(src SRC_LIST)
-add_executable(mvd-tool ${SRC_LIST} ${MVD_HEADERS} ${MVD_HEADERS_BITS})
-target_link_libraries(mvd-tool ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
+add_executable(mvd-tool ${SRC_LIST} ${MVD_HEADERS_BITS} ${MVD_HEADERS})
+target_link_libraries(mvd-tool MVDTool ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
 
 
-if(NOT MVD_TOOL_DISABLE_INSTALL)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd DESTINATION ${INCLUDE_INSTALL_DIR})
+install(TARGETS MVDTool EXPORT ${PROJECT_NAME}Targets
+  INCLUDES DESTINATION include)
 
 install(TARGETS mvd-tool
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} )
 
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd DESTINATION ${INCLUDE_INSTALL_DIR}/)
-
+if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
+  # Generate ${PROJECT_NAME}Targets.cmake; is written after the CMake run
+  # succeeds. Provides IMPORTED targets when using this project from the install
+  # tree.
+  export(EXPORT ${PROJECT_NAME}Targets
+    FILE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
+    )
+  install(EXPORT ${PROJECT_NAME}Targets FILE ${PROJECT_NAME}Targets.cmake
+    DESTINATION share/${PROJECT_NAME}/CMake)
 endif()
 
 add_subdirectory(tests/unit)
-

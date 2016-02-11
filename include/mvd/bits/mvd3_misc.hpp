@@ -27,8 +27,6 @@
 #include "../mvd3.hpp"
 #include "../mvd_except.hpp"
 
-using namespace HighFive;
-
 namespace{
 
 inline bool is_valid_range(const MVD3::Range & range){
@@ -47,7 +45,7 @@ inline std::vector<size_t> size2D_to_vec(size_t d1, size_t d2){
 }
 
 template<typename T>
-inline std::vector<T> get_data_for_selection(DataSet & index, const MVD3::Range & range){
+inline std::vector<T> get_data_for_selection(HighFive::DataSet & index, const MVD3::Range & range){
     std::vector<T> index_values;
 
     if(is_valid_range(range)){
@@ -60,7 +58,7 @@ inline std::vector<T> get_data_for_selection(DataSet & index, const MVD3::Range 
 }
 
 template<typename T>
-inline std::vector<T> resolve_index(DataSet & index, const MVD3::Range & range, DataSet & data){
+inline std::vector<T> resolve_index(HighFive::DataSet & index, const MVD3::Range & range, HighFive::DataSet & data){
     std::vector<T> full_data, result;
     std::vector<size_t> references = get_data_for_selection<size_t>(index, range);
 
@@ -122,7 +120,7 @@ inline size_t MVD3File::getNbNeuron(){
 
 inline Positions MVD3File::getPositions(const Range & range){
     Positions res;
-    DataSet set = _hdf5_file.getDataSet(did_cells_positions);
+    HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_positions);
     if(is_valid_range(range)){
                 set.select(size2D_to_vec(range.offset, 0), size2D_to_vec(range.count, 3))
                 .read(res);
@@ -135,7 +133,7 @@ inline Positions MVD3File::getPositions(const Range & range){
 
 inline Rotations MVD3File::getRotations(const Range & range){
     Rotations res;
-    DataSet set = _hdf5_file.getDataSet(did_cells_rotations);
+    HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_rotations);
     if(is_valid_range(range)){
             set.select(size2D_to_vec(range.offset, 0), size2D_to_vec(range.count, 4))
             .read(res);
@@ -147,8 +145,8 @@ inline Rotations MVD3File::getRotations(const Range & range){
 
 
 inline std::vector<std::string> MVD3File::getMorphologies(const Range & range){
-    DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
-    DataSet data = _hdf5_file.getDataSet(did_lib_data_morpho);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
+    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_morpho);
     return resolve_index<std::string>(index, range, data);
 }
 
@@ -156,71 +154,71 @@ inline std::vector<std::string> MVD3File::getMorphologies(const Range & range){
 
 
 inline std::vector<std::string> MVD3File::getEtypes(const Range & range){
-    DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
-    DataSet data = _hdf5_file.getDataSet(did_lib_data_etypes);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
+    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_etypes);
     return resolve_index<std::string>(index, range, data);
 }
 
 
 inline std::vector<std::string> MVD3File::getMtypes(const Range & range){
-    DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
-    DataSet data = _hdf5_file.getDataSet(did_lib_data_mtypes);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
+    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_mtypes);
     return resolve_index<std::string>(index, range, data);
 }
 
 inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range){
-    DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
-    DataSet data = _hdf5_file.getDataSet(did_lib_data_syn_class);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
+    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_syn_class);
     return resolve_index<std::string>(index, range, data);
 }
 
 
 inline std::vector<size_t> MVD3File::getIndexMorphologies(const Range & range){
-    DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
     return get_data_for_selection<size_t>(index, range);
 }
 
 
 inline std::vector<size_t> MVD3File::getIndexEtypes(const Range &range){
-    DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
     return get_data_for_selection<size_t>(index, range);
 }
 
 inline std::vector<size_t> MVD3File::getIndexMtypes(const Range &range){
-    DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
     return get_data_for_selection<size_t>(index, range);
 }
 
 inline std::vector<size_t> MVD3File::getIndexSynapseClass(const Range &range){
-    DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
     return get_data_for_selection<size_t>(index, range);
 }
 
 
 inline std::vector<std::string> MVD3File::listAllMorphologies(){
-    DataSet index = _hdf5_file.getDataSet(did_lib_data_morpho);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_morpho);
     return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
 
 inline std::vector<std::string> MVD3File::listAllEtypes(){
-    DataSet index = _hdf5_file.getDataSet(did_lib_data_etypes);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_etypes);
     return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
 inline std::vector<std::string> MVD3File::listAllMtypes(){
-    DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
     return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
 inline std::vector<std::string> MVD3File::listAllSynapseClass(){
-    DataSet index = _hdf5_file.getDataSet(did_lib_data_syn_class);
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_syn_class);
     return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
 inline std::vector<double> MVD3File::getCircuitSeeds(){
         std::vector<double> seeds;
-        DataSet seeds_dataset = _hdf5_file.getDataSet(did_lib_circuit_seeds);
+        HighFive::DataSet seeds_dataset = _hdf5_file.getDataSet(did_lib_circuit_seeds);
         seeds_dataset.read(seeds);
         if(seeds.size() < 4){
             throw MVDParserException("Invalid MVD3 /circuit/seeds size, MVD3 should provide at least 4 seeds");
