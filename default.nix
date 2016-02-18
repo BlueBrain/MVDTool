@@ -14,13 +14,12 @@ with import <BBPpkgs> { };
 
 
 stdenv.mkDerivation rec {
-      name = "functionalizer-DEV_ENV";
+      name = "mvdtool-DEV";
       src = ./.;
       buildInputs = [stdenv pkgconfig boost cmake hdf5 doxygen zlib];
 
       doCheck = true;
       checkPhase = "ctest -V";
-      
 
 }
 
