@@ -22,7 +22,7 @@ include_directories(${HDF5_INCLUDE_DIRS})
 file(GLOB  tests_mvd2_src "*mvd2.cpp")
 add_executable(test_mvd2 ${tests_mvd2_src})
 
-target_link_libraries(test_mvd2 MVDTool ${Boost_UNIT_TEST_FRAMEWORK_LIBRARIES})
+target_link_libraries(test_mvd2 ${Boost_UNIT_TEST_FRAMEWORK_LIBRARIES})
 
 add_test(NAME test_parser_mvd2 COMMAND test_mvd2)
 
@@ -31,7 +31,7 @@ add_test(NAME test_parser_mvd2 COMMAND test_mvd2)
 file(GLOB  tests_mvd3_src "*mvd3.cpp")
 add_executable(test_mvd3 ${tests_mvd3_src})
 
-target_link_libraries(test_mvd3 MVDTool ${Boost_UNIT_TEST_FRAMEWORK_LIBRARIES} ${HDF5_LIBRARIES})
+target_link_libraries(test_mvd3 ${Boost_UNIT_TEST_FRAMEWORK_LIBRARIES} ${HDF5_LIBRARIES})
 
 add_test(NAME test_parser_mvd3 COMMAND test_mvd3)
 
