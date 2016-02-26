@@ -182,9 +182,11 @@ void move_coordinates(MVD2Infos & infos, MVD3Infos & result){
         // convert to rad and construct quaternion
         const double deg_rad_r = boost::math::constants::pi<double>() / 180.0;
         const double angle_y = infos.vec_xyzr[i][3]*deg_rad_r;
-        result.rotation[i][0] = cos(angle_y/2);
-        result.rotation[i][1] = result.rotation[i][3] = 0;
-        result.rotation[i][2] = sin(angle_y/2);
+
+        // quaternion order  (x,y,z,w)
+        result.rotation[i][0] = result.rotation[i][2] = 0;
+        result.rotation[i][1] = sin(angle_y/2);
+        result.rotation[i][3] = cos(angle_y/2);
     }
     infos.vec_xyzr.clear();
 }
