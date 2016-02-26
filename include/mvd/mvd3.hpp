@@ -72,7 +72,7 @@ public:
     /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
     ///  of each selected neurons ( all by default )
     ///
-    Positions getPositions(const Range & range = Range(0,0));
+    Positions getPositions(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getPositions
@@ -80,7 +80,7 @@ public:
     /// \return a double vector of size [N][4] with the rotations (x,y,z,w) coordinates
     /// of each selected neurons ( all by default )
     ///
-    Rotations getRotations(const Range & range = Range(0,0));
+    Rotations getRotations(const Range & range = Range(0,0)) const;
 
 
 
@@ -90,7 +90,7 @@ public:
     /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return vector of string with the morphology name associated with each neuron
     ///
-    std::vector<std::string> getMorphologies(const Range & range = Range(0,0));
+    std::vector<std::string> getMorphologies(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getEtypes
@@ -192,4 +192,3 @@ private:
 #include "bits/mvd3_misc.hpp"
 
 #endif // MVD3_HPP
-

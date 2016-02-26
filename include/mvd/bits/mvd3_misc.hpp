@@ -118,7 +118,7 @@ inline size_t MVD3File::getNbNeuron(){
 }
 
 
-inline Positions MVD3File::getPositions(const Range & range){
+inline Positions MVD3File::getPositions(const Range & range) const {
     Positions res;
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_positions);
     if(is_valid_range(range)){
@@ -131,7 +131,7 @@ inline Positions MVD3File::getPositions(const Range & range){
 }
 
 
-inline Rotations MVD3File::getRotations(const Range & range){
+inline Rotations MVD3File::getRotations(const Range & range) const {
     Rotations res;
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_rotations);
     if(is_valid_range(range)){
@@ -144,7 +144,7 @@ inline Rotations MVD3File::getRotations(const Range & range){
 }
 
 
-inline std::vector<std::string> MVD3File::getMorphologies(const Range & range){
+inline std::vector<std::string> MVD3File::getMorphologies(const Range & range) const {
     HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
     HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_morpho);
     return resolve_index<std::string>(index, range, data);
