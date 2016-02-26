@@ -77,7 +77,7 @@ public:
     ///
     /// \brief getPositions
     /// \param range: selection range, a null range (0,0) select the entire dataset
-    /// \return a double vector of size [N][4] with the rotations (x,y,z,w) coordinates
+    /// \return a double vector of size [N][4] with the rotation quaternions in the order (x,y,z,w)
     /// of each selected neurons ( all by default )
     ///
     Rotations getRotations(const Range & range = Range(0,0)) const;
