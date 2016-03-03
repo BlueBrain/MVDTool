@@ -26,18 +26,16 @@ find_package(HDF5 QUIET REQUIRED)
 file(GLOB MVD_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*)
 file(GLOB MVD_HEADERS_BITS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*/*)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include
+  ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS})
 add_definitions( -DH5_USE_BOOST -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\" -DMVD_VERSION_MINOR=\"${VERSION_MINOR}\" )
 
 aux_source_directory(src SRC_LIST)
 add_executable(mvd-tool ${SRC_LIST} ${MVD_HEADERS_BITS} ${MVD_HEADERS})
 target_link_libraries(mvd-tool ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
 
-
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd DESTINATION ${INCLUDE_INSTALL_DIR})
-install(TARGETS mvd-tool
-        RUNTIME DESTINATION ${BIN_INSTALL_DIR} )
-
+install(TARGETS mvd-tool RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 
 # cmake target install
 if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
@@ -46,12 +44,13 @@ if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
   # tree.
 
   add_library(MVDTool INTERFACE)
+  target_link_libraries(MVDTool INTERFACE ${HDF5_LIBRARIES})
   target_include_directories(MVDTool INTERFACE
 	  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
 	  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include>")
   target_include_directories(MVDTool SYSTEM INTERFACE
 	  ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS})
-	
+
   target_compile_definitions(MVDTool INTERFACE
 	  -DH5_USE_BOOST
 	  -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\"
@@ -60,15 +59,12 @@ if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
   install(EXPORT ${PROJECT_NAME}Targets FILE ${PROJECT_NAME}Targets.cmake
     DESTINATION share/${PROJECT_NAME}/CMake)
 
-
   export(EXPORT ${PROJECT_NAME}Targets
     FILE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
     )
 
   install(TARGETS MVDTool EXPORT ${PROJECT_NAME}Targets
   	INCLUDES DESTINATION include)
-
-
 endif()
 
 add_subdirectory(tests/unit)
