@@ -1,6 +1,5 @@
 IF (UNIX)
   IF (NOT APPLICATION_NAME)
-    MESSAGE(STATUS "${PROJECT_NAME} is used as APPLICATION_NAME")
     SET(APPLICATION_NAME ${PROJECT_NAME})
   ENDIF (NOT APPLICATION_NAME)
 
@@ -23,15 +22,15 @@ ENDIF()
 	SET(INTERNAL_BASE_PREFIX "")
   ELSE("${CMAKE_INSTALL_PREFIX}" STREQUAL "/")
  	SET(INTERNAL_BASE_PREFIX "${CMAKE_INSTALL_PREFIX}")
-  ENDIF("${CMAKE_INSTALL_PREFIX}" STREQUAL "/") 
+  ENDIF("${CMAKE_INSTALL_PREFIX}" STREQUAL "/")
 
   SET(EXEC_INSTALL_PREFIX
     "${CMAKE_INSTALL_PREFIX}"
     CACHE PATH  "Base directory for executables and libraries"
   )
-  
 
-  
+
+
   SET(SHARE_INSTALL_PREFIX
     "${INTERNAL_BASE_PREFIX}/share"
     CACHE PATH "Base directory for files which go to share/"
@@ -76,12 +75,12 @@ ENDIF()
     "${DATA_INSTALL_PREFIX}"
     CACHE PATH "The parent directory where applications can install their data (default prefix/share/${APPLICATION_NAME})"
   )
- 
+
   SET(DOC_INSTALL_DIR
     "${SHARE_INSTALL_PREFIX}/doc/${APPLICATION_NAME}"
     CACHE PATH "The parent directory where applications can install their documentation (default prefix/share/doc/${APPLICATION_NAME})"
   )
-  
+
   SET(HTML_INSTALL_DIR
     "${DATA_INSTALL_PREFIX}/doc/HTML"
     CACHE PATH "The HTML install dir for documentation (default data/doc/html)"
@@ -128,7 +127,7 @@ if (WIN32)
   SET(EXEC_INSTALL_PREFIX
     "${CMAKE_INSTALL_PREFIX}"
     CACHE PATH  "Base directory for executables and libraries"
-  )  
+  )
   set(BIN_INSTALL_DIR "${EXEC_INSTALL_PREFIX}/bin" CACHE PATH "-")
   set(SBIN_INSTALL_DIR "${EXEC_INSTALL_PREFIX}/bin" CACHE PATH "-")
   set(LIB_INSTALL_DIR "${EXEC_INSTALL_PREFIX}/bin" CACHE PATH "-")
@@ -136,14 +135,13 @@ if (WIN32)
   SET(SYSCONF_INSTALL_DIR
     "${CMAKE_INSTALL_PREFIX}/etc"
     CACHE PATH "The ${APPLICATION_NAME} sysconfig install dir (default prefix/etc)"
-  )  
+  )
   SET(PKGCONFIG_FILES_DIR "${EXEC_INSTALL_PREFIX}/lib/pkgconfig/"
     CACHE PATH "subdirectory relative to the install prefix where pkgconfig files (.pc) will be installed"
-  )  
+  )
   set(PLUGIN_INSTALL_DIR "${EXEC_INSTALL_PREFIX}/bin/plugins" CACHE PATH "-")
   set(HTML_INSTALL_DIR "${EXEC_INSTALL_PREFIX}/doc/HTML" CACHE PATH "-")
   set(ICON_INSTALL_DIR "." CACHE PATH "-")
   set(SOUND_INSTALL_DIR "." CACHE PATH "-")
   set(LOCALE_INSTALL_DIR "lang" CACHE PATH "-")
 endif (WIN32)
-
