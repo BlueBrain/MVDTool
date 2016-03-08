@@ -64,7 +64,7 @@ public:
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
     ///
-    size_t getNbNeuron();
+    size_t getNbNeuron() const;
 
     ///
     /// \brief getPositions
@@ -97,20 +97,20 @@ public:
     /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return vector of string with the eEtype name associated with each neuron
     ///
-    std::vector<std::string> getEtypes(const Range & range = Range(0,0));
+    std::vector<std::string> getEtypes(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getMtypes
     /// \return vector of string with the Mtype name associated with each neuron
     ///
-    std::vector<std::string> getMtypes(const Range & range = Range(0,0));
+    std::vector<std::string> getMtypes(const Range & range = Range(0,0)) const;
 
 
     ///
     /// \brief getSynapseClass
     /// \return vector of string with the synapse type associated with each neuron
     ///
-    std::vector<std::string> getSynapseClass(const Range & range = Range(0,0));
+    std::vector<std::string> getSynapseClass(const Range & range = Range(0,0)) const;
 
 
     // index related infos
@@ -120,7 +120,7 @@ public:
     /// \param range
     /// \return values of the morphology index for neurons in the range, default: entire dataset
     ///
-    std::vector<size_t> getIndexMorphologies(const Range & range = Range(0,0));
+    std::vector<size_t> getIndexMorphologies(const Range & range = Range(0,0)) const;
 
 
 
@@ -129,7 +129,7 @@ public:
     /// \param range
     /// \return values of the Etypes index for neurons in the range, default: entire dataset
     ///
-    std::vector<size_t> getIndexEtypes(const Range & range = Range(0,0));
+    std::vector<size_t> getIndexEtypes(const Range & range = Range(0,0)) const;
 
 
     ///
@@ -137,14 +137,14 @@ public:
     /// \param range
     /// \return values of the Mtypes index for neurons in the range, default: entire dataset
     ///
-    std::vector<size_t> getIndexMtypes(const Range & range = Range(0,0));
+    std::vector<size_t> getIndexMtypes(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getIndexSynapseClass
     /// \param range
     /// \return values of the Synapse class index for neurons in the range, default: entire dataset
     ///
-    std::vector<size_t> getIndexSynapseClass(const Range & range = Range(0,0));
+    std::vector<size_t> getIndexSynapseClass(const Range & range = Range(0,0)) const;
 
     // Data related infos
 
@@ -152,25 +152,25 @@ public:
     /// \brief getDataMorphologies
     /// \return vector of all unique morphologies ( mvd3 /library section )
     ///
-    std::vector<std::string> listAllMorphologies();
+    std::vector<std::string> listAllMorphologies() const;
 
     ///
     /// \brief listAllEtypes
     /// \return vector of all unique Etypes ( mvd3 /library section )
     ///
-    std::vector<std::string> listAllEtypes();
+    std::vector<std::string> listAllEtypes() const;
 
     ///
     /// \brief listAllMtypes
     /// \return vector of all unique Mtypes ( mvd3 /library section )
     ///
-    std::vector<std::string> listAllMtypes();
+    std::vector<std::string> listAllMtypes() const;
 
     ///
     /// \brief listSynapseClass
     /// \return vector of all unique Synapse Class ( mvd3 /library section )
     ///
-    std::vector<std::string> listAllSynapseClass();
+    std::vector<std::string> listAllSynapseClass() const;
 
     // circuit infos
     ///
@@ -178,7 +178,7 @@ public:
     /// \return return a vector of the circuit seeds to use for random initialization
     /// the vector has to be at least 4 elements
     ///
-    std::vector<double> getCircuitSeeds();
+    std::vector<double> getCircuitSeeds() const;
 
 private:
     std::string _filename;
