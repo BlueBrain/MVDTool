@@ -13,14 +13,14 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
 
 include(DefineInstallationPaths)
 include(ReleaseDebugAutoFlags)
-include(BlueGenePortability)
 
 
 option(UNIT_TESTS "Enable or disable unit tests" ON)
+set(Boost_NO_BOOST_CMAKE TRUE)
 
 ## find dependencies
-find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
-find_package(HDF5 QUIET REQUIRED)
+find_package(Boost 1.41 REQUIRED COMPONENTS system)
+find_package(HDF5 REQUIRED)
 
 
 file(GLOB MVD_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*)
