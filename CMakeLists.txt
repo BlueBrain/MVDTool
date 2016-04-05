@@ -26,8 +26,8 @@ find_package(HDF5 REQUIRED)
 file(GLOB MVD_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*)
 file(GLOB MVD_HEADERS_BITS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*/*)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include
-  ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include)
+include_directories(SYSTEM ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS})
 add_definitions( -DH5_USE_BOOST -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\" -DMVD_VERSION_MINOR=\"${VERSION_MINOR}\" )
 
 aux_source_directory(src SRC_LIST)
