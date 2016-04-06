@@ -15,7 +15,7 @@ include(DefineInstallationPaths)
 include(ReleaseDebugAutoFlags)
 
 
-option(UNIT_TESTS "Enable or disable unit tests" ON)
+option(MVDTOOL_UNIT_TESTS "Enable or disable unit tests" ON)
 set(Boost_NO_BOOST_CMAKE TRUE)
 
 ## find dependencies
