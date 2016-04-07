@@ -21,10 +21,16 @@
 #include <cmath>
 #include <map>
 #include <mvd/mvd2.hpp>
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
 #include <boost/array.hpp>
 #include <boost/math/constants/constants.hpp>
-#include <highfive/H5File.hpp>
 
+#pragma GCC diagnostic pop
+
+#include <highfive/H5File.hpp>
 
 void converter_log(const std::string & msg){
 static size_t step = 0;
