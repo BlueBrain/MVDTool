@@ -19,8 +19,8 @@ option(MVDTOOL_UNIT_TESTS "Enable or disable unit tests" ON)
 set(Boost_NO_BOOST_CMAKE TRUE)
 
 ## find dependencies
-find_package(Boost 1.41 REQUIRED COMPONENTS system)
-find_package(HDF5 REQUIRED)
+find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
+find_package(HDF5 QUIET REQUIRED)
 
 
 file(GLOB MVD_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*)
@@ -46,15 +46,15 @@ if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
   add_library(MVDTool INTERFACE)
   target_link_libraries(MVDTool INTERFACE ${HDF5_LIBRARIES})
   target_include_directories(MVDTool INTERFACE
-	  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-	  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include>")
+      "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+      "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include>")
   target_include_directories(MVDTool SYSTEM INTERFACE
-	  ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS})
+      ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS})
 
   target_compile_definitions(MVDTool INTERFACE
-	  -DH5_USE_BOOST
-	  -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\"
-	  -DMVD_VERSION_MINOR=\"${VERSION_MINOR}\")
+      -DH5_USE_BOOST
+      -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\"
+      -DMVD_VERSION_MINOR=\"${VERSION_MINOR}\")
 
   install(EXPORT ${PROJECT_NAME}Targets FILE ${PROJECT_NAME}Targets.cmake
     DESTINATION share/${PROJECT_NAME}/CMake)
@@ -64,7 +64,7 @@ if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
     )
 
   install(TARGETS MVDTool EXPORT ${PROJECT_NAME}Targets
-  	INCLUDES DESTINATION include)
+    INCLUDES DESTINATION include)
 endif()
 
 add_subdirectory(tests/unit)
