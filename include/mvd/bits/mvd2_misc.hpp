@@ -65,9 +65,11 @@ inline void MVD2File::parse(Callback & lineParser){
 
     char line[1025] = {0};
 
-    (void) fgets(line, 255, data);
-    (void) fgets(line, 255, data);
     // drop header
+    if( fgets(line, 255, data) == NULL
+        || fgets(line, 255, data) == NULL){
+        throw MVDParserException("Invalid header parsing for " + _filename );
+    }
 
     DataSet type = None;
     size_t count = 0;
