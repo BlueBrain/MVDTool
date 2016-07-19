@@ -30,20 +30,21 @@ using namespace std;
 namespace commands{
     const std::string convert = "convert";
     const std::string print = "print";
+    const std::string summary = "summary";
     const std::string help = "help";
     const std::string version = "version";
-    const int n_cmd = 4;
+    const int n_cmd = 5;
 }
 
 bool is_valid_command(const char* argv){
     using namespace commands;
-    const std::string cmds[] = { convert, print, help, version };
+    const std::string cmds[] = { convert, print, summary, help, version };
     return std::find(cmds, cmds+ n_cmd, argv) != cmds+n_cmd;
 }
 
 int offset_command(const char* argv){
     using namespace commands;
-    const std::string cmds[] = { convert, print, help, version };
+    const std::string cmds[] = { convert, print, summary, help, version };
     return std::find(cmds, cmds+ n_cmd, argv) - cmds;
 }
 
@@ -105,12 +106,38 @@ void help(char** argv){
     std::cout << "  List of commands :\n";
     std::cout << "             convert [mvd2_file] [mvd3_file]";
     std::cout << " : Convert a MVD 2.0 file into the MVD 3.0 file format\n";
-    std::cout << "             print mvd3_file";
+    std::cout << "             summary [mvd3_file]            ";
+    std::cout << " : Print summary of the circuit informations \n";
+    std::cout << "             print [mvd3_file]              ";
     std::cout << " : Print in MVD 3.0 in human readable format (default csv) \n";
     std::cout << "             version                        ";
     std::cout << " : Display version of mvd-tool\n";
     std::cout << "             help                           ";
     std::cout << " : Display help of mvd-tool\n";
+}
+
+bool has_seeds(MVD3::MVD3File & file){
+    try{
+        return (file.getCircuitSeeds().size() >= 3);
+    }catch(...){
+        return false;
+    }
+}
+
+void summary(const std::string & filename){
+    using namespace MVD3;
+    MVD3File file(filename);
+
+    std::cout << "Circuit Summary\n";
+    std::cout << "circuit_filename: " << filename << "\n";
+    std::cout << "number_of_neurons: " << file.getNbNeuron() << "\n";
+    std::cout << "number_of_morphologies: " << file.listAllMorphologies().size() << "\n";
+    std::cout << "number_of_mtypes: " << file.listAllMtypes().size() << "\n";
+    std::cout << "number_of_etypes: " << file.listAllEtypes().size() << "\n";
+    std::cout << "number_of_synapse_class: " << file.listAllSynapseClass().size() << "\n";
+    std::cout << "has_circuit_seeds: " << ((has_seeds(file))?("true"):("false")) << "\n";
+
+
 }
 
 
@@ -145,15 +172,25 @@ int main(int argc, char** argv){
                break;
             }
 
+
             case(2):{
-                std::cout << "version: " << version() << "\n";
-                exit(1);
+                if(argc <3){
+                    help(argv);
+                    exit(1);
+                }
+               summary(argv[2]);
+               break;
             }
 
-            default:{
-                help(argv);
-                exit(1);
-            }
+            case(3):{
+                    std::cout << "version: " << version() << "\n";
+                    exit(1);
+                }
+
+                default:{
+                    help(argv);
+                    exit(1);
+                }
 
         }
 
