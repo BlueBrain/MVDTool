@@ -63,9 +63,7 @@ if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
       ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS})
 
   target_compile_definitions(MVDTool INTERFACE
-      -DH5_USE_BOOST
-      -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\"
-      -DMVD_VERSION_MINOR=\"${VERSION_MINOR}\")
+      -DH5_USE_BOOST)
 
   install(EXPORT ${PROJECT_NAME}Targets FILE ${PROJECT_NAME}Targets.cmake
     DESTINATION share/${PROJECT_NAME}/CMake)
