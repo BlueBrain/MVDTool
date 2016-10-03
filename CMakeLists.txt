@@ -34,11 +34,22 @@ aux_source_directory(src SRC_LIST)
 add_executable(mvd-tool ${SRC_LIST} ${MVD_HEADERS_BITS} ${MVD_HEADERS})
 target_link_libraries(mvd-tool ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
 
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd DESTINATION ${INCLUDE_INSTALL_DIR})
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd
+                  ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include/highfive
+        DESTINATION ${INCLUDE_INSTALL_DIR})
 install(TARGETS mvd-tool RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 
 # cmake target install
 if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
+  include(CMakePackageConfigHelpers)
+  configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/CMake/MVDToolConfig.cmake.in
+    ${PROJECT_BINARY_DIR}/MVDToolConfig.cmake
+    INSTALL_DESTINATION share/${PROJECT_NAME}/CMake
+  )
+  install(FILES ${PROJECT_BINARY_DIR}/MVDToolConfig.cmake
+          DESTINATION share/${PROJECT_NAME}/CMake
+  )
+
   # Generate ${PROJECT_NAME}Targets.cmake; is written after the CMake run
   # succeeds. Provides IMPORTED targets when using this project from the install
   # tree.
