@@ -12,14 +12,12 @@
 with import <BBPpkgs> { };
 
 
-
-stdenv.mkDerivation rec {
+{
+	mvdtool = mvdtool.overrideDerivation (oldAttr: rec {
       name = "mvdtool-DEV";
       src = ./.;
-      buildInputs = [stdenv pkgconfig boost cmake hdf5 doxygen zlib];
-
-      doCheck = true;
-      checkPhase = "ctest -V";
-
+	});
 }
+
+
 
