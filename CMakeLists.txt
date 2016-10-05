@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.8)
 enable_testing()
 
 set(VERSION_MAJOR "1")
-set(VERSION_MINOR "1")
+set(VERSION_MINOR "2")
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
       ${PROJECT_SOURCE_DIR}/CMake/portability
@@ -15,6 +15,7 @@ include(DefineInstallationPaths)
 include(ReleaseDebugAutoFlags)
 
 
+option(MVDTOOL_INSTALL_HIGHFIVE "Install header of dependency HighFive (needed for subprojects)" ON)
 option(MVDTOOL_UNIT_TESTS "Enable or disable unit tests" ON)
 set(Boost_NO_BOOST_CMAKE TRUE)
 
@@ -35,9 +36,26 @@ add_executable(mvd-tool ${SRC_LIST} ${MVD_HEADERS_BITS} ${MVD_HEADERS})
 target_link_libraries(mvd-tool ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd
-                  ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include/highfive
         DESTINATION ${INCLUDE_INSTALL_DIR})
+
+
+if(MVDTOOL_INSTALL_HIGHFIVE)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include/highfive
+		DESTINATION ${INCLUDE_INSTALL_DIR})
+endif()
+
 install(TARGETS mvd-tool RUNTIME DESTINATION ${BIN_INSTALL_DIR})
+
+
+
+
+
+
+
+
+
+
+
 
 # cmake target install
 if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
