@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 
 enable_testing()
 
-set(VERSION_MAJOR "1")
-set(VERSION_MINOR "2")
+set(VERSION_MAJOR 1)
+set(VERSION_MINOR 2)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
       ${PROJECT_SOURCE_DIR}/CMake/portability
