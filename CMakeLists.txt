@@ -30,8 +30,8 @@ file(GLOB MVD_HEADERS_BITS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*/*)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include)
 include_directories(SYSTEM ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS})
 add_definitions( -DH5_USE_BOOST -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\" -DMVD_VERSION_MINOR=\"${VERSION_MINOR}\" )
-
 aux_source_directory(src SRC_LIST)
+
 add_executable(mvd-tool ${SRC_LIST} ${MVD_HEADERS_BITS} ${MVD_HEADERS})
 target_link_libraries(mvd-tool ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
 
@@ -45,14 +45,6 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include/highfive
 endif()
 
 install(TARGETS mvd-tool RUNTIME DESTINATION ${BIN_INSTALL_DIR})
-
-
-
-
-
-
-
-
 
 
 
@@ -94,4 +86,6 @@ if(CMAKE_MAJOR_VERSION GREATER 2) # No export(EXPORT) in CMake 2
     INCLUDES DESTINATION include)
 endif()
 
+
 add_subdirectory(tests/unit)
+add_subdirectory(python)
