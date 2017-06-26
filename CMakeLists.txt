@@ -32,12 +32,14 @@ file(GLOB MVD_HEADERS_BITS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*/*)
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include/ ${Boost_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/deps/highfive/include)
 
 add_definitions( -DH5_USE_BOOST -DMVD_VERSION_MAJOR=\"${VERSION_MAJOR}\" -DMVD_VERSION_MINOR=\"${VERSION_MINOR}\" )
-
 aux_source_directory(src SRC_LIST)
+
 add_executable(mvd-tool ${SRC_LIST} ${MVD_HEADERS} ${MVD_HEADERS_BITS})
 target_link_libraries(mvd-tool ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
 
 
+#########################################################
+# Install
 if(NOT MVD_TOOL_DISABLE_INSTALL)
 
 install(TARGETS mvd-tool
@@ -47,5 +49,6 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd DESTINATION ${INCLUDE_INSTAL
 
 endif()
 
-add_subdirectory(tests/unit)
 
+add_subdirectory(tests/unit)
+add_subdirectory(python)
