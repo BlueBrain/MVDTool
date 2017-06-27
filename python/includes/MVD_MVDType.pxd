@@ -13,7 +13,7 @@ cimport std
 cdef extern from "mvd/mvd_generic.hpp" namespace "MVD::MVDType":
 # ----------------------------------------------------------------------------------------------------------------------
 
-    cpdef enum MVDType:
+    cdef enum MVDType:
         UnknownFileType = 0
         MVD2 = 20
         MVD3 = 30

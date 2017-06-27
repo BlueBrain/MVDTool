@@ -284,8 +284,31 @@ cdef class MVD3File(_py__base):
 # ======================================================================================================================
 # Python bindings to namespace MVD
 # ======================================================================================================================
+
+class MVDType(object):
+    _UnknownFileType = MVD_MVDType.UnknownFileType
+    _MVD2 = MVD_MVDType.MVD2
+    _MVD3 = MVD_MVDType.MVD3
+    _ITEMS = {_UnknownFileType: "UnknownFileType",
+              _MVD2: "MVD2",
+              _MVD3: "MVD3"}
+
+    def __init__(self, typ):
+        assert typ in self._ITEMS
+        self._id = typ
+
+    def __eq__(self, other):
+        return isinstance(other, type(self)) and self._id == other._id
+
+    def __repr__(self):
+        return "<MVDType.%s>" % (self._ITEMS[self._id])
+MVDType.UnknownFileType = MVDType(MVDType._UnknownFileType)
+MVDType.MVD2 = MVDType(MVDType._MVD2)
+MVDType.MVD3 = MVDType(MVDType._MVD3)
+
+
 def is_mvd_file(std.string filename):
-    return MVD.is_mvd_file(filename)
+    return MVDType(MVD.is_mvd_file(filename))
 
 
 
