@@ -8,20 +8,11 @@ __copyright__ = "Copyright 2016 EPFL BBP-project"
 from cython.operator cimport dereference as deref
 from libcpp cimport bool
 cimport std
+cimport boost
 
 # ======================================================================================================================
 cdef extern from "mvd/mvd2.hpp" namespace "MVD2":
 # ----------------------------------------------------------------------------------------------------------------------
-
-    cpdef enum DataSet:
-        None = 0
-        NeuronLoaded = 1
-        MicroBoxData = 2
-        MiniColumnsPosition = 3
-        CircuitSeeds = 4
-        MorphTypes = 5
-        ElectroTypes = 6
-
 
     ###### Cybinding for class MVD2File ######
     cdef cppclass MVD2File:
@@ -30,6 +21,13 @@ cdef extern from "mvd/mvd2.hpp" namespace "MVD2":
         std.size_t getNbMorpho()
         std.size_t getNbNeuron()
         std.size_t getNbColumns()
+        void parse[Callback](Callback)
+
+    void parseNeuronLine(const char*, std.string, int&, int&, int&, int&, int&, int&, std.vector[float]&, std.string &)
+    void parseSeedInitLine(const char*, double&, double&, double&)
+    void parseElectroTypeLine(const char*, std.string&)
+    void parseMorphTypeLine(const char*, std.string&, std.string&, std.string&)
+
 
 # ======================================================================================================================
 cdef extern from "mvd/bits/mvd2_misc.hpp" namespace "MVD2":
@@ -39,3 +37,20 @@ cdef extern from "mvd/bits/mvd2_misc.hpp" namespace "MVD2":
     cdef cppclass Counter:
         Counter(std.size_t, std.size_t, std.size_t)
         void operator()(DataSet, char*)
+
+
+# ======================================================================================================================
+cdef extern from "mvd2data.hpp" namespace "MVD2::Data":
+# ----------------------------------------------------------------------------------------------------------------------
+    ##### Bindings to the c++ python-only functions #####
+
+    cdef cppclass xyz_t:
+        float x,y,z
+
+    cdef cppclass MVD2ColData:
+        MVD2ColData()
+        size_t getNbNeuron()
+        std.vector[float] getPositions()
+        std.vector[float] getRotations()
+        std.vector[int] getIndexMorphologies()
+        std.vector[int] getIndexEtypes()

@@ -51,10 +51,13 @@ cdef class MVD2File(_py__base):
     cdef MVD2.MVD2File *ptr(self):
         return <MVD2.MVD2File*> self._ptr
 
+    cdef MVD2.MVD2ColData colData
 
     def __init__(self, std.string filename):
         self._ptr = new MVD2.MVD2File(filename)
         self._autodealoc.reset(self.ptr())
+        # Immediately load data to column format
+        self.ptr().parse(self.colData)
 
     def getNbMorphoType(self, ):
         return self.ptr().getNbMorphoType()
@@ -67,6 +70,16 @@ cdef class MVD2File(_py__base):
 
     def getNbColumns(self, ):
         return self.ptr().getNbColumns()
+
+    def getPositions(self,):
+        cdef float * pos_addr = <float*>self.colData.getPositions().data()
+        cdef float[:,::1]y = <float[:self.colData.getNbNeuron(),:3]> pos_addr
+        return numpy.asarray(y)
+
+    def getRotations(self,):
+        cdef float * rot_vec = <float*>self.colData.getRotations().data()
+        cdef float[:]y = <float[:self.colData.getNbNeuron()]> rot_vec
+        return numpy.asarray(y)
 
     @staticmethod
     cdef MVD2File from_ptr(MVD2.MVD2File *ptr):
@@ -82,39 +95,6 @@ cdef class MVD2File(_py__base):
     @staticmethod
     cdef list vector2list( std.vector[MVD2.MVD2File*] vec ):
         return [ MVD2File.from_ptr(elem) for elem in vec ]
-
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-cdef class _MVD2_Counter(_py__base):
-    "Python wrapper class for Counter (ns=MVD2)"
-# ----------------------------------------------------------------------------------------------------------------------
-    cdef unique_ptr[MVD2.Counter] _autodealoc
-    cdef MVD2.Counter *ptr(self):
-        return <MVD2.Counter*> self._ptr
-
-
-    def __init__(self, std.size_t nb_neuron, std.size_t nb_morpho_type, std.size_t columns):
-        self._ptr = new MVD2.Counter(nb_neuron, nb_morpho_type, columns)
-        self._autodealoc.reset(self.ptr())
-
-    def __call__(self, int type_, char[:] line):
-        return deref(self.ptr())(<MVD2.DataSet> type_, &line[0])
-
-    @staticmethod
-    cdef _MVD2_Counter from_ptr(MVD2.Counter *ptr):
-        cdef _MVD2_Counter obj = _MVD2_Counter.__new__(_MVD2_Counter)
-        obj._ptr = ptr
-        obj._autodealoc.reset(obj.ptr())
-        return obj
-
-    @staticmethod
-    cdef _MVD2_Counter from_ref(const MVD2.Counter &ref):
-        return _MVD2_Counter.from_ptr(<MVD2.Counter*>&ref)
-
-    @staticmethod
-    cdef list vector2list( std.vector[MVD2.Counter*] vec ):
-        return [ _MVD2_Counter.from_ptr(elem) for elem in vec ]
 
 
 
@@ -169,20 +149,17 @@ cdef class MVD3File(_py__base):
     def getNbNeuron(self, ):
         return self.ptr().getNbNeuron()
 
-
     def getPositions(self, _MVD3_Range range_=None):
         cdef MVD3.Positions* posics
         if range_ is None:
             posics = new MVD3.Positions(self.ptr().getPositions())
         else:
             posics = new MVD3.Positions(self.ptr().getPositions(deref(range_.ptr())))
-
         cdef double *addr = posics.data()
         cdef const boost.size_type* shape = posics.shape()
         cdef int x1=shape[0], x2=shape[1]
         cdef double[:,::1]y = <double[:x1,:x2]> addr
         return numpy.asarray(y)
-
 
     def getRotations(self, _MVD3_Range range_):
         cdef MVD3.Rotations *rots
@@ -190,39 +167,11 @@ cdef class MVD3File(_py__base):
             rots = new MVD3.Rotations(self.ptr().getRotations())
         else:
             rots = new MVD3.Rotations(self.ptr().getRotations(deref(range_.ptr())))
-
         cdef double *addr = rots.data()
         cdef const boost.size_type* shape = rots.shape()
         cdef int x1=shape[0], x2=shape[1]
         cdef double[:,::1]y = <double[:x1,:x2]> addr
         return numpy.asarray(y)
-
-
-    # def getPositions(self, _py_Range range_=None):
-    #     cdef MVD3.Positions *posics = new MVD3.Positions()
-    #
-    #     if range_ is not None:
-    #         self.ptr().getPositions(deref(posics), ))
-    #     else:
-    #         self.ptr().getPositions(deref(posics))
-    #
-    #     cdef double *addr = posics.data()
-    #     cdef const boost.size_type* shape = posics.shape()
-    #     cdef int x1=shape[0], x2=shape[1]
-    #     cdef double[:,::1]y = <double[:x1,:x2]> addr
-    #     return y
-
-    # def getRotations(self, _py_Range range_):
-    #     cdef MVD3.Rotations *rots = new MVD3.Rotations()
-    #     if range_ is not None:
-    #         self.ptr().getRotations(deref(rots), deref(range_.ptr()))
-    #     else:
-    #         self.ptr().getRotations(deref(rots))
-    #     cdef double *addr = rots.data()
-    #     cdef const boost.size_type* shape = rots.shape()
-    #     cdef int x1=shape[0], x2=shape[1]
-    #     cdef double[:,::1]y = <double[:x1,:x2]> addr
-    #     return y
 
     def getMorphologies(self, _MVD3_Range range):
         return self.ptr().getMorphologies(deref(range.ptr()))
@@ -302,6 +251,8 @@ class MVDType(object):
 
     def __repr__(self):
         return "<MVDType.%s>" % (self._ITEMS[self._id])
+
+# Actual "Enum" instances
 MVDType.UnknownFileType = MVDType(MVDType._UnknownFileType)
 MVDType.MVD2 = MVDType(MVDType._MVD2)
 MVDType.MVD3 = MVDType(MVDType._MVD3)
@@ -317,7 +268,6 @@ def is_mvd_file(std.string filename):
 #
 class MVD2:
     File = MVD2File
-    Counter = _MVD2_Counter
 
 class MVD3:
     File = MVD3File

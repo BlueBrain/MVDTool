@@ -39,7 +39,7 @@ add_custom_command(
 # .cpp -> shared_lib
 add_definitions("-std=c++11" "-Wfatal-errors" "-Wno-strict-aliasing")
 python_add_module(mvdtool ${cybindings_cpp})
-target_include_directories(mvdtool PUBLIC ${PYTHON_INCLUDE_DIRS})
+target_include_directories(mvdtool PUBLIC ${PYTHON_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/includes)
 target_link_libraries(mvdtool ${_libs})
 
 
