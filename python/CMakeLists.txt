@@ -10,9 +10,13 @@ if(BUILD_PYTHON_BINDINGS)
 # Definitions
 set(cymod_src "${CMAKE_CURRENT_SOURCE_DIR}/mvdtool.pyx")
 set(cybindings_cpp "${CMAKE_CURRENT_SOURCE_DIR}/mvdtool.cpp")
+set(local_includes_dir "${CMAKE_CURRENT_SOURCE_DIR}/includes")
 FILE(GLOB cy_srcs *.pyx *.pxi includes/*.pxd)
 get_target_property(_libs mvd-tool LINK_LIBRARIES)
 
+
+#################################################
+# Rules
 
 # Rebuild Cython?
 option(REBUILD_PYTHON_BINDINGS "Rebuild Python bindings from Cython sources" OFF)
@@ -29,7 +33,7 @@ endif()
 # .pyx -> .cpp
 add_custom_command(
     OUTPUT ${cybindings_cpp}
-    COMMAND PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR} ${CYTHON_EXECUTABLE} ${CYTHON_FLAGS} --fast-fail --cplus -I${CMAKE_CURRENT_SOURCE_DIR}/includes --output-file ${cybindings_cpp} ${cymod_src}
+    COMMAND PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR} ${CYTHON_EXECUTABLE} ${CYTHON_FLAGS} --fast-fail --cplus -I${local_includes_dir} --output-file ${cybindings_cpp} ${cymod_src}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     # No dependencies, except own sources
     DEPENDS ${cy_srcs}
@@ -39,12 +43,38 @@ add_custom_command(
 # .cpp -> shared_lib
 add_definitions("-std=c++11" "-Wfatal-errors" "-Wno-strict-aliasing")
 python_add_module(mvdtool ${cybindings_cpp})
-target_include_directories(mvdtool PUBLIC ${PYTHON_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/includes)
+target_include_directories(mvdtool PUBLIC ${PYTHON_INCLUDE_DIRS} ${local_includes_dir})
 target_link_libraries(mvdtool ${_libs})
+
+
+#######################################
+# Distributable
+get_target_property(_include_dirs mvd-tool INCLUDE_DIRECTORIES)
+set(_inc_str ${local_includes_dir})
+foreach(dir ${_include_dirs})
+    set(_inc_str "${_inc_str}:${dir}")
+endforeach()
+
+add_custom_target(pydist
+    COMMAND python setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR}  build_ext "-I${_inc_str}" bdist_wheel --dist-dir ${CMAKE_BINARY_DIR}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    DEPENDS ${cybindings_cpp}
+    COMMENT "Building distributable Python wheel in ${CMAKE_BINARY_DIR}"
+)
+
+#######################################
+# Source dist - still requires include dirs
+add_custom_target(pysrcdist
+    COMMAND python setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR} sdist --dist-dir ${CMAKE_BINARY_DIR}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    DEPENDS ${cybindings_cpp}
+    COMMENT "Building distributable Python wheel in ${CMAKE_BINARY_DIR}"
+)
 
 
 #################################
 # Install
+#
 set(_default_prefixes "/usr/local" "/usr")
 list(FIND _default_prefixes ${CMAKE_INSTALL_PREFIX} _index)
 if(${_index} GREATER -1)
