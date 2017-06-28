@@ -53,12 +53,12 @@ install(TARGETS mvdtool
 # TESTS
 #
 add_test(NAME python_read_mvd2
-         COMMAND bash -c "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}; python test/read_mvd2.py"
+         COMMAND bash -c "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR} python test/read_mvd2.py"
          WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_test(NAME python_read_mvd3
-         COMMAND bash -c "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}; python test/read_mvd3.py"
+         COMMAND bash -c "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR} python test/read_mvd3.py"
          WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
