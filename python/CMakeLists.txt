@@ -20,31 +20,14 @@ get_target_property(_include_dirs mvd-tool INCLUDE_DIRECTORIES)
 
 ##############################################
 # Rules
-
-# Rebuild Cython?
-option(REBUILD_PYTHON_BINDINGS "Rebuild Python bindings from Cython sources" OFF)
-
-if(EXISTS ${cybindings_cpp})
-    if(REBUILD_PYTHON_BINDINGS)
-        # Force build
-        file(REMOVE ${cybindings_cpp})
-    else()
-        # Refresh cpp to avoid build
-        message("Reusing Python bindings cpp...")
-        execute_process(COMMAND touch ${cybindings_cpp})
-    endif()
-else()
-    # Must create
-    set(REBUILD_PYTHON_BINDINGS ON)
+set(OPT_REBUILD_OPTION_NAME REBUILD_PYTHON_BINDINGS)
+set(OPT_REBUILD_SOURCE_FILE ${cybindings_cpp})
+# Magic line to exec the checking
+include(OptionRebuildSrcFile)
+if(REBUILD_PYTHON_BINDINGS AND NOT CYTHON_FOUND)
+    message(FATAL_ERROR "Cython is required to rebuild python bindings but was not found" )
 endif()
 
-# Checking requirements
-if(REBUILD_PYTHON_BINDINGS)
-    if(NOT CYTHON_FOUND)
-        message(FATAL_ERROR "Cython is required to rebuild python bindings but was not found" )
-    endif()
-    message("Will rebuild Python bindings from Cython...")
-endif()
 
 # .pyx -> .cpp
 add_custom_command(
