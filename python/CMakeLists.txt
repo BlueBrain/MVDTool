@@ -45,8 +45,17 @@ target_link_libraries(mvdtool ${_libs})
 
 #################################
 # Install
+set(_default_prefixes "/usr/local" "/usr")
+list(FIND _default_prefixes ${CMAKE_INSTALL_PREFIX} _index)
+if(${_index} GREATER -1)
+    # Default installations install Python to default site-packages
+    set(_py_install_prefix ${PYTHON_SITE_PACKAGES})
+else()
+    set(_py_install_prefix ${CMAKE_INSTALL_PREFIX})
+endif()
+
 install(TARGETS mvdtool
-        LIBRARY DESTINATION "${PYTHON_SITE_PACKAGES}" )
+        LIBRARY DESTINATION "${_py_install_prefix}" )
 
 
 # #####################################
