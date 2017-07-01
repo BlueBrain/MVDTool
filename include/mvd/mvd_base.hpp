@@ -17,46 +17,49 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD_GENERIC_HPP
-#define MVD_GENERIC_HPP
+#ifndef MVD_BASE_HPP
+#define MVD_BASE_HPP
 
-#include "mvd_base.hpp"
-
+#include <string>
+#include <algorithm>
+#include <boost/multi_array.hpp>
+#include "mvd_except.hpp"
 
 namespace MVD {
 
 
-//Declarations from mvd_base.hpp
-struct Range;
-class MVDFile;
+typedef boost::multi_array<double, 2> Positions;
+typedef boost::multi_array<double, 2> Rotations;
 
 
-///
-/// \brief is_mvd_file
-/// \param filename mvd file name
-/// \return the type of the MVD file or UnknownFileType if not recognized
-///
-inline MVDType::MVDType is_mvd_file(const std::string & filename){
-
-    // mvd2
-    const std::string mvd_ext = ".mvd2";
-    if(std::search(filename.rbegin(), filename.rend(), mvd_ext.rbegin(), mvd_ext.rend()) != filename.rend()){
-        return MVDType::MVD2;
-    }
-    // everything else mvd3 for now
-    return MVDType::MVD3;
+namespace MVDType{
+enum MVDType{
+    UnknownFileType =0,
+    MVD2=20,
+    MVD3=30
+};
 }
 
 
-///
-/// \brief open opens a mvd file, either MV2 or MVD3
-/// \param filename
-///
-inline MVDFile* open_mvd(const std::string & filename);
-//Implementation in mvd3_misc.hpp
+struct Range{
+    Range(const size_t offset_=0, const size_t count_=0) : offset(offset_), count(count_) {}
 
-} //MVD
+    size_t offset;
+    size_t count;
+};
 
 
+class MVDFile {
+public:
+    MVDFile() {}
+    virtual ~MVDFile() {}
+    virtual size_t getNbNeuron() const = 0;
+    virtual Positions getPositions(const Range & range = Range(0,0)) const = 0;
+    virtual Rotations getRotations(const Range & range = Range(0,0)) const = 0;
+};
 
-#endif // MVD_GENERIC_HPP
+
+
+} // ::MVD
+
+#endif

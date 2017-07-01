@@ -39,6 +39,9 @@ add_custom_command(
     COMMENT "Cythonizing ${cymod_src}"
  )
 
+ SET(CMAKE_CXX_FLAGS "-O0")
+ SET(CMAKE_C_FLAGS "-O0")
+
 # .cpp -> shared_lib
 add_definitions("-std=c++11" "-Wfatal-errors" "-Wno-strict-aliasing")
 python_add_module(mvdtool ${cybindings_cpp})

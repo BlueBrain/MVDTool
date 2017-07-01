@@ -25,21 +25,14 @@
 
 #include <string>
 #include <highfive/H5File.hpp>
-#include <boost/multi_array.hpp>
+#include "mvd_generic.hpp"
 
 namespace MVD3 {
 
 
-typedef boost::multi_array<double, 2> Positions;
-typedef boost::multi_array<double, 2> Rotations;
-
-
-struct Range{
-    Range(const size_t offset_, const size_t count_) : offset(offset_), count(count_) {}
-
-    size_t offset;
-    size_t count;
-};
+typedef MVD::Positions Positions;
+typedef MVD::Rotations Rotations;
+typedef MVD::Range Range;
 
 
 ///
@@ -47,7 +40,7 @@ struct Range{
 ///
 /// Represent a MVD 3.0 circuit file
 ///
-class MVD3File{
+class MVD3File : public MVD::MVDFile{
 public:
 
     ///
@@ -64,7 +57,7 @@ public:
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
     ///
-    size_t getNbNeuron() const;
+    size_t getNbNeuron() const override;
 
     ///
     /// \brief getPositions
@@ -72,7 +65,7 @@ public:
     /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
     ///  of each selected neurons ( all by default )
     ///
-    Positions getPositions(const Range & range = Range(0,0)) const;
+    Positions getPositions(const Range & range = Range(0,0)) const override;
 
     ///
     /// \brief getPositions
@@ -190,5 +183,25 @@ private:
 }
 
 #include "bits/mvd3_misc.hpp"
+
+
+//Ugly here
+#include "mvd2.hpp"
+
+namespace MVD {
+///
+/// \brief open opens a mvd file, either MV2 or MVD3
+/// \param filename
+///
+inline MVDFile* open_mvd(const std::string & filename) {
+    if( MVD::is_mvd_file(filename) == MVDType::MVD2 ) {
+        return new MVD2::MVD2File(filename);
+    }
+
+    return new MVD3::MVD3File(filename);
+}
+
+}
+
 
 #endif // MVD3_HPP

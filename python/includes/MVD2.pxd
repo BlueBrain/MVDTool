@@ -9,17 +9,18 @@ from cython.operator cimport dereference as deref
 from libcpp cimport bool
 cimport std
 cimport boost
+cimport MVD
 
 # ======================================================================================================================
 cdef extern from "mvd/mvd2.hpp" namespace "MVD2":
 # ----------------------------------------------------------------------------------------------------------------------
 
     ###### Cybinding for class MVD2File ######
-    cdef cppclass MVD2File:
+    cdef cppclass MVD2File(MVD.MVDFile):
         MVD2File(std.string)
+        # Inherits several funcs from MVDFile
         std.size_t getNbMorphoType()
         std.size_t getNbMorpho()
-        std.size_t getNbNeuron()
         std.size_t getNbColumns()
         void parse[Callback](Callback)
 
@@ -29,28 +30,11 @@ cdef extern from "mvd/mvd2.hpp" namespace "MVD2":
     void parseMorphTypeLine(const char*, std.string&, std.string&, std.string&)
 
 
-# ======================================================================================================================
-cdef extern from "mvd/bits/mvd2_misc.hpp" namespace "MVD2":
-# ----------------------------------------------------------------------------------------------------------------------
-
     ###### Cybinding for class Counter ######
     cdef cppclass Counter:
-        Counter(std.size_t, std.size_t, std.size_t)
+        Counter()
         void operator()(DataSet, char*)
-
-
-# ======================================================================================================================
-cdef extern from "mvd2data.hpp" namespace "MVD2::Data":
-# ----------------------------------------------------------------------------------------------------------------------
-    ##### Bindings to the c++ python-only functions #####
-
-    cdef cppclass xyz_t:
-        float x,y,z
-
-    cdef cppclass MVD2ColData:
-        MVD2ColData()
-        size_t getNbNeuron()
-        std.vector[float] getPositions()
-        std.vector[float] getRotations()
-        std.vector[int] getIndexMorphologies()
-        std.vector[int] getIndexEtypes()
+        size_t _nb_columns;
+        size_t _nb_neuron;
+        size_t _nb_morpho_type;
+        std.set[std.string] morphos;
