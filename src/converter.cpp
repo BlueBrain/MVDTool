@@ -52,7 +52,7 @@ struct MVD2Infos{
     }
 
 
-    void operator()(MVD2::DataSet type, const char* line){
+    int operator()(MVD2::DataSet type, const char* line){
         using namespace MVD2;
         switch(type){
             case NeuronLoaded:{
@@ -75,6 +75,7 @@ struct MVD2Infos{
             default:
                 break;
         }
+        return 0;
     }
 
     void parseNeuron(const char* line){

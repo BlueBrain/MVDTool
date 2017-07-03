@@ -54,7 +54,7 @@ inline DataSet getDataType(const char* line, const DataSet & prev_datatype){
 }
 
 /// SAX style parser for MVD2
-/// provided call back has to be with the signature void (DataSet type, const char* line)
+/// provided call back has to be with the signature bool (DataSet type, const char* line)
 ///
 template <typename Callback>
 inline void MVD2File::parse(Callback & lineParser) const{
@@ -81,7 +81,10 @@ inline void MVD2File::parse(Callback & lineParser) const{
         }
 
         if(count>0){
-            lineParser(type, line);
+            int res = lineParser(type, line);
+            if(res == 1) {
+                break;
+            }
         }
         count++;
     }
@@ -171,7 +174,7 @@ inline Counter::Counter() :
         _nb_morpho_type(0)
     {    }
 
-inline void Counter::operator()(DataSet type, const char* line){
+inline int Counter::operator()(DataSet type, const char* line){
     (void) line;
     switch(type){
         case NeuronLoaded:{
@@ -195,6 +198,7 @@ inline void Counter::operator()(DataSet type, const char* line){
             break;
         }
     }
+    return 0;
 }
 
 
@@ -204,18 +208,23 @@ inline void Counter::operator()(DataSet type, const char* line){
 /////////////////////////////////////////////////////////
 
 struct PositionData {
-    //structs to represent the array of doubles :: vector<double[N]> not allowed
-    PositionData( MVD::Positions & positions, const MVD::Range & range = MVD::Range() ) :
+
+    PositionData( MVD::Positions & positions, const MVD::Range & range = MVD::Range()) :
         _positions(positions),
         _range(range),
         _cur_neuron(0),
         _n_skipped(0)
-    {    }
+    { }
 
-    inline void operator()(DataSet type, const char* line){
-        //Sure we only handle NeuronLoaded
+    inline int operator()(DataSet type, const char* line){
+        // Only handle NeuronLoaded
         if( type != NeuronLoaded )
-            return;
+            return 0;
+
+        // Check count limit. _range.count==0 has the speciam meaning of DISABLED.
+        if( _range.count > 0 && _cur_neuron>=_range.count ) {
+            return 1;
+        }
 
         std::string morpho, metype;
         int trash;
@@ -226,19 +235,15 @@ struct PositionData {
             _n_skipped++;
         }
         else {
-            // Impose count limit
-            if( _cur_neuron>0 && _cur_neuron==_range.count )
-                return;
-
             std::copy(pos.begin(), pos.begin()+3, _positions[_cur_neuron].begin());
             _cur_neuron += 1;
         }
-
+        return 0;
 
     }
 
     MVD::Positions & _positions;
-    const MVD::Range _range;
+    const MVD::Range & _range;
 
 private:
     size_t _cur_neuron;
@@ -247,18 +252,22 @@ private:
 
 
 struct RotationData {
-    //structs to represent the array of doubles :: vector<double[N]> not allowed
     RotationData( MVD::Positions & rotations, const MVD::Range & range = MVD::Range() ) :
         _rotations(rotations),
         _range(range),
         _cur_neuron(0),
         _n_skipped(0)
-    {    }
+    { }
 
-    inline void operator()(DataSet type, const char* line){
-        //Sure we only handle NeuronLoaded
+    inline int operator()(DataSet type, const char* line){
+        // Only handle NeuronLoaded
         if( type != NeuronLoaded )
-            return;
+            return 0;
+
+        // Check count limit. _range.count==0 has the speciam meaning of DISABLED.
+        if( _range.count > 0 && _cur_neuron>=_range.count ) {
+            return 1;
+        }
 
         std::string morpho, metype;
         int trash;
@@ -269,12 +278,10 @@ struct RotationData {
             _n_skipped++;
         }
         else {
-            // Impose count limit
-            if( _cur_neuron>0 && _cur_neuron==_range.count )
-                return;
             _rotations[_cur_neuron][0] = pos[3];
             _cur_neuron += 1;
         }
+        return 0;
 
     }
 
@@ -321,28 +328,19 @@ inline std::set<std::string> & MVD2File::getUniqueMorphologies() const {
 
 inline MVD::Positions MVD2File::getPositions(const MVD::Range & range) const {
     init_counter();
-//    int i=0, j=0;
-//    while (i==0) {
-//        j++;
-//    }
     size_t count = (range.count>0 && range.count<counter._nb_neuron)? range.count : counter._nb_neuron;
     MVD::Positions posi_buff(boost::extents[count][3]);
     PositionData posi_data_reader(posi_buff, range);
     parse(posi_data_reader);
-
     return posi_buff;
 }
 
 inline MVD::Rotations MVD2File::getRotations(const MVD::Range & range) const {
     init_counter();
-
     size_t count = (range.count>0 && range.count<counter._nb_neuron)? range.count : counter._nb_neuron;
     MVD::Rotations rots_buff(boost::extents[count][1]);
-    const size_t * shape = rots_buff.shape();
-    std::cout << "Shape in pos 0: " << shape[0] << ", in pos 1:" << shape[1] << std::endl;
     RotationData rots_data_reader(rots_buff, range);
     parse(rots_data_reader);
-
     return rots_buff;
 }
 

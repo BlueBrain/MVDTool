@@ -59,6 +59,23 @@ public:
 };
 
 
+///
+/// \brief is_mvd_file
+/// \param filename mvd file name
+/// \return the type of the MVD file or UnknownFileType if not recognized
+///
+inline MVDType::MVDType is_mvd_file(const std::string & filename){
+
+    // mvd2
+    const std::string mvd_ext = ".mvd2";
+    if(std::search(filename.rbegin(), filename.rend(), mvd_ext.rbegin(), mvd_ext.rend()) != filename.rend()){
+        return MVDType::MVD2;
+    }
+    // everything else mvd3 for now
+    return MVDType::MVD3;
+}
+
+
 
 } // ::MVD
 

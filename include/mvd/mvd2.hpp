@@ -61,14 +61,13 @@ enum DataSet{
 ///
 struct Counter {
     Counter();
-    void operator()(DataSet type, const char* line);
+    int operator()(DataSet type, const char* line);
 
     size_t _nb_columns;
     size_t _nb_neuron;
     size_t _nb_morpho_type;
     std::set<std::string> morphos;
 };
-
 
 
 class MVD2File : public MVD::MVDFile{
@@ -121,6 +120,7 @@ public:
     template <typename Callback>
     void parse(Callback & line_parser) const;
 
+
 private:
     std::string _filename;
 
@@ -129,7 +129,9 @@ private:
     // It can be safely reconstructed without affecting bahvior, only performance
     mutable Counter counter;
     void init_counter() const;
+
 };
+
 
 //
 // parsing functions for use in callback

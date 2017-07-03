@@ -25,7 +25,7 @@
 
 #include <string>
 #include <highfive/H5File.hpp>
-#include "mvd_generic.hpp"
+#include "mvd_base.hpp"
 
 namespace MVD3 {
 
@@ -183,25 +183,5 @@ private:
 }
 
 #include "bits/mvd3_misc.hpp"
-
-
-//Ugly here
-#include "mvd2.hpp"
-
-namespace MVD {
-///
-/// \brief open opens a mvd file, either MV2 or MVD3
-/// \param filename
-///
-inline MVDFile* open_mvd(const std::string & filename) {
-    if( MVD::is_mvd_file(filename) == MVDType::MVD2 ) {
-        return new MVD2::MVD2File(filename);
-    }
-
-    return new MVD3::MVD3File(filename);
-}
-
-}
-
 
 #endif // MVD3_HPP

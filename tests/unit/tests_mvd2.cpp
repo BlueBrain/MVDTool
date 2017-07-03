@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#include <mvd/mvd_generic.hpp>
+#include <mvd/mvd_base.hpp>
 #include <mvd/mvd2.hpp>
 #define BOOST_TEST_MAIN mvd2Parser
 #include <boost/test/included/unit_test.hpp>
@@ -45,7 +45,7 @@ struct MVD2Checker{
 
     }
 
-    void operator ()(MVD2::DataSet type, const char* line){
+    int operator ()(MVD2::DataSet type, const char* line){
         using namespace MVD2;
         switch(type){
             case(NeuronLoaded):{
@@ -119,6 +119,7 @@ struct MVD2Checker{
 
             }
         }
+        return 0;
     }
 
     size_t neuron_counter;

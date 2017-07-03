@@ -21,42 +21,28 @@
 #define MVD_GENERIC_HPP
 
 #include "mvd_base.hpp"
+#include "mvd2.hpp"
+#include "mvd3.hpp"
 
 
 namespace MVD {
 
 
-//Declarations from mvd_base.hpp
-struct Range;
-class MVDFile;
-
-
-///
-/// \brief is_mvd_file
-/// \param filename mvd file name
-/// \return the type of the MVD file or UnknownFileType if not recognized
-///
-inline MVDType::MVDType is_mvd_file(const std::string & filename){
-
-    // mvd2
-    const std::string mvd_ext = ".mvd2";
-    if(std::search(filename.rbegin(), filename.rend(), mvd_ext.rbegin(), mvd_ext.rend()) != filename.rend()){
-        return MVDType::MVD2;
-    }
-    // everything else mvd3 for now
-    return MVDType::MVD3;
-}
-
-
 ///
 /// \brief open opens a mvd file, either MV2 or MVD3
 /// \param filename
+/// \return Simple ptr to an MVD2File/MVD3File object (MVDFile interface)
+/// We should use unique_ptr here, but keeping compilation without c++11
 ///
-inline MVDFile* open_mvd(const std::string & filename);
-//Implementation in mvd3_misc.hpp
+inline MVDFile* open_mvd(const std::string & filename) {
+    if( MVD::is_mvd_file(filename) == MVDType::MVD2 ) {
+        return new MVD2::MVD2File(filename);
+    }
+
+    return new MVD3::MVD3File(filename);
+}
 
 } //MVD
-
 
 
 #endif // MVD_GENERIC_HPP
