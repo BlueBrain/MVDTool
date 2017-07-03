@@ -46,10 +46,12 @@ cdef class MVDFile(_py__base):
         cdef double *addr = posics.data()
         cdef const boost.size_type* shape = posics.shape()
         cdef int x1=shape[0], x2=shape[1]
+        # We might have a data copy here... and miss the release of the allocated obj...
+        # We might do it manually in the future (numpy API)
         cdef double[:,::1]y = <double[:x1,:x2]> addr
         return numpy.asarray(y)
 
-    def getRotations(self, _MVD_Range range_):
+    def getRotations(self, _MVD_Range range_=None):
         cdef MVD.Rotations *rots
         if range_ is None:
             rots = new MVD.Rotations(self.ptr0().getRotations())
@@ -155,29 +157,29 @@ cdef class MVD3File(MVDFile):
         self._ptr = new MVD3.MVD3File(filename)
         self._autodealoc.reset(self.ptr())
 
-    # def getMorphologies(self, _MVD_Range range):
-    #     return self.ptr().getMorphologies(deref(range.ptr()))
+    def getMorphologies(self, _MVD_Range range):
+        return self.ptr().getMorphologies(deref(range.ptr()))
 
-    # def getEtypes(self, _MVD_Range range):
-    #     return self.ptr().getEtypes(deref(range.ptr()))
-    #
-    # def getMtypes(self, _MVD_Range range):
-    #     return self.ptr().getMtypes(deref(range.ptr()))
-    #
-    # def getSynapseClass(self, _MVD_Range range):
-    #     return self.ptr().getSynapseClass(deref(range.ptr()))
-    #
-    # def getIndexMorphologies(self, _MVD_Range range):
-    #     return self.ptr().getIndexMorphologies(deref(range.ptr()))
-    #
-    # def getIndexEtypes(self, _MVD_Range range):
-    #     return self.ptr().getIndexEtypes(deref(range.ptr()))
-    #
-    # def getIndexMtypes(self, _MVD_Range range):
-    #     return self.ptr().getIndexMtypes(deref(range.ptr()))
-    #
-    # def getIndexSynapseClass(self, _MVD_Range range):
-    #     return self.ptr().getIndexSynapseClass(deref(range.ptr()))
+    def getEtypes(self, _MVD_Range range):
+        return self.ptr().getEtypes(deref(range.ptr()))
+
+    def getMtypes(self, _MVD_Range range):
+        return self.ptr().getMtypes(deref(range.ptr()))
+
+    def getSynapseClass(self, _MVD_Range range):
+        return self.ptr().getSynapseClass(deref(range.ptr()))
+
+    def getIndexMorphologies(self, _MVD_Range range):
+        return self.ptr().getIndexMorphologies(deref(range.ptr()))
+
+    def getIndexEtypes(self, _MVD_Range range):
+        return self.ptr().getIndexEtypes(deref(range.ptr()))
+
+    def getIndexMtypes(self, _MVD_Range range):
+        return self.ptr().getIndexMtypes(deref(range.ptr()))
+
+    def getIndexSynapseClass(self, _MVD_Range range):
+        return self.ptr().getIndexSynapseClass(deref(range.ptr()))
 
     def listAllMorphologies(self):
         return self.ptr().listAllMorphologies()

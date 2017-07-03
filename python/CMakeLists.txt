@@ -22,12 +22,11 @@ get_target_property(_include_dirs mvd-tool INCLUDE_DIRECTORIES)
 # Rules
 set(OPT_REBUILD_OPTION_NAME REBUILD_PYTHON_BINDINGS)
 set(OPT_REBUILD_SOURCE_FILE ${cybindings_cpp})
-# Magic line to exec the checking
-include(OptionRebuildSrcFile)
+include(OptionRebuildSrcFile) # Do the checking
+
 if(REBUILD_PYTHON_BINDINGS AND NOT CYTHON_FOUND)
     message(FATAL_ERROR "Cython is required to rebuild python bindings but was not found" )
 endif()
-
 
 # .pyx -> .cpp
 add_custom_command(
@@ -38,9 +37,6 @@ add_custom_command(
     DEPENDS ${cy_srcs}
     COMMENT "Cythonizing ${cymod_src}"
  )
-
- SET(CMAKE_CXX_FLAGS "-O0")
- SET(CMAKE_C_FLAGS "-O0")
 
 # .cpp -> shared_lib
 add_definitions("-std=c++11" "-Wfatal-errors" "-Wno-strict-aliasing")

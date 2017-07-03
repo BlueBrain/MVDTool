@@ -8,7 +8,7 @@ __copyright__ = "Copyright 2016 EPFL BBP-project"
 from cython.operator cimport dereference as deref
 from libcpp cimport bool
 cimport std
-cimport MVD
+from MVD cimport MVDFile, Range
 
 #Workaround for cython templates, which dont accept integers yet
 
@@ -17,14 +17,9 @@ cdef extern from "mvd/mvd3.hpp" namespace "MVD3":
 # ----------------------------------------------------------------------------------------------------------------------
 
     ###### Cybinding for class MVD3File ######
-    cdef cppclass MVD3File(MVD.MVDFile):
+    cdef cppclass MVD3File(MVDFile):
         MVD3File(std.string)
-        # Inherited
-        # std.size_t getNbNeuron()
-        # MVD.Positions getPositions(MVD.Range)
-        # MVD.Positions getPositions()
-        # MVD.Rotations getRotations(Range)
-        # MVD.Rotations getRotations()
+        # Inherits getNbNeuron(), getPositions(MVD.Range=None), getRotations(Range=None)
         std.vector[std.string] getMorphologies(Range)
         std.vector[std.string] getEtypes(Range)
         std.vector[std.string] getMtypes(Range)
