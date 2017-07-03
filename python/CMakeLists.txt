@@ -12,23 +12,22 @@ set(cymod_src "${CMAKE_CURRENT_SOURCE_DIR}/mvdtool.pyx")
 set(cybindings_cpp "${CMAKE_CURRENT_SOURCE_DIR}/mvdtool.cpp")
 set(local_includes_dir "${CMAKE_CURRENT_SOURCE_DIR}/includes")
 FILE(GLOB cy_srcs *.pyx *.pxi includes/*.pxd)
-get_target_property(_libs mvd-tool LINK_LIBRARIES)
+
+# Target properties, required for the extension
+get_target_property(_link_libs mvd-tool LINK_LIBRARIES)
+get_target_property(_include_dirs mvd-tool INCLUDE_DIRECTORIES)
 
 
-#################################################
+##############################################
 # Rules
-
-# Rebuild Cython?
-option(REBUILD_PYTHON_BINDINGS "Rebuild Python bindings from Cython sources" OFF)
-
-# Checking requirements
-if(REBUILD_PYTHON_BINDINGS OR (NOT EXISTS ${cybindings_cpp}))
-    if(NOT CYTHON_FOUND)
-        message(FATAL_ERROR "Cython is required to rebuild python bindings but was not found" )
-    endif()
-    message(WARNING "Will rebuild Cython bindings!")
-    file(REMOVE ${cybindings_cpp})
+set(OPT_REBUILD_OPTION_NAME REBUILD_PYTHON_BINDINGS)
+set(OPT_REBUILD_SOURCE_FILE ${cybindings_cpp})
+# Magic line to exec the checking
+include(OptionRebuildSrcFile)
+if(REBUILD_PYTHON_BINDINGS AND NOT CYTHON_FOUND)
+    message(FATAL_ERROR "Cython is required to rebuild python bindings but was not found" )
 endif()
+
 
 # .pyx -> .cpp
 add_custom_command(
@@ -44,17 +43,18 @@ add_custom_command(
 add_definitions("-std=c++11" "-Wfatal-errors" "-Wno-strict-aliasing")
 python_add_module(mvdtool ${cybindings_cpp})
 target_include_directories(mvdtool PUBLIC ${PYTHON_INCLUDE_DIRS} ${local_includes_dir})
-target_link_libraries(mvdtool ${_libs})
+target_link_libraries(mvdtool ${_link_libs})
 
 
-#######################################
-# Distributable
-get_target_property(_include_dirs mvd-tool INCLUDE_DIRECTORIES)
+##############################################
+# Python packaging
+
 set(_inc_str ${local_includes_dir})
 foreach(dir ${_include_dirs})
     set(_inc_str "${_inc_str}:${dir}")
 endforeach()
 
+# Wheel
 add_custom_target(pydist
     COMMAND python setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR}  build_ext "-I${_inc_str}" bdist_wheel --dist-dir ${CMAKE_BINARY_DIR}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -62,7 +62,6 @@ add_custom_target(pydist
     COMMENT "Building distributable Python wheel in ${CMAKE_BINARY_DIR}"
 )
 
-#######################################
 # Source dist - still requires include dirs
 add_custom_target(pysrcdist
     COMMAND python setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR} sdist --dist-dir ${CMAKE_BINARY_DIR}
@@ -72,7 +71,7 @@ add_custom_target(pysrcdist
 )
 
 
-#################################
+##############################################
 # Install
 #
 set(_default_prefixes "/usr/local" "/usr")
@@ -88,7 +87,7 @@ install(TARGETS mvdtool
         LIBRARY DESTINATION "${_py_install_prefix}" )
 
 
-# #####################################
+##############################################
 # TESTS
 #
 add_test(NAME python_read_mvd2
@@ -101,5 +100,5 @@ add_test(NAME python_read_mvd3
          WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-#########################################################
+
 endif() # /BUILD_PYTHON_BINDINGS
