@@ -72,7 +72,7 @@ struct Counter {
 
 class MVD2File : public MVD::MVDFile{
 public:
-    MVD2File(const std::string & filename) :
+    inline MVD2File(const std::string & filename) :
         _filename(filename)
     {    }
 
@@ -88,7 +88,7 @@ public:
     /// \brief getNbNeuron
     /// \return number of neurons in this MVD file
     ///
-    size_t getNbNeuron() const override;
+    size_t getNbNeuron() const;
 
     ///
     /// \brief getNbColumns
@@ -105,7 +105,7 @@ public:
     /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
     ///  of each selected neurons ( all by default )
     ///
-    MVD::Positions getPositions(const MVD::Range & range = MVD::Range(0,0)) const override;
+    MVD::Positions getPositions(const MVD::Range & range = MVD::Range(0,0)) const;
 
 
     ///
@@ -113,7 +113,7 @@ public:
     /// \return a double vector of size N with the rotations
     /// of each selected neurons ( all by default )
     ///
-    MVD::Rotations getRotations(const MVD::Range & range = MVD::Range(0,0)) const override;
+    MVD::Rotations getRotations(const MVD::Range & range = MVD::Range(0,0)) const;
 
 
 

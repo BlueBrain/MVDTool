@@ -209,7 +209,7 @@ inline int Counter::operator()(DataSet type, const char* line){
 
 struct PositionData {
 
-    PositionData( MVD::Positions & positions, const MVD::Range & range = MVD::Range()) :
+    inline PositionData( MVD::Positions & positions, const MVD::Range & range = MVD::Range()) :
         _positions(positions),
         _range(range),
         _cur_neuron(0),
@@ -243,16 +243,16 @@ struct PositionData {
     }
 
     MVD::Positions & _positions;
-    const MVD::Range & _range;
 
 private:
+    const MVD::Range _range;
     size_t _cur_neuron;
     size_t _n_skipped;
 };
 
 
 struct RotationData {
-    RotationData( MVD::Positions & rotations, const MVD::Range & range = MVD::Range() ) :
+    inline RotationData( MVD::Positions & rotations, const MVD::Range & range = MVD::Range() ) :
         _rotations(rotations),
         _range(range),
         _cur_neuron(0),
@@ -286,9 +286,9 @@ struct RotationData {
     }
 
     MVD::Rotations & _rotations;
-    const MVD::Range _range;
 
 private:
+    const MVD::Range _range;
     size_t _cur_neuron;
     size_t _n_skipped;
 };

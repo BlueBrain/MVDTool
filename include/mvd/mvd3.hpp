@@ -57,7 +57,7 @@ public:
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
     ///
-    size_t getNbNeuron() const override;
+    size_t getNbNeuron() const;
 
     ///
     /// \brief getPositions
@@ -65,7 +65,7 @@ public:
     /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
     ///  of each selected neurons ( all by default )
     ///
-    Positions getPositions(const Range & range = Range(0,0)) const override;
+    Positions getPositions(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getPositions

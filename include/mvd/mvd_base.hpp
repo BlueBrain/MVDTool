@@ -42,7 +42,7 @@ enum MVDType{
 
 
 struct Range{
-    Range(const size_t offset_=0, const size_t count_=0) : offset(offset_), count(count_) {}
+    inline Range(const size_t offset_=0, const size_t count_=0) : offset(offset_), count(count_) {}
 
     size_t offset;
     size_t count;
@@ -51,8 +51,8 @@ struct Range{
 
 class MVDFile {
 public:
-    MVDFile() {}
-    virtual ~MVDFile() {}
+    inline MVDFile() {}
+    inline virtual ~MVDFile() {}
     virtual size_t getNbNeuron() const = 0;
     virtual Positions getPositions(const Range & range = Range(0,0)) const = 0;
     virtual Rotations getRotations(const Range & range = Range(0,0)) const = 0;
