@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+#include <mvd/mvd_base.hpp>
 #include <mvd/mvd2.hpp>
 #define BOOST_TEST_MAIN mvd2Parser
 #include <boost/test/included/unit_test.hpp>
@@ -44,7 +45,7 @@ struct MVD2Checker{
 
     }
 
-    void operator ()(MVD2::DataSet type, const char* line){
+    int operator ()(MVD2::DataSet type, const char* line){
         using namespace MVD2;
         switch(type){
             case(NeuronLoaded):{
@@ -118,12 +119,12 @@ struct MVD2Checker{
 
             }
         }
+        return 0;
     }
 
     size_t neuron_counter;
     size_t morph_array;
 };
-
 
 
 // test extracted from functionalizer
@@ -144,4 +145,72 @@ BOOST_AUTO_TEST_CASE( inputDataMVD2Parsing )
 
 }
 
+
+
+////////////////////////////////////////////////////
+/// New common API
+////////////////////////////////////////////////////
+
+BOOST_AUTO_TEST_CASE( basicTestPosition )
+{
+    using namespace MVD2;
+
+    MVD2File file(MVD2_FILENAME);
+
+    MVD::Positions neurons_pos = file.getPositions();
+
+    BOOST_CHECK_EQUAL(neurons_pos.shape()[0], 1000);
+    BOOST_CHECK_EQUAL(neurons_pos[0][0], static_cast<double>(40.821401));
+    BOOST_CHECK_EQUAL(neurons_pos[0][1], static_cast<double>(1986.506637));
+    BOOST_CHECK_EQUAL(neurons_pos[0][2], static_cast<double>(10.788424));
+
+}
+
+
+BOOST_AUTO_TEST_CASE( basicTestPositionRange )
+{
+    using namespace MVD2;
+
+    MVD2File file(MVD2_FILENAME);
+
+    MVD::Positions neurons_pos = file.getPositions(MVD::Range(10,10));
+    MVD::Positions all_neurons_pos = file.getPositions();
+
+    BOOST_CHECK_EQUAL(neurons_pos.size(), 10);
+
+    for(int i =0; i < 10; ++i){
+        BOOST_CHECK_EQUAL_COLLECTIONS(neurons_pos[i].begin(), neurons_pos[i].end(),
+                                      all_neurons_pos[i+10].begin(), all_neurons_pos[i+10].end());
+    }
+
+}
+
+
+BOOST_AUTO_TEST_CASE( basicTestRotations )
+{
+    using namespace MVD2;
+
+    MVD2File file(MVD2_FILENAME);
+
+    MVD::Positions neurons_pos = file.getRotations();
+
+    BOOST_CHECK_EQUAL(neurons_pos.shape()[0], 1000);
+    BOOST_CHECK_EQUAL(neurons_pos[0][0], static_cast<double>(-1.146572));
+    BOOST_CHECK_EQUAL(neurons_pos[146][0], static_cast<double>(-125.718090));
+
+}
+
+
+BOOST_AUTO_TEST_CASE( basicTestRotationsRange )
+{
+    using namespace MVD2;
+
+    MVD2File file(MVD2_FILENAME);
+
+    MVD::Positions neurons_pos = file.getRotations(MVD::Range(100, 50));
+
+    BOOST_CHECK_EQUAL(neurons_pos.shape()[0], 50);
+    BOOST_CHECK_EQUAL(neurons_pos[46][0], static_cast<double>(-125.718090));
+
+}
 

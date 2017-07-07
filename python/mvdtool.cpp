@@ -456,17 +456,14 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <vector>
 #include "exception"
 #include "stddef.h"
-#include "mvd/mvd_except.hpp"
-#include "mvd/mvd_generic.hpp"
 #include <boost/multi_array.hpp>
+#include "mvd/mvd_generic.hpp"
 #include "mvd/mvd2.hpp"
-#include "mvd/bits/mvd2_misc.hpp"
-#include "mvd2data.hpp"
 #include "mvd/mvd3.hpp"
 #include <memory>
-#include <stdio.h>
 #include "pythread.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include "pystate.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -764,15 +761,16 @@ typedef volatile __pyx_atomic_int_type __pyx_atomic_int;
 
 /*--- Type declarations ---*/
 struct __pyx_obj_6python_7mvdtool__py__base;
+struct __pyx_obj_6python_7mvdtool_MVDFile;
 struct __pyx_obj_6python_7mvdtool_MVD2File;
-struct __pyx_obj_6python_7mvdtool__MVD3_Range;
+struct __pyx_obj_6python_7mvdtool__MVD_Range;
 struct __pyx_obj_6python_7mvdtool_MVD3File;
 struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
 
-/* "python/mvdtool.pyx":23
+/* "python/mvdtool.pyx":19
  * import numpy
  * 
  * cdef enum OPERATOR:             # <<<<<<<<<<<<<<
@@ -788,7 +786,7 @@ enum __pyx_t_6python_7mvdtool_OPERATOR {
   __pyx_e_6python_7mvdtool_GREATER_EQUAL
 };
 
-/* "python/mvdtool.pyx":27
+/* "python/mvdtool.pyx":23
  * 
  * 
  * cdef class _py__base:             # <<<<<<<<<<<<<<
@@ -801,45 +799,55 @@ struct __pyx_obj_6python_7mvdtool__py__base {
 };
 
 
-/* "python/mvdtool.pyx":47
+/* "python/mvdtool.pyx":32
  * 
  * # ----------------------------------------------------------------------------------------------------------------------
- * cdef class MVD2File(_py__base):             # <<<<<<<<<<<<<<
+ * cdef class MVDFile(_py__base):             # <<<<<<<<<<<<<<
+ * # ----------------------------------------------------------------------------------------------------------------------
+ *     cdef MVD.MVDFile * ptr0(self):
+ */
+struct __pyx_obj_6python_7mvdtool_MVDFile {
+  struct __pyx_obj_6python_7mvdtool__py__base __pyx_base;
+  struct __pyx_vtabstruct_6python_7mvdtool_MVDFile *__pyx_vtab;
+};
+
+
+/* "python/mvdtool.pyx":74
+ * 
+ * # ----------------------------------------------------------------------------------------------------------------------
+ * cdef class MVD2File(MVDFile):             # <<<<<<<<<<<<<<
  *     "Python wrapper class for MVD2File (ns=MVD2)"
  * # ----------------------------------------------------------------------------------------------------------------------
  */
 struct __pyx_obj_6python_7mvdtool_MVD2File {
-  struct __pyx_obj_6python_7mvdtool__py__base __pyx_base;
-  struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *__pyx_vtab;
+  struct __pyx_obj_6python_7mvdtool_MVDFile __pyx_base;
   std::unique_ptr<MVD2::MVD2File>  _autodealoc;
-  MVD2::Data::MVD2ColData colData;
 };
 
 
-/* "python/mvdtool.pyx":108
+/* "python/mvdtool.pyx":119
  * 
  * # ----------------------------------------------------------------------------------------------------------------------
- * cdef class _MVD3_Range(_py__base):             # <<<<<<<<<<<<<<
+ * cdef class _MVD_Range(_py__base):             # <<<<<<<<<<<<<<
  *     "Python wrapper class for Range (ns=MVD3)"
  * # ----------------------------------------------------------------------------------------------------------------------
  */
-struct __pyx_obj_6python_7mvdtool__MVD3_Range {
+struct __pyx_obj_6python_7mvdtool__MVD_Range {
   struct __pyx_obj_6python_7mvdtool__py__base __pyx_base;
-  struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *__pyx_vtab;
-  std::unique_ptr<MVD3::Range>  _autodealoc;
+  struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *__pyx_vtab;
+  std::unique_ptr<MVD::Range>  _autodealoc;
 };
 
 
-/* "python/mvdtool.pyx":138
+/* "python/mvdtool.pyx":149
  * 
  * # ----------------------------------------------------------------------------------------------------------------------
- * cdef class MVD3File(_py__base):             # <<<<<<<<<<<<<<
+ * cdef class MVD3File(MVDFile):             # <<<<<<<<<<<<<<
  *     "Python wrapper class for MVD3File (ns=MVD3)"
  * # ----------------------------------------------------------------------------------------------------------------------
  */
 struct __pyx_obj_6python_7mvdtool_MVD3File {
-  struct __pyx_obj_6python_7mvdtool__py__base __pyx_base;
-  struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *__pyx_vtab;
+  struct __pyx_obj_6python_7mvdtool_MVDFile __pyx_base;
   std::unique_ptr<MVD3::MVD3File>  _autodealoc;
 };
 
@@ -922,15 +930,30 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "python/mvdtool.pyx":47
+/* "python/mvdtool.pyx":32
  * 
  * # ----------------------------------------------------------------------------------------------------------------------
- * cdef class MVD2File(_py__base):             # <<<<<<<<<<<<<<
+ * cdef class MVDFile(_py__base):             # <<<<<<<<<<<<<<
+ * # ----------------------------------------------------------------------------------------------------------------------
+ *     cdef MVD.MVDFile * ptr0(self):
+ */
+
+struct __pyx_vtabstruct_6python_7mvdtool_MVDFile {
+  MVD::MVDFile *(*ptr0)(struct __pyx_obj_6python_7mvdtool_MVDFile *);
+};
+static struct __pyx_vtabstruct_6python_7mvdtool_MVDFile *__pyx_vtabptr_6python_7mvdtool_MVDFile;
+
+
+/* "python/mvdtool.pyx":74
+ * 
+ * # ----------------------------------------------------------------------------------------------------------------------
+ * cdef class MVD2File(MVDFile):             # <<<<<<<<<<<<<<
  *     "Python wrapper class for MVD2File (ns=MVD2)"
  * # ----------------------------------------------------------------------------------------------------------------------
  */
 
 struct __pyx_vtabstruct_6python_7mvdtool_MVD2File {
+  struct __pyx_vtabstruct_6python_7mvdtool_MVDFile __pyx_base;
   MVD2::MVD2File *(*ptr)(struct __pyx_obj_6python_7mvdtool_MVD2File *);
   struct __pyx_obj_6python_7mvdtool_MVD2File *(*from_ptr)(MVD2::MVD2File *);
   struct __pyx_obj_6python_7mvdtool_MVD2File *(*from_ref)(MVD2::MVD2File const &);
@@ -939,32 +962,33 @@ struct __pyx_vtabstruct_6python_7mvdtool_MVD2File {
 static struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *__pyx_vtabptr_6python_7mvdtool_MVD2File;
 
 
-/* "python/mvdtool.pyx":108
+/* "python/mvdtool.pyx":119
  * 
  * # ----------------------------------------------------------------------------------------------------------------------
- * cdef class _MVD3_Range(_py__base):             # <<<<<<<<<<<<<<
+ * cdef class _MVD_Range(_py__base):             # <<<<<<<<<<<<<<
  *     "Python wrapper class for Range (ns=MVD3)"
  * # ----------------------------------------------------------------------------------------------------------------------
  */
 
-struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range {
-  MVD3::Range *(*ptr)(struct __pyx_obj_6python_7mvdtool__MVD3_Range *);
-  struct __pyx_obj_6python_7mvdtool__MVD3_Range *(*from_ptr)(MVD3::Range *);
-  struct __pyx_obj_6python_7mvdtool__MVD3_Range *(*from_ref)(MVD3::Range const &);
-  PyObject *(*vector2list)(std::vector<MVD3::Range *> );
+struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range {
+  MVD::Range *(*ptr)(struct __pyx_obj_6python_7mvdtool__MVD_Range *);
+  struct __pyx_obj_6python_7mvdtool__MVD_Range *(*from_ptr)(MVD::Range *);
+  struct __pyx_obj_6python_7mvdtool__MVD_Range *(*from_ref)(MVD::Range const &);
+  PyObject *(*vector2list)(std::vector<MVD::Range *> );
 };
-static struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *__pyx_vtabptr_6python_7mvdtool__MVD3_Range;
+static struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *__pyx_vtabptr_6python_7mvdtool__MVD_Range;
 
 
-/* "python/mvdtool.pyx":138
+/* "python/mvdtool.pyx":149
  * 
  * # ----------------------------------------------------------------------------------------------------------------------
- * cdef class MVD3File(_py__base):             # <<<<<<<<<<<<<<
+ * cdef class MVD3File(MVDFile):             # <<<<<<<<<<<<<<
  *     "Python wrapper class for MVD3File (ns=MVD3)"
  * # ----------------------------------------------------------------------------------------------------------------------
  */
 
 struct __pyx_vtabstruct_6python_7mvdtool_MVD3File {
+  struct __pyx_vtabstruct_6python_7mvdtool_MVDFile __pyx_base;
   MVD3::MVD3File *(*ptr)(struct __pyx_obj_6python_7mvdtool_MVD3File *);
   struct __pyx_obj_6python_7mvdtool_MVD3File *(*from_ptr)(MVD3::MVD3File *);
   struct __pyx_obj_6python_7mvdtool_MVD3File *(*from_ref)(MVD3::MVD3File const &);
@@ -1525,6 +1549,9 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
+/* None.proto */
+#include <new>
+
 #if PY_MAJOR_VERSION < 3
     static int __Pyx_GetBuffer(PyObject *obj, Py_buffer *view, int flags);
     static void __Pyx_ReleaseBuffer(Py_buffer *view);
@@ -1564,9 +1591,6 @@ static int __pyx_slices_overlap(__Pyx_memviewslice *slice1,
 /* Capsule.proto */
 static CYTHON_INLINE PyObject *__pyx_capsule_create(void *p, const char *sig);
 
-/* None.proto */
-#include <new>
-
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
@@ -1576,16 +1600,12 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum____pyx_t_6python_7mvdtool_OPERATOR(enum __pyx_t_6python_7mvdtool_OPERATOR value);
 
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_std_3a__3a_size_t(std::size_t value);
-
-/* MemviewDtypeToObject.proto */
-static CYTHON_INLINE PyObject *__pyx_memview_get_float(const char *itemp);
-static CYTHON_INLINE int __pyx_memview_set_float(const char *itemp, PyObject *obj);
-
 /* MemviewDtypeToObject.proto */
 static CYTHON_INLINE PyObject *__pyx_memview_get_double(const char *itemp);
 static CYTHON_INLINE int __pyx_memview_set_double(const char *itemp, PyObject *obj);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_std_3a__3a_size_t(std::size_t value);
 
 /* MemviewSliceCopyTemplate.proto */
 static __Pyx_memviewslice
@@ -1633,12 +1653,6 @@ static int __Pyx_ValidateAndInit_memviewslice(
                 PyObject *original_obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(PyObject *);
-
-/* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_float(PyObject *);
-
-/* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(PyObject *);
 
 /* CheckBinaryVersion.proto */
@@ -1647,14 +1661,15 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+static MVD::MVDFile *__pyx_f_6python_7mvdtool_7MVDFile_ptr0(struct __pyx_obj_6python_7mvdtool_MVDFile *__pyx_v_self); /* proto*/
 static MVD2::MVD2File *__pyx_f_6python_7mvdtool_8MVD2File_ptr(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self); /* proto*/
 static struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_f_6python_7mvdtool_8MVD2File_from_ptr(MVD2::MVD2File *__pyx_v_ptr); /* proto*/
 static struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_f_6python_7mvdtool_8MVD2File_from_ref(MVD2::MVD2File const &__pyx_v_ref); /* proto*/
 static PyObject *__pyx_f_6python_7mvdtool_8MVD2File_vector2list(std::vector<MVD2::MVD2File *>  __pyx_v_vec); /* proto*/
-static MVD3::Range *__pyx_f_6python_7mvdtool_11_MVD3_Range_ptr(struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_self); /* proto*/
-static struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_f_6python_7mvdtool_11_MVD3_Range_from_ptr(MVD3::Range *__pyx_v_ptr); /* proto*/
-static struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_f_6python_7mvdtool_11_MVD3_Range_from_ref(MVD3::Range const &__pyx_v_ref); /* proto*/
-static PyObject *__pyx_f_6python_7mvdtool_11_MVD3_Range_vector2list(std::vector<MVD3::Range *>  __pyx_v_vec); /* proto*/
+static MVD::Range *__pyx_f_6python_7mvdtool_10_MVD_Range_ptr(struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_self); /* proto*/
+static struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_f_6python_7mvdtool_10_MVD_Range_from_ptr(MVD::Range *__pyx_v_ptr); /* proto*/
+static struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_f_6python_7mvdtool_10_MVD_Range_from_ref(MVD::Range const &__pyx_v_ref); /* proto*/
+static PyObject *__pyx_f_6python_7mvdtool_10_MVD_Range_vector2list(std::vector<MVD::Range *>  __pyx_v_vec); /* proto*/
 static MVD3::MVD3File *__pyx_f_6python_7mvdtool_8MVD3File_ptr(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto*/
 static struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_f_6python_7mvdtool_8MVD3File_from_ptr(MVD3::MVD3File *__pyx_v_ptr); /* proto*/
 static struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_f_6python_7mvdtool_8MVD3File_from_ref(MVD3::MVD3File const &__pyx_v_ref); /* proto*/
@@ -1690,13 +1705,9 @@ static PyObject *__pyx_memoryviewslice_assign_item_from_object(struct __pyx_memo
 
 /* Module declarations from 'std' */
 
-/* Module declarations from '_globalns' */
-
-/* Module declarations from 'MVD_MVDType' */
+/* Module declarations from 'boost' */
 
 /* Module declarations from 'MVD' */
-
-/* Module declarations from 'boost' */
 
 /* Module declarations from 'MVD2' */
 
@@ -1704,19 +1715,13 @@ static PyObject *__pyx_memoryviewslice_assign_item_from_object(struct __pyx_memo
 
 /* Module declarations from 'libcpp.memory' */
 
-/* Module declarations from 'cython.view' */
-static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
-
-/* Module declarations from 'cython' */
-
-/* Module declarations from 'libc' */
-
-/* Module declarations from 'libc.stdio' */
+/* Module declarations from 'MVD_MVDType' */
 
 /* Module declarations from 'python.mvdtool' */
 static PyTypeObject *__pyx_ptype_6python_7mvdtool__py__base = 0;
+static PyTypeObject *__pyx_ptype_6python_7mvdtool_MVDFile = 0;
 static PyTypeObject *__pyx_ptype_6python_7mvdtool_MVD2File = 0;
-static PyTypeObject *__pyx_ptype_6python_7mvdtool__MVD3_Range = 0;
+static PyTypeObject *__pyx_ptype_6python_7mvdtool__MVD_Range = 0;
 static PyTypeObject *__pyx_ptype_6python_7mvdtool_MVD3File = 0;
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
@@ -1771,7 +1776,6 @@ static void __pyx_memoryview_refcount_objects_in_slice(char *, Py_ssize_t *, Py_
 static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size_t, void *, int); /*proto*/
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo *); /*proto*/
-static __Pyx_TypeInfo __Pyx_TypeInfo_float = { "float", NULL, sizeof(float), { 0 }, 0, 'R', 0, 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
 #define __Pyx_MODULE_NAME "python.mvdtool"
 int __pyx_module_is_main_python__mvdtool = 0;
@@ -1850,6 +1854,7 @@ static const char __pyx_k_range_2[] = "range";
 static const char __pyx_k_Ellipsis[] = "Ellipsis";
 static const char __pyx_k_filename[] = "filename";
 static const char __pyx_k_itemsize[] = "itemsize";
+static const char __pyx_k_open_mvd[] = "open_mvd";
 static const char __pyx_k_qualname[] = "__qualname__";
 static const char __pyx_k_MVDType_s[] = "<MVDType.%s>";
 static const char __pyx_k_TypeError[] = "TypeError";
@@ -1859,6 +1864,7 @@ static const char __pyx_k_metaclass[] = "__metaclass__";
 static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
+static const char __pyx_k_MVD_MVDType[] = "MVD_MVDType";
 static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_is_mvd_file[] = "is_mvd_file";
 static const char __pyx_k_MVDType___eq[] = "MVDType.__eq__";
@@ -1880,9 +1886,9 @@ static const char __pyx_k_Cannot_index_with_type_s[] = "Cannot index with type '
 static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %d: %d.";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
-static const char __pyx_k_home_leite_dev_MVD_tool_python[] = "/home/leite/dev/MVD-tool/python/mvdtool.pyx";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
 static const char __pyx_k_Copyright_2016_EPFL_BBP_project[] = "Copyright 2016 EPFL BBP-project";
+static const char __pyx_k_home_leite_dev_Functionalizer_d[] = "/home/leite/dev/Functionalizer/deps/mvd-tool/python/mvdtool.pyx";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
 static const char __pyx_k_Can_only_create_a_buffer_that_is[] = "Can only create a buffer that is contiguous in memory.";
 static const char __pyx_k_Empty_shape_tuple_for_cython_arr[] = "Empty shape tuple for cython.array";
@@ -1914,6 +1920,7 @@ static PyObject *__pyx_n_s_MVDType___eq;
 static PyObject *__pyx_n_s_MVDType___init;
 static PyObject *__pyx_n_s_MVDType___repr;
 static PyObject *__pyx_kp_s_MVDType_s;
+static PyObject *__pyx_n_s_MVD_MVDType;
 static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_kp_s_MemoryView_of_r_at_0x_x;
 static PyObject *__pyx_kp_s_MemoryView_of_r_object;
@@ -1953,7 +1960,7 @@ static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_fortran;
 static PyObject *__pyx_n_u_fortran;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
-static PyObject *__pyx_kp_s_home_leite_dev_MVD_tool_python;
+static PyObject *__pyx_kp_s_home_leite_dev_Functionalizer_d;
 static PyObject *__pyx_n_s_id;
 static PyObject *__pyx_n_s_id_2;
 static PyObject *__pyx_n_s_import;
@@ -1974,6 +1981,7 @@ static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_n_s_obj;
 static PyObject *__pyx_n_s_object;
 static PyObject *__pyx_n_s_offset;
+static PyObject *__pyx_n_s_open_mvd;
 static PyObject *__pyx_n_s_other;
 static PyObject *__pyx_n_s_pack;
 static PyObject *__pyx_n_s_prepare;
@@ -2001,35 +2009,33 @@ static PyObject *__pyx_kp_s_unable_to_allocate_array_data;
 static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_pf_6python_7mvdtool_9_py__base___richcmp__(struct __pyx_obj_6python_7mvdtool__py__base *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__py__base *__pyx_v_other, PyObject *__pyx_v_operation); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_7MVDFile_getNbNeuron(struct __pyx_obj_6python_7mvdtool_MVDFile *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_7MVDFile_2getPositions(struct __pyx_obj_6python_7mvdtool_MVDFile *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range_); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_7MVDFile_4getRotations(struct __pyx_obj_6python_7mvdtool_MVDFile *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range_); /* proto */
 static int __pyx_pf_6python_7mvdtool_8MVD2File___init__(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self, std::string __pyx_v_filename); /* proto */
 static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_2getNbMorphoType(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_4getNbMorpho(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_6getNbNeuron(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_8getNbColumns(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_10getPositions(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_12getRotations(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self); /* proto */
-static int __pyx_pf_6python_7mvdtool_11_MVD3_Range___init__(struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_self, std::size_t __pyx_v_offset_, std::size_t __pyx_v_count_); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_6getNbColumns(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self); /* proto */
+static int __pyx_pf_6python_7mvdtool_10_MVD_Range___init__(struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_self, std::size_t __pyx_v_offset_, std::size_t __pyx_v_count_); /* proto */
 static int __pyx_pf_6python_7mvdtool_8MVD3File___init__(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, std::string __pyx_v_filename); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_2getNbNeuron(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_4getPositions(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range_); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_6getRotations(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range_); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_8getMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_10getEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_12getMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_14getSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_16getIndexMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_18getIndexEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_20getIndexMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_22getIndexSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_24listAllMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_26listAllEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_28listAllMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_30listAllSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_32getCircuitSeeds(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_2getMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_4getEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_6getMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_8getSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_10getIndexMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_12getIndexEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_14getIndexMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_16getIndexSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_18listAllMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_20listAllEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_22listAllMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_24listAllSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_26getCircuitSeeds(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6python_7mvdtool_7MVDType___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_typ); /* proto */
 static PyObject *__pyx_pf_6python_7mvdtool_7MVDType_2__eq__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other); /* proto */
 static PyObject *__pyx_pf_6python_7mvdtool_7MVDType_4__repr__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6python_7mvdtool_is_mvd_file(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_filename); /* proto */
+static PyObject *__pyx_pf_6python_7mvdtool_2open_mvd(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_filename); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -2063,8 +2069,9 @@ static PyObject *__pyx_memoryview___pyx_pf_15View_dot_MemoryView_10memoryview_22
 static void __pyx_memoryviewslice___pyx_pf_15View_dot_MemoryView_16_memoryviewslice___dealloc__(struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_15View_dot_MemoryView_16_memoryviewslice_4base___get__(struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto */
 static PyObject *__pyx_tp_new_6python_7mvdtool__py__base(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_6python_7mvdtool_MVDFile(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6python_7mvdtool_MVD2File(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_6python_7mvdtool__MVD3_Range(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_6python_7mvdtool__MVD_Range(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6python_7mvdtool_MVD3File(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_array(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_Enum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -2091,16 +2098,18 @@ static PyObject *__pyx_tuple__21;
 static PyObject *__pyx_tuple__23;
 static PyObject *__pyx_tuple__25;
 static PyObject *__pyx_tuple__27;
-static PyObject *__pyx_tuple__28;
 static PyObject *__pyx_tuple__29;
 static PyObject *__pyx_tuple__30;
 static PyObject *__pyx_tuple__31;
+static PyObject *__pyx_tuple__32;
+static PyObject *__pyx_tuple__33;
 static PyObject *__pyx_codeobj__20;
 static PyObject *__pyx_codeobj__22;
 static PyObject *__pyx_codeobj__24;
 static PyObject *__pyx_codeobj__26;
+static PyObject *__pyx_codeobj__28;
 
-/* "python/mvdtool.pyx":30
+/* "python/mvdtool.pyx":26
  *     cdef void *_ptr
  *     # Basic comparison is done by comparing the inner obj ptr
  *     def __richcmp__(_py__base self, _py__base other, operation):             # <<<<<<<<<<<<<<
@@ -2115,7 +2124,7 @@ static PyObject *__pyx_pw_6python_7mvdtool_9_py__base_1__richcmp__(PyObject *__p
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__richcmp__ (wrapper)", 0);
-  __pyx_v_operation = __Pyx_PyInt_From_int(__pyx_arg_operation); if (unlikely(!__pyx_v_operation)) __PYX_ERR(0, 30, __pyx_L3_error)
+  __pyx_v_operation = __Pyx_PyInt_From_int(__pyx_arg_operation); if (unlikely(!__pyx_v_operation)) __PYX_ERR(0, 26, __pyx_L3_error)
   __Pyx_GOTREF(__pyx_v_operation);
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -2123,8 +2132,8 @@ static PyObject *__pyx_pw_6python_7mvdtool_9_py__base_1__richcmp__(PyObject *__p
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_self), __pyx_ptype_6python_7mvdtool__py__base, 1, "self", 0))) __PYX_ERR(0, 30, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_6python_7mvdtool__py__base, 1, "other", 0))) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_self), __pyx_ptype_6python_7mvdtool__py__base, 1, "self", 0))) __PYX_ERR(0, 26, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_6python_7mvdtool__py__base, 1, "other", 0))) __PYX_ERR(0, 26, __pyx_L1_error)
   __pyx_r = __pyx_pf_6python_7mvdtool_9_py__base___richcmp__(((struct __pyx_obj_6python_7mvdtool__py__base *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__py__base *)__pyx_v_other), ((PyObject *)__pyx_v_operation));
 
   /* function exit code */
@@ -2145,22 +2154,22 @@ static PyObject *__pyx_pf_6python_7mvdtool_9_py__base___richcmp__(struct __pyx_o
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("__richcmp__", 0);
 
-  /* "python/mvdtool.pyx":31
+  /* "python/mvdtool.pyx":27
  *     # Basic comparison is done by comparing the inner obj ptr
  *     def __richcmp__(_py__base self, _py__base other, operation):
  *         if operation == OPERATOR.EQUAL:             # <<<<<<<<<<<<<<
  *             return self._ptr==other._ptr
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_enum____pyx_t_6python_7mvdtool_OPERATOR(__pyx_e_6python_7mvdtool_EQUAL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_enum____pyx_t_6python_7mvdtool_OPERATOR(__pyx_e_6python_7mvdtool_EQUAL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_operation, __pyx_t_1, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_v_operation, __pyx_t_1, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_3) {
 
-    /* "python/mvdtool.pyx":32
+    /* "python/mvdtool.pyx":28
  *     def __richcmp__(_py__base self, _py__base other, operation):
  *         if operation == OPERATOR.EQUAL:
  *             return self._ptr==other._ptr             # <<<<<<<<<<<<<<
@@ -2168,13 +2177,13 @@ static PyObject *__pyx_pf_6python_7mvdtool_9_py__base___richcmp__(struct __pyx_o
  * 
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyBool_FromLong((__pyx_v_self->_ptr == __pyx_v_other->_ptr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyBool_FromLong((__pyx_v_self->_ptr == __pyx_v_other->_ptr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "python/mvdtool.pyx":31
+    /* "python/mvdtool.pyx":27
  *     # Basic comparison is done by comparing the inner obj ptr
  *     def __richcmp__(_py__base self, _py__base other, operation):
  *         if operation == OPERATOR.EQUAL:             # <<<<<<<<<<<<<<
@@ -2183,7 +2192,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_9_py__base___richcmp__(struct __pyx_o
  */
   }
 
-  /* "python/mvdtool.pyx":30
+  /* "python/mvdtool.pyx":26
  *     cdef void *_ptr
  *     # Basic comparison is done by comparing the inner obj ptr
  *     def __richcmp__(_py__base self, _py__base other, operation):             # <<<<<<<<<<<<<<
@@ -2205,7 +2214,656 @@ static PyObject *__pyx_pf_6python_7mvdtool_9_py__base___richcmp__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":51
+/* "python/mvdtool.pyx":34
+ * cdef class MVDFile(_py__base):
+ * # ----------------------------------------------------------------------------------------------------------------------
+ *     cdef MVD.MVDFile * ptr0(self):             # <<<<<<<<<<<<<<
+ *         return <MVD.MVDFile*> self._ptr
+ * 
+ */
+
+static MVD::MVDFile *__pyx_f_6python_7mvdtool_7MVDFile_ptr0(struct __pyx_obj_6python_7mvdtool_MVDFile *__pyx_v_self) {
+  MVD::MVDFile *__pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("ptr0", 0);
+
+  /* "python/mvdtool.pyx":35
+ * # ----------------------------------------------------------------------------------------------------------------------
+ *     cdef MVD.MVDFile * ptr0(self):
+ *         return <MVD.MVDFile*> self._ptr             # <<<<<<<<<<<<<<
+ * 
+ *     def getNbNeuron(self, ):
+ */
+  __pyx_r = ((MVD::MVDFile *)__pyx_v_self->__pyx_base._ptr);
+  goto __pyx_L0;
+
+  /* "python/mvdtool.pyx":34
+ * cdef class MVDFile(_py__base):
+ * # ----------------------------------------------------------------------------------------------------------------------
+ *     cdef MVD.MVDFile * ptr0(self):             # <<<<<<<<<<<<<<
+ *         return <MVD.MVDFile*> self._ptr
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/mvdtool.pyx":37
+ *         return <MVD.MVDFile*> self._ptr
+ * 
+ *     def getNbNeuron(self, ):             # <<<<<<<<<<<<<<
+ *         return self.ptr0().getNbNeuron()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6python_7mvdtool_7MVDFile_1getNbNeuron(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_7MVDFile_1getNbNeuron(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("getNbNeuron (wrapper)", 0);
+  __pyx_r = __pyx_pf_6python_7mvdtool_7MVDFile_getNbNeuron(((struct __pyx_obj_6python_7mvdtool_MVDFile *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6python_7mvdtool_7MVDFile_getNbNeuron(struct __pyx_obj_6python_7mvdtool_MVDFile *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("getNbNeuron", 0);
+
+  /* "python/mvdtool.pyx":38
+ * 
+ *     def getNbNeuron(self, ):
+ *         return self.ptr0().getNbNeuron()             # <<<<<<<<<<<<<<
+ * 
+ *     def getPositions(self, _MVD_Range range_=None):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_FromSize_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVDFile *)__pyx_v_self->__pyx_vtab)->ptr0(__pyx_v_self)->getNbNeuron()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "python/mvdtool.pyx":37
+ *         return <MVD.MVDFile*> self._ptr
+ * 
+ *     def getNbNeuron(self, ):             # <<<<<<<<<<<<<<
+ *         return self.ptr0().getNbNeuron()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("python.mvdtool.MVDFile.getNbNeuron", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/mvdtool.pyx":40
+ *         return self.ptr0().getNbNeuron()
+ * 
+ *     def getPositions(self, _MVD_Range range_=None):             # <<<<<<<<<<<<<<
+ *         cdef MVD.Positions* posics
+ *         if range_ is None:
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6python_7mvdtool_7MVDFile_3getPositions(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_7MVDFile_3getPositions(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range_ = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("getPositions (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_range,0};
+    PyObject* values[1] = {0};
+    values[0] = (PyObject *)((struct __pyx_obj_6python_7mvdtool__MVD_Range *)Py_None);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_range);
+          if (value) { values[0] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "getPositions") < 0)) __PYX_ERR(0, 40, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_range_ = ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)values[0]);
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("getPositions", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 40, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("python.mvdtool.MVDFile.getPositions", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range_), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range_", 0))) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_7MVDFile_2getPositions(((struct __pyx_obj_6python_7mvdtool_MVDFile *)__pyx_v_self), __pyx_v_range_);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6python_7mvdtool_7MVDFile_2getPositions(struct __pyx_obj_6python_7mvdtool_MVDFile *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range_) {
+  MVD::Positions *__pyx_v_posics;
+  double *__pyx_v_addr;
+  boost::detail::multi_array::size_type const *__pyx_v_shape;
+  CYTHON_UNUSED int __pyx_v_x1;
+  CYTHON_UNUSED int __pyx_v_x2;
+  __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  struct __pyx_array_obj *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  __Pyx_RefNannySetupContext("getPositions", 0);
+
+  /* "python/mvdtool.pyx":42
+ *     def getPositions(self, _MVD_Range range_=None):
+ *         cdef MVD.Positions* posics
+ *         if range_ is None:             # <<<<<<<<<<<<<<
+ *             posics = new MVD.Positions(self.ptr0().getPositions())
+ *         else:
+ */
+  __pyx_t_1 = (((PyObject *)__pyx_v_range_) == Py_None);
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "python/mvdtool.pyx":43
+ *         cdef MVD.Positions* posics
+ *         if range_ is None:
+ *             posics = new MVD.Positions(self.ptr0().getPositions())             # <<<<<<<<<<<<<<
+ *         else:
+ *             posics = new MVD.Positions(self.ptr0().getPositions(deref(range_.ptr())))
+ */
+    __pyx_v_posics = new MVD::Positions(((struct __pyx_vtabstruct_6python_7mvdtool_MVDFile *)__pyx_v_self->__pyx_vtab)->ptr0(__pyx_v_self)->getPositions());
+
+    /* "python/mvdtool.pyx":42
+ *     def getPositions(self, _MVD_Range range_=None):
+ *         cdef MVD.Positions* posics
+ *         if range_ is None:             # <<<<<<<<<<<<<<
+ *             posics = new MVD.Positions(self.ptr0().getPositions())
+ *         else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "python/mvdtool.pyx":45
+ *             posics = new MVD.Positions(self.ptr0().getPositions())
+ *         else:
+ *             posics = new MVD.Positions(self.ptr0().getPositions(deref(range_.ptr())))             # <<<<<<<<<<<<<<
+ *         cdef double *addr = posics.data()
+ *         cdef const boost.size_type* shape = posics.shape()
+ */
+  /*else*/ {
+    __pyx_v_posics = new MVD::Positions(((struct __pyx_vtabstruct_6python_7mvdtool_MVDFile *)__pyx_v_self->__pyx_vtab)->ptr0(__pyx_v_self)->getPositions((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range_->__pyx_vtab)->ptr(__pyx_v_range_))));
+  }
+  __pyx_L3:;
+
+  /* "python/mvdtool.pyx":46
+ *         else:
+ *             posics = new MVD.Positions(self.ptr0().getPositions(deref(range_.ptr())))
+ *         cdef double *addr = posics.data()             # <<<<<<<<<<<<<<
+ *         cdef const boost.size_type* shape = posics.shape()
+ *         cdef int x1=shape[0], x2=shape[1]
+ */
+  __pyx_v_addr = __pyx_v_posics->data();
+
+  /* "python/mvdtool.pyx":47
+ *             posics = new MVD.Positions(self.ptr0().getPositions(deref(range_.ptr())))
+ *         cdef double *addr = posics.data()
+ *         cdef const boost.size_type* shape = posics.shape()             # <<<<<<<<<<<<<<
+ *         cdef int x1=shape[0], x2=shape[1]
+ *         # We might have a data copy here... and miss the release of the allocated obj...
+ */
+  __pyx_v_shape = __pyx_v_posics->shape();
+
+  /* "python/mvdtool.pyx":48
+ *         cdef double *addr = posics.data()
+ *         cdef const boost.size_type* shape = posics.shape()
+ *         cdef int x1=shape[0], x2=shape[1]             # <<<<<<<<<<<<<<
+ *         # We might have a data copy here... and miss the release of the allocated obj...
+ *         # We might do it manually in the future (numpy API)
+ */
+  __pyx_v_x1 = (__pyx_v_shape[0]);
+  __pyx_v_x2 = (__pyx_v_shape[1]);
+
+  /* "python/mvdtool.pyx":51
+ *         # We might have a data copy here... and miss the release of the allocated obj...
+ *         # We might do it manually in the future (numpy API)
+ *         cdef double[:,::1]y = <double[:x1,:x2]> addr             # <<<<<<<<<<<<<<
+ *         return numpy.asarray(y)
+ * 
+ */
+  if (!__pyx_v_addr) {
+    PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
+    __PYX_ERR(0, 51, __pyx_L1_error)
+  }
+  __pyx_t_5 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_double);
+  __pyx_t_4 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_x1), ((Py_ssize_t)__pyx_v_x2));
+  if (unlikely(!__pyx_t_5 || !__pyx_t_4 || !PyBytes_AsString(__pyx_t_5))) __PYX_ERR(0, 51, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_3 = __pyx_array_new(__pyx_t_4, sizeof(double), PyBytes_AS_STRING(__pyx_t_5), (char *) "c", (char *) __pyx_v_addr);
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(((PyObject *)__pyx_t_3));
+  if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __Pyx_DECREF(((PyObject *)__pyx_t_3)); __pyx_t_3 = 0;
+  __pyx_v_y = __pyx_t_6;
+  __pyx_t_6.memview = NULL;
+  __pyx_t_6.data = NULL;
+
+  /* "python/mvdtool.pyx":52
+ *         # We might do it manually in the future (numpy API)
+ *         cdef double[:,::1]y = <double[:x1,:x2]> addr
+ *         return numpy.asarray(y)             # <<<<<<<<<<<<<<
+ * 
+ *     def getRotations(self, _MVD_Range range_=None):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_y, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_8 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
+    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
+    if (likely(__pyx_t_8)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+      __Pyx_INCREF(__pyx_t_8);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_7, function);
+    }
+  }
+  if (!__pyx_t_8) {
+    __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_GOTREF(__pyx_t_5);
+  } else {
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_7)) {
+      PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_4};
+      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
+      PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_4};
+      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    } else
+    #endif
+    {
+      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_9);
+      __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_4);
+      __pyx_t_4 = 0;
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    }
+  }
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_r = __pyx_t_5;
+  __pyx_t_5 = 0;
+  goto __pyx_L0;
+
+  /* "python/mvdtool.pyx":40
+ *         return self.ptr0().getNbNeuron()
+ * 
+ *     def getPositions(self, _MVD_Range range_=None):             # <<<<<<<<<<<<<<
+ *         cdef MVD.Positions* posics
+ *         if range_ is None:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(((PyObject *)__pyx_t_3));
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_AddTraceback("python.mvdtool.MVDFile.getPositions", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_y, 1);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/mvdtool.pyx":54
+ *         return numpy.asarray(y)
+ * 
+ *     def getRotations(self, _MVD_Range range_=None):             # <<<<<<<<<<<<<<
+ *         cdef MVD.Rotations *rots
+ *         if range_ is None:
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6python_7mvdtool_7MVDFile_5getRotations(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_7MVDFile_5getRotations(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range_ = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("getRotations (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_range,0};
+    PyObject* values[1] = {0};
+    values[0] = (PyObject *)((struct __pyx_obj_6python_7mvdtool__MVD_Range *)Py_None);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_range);
+          if (value) { values[0] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "getRotations") < 0)) __PYX_ERR(0, 54, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_range_ = ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)values[0]);
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("getRotations", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 54, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("python.mvdtool.MVDFile.getRotations", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range_), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range_", 0))) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_7MVDFile_4getRotations(((struct __pyx_obj_6python_7mvdtool_MVDFile *)__pyx_v_self), __pyx_v_range_);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6python_7mvdtool_7MVDFile_4getRotations(struct __pyx_obj_6python_7mvdtool_MVDFile *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range_) {
+  MVD::Rotations *__pyx_v_rots;
+  double *__pyx_v_addr;
+  boost::detail::multi_array::size_type const *__pyx_v_shape;
+  CYTHON_UNUSED int __pyx_v_x1;
+  CYTHON_UNUSED int __pyx_v_x2;
+  __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  struct __pyx_array_obj *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  __Pyx_RefNannySetupContext("getRotations", 0);
+
+  /* "python/mvdtool.pyx":56
+ *     def getRotations(self, _MVD_Range range_=None):
+ *         cdef MVD.Rotations *rots
+ *         if range_ is None:             # <<<<<<<<<<<<<<
+ *             rots = new MVD.Rotations(self.ptr0().getRotations())
+ *         else:
+ */
+  __pyx_t_1 = (((PyObject *)__pyx_v_range_) == Py_None);
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "python/mvdtool.pyx":57
+ *         cdef MVD.Rotations *rots
+ *         if range_ is None:
+ *             rots = new MVD.Rotations(self.ptr0().getRotations())             # <<<<<<<<<<<<<<
+ *         else:
+ *             rots = new MVD.Rotations(self.ptr0().getRotations(deref(range_.ptr())))
+ */
+    __pyx_v_rots = new MVD::Rotations(((struct __pyx_vtabstruct_6python_7mvdtool_MVDFile *)__pyx_v_self->__pyx_vtab)->ptr0(__pyx_v_self)->getRotations());
+
+    /* "python/mvdtool.pyx":56
+ *     def getRotations(self, _MVD_Range range_=None):
+ *         cdef MVD.Rotations *rots
+ *         if range_ is None:             # <<<<<<<<<<<<<<
+ *             rots = new MVD.Rotations(self.ptr0().getRotations())
+ *         else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "python/mvdtool.pyx":59
+ *             rots = new MVD.Rotations(self.ptr0().getRotations())
+ *         else:
+ *             rots = new MVD.Rotations(self.ptr0().getRotations(deref(range_.ptr())))             # <<<<<<<<<<<<<<
+ *         cdef double *addr = rots.data()
+ *         cdef const boost.size_type* shape = rots.shape()
+ */
+  /*else*/ {
+    __pyx_v_rots = new MVD::Rotations(((struct __pyx_vtabstruct_6python_7mvdtool_MVDFile *)__pyx_v_self->__pyx_vtab)->ptr0(__pyx_v_self)->getRotations((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range_->__pyx_vtab)->ptr(__pyx_v_range_))));
+  }
+  __pyx_L3:;
+
+  /* "python/mvdtool.pyx":60
+ *         else:
+ *             rots = new MVD.Rotations(self.ptr0().getRotations(deref(range_.ptr())))
+ *         cdef double *addr = rots.data()             # <<<<<<<<<<<<<<
+ *         cdef const boost.size_type* shape = rots.shape()
+ *         cdef int x1=shape[0], x2=shape[1]
+ */
+  __pyx_v_addr = __pyx_v_rots->data();
+
+  /* "python/mvdtool.pyx":61
+ *             rots = new MVD.Rotations(self.ptr0().getRotations(deref(range_.ptr())))
+ *         cdef double *addr = rots.data()
+ *         cdef const boost.size_type* shape = rots.shape()             # <<<<<<<<<<<<<<
+ *         cdef int x1=shape[0], x2=shape[1]
+ *         cdef double[:,::1]y = <double[:x1,:x2]> addr
+ */
+  __pyx_v_shape = __pyx_v_rots->shape();
+
+  /* "python/mvdtool.pyx":62
+ *         cdef double *addr = rots.data()
+ *         cdef const boost.size_type* shape = rots.shape()
+ *         cdef int x1=shape[0], x2=shape[1]             # <<<<<<<<<<<<<<
+ *         cdef double[:,::1]y = <double[:x1,:x2]> addr
+ *         return numpy.asarray(y)
+ */
+  __pyx_v_x1 = (__pyx_v_shape[0]);
+  __pyx_v_x2 = (__pyx_v_shape[1]);
+
+  /* "python/mvdtool.pyx":63
+ *         cdef const boost.size_type* shape = rots.shape()
+ *         cdef int x1=shape[0], x2=shape[1]
+ *         cdef double[:,::1]y = <double[:x1,:x2]> addr             # <<<<<<<<<<<<<<
+ *         return numpy.asarray(y)
+ * 
+ */
+  if (!__pyx_v_addr) {
+    PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
+    __PYX_ERR(0, 63, __pyx_L1_error)
+  }
+  __pyx_t_5 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_double);
+  __pyx_t_4 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_x1), ((Py_ssize_t)__pyx_v_x2));
+  if (unlikely(!__pyx_t_5 || !__pyx_t_4 || !PyBytes_AsString(__pyx_t_5))) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_3 = __pyx_array_new(__pyx_t_4, sizeof(double), PyBytes_AS_STRING(__pyx_t_5), (char *) "c", (char *) __pyx_v_addr);
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(((PyObject *)__pyx_t_3));
+  if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_DECREF(((PyObject *)__pyx_t_3)); __pyx_t_3 = 0;
+  __pyx_v_y = __pyx_t_6;
+  __pyx_t_6.memview = NULL;
+  __pyx_t_6.data = NULL;
+
+  /* "python/mvdtool.pyx":64
+ *         cdef int x1=shape[0], x2=shape[1]
+ *         cdef double[:,::1]y = <double[:x1,:x2]> addr
+ *         return numpy.asarray(y)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_y, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_8 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
+    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
+    if (likely(__pyx_t_8)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+      __Pyx_INCREF(__pyx_t_8);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_7, function);
+    }
+  }
+  if (!__pyx_t_8) {
+    __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 64, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_GOTREF(__pyx_t_5);
+  } else {
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_7)) {
+      PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_4};
+      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 64, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
+      PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_4};
+      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 64, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    } else
+    #endif
+    {
+      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 64, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_9);
+      __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_4);
+      __pyx_t_4 = 0;
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 64, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    }
+  }
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_r = __pyx_t_5;
+  __pyx_t_5 = 0;
+  goto __pyx_L0;
+
+  /* "python/mvdtool.pyx":54
+ *         return numpy.asarray(y)
+ * 
+ *     def getRotations(self, _MVD_Range range_=None):             # <<<<<<<<<<<<<<
+ *         cdef MVD.Rotations *rots
+ *         if range_ is None:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(((PyObject *)__pyx_t_3));
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_AddTraceback("python.mvdtool.MVDFile.getRotations", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_y, 1);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/mvdtool.pyx":78
  * # ----------------------------------------------------------------------------------------------------------------------
  *     cdef unique_ptr[MVD2.MVD2File] _autodealoc
  *     cdef MVD2.MVD2File *ptr(self):             # <<<<<<<<<<<<<<
@@ -2218,17 +2876,17 @@ static MVD2::MVD2File *__pyx_f_6python_7mvdtool_8MVD2File_ptr(struct __pyx_obj_6
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("ptr", 0);
 
-  /* "python/mvdtool.pyx":52
+  /* "python/mvdtool.pyx":79
  *     cdef unique_ptr[MVD2.MVD2File] _autodealoc
  *     cdef MVD2.MVD2File *ptr(self):
  *         return <MVD2.MVD2File*> self._ptr             # <<<<<<<<<<<<<<
  * 
- *     cdef MVD2.MVD2ColData colData
+ *     def __init__(self, std.string filename):
  */
-  __pyx_r = ((MVD2::MVD2File *)__pyx_v_self->__pyx_base._ptr);
+  __pyx_r = ((MVD2::MVD2File *)__pyx_v_self->__pyx_base.__pyx_base._ptr);
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":51
+  /* "python/mvdtool.pyx":78
  * # ----------------------------------------------------------------------------------------------------------------------
  *     cdef unique_ptr[MVD2.MVD2File] _autodealoc
  *     cdef MVD2.MVD2File *ptr(self):             # <<<<<<<<<<<<<<
@@ -2242,8 +2900,8 @@ static MVD2::MVD2File *__pyx_f_6python_7mvdtool_8MVD2File_ptr(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":56
- *     cdef MVD2.MVD2ColData colData
+/* "python/mvdtool.pyx":81
+ *         return <MVD2.MVD2File*> self._ptr
  * 
  *     def __init__(self, std.string filename):             # <<<<<<<<<<<<<<
  *         self._ptr = new MVD2.MVD2File(filename)
@@ -2275,18 +2933,18 @@ static int __pyx_pw_6python_7mvdtool_8MVD2File_1__init__(PyObject *__pyx_v_self,
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 56, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 81, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
     }
-    __pyx_v_filename = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L3_error)
+    __pyx_v_filename = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 56, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 81, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("python.mvdtool.MVD2File.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2304,35 +2962,26 @@ static int __pyx_pf_6python_7mvdtool_8MVD2File___init__(struct __pyx_obj_6python
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "python/mvdtool.pyx":57
+  /* "python/mvdtool.pyx":82
  * 
  *     def __init__(self, std.string filename):
  *         self._ptr = new MVD2.MVD2File(filename)             # <<<<<<<<<<<<<<
  *         self._autodealoc.reset(self.ptr())
- *         # Immediately load data to column format
+ * 
  */
-  __pyx_v_self->__pyx_base._ptr = new MVD2::MVD2File(__pyx_v_filename);
+  __pyx_v_self->__pyx_base.__pyx_base._ptr = new MVD2::MVD2File(__pyx_v_filename);
 
-  /* "python/mvdtool.pyx":58
+  /* "python/mvdtool.pyx":83
  *     def __init__(self, std.string filename):
  *         self._ptr = new MVD2.MVD2File(filename)
  *         self._autodealoc.reset(self.ptr())             # <<<<<<<<<<<<<<
- *         # Immediately load data to column format
- *         self.ptr().parse(self.colData)
- */
-  __pyx_v_self->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self));
-
-  /* "python/mvdtool.pyx":60
- *         self._autodealoc.reset(self.ptr())
- *         # Immediately load data to column format
- *         self.ptr().parse(self.colData)             # <<<<<<<<<<<<<<
  * 
  *     def getNbMorphoType(self, ):
  */
-  ((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->parse(__pyx_v_self->colData);
+  __pyx_v_self->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self));
 
-  /* "python/mvdtool.pyx":56
- *     cdef MVD2.MVD2ColData colData
+  /* "python/mvdtool.pyx":81
+ *         return <MVD2.MVD2File*> self._ptr
  * 
  *     def __init__(self, std.string filename):             # <<<<<<<<<<<<<<
  *         self._ptr = new MVD2.MVD2File(filename)
@@ -2345,8 +2994,8 @@ static int __pyx_pf_6python_7mvdtool_8MVD2File___init__(struct __pyx_obj_6python
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":62
- *         self.ptr().parse(self.colData)
+/* "python/mvdtool.pyx":85
+ *         self._autodealoc.reset(self.ptr())
  * 
  *     def getNbMorphoType(self, ):             # <<<<<<<<<<<<<<
  *         return self.ptr().getNbMorphoType()
@@ -2372,7 +3021,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_2getNbMorphoType(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getNbMorphoType", 0);
 
-  /* "python/mvdtool.pyx":63
+  /* "python/mvdtool.pyx":86
  * 
  *     def getNbMorphoType(self, ):
  *         return self.ptr().getNbMorphoType()             # <<<<<<<<<<<<<<
@@ -2380,14 +3029,14 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_2getNbMorphoType(struct __p
  *     def getNbMorpho(self, ):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getNbMorphoType()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getNbMorphoType()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":62
- *         self.ptr().parse(self.colData)
+  /* "python/mvdtool.pyx":85
+ *         self._autodealoc.reset(self.ptr())
  * 
  *     def getNbMorphoType(self, ):             # <<<<<<<<<<<<<<
  *         return self.ptr().getNbMorphoType()
@@ -2405,7 +3054,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_2getNbMorphoType(struct __p
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":65
+/* "python/mvdtool.pyx":88
  *         return self.ptr().getNbMorphoType()
  * 
  *     def getNbMorpho(self, ):             # <<<<<<<<<<<<<<
@@ -2432,21 +3081,21 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_4getNbMorpho(struct __pyx_o
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getNbMorpho", 0);
 
-  /* "python/mvdtool.pyx":66
+  /* "python/mvdtool.pyx":89
  * 
  *     def getNbMorpho(self, ):
  *         return self.ptr().getNbMorpho()             # <<<<<<<<<<<<<<
  * 
- *     def getNbNeuron(self, ):
+ *     def getNbColumns(self, ):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getNbMorpho()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getNbMorpho()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":65
+  /* "python/mvdtool.pyx":88
  *         return self.ptr().getNbMorphoType()
  * 
  *     def getNbMorpho(self, ):             # <<<<<<<<<<<<<<
@@ -2465,68 +3114,8 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_4getNbMorpho(struct __pyx_o
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":68
+/* "python/mvdtool.pyx":91
  *         return self.ptr().getNbMorpho()
- * 
- *     def getNbNeuron(self, ):             # <<<<<<<<<<<<<<
- *         return self.ptr().getNbNeuron()
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_7getNbNeuron(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_7getNbNeuron(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("getNbNeuron (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD2File_6getNbNeuron(((struct __pyx_obj_6python_7mvdtool_MVD2File *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_6getNbNeuron(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("getNbNeuron", 0);
-
-  /* "python/mvdtool.pyx":69
- * 
- *     def getNbNeuron(self, ):
- *         return self.ptr().getNbNeuron()             # <<<<<<<<<<<<<<
- * 
- *     def getNbColumns(self, ):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getNbNeuron()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "python/mvdtool.pyx":68
- *         return self.ptr().getNbMorpho()
- * 
- *     def getNbNeuron(self, ):             # <<<<<<<<<<<<<<
- *         return self.ptr().getNbNeuron()
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("python.mvdtool.MVD2File.getNbNeuron", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "python/mvdtool.pyx":71
- *         return self.ptr().getNbNeuron()
  * 
  *     def getNbColumns(self, ):             # <<<<<<<<<<<<<<
  *         return self.ptr().getNbColumns()
@@ -2534,40 +3123,40 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_6getNbNeuron(struct __pyx_o
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_9getNbColumns(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_9getNbColumns(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_7getNbColumns(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_7getNbColumns(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getNbColumns (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD2File_8getNbColumns(((struct __pyx_obj_6python_7mvdtool_MVD2File *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD2File_6getNbColumns(((struct __pyx_obj_6python_7mvdtool_MVD2File *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_8getNbColumns(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_6getNbColumns(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getNbColumns", 0);
 
-  /* "python/mvdtool.pyx":72
+  /* "python/mvdtool.pyx":92
  * 
  *     def getNbColumns(self, ):
  *         return self.ptr().getNbColumns()             # <<<<<<<<<<<<<<
  * 
- *     def getPositions(self,):
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getNbColumns()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getNbColumns()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":71
- *         return self.ptr().getNbNeuron()
+  /* "python/mvdtool.pyx":91
+ *         return self.ptr().getNbMorpho()
  * 
  *     def getNbColumns(self, ):             # <<<<<<<<<<<<<<
  *         return self.ptr().getNbColumns()
@@ -2585,333 +3174,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_8getNbColumns(struct __pyx_
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":74
- *         return self.ptr().getNbColumns()
- * 
- *     def getPositions(self,):             # <<<<<<<<<<<<<<
- *         cdef float * pos_addr = <float*>self.colData.getPositions().data()
- *         cdef float[:,::1]y = <float[:self.colData.getNbNeuron(),:3]> pos_addr
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_11getPositions(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_11getPositions(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("getPositions (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD2File_10getPositions(((struct __pyx_obj_6python_7mvdtool_MVD2File *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_10getPositions(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self) {
-  float *__pyx_v_pos_addr;
-  __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  struct __pyx_array_obj *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  __Pyx_memviewslice __pyx_t_4 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  __Pyx_RefNannySetupContext("getPositions", 0);
-
-  /* "python/mvdtool.pyx":75
- * 
- *     def getPositions(self,):
- *         cdef float * pos_addr = <float*>self.colData.getPositions().data()             # <<<<<<<<<<<<<<
- *         cdef float[:,::1]y = <float[:self.colData.getNbNeuron(),:3]> pos_addr
- *         return numpy.asarray(y)
- */
-  __pyx_v_pos_addr = ((float *)__pyx_v_self->colData.getPositions().data());
-
-  /* "python/mvdtool.pyx":76
- *     def getPositions(self,):
- *         cdef float * pos_addr = <float*>self.colData.getPositions().data()
- *         cdef float[:,::1]y = <float[:self.colData.getNbNeuron(),:3]> pos_addr             # <<<<<<<<<<<<<<
- *         return numpy.asarray(y)
- * 
- */
-  if (!__pyx_v_pos_addr) {
-    PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 76, __pyx_L1_error)
-  }
-  __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_float);
-  __pyx_t_2 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->colData.getNbNeuron()), ((Py_ssize_t)3));
-  if (unlikely(!__pyx_t_3 || !__pyx_t_2 || !PyBytes_AsString(__pyx_t_3))) __PYX_ERR(0, 76, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __pyx_array_new(__pyx_t_2, sizeof(float), PyBytes_AS_STRING(__pyx_t_3), (char *) "c", (char *) __pyx_v_pos_addr);
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(((PyObject *)__pyx_t_1));
-  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 76, __pyx_L1_error)
-  __Pyx_DECREF(((PyObject *)__pyx_t_1)); __pyx_t_1 = 0;
-  __pyx_v_y = __pyx_t_4;
-  __pyx_t_4.memview = NULL;
-  __pyx_t_4.data = NULL;
-
-  /* "python/mvdtool.pyx":77
- *         cdef float * pos_addr = <float*>self.colData.getPositions().data()
- *         cdef float[:,::1]y = <float[:self.colData.getNbNeuron(),:3]> pos_addr
- *         return numpy.asarray(y)             # <<<<<<<<<<<<<<
- * 
- *     def getRotations(self,):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 77, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_y, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_6);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
-    }
-  }
-  if (!__pyx_t_6) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_GOTREF(__pyx_t_3);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
-      __Pyx_GIVEREF(__pyx_t_2);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_2);
-      __pyx_t_2 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
-  goto __pyx_L0;
-
-  /* "python/mvdtool.pyx":74
- *         return self.ptr().getNbColumns()
- * 
- *     def getPositions(self,):             # <<<<<<<<<<<<<<
- *         cdef float * pos_addr = <float*>self.colData.getPositions().data()
- *         cdef float[:,::1]y = <float[:self.colData.getNbNeuron(),:3]> pos_addr
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(((PyObject *)__pyx_t_1));
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_4, 1);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("python.mvdtool.MVD2File.getPositions", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __PYX_XDEC_MEMVIEW(&__pyx_v_y, 1);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "python/mvdtool.pyx":79
- *         return numpy.asarray(y)
- * 
- *     def getRotations(self,):             # <<<<<<<<<<<<<<
- *         cdef float * rot_vec = <float*>self.colData.getRotations().data()
- *         cdef float[:]y = <float[:self.colData.getNbNeuron()]> rot_vec
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_13getRotations(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD2File_13getRotations(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("getRotations (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD2File_12getRotations(((struct __pyx_obj_6python_7mvdtool_MVD2File *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD2File_12getRotations(struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_v_self) {
-  float *__pyx_v_rot_vec;
-  __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  struct __pyx_array_obj *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  __Pyx_memviewslice __pyx_t_4 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  __Pyx_RefNannySetupContext("getRotations", 0);
-
-  /* "python/mvdtool.pyx":80
- * 
- *     def getRotations(self,):
- *         cdef float * rot_vec = <float*>self.colData.getRotations().data()             # <<<<<<<<<<<<<<
- *         cdef float[:]y = <float[:self.colData.getNbNeuron()]> rot_vec
- *         return numpy.asarray(y)
- */
-  __pyx_v_rot_vec = ((float *)__pyx_v_self->colData.getRotations().data());
-
-  /* "python/mvdtool.pyx":81
- *     def getRotations(self,):
- *         cdef float * rot_vec = <float*>self.colData.getRotations().data()
- *         cdef float[:]y = <float[:self.colData.getNbNeuron()]> rot_vec             # <<<<<<<<<<<<<<
- *         return numpy.asarray(y)
- * 
- */
-  if (!__pyx_v_rot_vec) {
-    PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 81, __pyx_L1_error)
-  }
-  __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_float);
-  __pyx_t_2 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->colData.getNbNeuron()));
-  if (unlikely(!__pyx_t_3 || !__pyx_t_2 || !PyBytes_AsString(__pyx_t_3))) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __pyx_array_new(__pyx_t_2, sizeof(float), PyBytes_AS_STRING(__pyx_t_3), (char *) "c", (char *) __pyx_v_rot_vec);
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_ds_float(((PyObject *)__pyx_t_1));
-  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_DECREF(((PyObject *)__pyx_t_1)); __pyx_t_1 = 0;
-  __pyx_v_y = __pyx_t_4;
-  __pyx_t_4.memview = NULL;
-  __pyx_t_4.data = NULL;
-
-  /* "python/mvdtool.pyx":82
- *         cdef float * rot_vec = <float*>self.colData.getRotations().data()
- *         cdef float[:]y = <float[:self.colData.getNbNeuron()]> rot_vec
- *         return numpy.asarray(y)             # <<<<<<<<<<<<<<
- * 
- *     @staticmethod
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 82, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_y, 1, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_6);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
-    }
-  }
-  if (!__pyx_t_6) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_GOTREF(__pyx_t_3);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 82, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
-      __Pyx_GIVEREF(__pyx_t_2);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_2);
-      __pyx_t_2 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
-  goto __pyx_L0;
-
-  /* "python/mvdtool.pyx":79
- *         return numpy.asarray(y)
- * 
- *     def getRotations(self,):             # <<<<<<<<<<<<<<
- *         cdef float * rot_vec = <float*>self.colData.getRotations().data()
- *         cdef float[:]y = <float[:self.colData.getNbNeuron()]> rot_vec
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(((PyObject *)__pyx_t_1));
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_4, 1);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("python.mvdtool.MVD2File.getRotations", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __PYX_XDEC_MEMVIEW(&__pyx_v_y, 1);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "python/mvdtool.pyx":85
+/* "python/mvdtool.pyx":96
  * 
  *     @staticmethod
  *     cdef MVD2File from_ptr(MVD2.MVD2File *ptr):             # <<<<<<<<<<<<<<
@@ -2926,38 +3189,38 @@ static struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_f_6python_7mvdtool_8MVD
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("from_ptr", 0);
 
-  /* "python/mvdtool.pyx":86
+  /* "python/mvdtool.pyx":97
  *     @staticmethod
  *     cdef MVD2File from_ptr(MVD2.MVD2File *ptr):
  *         cdef MVD2File obj = MVD2File.__new__(MVD2File)             # <<<<<<<<<<<<<<
  *         obj._ptr = ptr
  *         obj._autodealoc.reset(obj.ptr())
  */
-  __pyx_t_1 = __pyx_tp_new_6python_7mvdtool_MVD2File(((PyTypeObject *)__pyx_ptype_6python_7mvdtool_MVD2File), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_1 = __pyx_tp_new_6python_7mvdtool_MVD2File(((PyTypeObject *)__pyx_ptype_6python_7mvdtool_MVD2File), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6python_7mvdtool_MVD2File)))) __PYX_ERR(0, 86, __pyx_L1_error)
+  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6python_7mvdtool_MVD2File)))) __PYX_ERR(0, 97, __pyx_L1_error)
   __pyx_v_obj = ((struct __pyx_obj_6python_7mvdtool_MVD2File *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/mvdtool.pyx":87
+  /* "python/mvdtool.pyx":98
  *     cdef MVD2File from_ptr(MVD2.MVD2File *ptr):
  *         cdef MVD2File obj = MVD2File.__new__(MVD2File)
  *         obj._ptr = ptr             # <<<<<<<<<<<<<<
  *         obj._autodealoc.reset(obj.ptr())
  *         return obj
  */
-  __pyx_v_obj->__pyx_base._ptr = __pyx_v_ptr;
+  __pyx_v_obj->__pyx_base.__pyx_base._ptr = __pyx_v_ptr;
 
-  /* "python/mvdtool.pyx":88
+  /* "python/mvdtool.pyx":99
  *         cdef MVD2File obj = MVD2File.__new__(MVD2File)
  *         obj._ptr = ptr
  *         obj._autodealoc.reset(obj.ptr())             # <<<<<<<<<<<<<<
  *         return obj
  * 
  */
-  __pyx_v_obj->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_obj->__pyx_vtab)->ptr(__pyx_v_obj));
+  __pyx_v_obj->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool_MVD2File *)__pyx_v_obj->__pyx_base.__pyx_vtab)->ptr(__pyx_v_obj));
 
-  /* "python/mvdtool.pyx":89
+  /* "python/mvdtool.pyx":100
  *         obj._ptr = ptr
  *         obj._autodealoc.reset(obj.ptr())
  *         return obj             # <<<<<<<<<<<<<<
@@ -2969,7 +3232,7 @@ static struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_f_6python_7mvdtool_8MVD
   __pyx_r = __pyx_v_obj;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":85
+  /* "python/mvdtool.pyx":96
  * 
  *     @staticmethod
  *     cdef MVD2File from_ptr(MVD2.MVD2File *ptr):             # <<<<<<<<<<<<<<
@@ -2989,7 +3252,7 @@ static struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_f_6python_7mvdtool_8MVD
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":92
+/* "python/mvdtool.pyx":103
  * 
  *     @staticmethod
  *     cdef MVD2File from_ref(const MVD2.MVD2File &ref):             # <<<<<<<<<<<<<<
@@ -3003,7 +3266,7 @@ static struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_f_6python_7mvdtool_8MVD
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("from_ref", 0);
 
-  /* "python/mvdtool.pyx":93
+  /* "python/mvdtool.pyx":104
  *     @staticmethod
  *     cdef MVD2File from_ref(const MVD2.MVD2File &ref):
  *         return MVD2File.from_ptr(<MVD2.MVD2File*>&ref)             # <<<<<<<<<<<<<<
@@ -3011,13 +3274,13 @@ static struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_f_6python_7mvdtool_8MVD
  *     @staticmethod
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __pyx_t_1 = ((PyObject *)__pyx_f_6python_7mvdtool_8MVD2File_from_ptr(((MVD2::MVD2File *)(&__pyx_v_ref)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_6python_7mvdtool_8MVD2File_from_ptr(((MVD2::MVD2File *)(&__pyx_v_ref)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((struct __pyx_obj_6python_7mvdtool_MVD2File *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":92
+  /* "python/mvdtool.pyx":103
  * 
  *     @staticmethod
  *     cdef MVD2File from_ref(const MVD2.MVD2File &ref):             # <<<<<<<<<<<<<<
@@ -3036,7 +3299,7 @@ static struct __pyx_obj_6python_7mvdtool_MVD2File *__pyx_f_6python_7mvdtool_8MVD
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":96
+/* "python/mvdtool.pyx":107
  * 
  *     @staticmethod
  *     cdef list vector2list( std.vector[MVD2.MVD2File*] vec ):             # <<<<<<<<<<<<<<
@@ -3054,7 +3317,7 @@ static PyObject *__pyx_f_6python_7mvdtool_8MVD2File_vector2list(std::vector<MVD2
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("vector2list", 0);
 
-  /* "python/mvdtool.pyx":97
+  /* "python/mvdtool.pyx":108
  *     @staticmethod
  *     cdef list vector2list( std.vector[MVD2.MVD2File*] vec ):
  *         return [ MVD2File.from_ptr(elem) for elem in vec ]             # <<<<<<<<<<<<<<
@@ -3062,7 +3325,7 @@ static PyObject *__pyx_f_6python_7mvdtool_8MVD2File_vector2list(std::vector<MVD2
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_v_vec.begin();
   for (;;) {
@@ -3070,16 +3333,16 @@ static PyObject *__pyx_f_6python_7mvdtool_8MVD2File_vector2list(std::vector<MVD2
     __pyx_t_3 = *__pyx_t_2;
     ++__pyx_t_2;
     __pyx_v_elem = __pyx_t_3;
-    __pyx_t_4 = ((PyObject *)__pyx_f_6python_7mvdtool_8MVD2File_from_ptr(__pyx_v_elem)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_4 = ((PyObject *)__pyx_f_6python_7mvdtool_8MVD2File_from_ptr(__pyx_v_elem)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 97, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":96
+  /* "python/mvdtool.pyx":107
  * 
  *     @staticmethod
  *     cdef list vector2list( std.vector[MVD2.MVD2File*] vec ):             # <<<<<<<<<<<<<<
@@ -3099,34 +3362,34 @@ static PyObject *__pyx_f_6python_7mvdtool_8MVD2File_vector2list(std::vector<MVD2
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":112
+/* "python/mvdtool.pyx":123
  * # ----------------------------------------------------------------------------------------------------------------------
- *     cdef unique_ptr[MVD3.Range] _autodealoc
- *     cdef MVD3.Range *ptr(self):             # <<<<<<<<<<<<<<
- *         return <MVD3.Range*> self._ptr
+ *     cdef unique_ptr[MVD.Range] _autodealoc
+ *     cdef MVD.Range *ptr(self):             # <<<<<<<<<<<<<<
+ *         return <MVD.Range*> self._ptr
  * 
  */
 
-static MVD3::Range *__pyx_f_6python_7mvdtool_11_MVD3_Range_ptr(struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_self) {
-  MVD3::Range *__pyx_r;
+static MVD::Range *__pyx_f_6python_7mvdtool_10_MVD_Range_ptr(struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_self) {
+  MVD::Range *__pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("ptr", 0);
 
-  /* "python/mvdtool.pyx":113
- *     cdef unique_ptr[MVD3.Range] _autodealoc
- *     cdef MVD3.Range *ptr(self):
- *         return <MVD3.Range*> self._ptr             # <<<<<<<<<<<<<<
+  /* "python/mvdtool.pyx":124
+ *     cdef unique_ptr[MVD.Range] _autodealoc
+ *     cdef MVD.Range *ptr(self):
+ *         return <MVD.Range*> self._ptr             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_r = ((MVD3::Range *)__pyx_v_self->__pyx_base._ptr);
+  __pyx_r = ((MVD::Range *)__pyx_v_self->__pyx_base._ptr);
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":112
+  /* "python/mvdtool.pyx":123
  * # ----------------------------------------------------------------------------------------------------------------------
- *     cdef unique_ptr[MVD3.Range] _autodealoc
- *     cdef MVD3.Range *ptr(self):             # <<<<<<<<<<<<<<
- *         return <MVD3.Range*> self._ptr
+ *     cdef unique_ptr[MVD.Range] _autodealoc
+ *     cdef MVD.Range *ptr(self):             # <<<<<<<<<<<<<<
+ *         return <MVD.Range*> self._ptr
  * 
  */
 
@@ -3136,17 +3399,17 @@ static MVD3::Range *__pyx_f_6python_7mvdtool_11_MVD3_Range_ptr(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":116
+/* "python/mvdtool.pyx":127
  * 
  * 
- *     def __init__(self, std.size_t offset_, std.size_t count_):             # <<<<<<<<<<<<<<
- *         self._ptr = new MVD3.Range(offset_, count_)
+ *     def __init__(self, std.size_t offset_=0, std.size_t count_=0):             # <<<<<<<<<<<<<<
+ *         self._ptr = new MVD.Range(offset_, count_)
  *         self._autodealoc.reset(self.ptr())
  */
 
 /* Python wrapper */
-static int __pyx_pw_6python_7mvdtool_11_MVD3_Range_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_6python_7mvdtool_11_MVD3_Range_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_6python_7mvdtool_10_MVD_Range_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_6python_7mvdtool_10_MVD_Range_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   std::size_t __pyx_v_offset_;
   std::size_t __pyx_v_count_;
   int __pyx_r;
@@ -3167,69 +3430,81 @@ static int __pyx_pw_6python_7mvdtool_11_MVD3_Range_1__init__(PyObject *__pyx_v_s
       kw_args = PyDict_Size(__pyx_kwds);
       switch (pos_args) {
         case  0:
-        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_offset)) != 0)) kw_args--;
-        else goto __pyx_L5_argtuple_error;
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_offset);
+          if (value) { values[0] = value; kw_args--; }
+        }
         case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_count)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(0, 116, __pyx_L3_error)
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_count);
+          if (value) { values[1] = value; kw_args--; }
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 116, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 127, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
-      goto __pyx_L5_argtuple_error;
     } else {
-      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
     }
-    __pyx_v_offset_ = __Pyx_PyInt_As_std_3a__3a_size_t(values[0]); if (unlikely((__pyx_v_offset_ == ((std::size_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 116, __pyx_L3_error)
-    __pyx_v_count_ = __Pyx_PyInt_As_std_3a__3a_size_t(values[1]); if (unlikely((__pyx_v_count_ == ((std::size_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 116, __pyx_L3_error)
+    if (values[0]) {
+      __pyx_v_offset_ = __Pyx_PyInt_As_std_3a__3a_size_t(values[0]); if (unlikely((__pyx_v_offset_ == ((std::size_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L3_error)
+    } else {
+      __pyx_v_offset_ = ((std::size_t)0);
+    }
+    if (values[1]) {
+      __pyx_v_count_ = __Pyx_PyInt_As_std_3a__3a_size_t(values[1]); if (unlikely((__pyx_v_count_ == ((std::size_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L3_error)
+    } else {
+      __pyx_v_count_ = ((std::size_t)0);
+    }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 116, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 127, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("python.mvdtool._MVD3_Range.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("python.mvdtool._MVD_Range.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6python_7mvdtool_11_MVD3_Range___init__(((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_self), __pyx_v_offset_, __pyx_v_count_);
+  __pyx_r = __pyx_pf_6python_7mvdtool_10_MVD_Range___init__(((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_v_self), __pyx_v_offset_, __pyx_v_count_);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_6python_7mvdtool_11_MVD3_Range___init__(struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_self, std::size_t __pyx_v_offset_, std::size_t __pyx_v_count_) {
+static int __pyx_pf_6python_7mvdtool_10_MVD_Range___init__(struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_self, std::size_t __pyx_v_offset_, std::size_t __pyx_v_count_) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "python/mvdtool.pyx":117
+  /* "python/mvdtool.pyx":128
  * 
- *     def __init__(self, std.size_t offset_, std.size_t count_):
- *         self._ptr = new MVD3.Range(offset_, count_)             # <<<<<<<<<<<<<<
+ *     def __init__(self, std.size_t offset_=0, std.size_t count_=0):
+ *         self._ptr = new MVD.Range(offset_, count_)             # <<<<<<<<<<<<<<
  *         self._autodealoc.reset(self.ptr())
  * 
  */
-  __pyx_v_self->__pyx_base._ptr = new MVD3::Range(__pyx_v_offset_, __pyx_v_count_);
+  __pyx_v_self->__pyx_base._ptr = new MVD::Range(__pyx_v_offset_, __pyx_v_count_);
 
-  /* "python/mvdtool.pyx":118
- *     def __init__(self, std.size_t offset_, std.size_t count_):
- *         self._ptr = new MVD3.Range(offset_, count_)
+  /* "python/mvdtool.pyx":129
+ *     def __init__(self, std.size_t offset_=0, std.size_t count_=0):
+ *         self._ptr = new MVD.Range(offset_, count_)
  *         self._autodealoc.reset(self.ptr())             # <<<<<<<<<<<<<<
  * 
  *     @staticmethod
  */
-  __pyx_v_self->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self));
+  __pyx_v_self->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self));
 
-  /* "python/mvdtool.pyx":116
+  /* "python/mvdtool.pyx":127
  * 
  * 
- *     def __init__(self, std.size_t offset_, std.size_t count_):             # <<<<<<<<<<<<<<
- *         self._ptr = new MVD3.Range(offset_, count_)
+ *     def __init__(self, std.size_t offset_=0, std.size_t count_=0):             # <<<<<<<<<<<<<<
+ *         self._ptr = new MVD.Range(offset_, count_)
  *         self._autodealoc.reset(self.ptr())
  */
 
@@ -3239,53 +3514,53 @@ static int __pyx_pf_6python_7mvdtool_11_MVD3_Range___init__(struct __pyx_obj_6py
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":121
+/* "python/mvdtool.pyx":132
  * 
  *     @staticmethod
- *     cdef _MVD3_Range from_ptr(MVD3.Range *ptr):             # <<<<<<<<<<<<<<
- *         cdef _MVD3_Range obj = _MVD3_Range.__new__(_MVD3_Range)
+ *     cdef _MVD_Range from_ptr(MVD.Range *ptr):             # <<<<<<<<<<<<<<
+ *         cdef _MVD_Range obj = _MVD_Range.__new__(_MVD_Range)
  *         obj._ptr = ptr
  */
 
-static struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_f_6python_7mvdtool_11_MVD3_Range_from_ptr(MVD3::Range *__pyx_v_ptr) {
-  struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_obj = 0;
-  struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_r = NULL;
+static struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_f_6python_7mvdtool_10_MVD_Range_from_ptr(MVD::Range *__pyx_v_ptr) {
+  struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_obj = 0;
+  struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("from_ptr", 0);
 
-  /* "python/mvdtool.pyx":122
+  /* "python/mvdtool.pyx":133
  *     @staticmethod
- *     cdef _MVD3_Range from_ptr(MVD3.Range *ptr):
- *         cdef _MVD3_Range obj = _MVD3_Range.__new__(_MVD3_Range)             # <<<<<<<<<<<<<<
+ *     cdef _MVD_Range from_ptr(MVD.Range *ptr):
+ *         cdef _MVD_Range obj = _MVD_Range.__new__(_MVD_Range)             # <<<<<<<<<<<<<<
  *         obj._ptr = ptr
  *         obj._autodealoc.reset(obj.ptr())
  */
-  __pyx_t_1 = __pyx_tp_new_6python_7mvdtool__MVD3_Range(((PyTypeObject *)__pyx_ptype_6python_7mvdtool__MVD3_Range), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_1 = __pyx_tp_new_6python_7mvdtool__MVD_Range(((PyTypeObject *)__pyx_ptype_6python_7mvdtool__MVD_Range), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6python_7mvdtool__MVD3_Range)))) __PYX_ERR(0, 122, __pyx_L1_error)
-  __pyx_v_obj = ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_t_1);
+  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6python_7mvdtool__MVD_Range)))) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_v_obj = ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/mvdtool.pyx":123
- *     cdef _MVD3_Range from_ptr(MVD3.Range *ptr):
- *         cdef _MVD3_Range obj = _MVD3_Range.__new__(_MVD3_Range)
+  /* "python/mvdtool.pyx":134
+ *     cdef _MVD_Range from_ptr(MVD.Range *ptr):
+ *         cdef _MVD_Range obj = _MVD_Range.__new__(_MVD_Range)
  *         obj._ptr = ptr             # <<<<<<<<<<<<<<
  *         obj._autodealoc.reset(obj.ptr())
  *         return obj
  */
   __pyx_v_obj->__pyx_base._ptr = __pyx_v_ptr;
 
-  /* "python/mvdtool.pyx":124
- *         cdef _MVD3_Range obj = _MVD3_Range.__new__(_MVD3_Range)
+  /* "python/mvdtool.pyx":135
+ *         cdef _MVD_Range obj = _MVD_Range.__new__(_MVD_Range)
  *         obj._ptr = ptr
  *         obj._autodealoc.reset(obj.ptr())             # <<<<<<<<<<<<<<
  *         return obj
  * 
  */
-  __pyx_v_obj->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_obj->__pyx_vtab)->ptr(__pyx_v_obj));
+  __pyx_v_obj->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_obj->__pyx_vtab)->ptr(__pyx_v_obj));
 
-  /* "python/mvdtool.pyx":125
+  /* "python/mvdtool.pyx":136
  *         obj._ptr = ptr
  *         obj._autodealoc.reset(obj.ptr())
  *         return obj             # <<<<<<<<<<<<<<
@@ -3297,18 +3572,18 @@ static struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_f_6python_7mvdtool_1
   __pyx_r = __pyx_v_obj;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":121
+  /* "python/mvdtool.pyx":132
  * 
  *     @staticmethod
- *     cdef _MVD3_Range from_ptr(MVD3.Range *ptr):             # <<<<<<<<<<<<<<
- *         cdef _MVD3_Range obj = _MVD3_Range.__new__(_MVD3_Range)
+ *     cdef _MVD_Range from_ptr(MVD.Range *ptr):             # <<<<<<<<<<<<<<
+ *         cdef _MVD_Range obj = _MVD_Range.__new__(_MVD_Range)
  *         obj._ptr = ptr
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("python.mvdtool._MVD3_Range.from_ptr", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("python.mvdtool._MVD_Range.from_ptr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_obj);
@@ -3317,46 +3592,46 @@ static struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_f_6python_7mvdtool_1
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":128
+/* "python/mvdtool.pyx":139
  * 
  *     @staticmethod
- *     cdef _MVD3_Range from_ref(const MVD3.Range &ref):             # <<<<<<<<<<<<<<
- *         return _MVD3_Range.from_ptr(<MVD3.Range*>&ref)
+ *     cdef _MVD_Range from_ref(const MVD.Range &ref):             # <<<<<<<<<<<<<<
+ *         return _MVD_Range.from_ptr(<MVD.Range*>&ref)
  * 
  */
 
-static struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_f_6python_7mvdtool_11_MVD3_Range_from_ref(MVD3::Range const &__pyx_v_ref) {
-  struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_r = NULL;
+static struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_f_6python_7mvdtool_10_MVD_Range_from_ref(MVD::Range const &__pyx_v_ref) {
+  struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("from_ref", 0);
 
-  /* "python/mvdtool.pyx":129
+  /* "python/mvdtool.pyx":140
  *     @staticmethod
- *     cdef _MVD3_Range from_ref(const MVD3.Range &ref):
- *         return _MVD3_Range.from_ptr(<MVD3.Range*>&ref)             # <<<<<<<<<<<<<<
+ *     cdef _MVD_Range from_ref(const MVD.Range &ref):
+ *         return _MVD_Range.from_ptr(<MVD.Range*>&ref)             # <<<<<<<<<<<<<<
  * 
  *     @staticmethod
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __pyx_t_1 = ((PyObject *)__pyx_f_6python_7mvdtool_11_MVD3_Range_from_ptr(((MVD3::Range *)(&__pyx_v_ref)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_6python_7mvdtool_10_MVD_Range_from_ptr(((MVD::Range *)(&__pyx_v_ref)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_t_1);
+  __pyx_r = ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":128
+  /* "python/mvdtool.pyx":139
  * 
  *     @staticmethod
- *     cdef _MVD3_Range from_ref(const MVD3.Range &ref):             # <<<<<<<<<<<<<<
- *         return _MVD3_Range.from_ptr(<MVD3.Range*>&ref)
+ *     cdef _MVD_Range from_ref(const MVD.Range &ref):             # <<<<<<<<<<<<<<
+ *         return _MVD_Range.from_ptr(<MVD.Range*>&ref)
  * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("python.mvdtool._MVD3_Range.from_ref", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("python.mvdtool._MVD_Range.from_ref", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
@@ -3364,33 +3639,33 @@ static struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_f_6python_7mvdtool_1
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":132
+/* "python/mvdtool.pyx":143
  * 
  *     @staticmethod
- *     cdef list vector2list( std.vector[MVD3.Range*] vec ):             # <<<<<<<<<<<<<<
- *         return [ _MVD3_Range.from_ptr(elem) for elem in vec ]
+ *     cdef list vector2list( std.vector[MVD.Range*] vec ):             # <<<<<<<<<<<<<<
+ *         return [ _MVD_Range.from_ptr(elem) for elem in vec ]
  * 
  */
 
-static PyObject *__pyx_f_6python_7mvdtool_11_MVD3_Range_vector2list(std::vector<MVD3::Range *>  __pyx_v_vec) {
-  MVD3::Range *__pyx_v_elem;
+static PyObject *__pyx_f_6python_7mvdtool_10_MVD_Range_vector2list(std::vector<MVD::Range *>  __pyx_v_vec) {
+  MVD::Range *__pyx_v_elem;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  std::vector<MVD3::Range *> ::iterator __pyx_t_2;
-  MVD3::Range *__pyx_t_3;
+  std::vector<MVD::Range *> ::iterator __pyx_t_2;
+  MVD::Range *__pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("vector2list", 0);
 
-  /* "python/mvdtool.pyx":133
+  /* "python/mvdtool.pyx":144
  *     @staticmethod
- *     cdef list vector2list( std.vector[MVD3.Range*] vec ):
- *         return [ _MVD3_Range.from_ptr(elem) for elem in vec ]             # <<<<<<<<<<<<<<
+ *     cdef list vector2list( std.vector[MVD.Range*] vec ):
+ *         return [ _MVD_Range.from_ptr(elem) for elem in vec ]             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_v_vec.begin();
   for (;;) {
@@ -3398,20 +3673,20 @@ static PyObject *__pyx_f_6python_7mvdtool_11_MVD3_Range_vector2list(std::vector<
     __pyx_t_3 = *__pyx_t_2;
     ++__pyx_t_2;
     __pyx_v_elem = __pyx_t_3;
-    __pyx_t_4 = ((PyObject *)__pyx_f_6python_7mvdtool_11_MVD3_Range_from_ptr(__pyx_v_elem)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_4 = ((PyObject *)__pyx_f_6python_7mvdtool_10_MVD_Range_from_ptr(__pyx_v_elem)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 133, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":132
+  /* "python/mvdtool.pyx":143
  * 
  *     @staticmethod
- *     cdef list vector2list( std.vector[MVD3.Range*] vec ):             # <<<<<<<<<<<<<<
- *         return [ _MVD3_Range.from_ptr(elem) for elem in vec ]
+ *     cdef list vector2list( std.vector[MVD.Range*] vec ):             # <<<<<<<<<<<<<<
+ *         return [ _MVD_Range.from_ptr(elem) for elem in vec ]
  * 
  */
 
@@ -3419,7 +3694,7 @@ static PyObject *__pyx_f_6python_7mvdtool_11_MVD3_Range_vector2list(std::vector<
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("python.mvdtool._MVD3_Range.vector2list", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("python.mvdtool._MVD_Range.vector2list", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3427,7 +3702,7 @@ static PyObject *__pyx_f_6python_7mvdtool_11_MVD3_Range_vector2list(std::vector<
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":142
+/* "python/mvdtool.pyx":153
  * # ----------------------------------------------------------------------------------------------------------------------
  *     cdef unique_ptr[MVD3.MVD3File] _autodealoc
  *     cdef MVD3.MVD3File *ptr(self):             # <<<<<<<<<<<<<<
@@ -3440,17 +3715,17 @@ static MVD3::MVD3File *__pyx_f_6python_7mvdtool_8MVD3File_ptr(struct __pyx_obj_6
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("ptr", 0);
 
-  /* "python/mvdtool.pyx":143
+  /* "python/mvdtool.pyx":154
  *     cdef unique_ptr[MVD3.MVD3File] _autodealoc
  *     cdef MVD3.MVD3File *ptr(self):
  *         return <MVD3.MVD3File*> self._ptr             # <<<<<<<<<<<<<<
  * 
  *     def __init__(self, std.string filename):
  */
-  __pyx_r = ((MVD3::MVD3File *)__pyx_v_self->__pyx_base._ptr);
+  __pyx_r = ((MVD3::MVD3File *)__pyx_v_self->__pyx_base.__pyx_base._ptr);
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":142
+  /* "python/mvdtool.pyx":153
  * # ----------------------------------------------------------------------------------------------------------------------
  *     cdef unique_ptr[MVD3.MVD3File] _autodealoc
  *     cdef MVD3.MVD3File *ptr(self):             # <<<<<<<<<<<<<<
@@ -3464,7 +3739,7 @@ static MVD3::MVD3File *__pyx_f_6python_7mvdtool_8MVD3File_ptr(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":145
+/* "python/mvdtool.pyx":156
  *         return <MVD3.MVD3File*> self._ptr
  * 
  *     def __init__(self, std.string filename):             # <<<<<<<<<<<<<<
@@ -3497,18 +3772,18 @@ static int __pyx_pw_6python_7mvdtool_8MVD3File_1__init__(PyObject *__pyx_v_self,
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 145, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 156, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
     }
-    __pyx_v_filename = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 145, __pyx_L3_error)
+    __pyx_v_filename = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 156, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 145, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 156, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("python.mvdtool.MVD3File.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3526,25 +3801,25 @@ static int __pyx_pf_6python_7mvdtool_8MVD3File___init__(struct __pyx_obj_6python
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "python/mvdtool.pyx":146
+  /* "python/mvdtool.pyx":157
  * 
  *     def __init__(self, std.string filename):
  *         self._ptr = new MVD3.MVD3File(filename)             # <<<<<<<<<<<<<<
  *         self._autodealoc.reset(self.ptr())
  * 
  */
-  __pyx_v_self->__pyx_base._ptr = new MVD3::MVD3File(__pyx_v_filename);
+  __pyx_v_self->__pyx_base.__pyx_base._ptr = new MVD3::MVD3File(__pyx_v_filename);
 
-  /* "python/mvdtool.pyx":147
+  /* "python/mvdtool.pyx":158
  *     def __init__(self, std.string filename):
  *         self._ptr = new MVD3.MVD3File(filename)
  *         self._autodealoc.reset(self.ptr())             # <<<<<<<<<<<<<<
  * 
- *     def getNbNeuron(self, ):
+ *     def getMorphologies(self, _MVD_Range range):
  */
-  __pyx_v_self->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self));
+  __pyx_v_self->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self));
 
-  /* "python/mvdtool.pyx":145
+  /* "python/mvdtool.pyx":156
  *         return <MVD3.MVD3File*> self._ptr
  * 
  *     def __init__(self, std.string filename):             # <<<<<<<<<<<<<<
@@ -3558,593 +3833,22 @@ static int __pyx_pf_6python_7mvdtool_8MVD3File___init__(struct __pyx_obj_6python
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":149
+/* "python/mvdtool.pyx":160
  *         self._autodealoc.reset(self.ptr())
  * 
- *     def getNbNeuron(self, ):             # <<<<<<<<<<<<<<
- *         return self.ptr().getNbNeuron()
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_3getNbNeuron(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_3getNbNeuron(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("getNbNeuron (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_2getNbNeuron(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_2getNbNeuron(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("getNbNeuron", 0);
-
-  /* "python/mvdtool.pyx":150
- * 
- *     def getNbNeuron(self, ):
- *         return self.ptr().getNbNeuron()             # <<<<<<<<<<<<<<
- * 
- *     def getPositions(self, _MVD3_Range range_=None):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getNbNeuron()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "python/mvdtool.pyx":149
- *         self._autodealoc.reset(self.ptr())
- * 
- *     def getNbNeuron(self, ):             # <<<<<<<<<<<<<<
- *         return self.ptr().getNbNeuron()
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("python.mvdtool.MVD3File.getNbNeuron", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "python/mvdtool.pyx":152
- *         return self.ptr().getNbNeuron()
- * 
- *     def getPositions(self, _MVD3_Range range_=None):             # <<<<<<<<<<<<<<
- *         cdef MVD3.Positions* posics
- *         if range_ is None:
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_5getPositions(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_5getPositions(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range_ = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("getPositions (wrapper)", 0);
-  {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_range,0};
-    PyObject* values[1] = {0};
-    values[0] = (PyObject *)((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)Py_None);
-    if (unlikely(__pyx_kwds)) {
-      Py_ssize_t kw_args;
-      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
-      switch (pos_args) {
-        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      kw_args = PyDict_Size(__pyx_kwds);
-      switch (pos_args) {
-        case  0:
-        if (kw_args > 0) {
-          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_range);
-          if (value) { values[0] = value; kw_args--; }
-        }
-      }
-      if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "getPositions") < 0)) __PYX_ERR(0, 152, __pyx_L3_error)
-      }
-    } else {
-      switch (PyTuple_GET_SIZE(__pyx_args)) {
-        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-    }
-    __pyx_v_range_ = ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)values[0]);
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("getPositions", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 152, __pyx_L3_error)
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("python.mvdtool.MVD3File.getPositions", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range_), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range_", 0))) __PYX_ERR(0, 152, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_4getPositions(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), __pyx_v_range_);
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_4getPositions(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range_) {
-  MVD3::Positions *__pyx_v_posics;
-  double *__pyx_v_addr;
-  boost::detail::multi_array::size_type const *__pyx_v_shape;
-  CYTHON_UNUSED int __pyx_v_x1;
-  CYTHON_UNUSED int __pyx_v_x2;
-  __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  struct __pyx_array_obj *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  __Pyx_RefNannySetupContext("getPositions", 0);
-
-  /* "python/mvdtool.pyx":154
- *     def getPositions(self, _MVD3_Range range_=None):
- *         cdef MVD3.Positions* posics
- *         if range_ is None:             # <<<<<<<<<<<<<<
- *             posics = new MVD3.Positions(self.ptr().getPositions())
- *         else:
- */
-  __pyx_t_1 = (((PyObject *)__pyx_v_range_) == Py_None);
-  __pyx_t_2 = (__pyx_t_1 != 0);
-  if (__pyx_t_2) {
-
-    /* "python/mvdtool.pyx":155
- *         cdef MVD3.Positions* posics
- *         if range_ is None:
- *             posics = new MVD3.Positions(self.ptr().getPositions())             # <<<<<<<<<<<<<<
- *         else:
- *             posics = new MVD3.Positions(self.ptr().getPositions(deref(range_.ptr())))
- */
-    __pyx_v_posics = new MVD3::Positions(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getPositions());
-
-    /* "python/mvdtool.pyx":154
- *     def getPositions(self, _MVD3_Range range_=None):
- *         cdef MVD3.Positions* posics
- *         if range_ is None:             # <<<<<<<<<<<<<<
- *             posics = new MVD3.Positions(self.ptr().getPositions())
- *         else:
- */
-    goto __pyx_L3;
-  }
-
-  /* "python/mvdtool.pyx":157
- *             posics = new MVD3.Positions(self.ptr().getPositions())
- *         else:
- *             posics = new MVD3.Positions(self.ptr().getPositions(deref(range_.ptr())))             # <<<<<<<<<<<<<<
- *         cdef double *addr = posics.data()
- *         cdef const boost.size_type* shape = posics.shape()
- */
-  /*else*/ {
-    __pyx_v_posics = new MVD3::Positions(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getPositions((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range_->__pyx_vtab)->ptr(__pyx_v_range_))));
-  }
-  __pyx_L3:;
-
-  /* "python/mvdtool.pyx":158
- *         else:
- *             posics = new MVD3.Positions(self.ptr().getPositions(deref(range_.ptr())))
- *         cdef double *addr = posics.data()             # <<<<<<<<<<<<<<
- *         cdef const boost.size_type* shape = posics.shape()
- *         cdef int x1=shape[0], x2=shape[1]
- */
-  __pyx_v_addr = __pyx_v_posics->data();
-
-  /* "python/mvdtool.pyx":159
- *             posics = new MVD3.Positions(self.ptr().getPositions(deref(range_.ptr())))
- *         cdef double *addr = posics.data()
- *         cdef const boost.size_type* shape = posics.shape()             # <<<<<<<<<<<<<<
- *         cdef int x1=shape[0], x2=shape[1]
- *         cdef double[:,::1]y = <double[:x1,:x2]> addr
- */
-  __pyx_v_shape = __pyx_v_posics->shape();
-
-  /* "python/mvdtool.pyx":160
- *         cdef double *addr = posics.data()
- *         cdef const boost.size_type* shape = posics.shape()
- *         cdef int x1=shape[0], x2=shape[1]             # <<<<<<<<<<<<<<
- *         cdef double[:,::1]y = <double[:x1,:x2]> addr
- *         return numpy.asarray(y)
- */
-  __pyx_v_x1 = (__pyx_v_shape[0]);
-  __pyx_v_x2 = (__pyx_v_shape[1]);
-
-  /* "python/mvdtool.pyx":161
- *         cdef const boost.size_type* shape = posics.shape()
- *         cdef int x1=shape[0], x2=shape[1]
- *         cdef double[:,::1]y = <double[:x1,:x2]> addr             # <<<<<<<<<<<<<<
- *         return numpy.asarray(y)
- * 
- */
-  if (!__pyx_v_addr) {
-    PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 161, __pyx_L1_error)
-  }
-  __pyx_t_5 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_double);
-  __pyx_t_4 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_x1), ((Py_ssize_t)__pyx_v_x2));
-  if (unlikely(!__pyx_t_5 || !__pyx_t_4 || !PyBytes_AsString(__pyx_t_5))) __PYX_ERR(0, 161, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __pyx_array_new(__pyx_t_4, sizeof(double), PyBytes_AS_STRING(__pyx_t_5), (char *) "c", (char *) __pyx_v_addr);
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(((PyObject *)__pyx_t_3));
-  if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 161, __pyx_L1_error)
-  __Pyx_DECREF(((PyObject *)__pyx_t_3)); __pyx_t_3 = 0;
-  __pyx_v_y = __pyx_t_6;
-  __pyx_t_6.memview = NULL;
-  __pyx_t_6.data = NULL;
-
-  /* "python/mvdtool.pyx":162
- *         cdef int x1=shape[0], x2=shape[1]
- *         cdef double[:,::1]y = <double[:x1,:x2]> addr
- *         return numpy.asarray(y)             # <<<<<<<<<<<<<<
- * 
- *     def getRotations(self, _MVD3_Range range_):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 162, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_y, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_8 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
-    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
-    if (likely(__pyx_t_8)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-      __Pyx_INCREF(__pyx_t_8);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_7, function);
-    }
-  }
-  if (!__pyx_t_8) {
-    __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GOTREF(__pyx_t_5);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_7)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_4};
-      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_4};
-      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 162, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
-      __Pyx_GIVEREF(__pyx_t_4);
-      PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_4);
-      __pyx_t_4 = 0;
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_r = __pyx_t_5;
-  __pyx_t_5 = 0;
-  goto __pyx_L0;
-
-  /* "python/mvdtool.pyx":152
- *         return self.ptr().getNbNeuron()
- * 
- *     def getPositions(self, _MVD3_Range range_=None):             # <<<<<<<<<<<<<<
- *         cdef MVD3.Positions* posics
- *         if range_ is None:
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(((PyObject *)__pyx_t_3));
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("python.mvdtool.MVD3File.getPositions", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __PYX_XDEC_MEMVIEW(&__pyx_v_y, 1);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "python/mvdtool.pyx":164
- *         return numpy.asarray(y)
- * 
- *     def getRotations(self, _MVD3_Range range_):             # <<<<<<<<<<<<<<
- *         cdef MVD3.Rotations *rots
- *         if range_ is None:
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_7getRotations(PyObject *__pyx_v_self, PyObject *__pyx_v_range_); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_7getRotations(PyObject *__pyx_v_self, PyObject *__pyx_v_range_) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("getRotations (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range_), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range_", 0))) __PYX_ERR(0, 164, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_6getRotations(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_range_));
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_6getRotations(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range_) {
-  MVD3::Rotations *__pyx_v_rots;
-  double *__pyx_v_addr;
-  boost::detail::multi_array::size_type const *__pyx_v_shape;
-  CYTHON_UNUSED int __pyx_v_x1;
-  CYTHON_UNUSED int __pyx_v_x2;
-  __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  struct __pyx_array_obj *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  __Pyx_RefNannySetupContext("getRotations", 0);
-
-  /* "python/mvdtool.pyx":166
- *     def getRotations(self, _MVD3_Range range_):
- *         cdef MVD3.Rotations *rots
- *         if range_ is None:             # <<<<<<<<<<<<<<
- *             rots = new MVD3.Rotations(self.ptr().getRotations())
- *         else:
- */
-  __pyx_t_1 = (((PyObject *)__pyx_v_range_) == Py_None);
-  __pyx_t_2 = (__pyx_t_1 != 0);
-  if (__pyx_t_2) {
-
-    /* "python/mvdtool.pyx":167
- *         cdef MVD3.Rotations *rots
- *         if range_ is None:
- *             rots = new MVD3.Rotations(self.ptr().getRotations())             # <<<<<<<<<<<<<<
- *         else:
- *             rots = new MVD3.Rotations(self.ptr().getRotations(deref(range_.ptr())))
- */
-    __pyx_v_rots = new MVD3::Rotations(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getRotations());
-
-    /* "python/mvdtool.pyx":166
- *     def getRotations(self, _MVD3_Range range_):
- *         cdef MVD3.Rotations *rots
- *         if range_ is None:             # <<<<<<<<<<<<<<
- *             rots = new MVD3.Rotations(self.ptr().getRotations())
- *         else:
- */
-    goto __pyx_L3;
-  }
-
-  /* "python/mvdtool.pyx":169
- *             rots = new MVD3.Rotations(self.ptr().getRotations())
- *         else:
- *             rots = new MVD3.Rotations(self.ptr().getRotations(deref(range_.ptr())))             # <<<<<<<<<<<<<<
- *         cdef double *addr = rots.data()
- *         cdef const boost.size_type* shape = rots.shape()
- */
-  /*else*/ {
-    __pyx_v_rots = new MVD3::Rotations(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getRotations((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range_->__pyx_vtab)->ptr(__pyx_v_range_))));
-  }
-  __pyx_L3:;
-
-  /* "python/mvdtool.pyx":170
- *         else:
- *             rots = new MVD3.Rotations(self.ptr().getRotations(deref(range_.ptr())))
- *         cdef double *addr = rots.data()             # <<<<<<<<<<<<<<
- *         cdef const boost.size_type* shape = rots.shape()
- *         cdef int x1=shape[0], x2=shape[1]
- */
-  __pyx_v_addr = __pyx_v_rots->data();
-
-  /* "python/mvdtool.pyx":171
- *             rots = new MVD3.Rotations(self.ptr().getRotations(deref(range_.ptr())))
- *         cdef double *addr = rots.data()
- *         cdef const boost.size_type* shape = rots.shape()             # <<<<<<<<<<<<<<
- *         cdef int x1=shape[0], x2=shape[1]
- *         cdef double[:,::1]y = <double[:x1,:x2]> addr
- */
-  __pyx_v_shape = __pyx_v_rots->shape();
-
-  /* "python/mvdtool.pyx":172
- *         cdef double *addr = rots.data()
- *         cdef const boost.size_type* shape = rots.shape()
- *         cdef int x1=shape[0], x2=shape[1]             # <<<<<<<<<<<<<<
- *         cdef double[:,::1]y = <double[:x1,:x2]> addr
- *         return numpy.asarray(y)
- */
-  __pyx_v_x1 = (__pyx_v_shape[0]);
-  __pyx_v_x2 = (__pyx_v_shape[1]);
-
-  /* "python/mvdtool.pyx":173
- *         cdef const boost.size_type* shape = rots.shape()
- *         cdef int x1=shape[0], x2=shape[1]
- *         cdef double[:,::1]y = <double[:x1,:x2]> addr             # <<<<<<<<<<<<<<
- *         return numpy.asarray(y)
- * 
- */
-  if (!__pyx_v_addr) {
-    PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 173, __pyx_L1_error)
-  }
-  __pyx_t_5 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_double);
-  __pyx_t_4 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_x1), ((Py_ssize_t)__pyx_v_x2));
-  if (unlikely(!__pyx_t_5 || !__pyx_t_4 || !PyBytes_AsString(__pyx_t_5))) __PYX_ERR(0, 173, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __pyx_array_new(__pyx_t_4, sizeof(double), PyBytes_AS_STRING(__pyx_t_5), (char *) "c", (char *) __pyx_v_addr);
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 173, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(((PyObject *)__pyx_t_3));
-  if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 173, __pyx_L1_error)
-  __Pyx_DECREF(((PyObject *)__pyx_t_3)); __pyx_t_3 = 0;
-  __pyx_v_y = __pyx_t_6;
-  __pyx_t_6.memview = NULL;
-  __pyx_t_6.data = NULL;
-
-  /* "python/mvdtool.pyx":174
- *         cdef int x1=shape[0], x2=shape[1]
- *         cdef double[:,::1]y = <double[:x1,:x2]> addr
- *         return numpy.asarray(y)             # <<<<<<<<<<<<<<
- * 
- *     def getMorphologies(self, _MVD3_Range range):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 174, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 174, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_y, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 174, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_8 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
-    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
-    if (likely(__pyx_t_8)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-      __Pyx_INCREF(__pyx_t_8);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_7, function);
-    }
-  }
-  if (!__pyx_t_8) {
-    __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 174, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GOTREF(__pyx_t_5);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_7)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_4};
-      __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 174, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_4};
-      __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 174, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 174, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
-      __Pyx_GIVEREF(__pyx_t_4);
-      PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_4);
-      __pyx_t_4 = 0;
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 174, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_r = __pyx_t_5;
-  __pyx_t_5 = 0;
-  goto __pyx_L0;
-
-  /* "python/mvdtool.pyx":164
- *         return numpy.asarray(y)
- * 
- *     def getRotations(self, _MVD3_Range range_):             # <<<<<<<<<<<<<<
- *         cdef MVD3.Rotations *rots
- *         if range_ is None:
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(((PyObject *)__pyx_t_3));
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("python.mvdtool.MVD3File.getRotations", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __PYX_XDEC_MEMVIEW(&__pyx_v_y, 1);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "python/mvdtool.pyx":176
- *         return numpy.asarray(y)
- * 
- *     def getMorphologies(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getMorphologies(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getMorphologies(deref(range.ptr()))
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_9getMorphologies(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_9getMorphologies(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_3getMorphologies(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_3getMorphologies(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getMorphologies (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range", 0))) __PYX_ERR(0, 176, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_8getMorphologies(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_range));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range", 0))) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_2getMorphologies(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_v_range));
 
   /* function exit code */
   goto __pyx_L0;
@@ -4155,30 +3859,30 @@ static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_9getMorphologies(PyObject *
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_8getMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_2getMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getMorphologies", 0);
 
-  /* "python/mvdtool.pyx":177
+  /* "python/mvdtool.pyx":161
  * 
- *     def getMorphologies(self, _MVD3_Range range):
+ *     def getMorphologies(self, _MVD_Range range):
  *         return self.ptr().getMorphologies(deref(range.ptr()))             # <<<<<<<<<<<<<<
  * 
- *     def getEtypes(self, _MVD3_Range range):
+ *     def getEtypes(self, _MVD_Range range):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getMorphologies((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getMorphologies((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":176
- *         return numpy.asarray(y)
+  /* "python/mvdtool.pyx":160
+ *         self._autodealoc.reset(self.ptr())
  * 
- *     def getMorphologies(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getMorphologies(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getMorphologies(deref(range.ptr()))
  * 
  */
@@ -4194,22 +3898,22 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_8getMorphologies(struct __p
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":179
+/* "python/mvdtool.pyx":163
  *         return self.ptr().getMorphologies(deref(range.ptr()))
  * 
- *     def getEtypes(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getEtypes(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getEtypes(deref(range.ptr()))
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_11getEtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_11getEtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_5getEtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_5getEtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getEtypes (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range", 0))) __PYX_ERR(0, 179, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_10getEtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_range));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range", 0))) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_4getEtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_v_range));
 
   /* function exit code */
   goto __pyx_L0;
@@ -4220,30 +3924,30 @@ static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_11getEtypes(PyObject *__pyx
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_10getEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_4getEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getEtypes", 0);
 
-  /* "python/mvdtool.pyx":180
+  /* "python/mvdtool.pyx":164
  * 
- *     def getEtypes(self, _MVD3_Range range):
+ *     def getEtypes(self, _MVD_Range range):
  *         return self.ptr().getEtypes(deref(range.ptr()))             # <<<<<<<<<<<<<<
  * 
- *     def getMtypes(self, _MVD3_Range range):
+ *     def getMtypes(self, _MVD_Range range):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getEtypes((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getEtypes((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":179
+  /* "python/mvdtool.pyx":163
  *         return self.ptr().getMorphologies(deref(range.ptr()))
  * 
- *     def getEtypes(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getEtypes(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getEtypes(deref(range.ptr()))
  * 
  */
@@ -4259,22 +3963,22 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_10getEtypes(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":182
+/* "python/mvdtool.pyx":166
  *         return self.ptr().getEtypes(deref(range.ptr()))
  * 
- *     def getMtypes(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getMtypes(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getMtypes(deref(range.ptr()))
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_13getMtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_13getMtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_7getMtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_7getMtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getMtypes (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range", 0))) __PYX_ERR(0, 182, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_12getMtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_range));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range", 0))) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_6getMtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_v_range));
 
   /* function exit code */
   goto __pyx_L0;
@@ -4285,30 +3989,30 @@ static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_13getMtypes(PyObject *__pyx
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_12getMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_6getMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getMtypes", 0);
 
-  /* "python/mvdtool.pyx":183
+  /* "python/mvdtool.pyx":167
  * 
- *     def getMtypes(self, _MVD3_Range range):
+ *     def getMtypes(self, _MVD_Range range):
  *         return self.ptr().getMtypes(deref(range.ptr()))             # <<<<<<<<<<<<<<
  * 
- *     def getSynapseClass(self, _MVD3_Range range):
+ *     def getSynapseClass(self, _MVD_Range range):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getMtypes((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getMtypes((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":182
+  /* "python/mvdtool.pyx":166
  *         return self.ptr().getEtypes(deref(range.ptr()))
  * 
- *     def getMtypes(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getMtypes(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getMtypes(deref(range.ptr()))
  * 
  */
@@ -4324,22 +4028,22 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_12getMtypes(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":185
+/* "python/mvdtool.pyx":169
  *         return self.ptr().getMtypes(deref(range.ptr()))
  * 
- *     def getSynapseClass(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getSynapseClass(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getSynapseClass(deref(range.ptr()))
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_15getSynapseClass(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_15getSynapseClass(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_9getSynapseClass(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_9getSynapseClass(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getSynapseClass (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range", 0))) __PYX_ERR(0, 185, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_14getSynapseClass(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_range));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range", 0))) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_8getSynapseClass(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_v_range));
 
   /* function exit code */
   goto __pyx_L0;
@@ -4350,30 +4054,30 @@ static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_15getSynapseClass(PyObject 
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_14getSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_8getSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getSynapseClass", 0);
 
-  /* "python/mvdtool.pyx":186
+  /* "python/mvdtool.pyx":170
  * 
- *     def getSynapseClass(self, _MVD3_Range range):
+ *     def getSynapseClass(self, _MVD_Range range):
  *         return self.ptr().getSynapseClass(deref(range.ptr()))             # <<<<<<<<<<<<<<
  * 
- *     def getIndexMorphologies(self, _MVD3_Range range):
+ *     def getIndexMorphologies(self, _MVD_Range range):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getSynapseClass((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getSynapseClass((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":185
+  /* "python/mvdtool.pyx":169
  *         return self.ptr().getMtypes(deref(range.ptr()))
  * 
- *     def getSynapseClass(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getSynapseClass(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getSynapseClass(deref(range.ptr()))
  * 
  */
@@ -4389,22 +4093,22 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_14getSynapseClass(struct __
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":188
+/* "python/mvdtool.pyx":172
  *         return self.ptr().getSynapseClass(deref(range.ptr()))
  * 
- *     def getIndexMorphologies(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getIndexMorphologies(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getIndexMorphologies(deref(range.ptr()))
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_17getIndexMorphologies(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_17getIndexMorphologies(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_11getIndexMorphologies(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_11getIndexMorphologies(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getIndexMorphologies (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range", 0))) __PYX_ERR(0, 188, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_16getIndexMorphologies(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_range));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range", 0))) __PYX_ERR(0, 172, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_10getIndexMorphologies(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_v_range));
 
   /* function exit code */
   goto __pyx_L0;
@@ -4415,30 +4119,30 @@ static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_17getIndexMorphologies(PyOb
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_16getIndexMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_10getIndexMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getIndexMorphologies", 0);
 
-  /* "python/mvdtool.pyx":189
+  /* "python/mvdtool.pyx":173
  * 
- *     def getIndexMorphologies(self, _MVD3_Range range):
+ *     def getIndexMorphologies(self, _MVD_Range range):
  *         return self.ptr().getIndexMorphologies(deref(range.ptr()))             # <<<<<<<<<<<<<<
  * 
- *     def getIndexEtypes(self, _MVD3_Range range):
+ *     def getIndexEtypes(self, _MVD_Range range):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getIndexMorphologies((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getIndexMorphologies((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":188
+  /* "python/mvdtool.pyx":172
  *         return self.ptr().getSynapseClass(deref(range.ptr()))
  * 
- *     def getIndexMorphologies(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getIndexMorphologies(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getIndexMorphologies(deref(range.ptr()))
  * 
  */
@@ -4454,22 +4158,22 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_16getIndexMorphologies(stru
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":191
+/* "python/mvdtool.pyx":175
  *         return self.ptr().getIndexMorphologies(deref(range.ptr()))
  * 
- *     def getIndexEtypes(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getIndexEtypes(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getIndexEtypes(deref(range.ptr()))
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_19getIndexEtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_19getIndexEtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_13getIndexEtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_13getIndexEtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getIndexEtypes (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range", 0))) __PYX_ERR(0, 191, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_18getIndexEtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_range));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range", 0))) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_12getIndexEtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_v_range));
 
   /* function exit code */
   goto __pyx_L0;
@@ -4480,30 +4184,30 @@ static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_19getIndexEtypes(PyObject *
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_18getIndexEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_12getIndexEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getIndexEtypes", 0);
 
-  /* "python/mvdtool.pyx":192
+  /* "python/mvdtool.pyx":176
  * 
- *     def getIndexEtypes(self, _MVD3_Range range):
+ *     def getIndexEtypes(self, _MVD_Range range):
  *         return self.ptr().getIndexEtypes(deref(range.ptr()))             # <<<<<<<<<<<<<<
  * 
- *     def getIndexMtypes(self, _MVD3_Range range):
+ *     def getIndexMtypes(self, _MVD_Range range):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getIndexEtypes((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getIndexEtypes((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":191
+  /* "python/mvdtool.pyx":175
  *         return self.ptr().getIndexMorphologies(deref(range.ptr()))
  * 
- *     def getIndexEtypes(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getIndexEtypes(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getIndexEtypes(deref(range.ptr()))
  * 
  */
@@ -4519,22 +4223,22 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_18getIndexEtypes(struct __p
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":194
+/* "python/mvdtool.pyx":178
  *         return self.ptr().getIndexEtypes(deref(range.ptr()))
  * 
- *     def getIndexMtypes(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getIndexMtypes(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getIndexMtypes(deref(range.ptr()))
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_21getIndexMtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_21getIndexMtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_15getIndexMtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_15getIndexMtypes(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getIndexMtypes (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range", 0))) __PYX_ERR(0, 194, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_20getIndexMtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_range));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range", 0))) __PYX_ERR(0, 178, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_14getIndexMtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_v_range));
 
   /* function exit code */
   goto __pyx_L0;
@@ -4545,30 +4249,30 @@ static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_21getIndexMtypes(PyObject *
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_20getIndexMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_14getIndexMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getIndexMtypes", 0);
 
-  /* "python/mvdtool.pyx":195
+  /* "python/mvdtool.pyx":179
  * 
- *     def getIndexMtypes(self, _MVD3_Range range):
+ *     def getIndexMtypes(self, _MVD_Range range):
  *         return self.ptr().getIndexMtypes(deref(range.ptr()))             # <<<<<<<<<<<<<<
  * 
- *     def getIndexSynapseClass(self, _MVD3_Range range):
+ *     def getIndexSynapseClass(self, _MVD_Range range):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getIndexMtypes((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getIndexMtypes((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":194
+  /* "python/mvdtool.pyx":178
  *         return self.ptr().getIndexEtypes(deref(range.ptr()))
  * 
- *     def getIndexMtypes(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getIndexMtypes(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getIndexMtypes(deref(range.ptr()))
  * 
  */
@@ -4584,22 +4288,22 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_20getIndexMtypes(struct __p
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":197
+/* "python/mvdtool.pyx":181
  *         return self.ptr().getIndexMtypes(deref(range.ptr()))
  * 
- *     def getIndexSynapseClass(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getIndexSynapseClass(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getIndexSynapseClass(deref(range.ptr()))
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_23getIndexSynapseClass(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_23getIndexSynapseClass(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_17getIndexSynapseClass(PyObject *__pyx_v_self, PyObject *__pyx_v_range); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_17getIndexSynapseClass(PyObject *__pyx_v_self, PyObject *__pyx_v_range) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getIndexSynapseClass (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD3_Range, 1, "range", 0))) __PYX_ERR(0, 197, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_22getIndexSynapseClass(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)__pyx_v_range));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_range), __pyx_ptype_6python_7mvdtool__MVD_Range, 1, "range", 0))) __PYX_ERR(0, 181, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_16getIndexSynapseClass(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self), ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)__pyx_v_range));
 
   /* function exit code */
   goto __pyx_L0;
@@ -4610,30 +4314,30 @@ static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_23getIndexSynapseClass(PyOb
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_22getIndexSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD3_Range *__pyx_v_range) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_16getIndexSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self, struct __pyx_obj_6python_7mvdtool__MVD_Range *__pyx_v_range) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getIndexSynapseClass", 0);
 
-  /* "python/mvdtool.pyx":198
+  /* "python/mvdtool.pyx":182
  * 
- *     def getIndexSynapseClass(self, _MVD3_Range range):
+ *     def getIndexSynapseClass(self, _MVD_Range range):
  *         return self.ptr().getIndexSynapseClass(deref(range.ptr()))             # <<<<<<<<<<<<<<
  * 
- *     def listAllMorphologies(self, ):
+ *     def listAllMorphologies(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getIndexSynapseClass((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_size_t(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getIndexSynapseClass((*((struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range *)__pyx_v_range->__pyx_vtab)->ptr(__pyx_v_range)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":197
+  /* "python/mvdtool.pyx":181
  *         return self.ptr().getIndexMtypes(deref(range.ptr()))
  * 
- *     def getIndexSynapseClass(self, _MVD3_Range range):             # <<<<<<<<<<<<<<
+ *     def getIndexSynapseClass(self, _MVD_Range range):             # <<<<<<<<<<<<<<
  *         return self.ptr().getIndexSynapseClass(deref(range.ptr()))
  * 
  */
@@ -4649,51 +4353,51 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_22getIndexSynapseClass(stru
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":200
+/* "python/mvdtool.pyx":184
  *         return self.ptr().getIndexSynapseClass(deref(range.ptr()))
  * 
- *     def listAllMorphologies(self, ):             # <<<<<<<<<<<<<<
+ *     def listAllMorphologies(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().listAllMorphologies()
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_25listAllMorphologies(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_25listAllMorphologies(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_19listAllMorphologies(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_19listAllMorphologies(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("listAllMorphologies (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_24listAllMorphologies(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_18listAllMorphologies(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_24listAllMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_18listAllMorphologies(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("listAllMorphologies", 0);
 
-  /* "python/mvdtool.pyx":201
+  /* "python/mvdtool.pyx":185
  * 
- *     def listAllMorphologies(self, ):
+ *     def listAllMorphologies(self):
  *         return self.ptr().listAllMorphologies()             # <<<<<<<<<<<<<<
  * 
- *     def listAllEtypes(self, ):
+ *     def listAllEtypes(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->listAllMorphologies()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->listAllMorphologies()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":200
+  /* "python/mvdtool.pyx":184
  *         return self.ptr().getIndexSynapseClass(deref(range.ptr()))
  * 
- *     def listAllMorphologies(self, ):             # <<<<<<<<<<<<<<
+ *     def listAllMorphologies(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().listAllMorphologies()
  * 
  */
@@ -4709,51 +4413,51 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_24listAllMorphologies(struc
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":203
+/* "python/mvdtool.pyx":187
  *         return self.ptr().listAllMorphologies()
  * 
- *     def listAllEtypes(self, ):             # <<<<<<<<<<<<<<
+ *     def listAllEtypes(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().listAllEtypes()
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_27listAllEtypes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_27listAllEtypes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_21listAllEtypes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_21listAllEtypes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("listAllEtypes (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_26listAllEtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_20listAllEtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_26listAllEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_20listAllEtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("listAllEtypes", 0);
 
-  /* "python/mvdtool.pyx":204
+  /* "python/mvdtool.pyx":188
  * 
- *     def listAllEtypes(self, ):
+ *     def listAllEtypes(self):
  *         return self.ptr().listAllEtypes()             # <<<<<<<<<<<<<<
  * 
- *     def listAllMtypes(self, ):
+ *     def listAllMtypes(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->listAllEtypes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 204, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->listAllEtypes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":203
+  /* "python/mvdtool.pyx":187
  *         return self.ptr().listAllMorphologies()
  * 
- *     def listAllEtypes(self, ):             # <<<<<<<<<<<<<<
+ *     def listAllEtypes(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().listAllEtypes()
  * 
  */
@@ -4769,51 +4473,51 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_26listAllEtypes(struct __py
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":206
+/* "python/mvdtool.pyx":190
  *         return self.ptr().listAllEtypes()
  * 
- *     def listAllMtypes(self, ):             # <<<<<<<<<<<<<<
+ *     def listAllMtypes(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().listAllMtypes()
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_29listAllMtypes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_29listAllMtypes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_23listAllMtypes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_23listAllMtypes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("listAllMtypes (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_28listAllMtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_22listAllMtypes(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_28listAllMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_22listAllMtypes(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("listAllMtypes", 0);
 
-  /* "python/mvdtool.pyx":207
+  /* "python/mvdtool.pyx":191
  * 
- *     def listAllMtypes(self, ):
+ *     def listAllMtypes(self):
  *         return self.ptr().listAllMtypes()             # <<<<<<<<<<<<<<
  * 
- *     def listAllSynapseClass(self, ):
+ *     def listAllSynapseClass(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->listAllMtypes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->listAllMtypes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":206
+  /* "python/mvdtool.pyx":190
  *         return self.ptr().listAllEtypes()
  * 
- *     def listAllMtypes(self, ):             # <<<<<<<<<<<<<<
+ *     def listAllMtypes(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().listAllMtypes()
  * 
  */
@@ -4829,51 +4533,51 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_28listAllMtypes(struct __py
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":209
+/* "python/mvdtool.pyx":193
  *         return self.ptr().listAllMtypes()
  * 
- *     def listAllSynapseClass(self, ):             # <<<<<<<<<<<<<<
+ *     def listAllSynapseClass(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().listAllSynapseClass()
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_31listAllSynapseClass(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_31listAllSynapseClass(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_25listAllSynapseClass(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_25listAllSynapseClass(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("listAllSynapseClass (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_30listAllSynapseClass(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_24listAllSynapseClass(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_30listAllSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_24listAllSynapseClass(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("listAllSynapseClass", 0);
 
-  /* "python/mvdtool.pyx":210
+  /* "python/mvdtool.pyx":194
  * 
- *     def listAllSynapseClass(self, ):
+ *     def listAllSynapseClass(self):
  *         return self.ptr().listAllSynapseClass()             # <<<<<<<<<<<<<<
  * 
- *     def getCircuitSeeds(self, ):
+ *     def getCircuitSeeds(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->listAllSynapseClass()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->listAllSynapseClass()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":209
+  /* "python/mvdtool.pyx":193
  *         return self.ptr().listAllMtypes()
  * 
- *     def listAllSynapseClass(self, ):             # <<<<<<<<<<<<<<
+ *     def listAllSynapseClass(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().listAllSynapseClass()
  * 
  */
@@ -4889,51 +4593,51 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_30listAllSynapseClass(struc
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":212
+/* "python/mvdtool.pyx":196
  *         return self.ptr().listAllSynapseClass()
  * 
- *     def getCircuitSeeds(self, ):             # <<<<<<<<<<<<<<
+ *     def getCircuitSeeds(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().getCircuitSeeds()
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_33getCircuitSeeds(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_33getCircuitSeeds(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_27getCircuitSeeds(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6python_7mvdtool_8MVD3File_27getCircuitSeeds(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getCircuitSeeds (wrapper)", 0);
-  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_32getCircuitSeeds(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6python_7mvdtool_8MVD3File_26getCircuitSeeds(((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_32getCircuitSeeds(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
+static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_26getCircuitSeeds(struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("getCircuitSeeds", 0);
 
-  /* "python/mvdtool.pyx":213
+  /* "python/mvdtool.pyx":197
  * 
- *     def getCircuitSeeds(self, ):
+ *     def getCircuitSeeds(self):
  *         return self.ptr().getCircuitSeeds()             # <<<<<<<<<<<<<<
  * 
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_double(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_vtab)->ptr(__pyx_v_self)->getCircuitSeeds()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_double(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_self->__pyx_base.__pyx_vtab)->ptr(__pyx_v_self)->getCircuitSeeds()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":212
+  /* "python/mvdtool.pyx":196
  *         return self.ptr().listAllSynapseClass()
  * 
- *     def getCircuitSeeds(self, ):             # <<<<<<<<<<<<<<
+ *     def getCircuitSeeds(self):             # <<<<<<<<<<<<<<
  *         return self.ptr().getCircuitSeeds()
  * 
  */
@@ -4949,7 +4653,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_8MVD3File_32getCircuitSeeds(struct __
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":216
+/* "python/mvdtool.pyx":200
  * 
  *     @staticmethod
  *     cdef MVD3File from_ptr(MVD3.MVD3File *ptr):             # <<<<<<<<<<<<<<
@@ -4964,38 +4668,38 @@ static struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_f_6python_7mvdtool_8MVD
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("from_ptr", 0);
 
-  /* "python/mvdtool.pyx":217
+  /* "python/mvdtool.pyx":201
  *     @staticmethod
  *     cdef MVD3File from_ptr(MVD3.MVD3File *ptr):
  *         cdef MVD3File obj = MVD3File.__new__(MVD3File)             # <<<<<<<<<<<<<<
  *         obj._ptr = ptr
  *         obj._autodealoc.reset(obj.ptr())
  */
-  __pyx_t_1 = __pyx_tp_new_6python_7mvdtool_MVD3File(((PyTypeObject *)__pyx_ptype_6python_7mvdtool_MVD3File), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_1 = __pyx_tp_new_6python_7mvdtool_MVD3File(((PyTypeObject *)__pyx_ptype_6python_7mvdtool_MVD3File), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 201, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6python_7mvdtool_MVD3File)))) __PYX_ERR(0, 217, __pyx_L1_error)
+  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6python_7mvdtool_MVD3File)))) __PYX_ERR(0, 201, __pyx_L1_error)
   __pyx_v_obj = ((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "python/mvdtool.pyx":218
+  /* "python/mvdtool.pyx":202
  *     cdef MVD3File from_ptr(MVD3.MVD3File *ptr):
  *         cdef MVD3File obj = MVD3File.__new__(MVD3File)
  *         obj._ptr = ptr             # <<<<<<<<<<<<<<
  *         obj._autodealoc.reset(obj.ptr())
  *         return obj
  */
-  __pyx_v_obj->__pyx_base._ptr = __pyx_v_ptr;
+  __pyx_v_obj->__pyx_base.__pyx_base._ptr = __pyx_v_ptr;
 
-  /* "python/mvdtool.pyx":219
+  /* "python/mvdtool.pyx":203
  *         cdef MVD3File obj = MVD3File.__new__(MVD3File)
  *         obj._ptr = ptr
  *         obj._autodealoc.reset(obj.ptr())             # <<<<<<<<<<<<<<
  *         return obj
  * 
  */
-  __pyx_v_obj->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_obj->__pyx_vtab)->ptr(__pyx_v_obj));
+  __pyx_v_obj->_autodealoc.reset(((struct __pyx_vtabstruct_6python_7mvdtool_MVD3File *)__pyx_v_obj->__pyx_base.__pyx_vtab)->ptr(__pyx_v_obj));
 
-  /* "python/mvdtool.pyx":220
+  /* "python/mvdtool.pyx":204
  *         obj._ptr = ptr
  *         obj._autodealoc.reset(obj.ptr())
  *         return obj             # <<<<<<<<<<<<<<
@@ -5007,7 +4711,7 @@ static struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_f_6python_7mvdtool_8MVD
   __pyx_r = __pyx_v_obj;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":216
+  /* "python/mvdtool.pyx":200
  * 
  *     @staticmethod
  *     cdef MVD3File from_ptr(MVD3.MVD3File *ptr):             # <<<<<<<<<<<<<<
@@ -5027,7 +4731,7 @@ static struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_f_6python_7mvdtool_8MVD
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":223
+/* "python/mvdtool.pyx":207
  * 
  *     @staticmethod
  *     cdef MVD3File from_ref(const MVD3.MVD3File &ref):             # <<<<<<<<<<<<<<
@@ -5041,7 +4745,7 @@ static struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_f_6python_7mvdtool_8MVD
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("from_ref", 0);
 
-  /* "python/mvdtool.pyx":224
+  /* "python/mvdtool.pyx":208
  *     @staticmethod
  *     cdef MVD3File from_ref(const MVD3.MVD3File &ref):
  *         return MVD3File.from_ptr(<MVD3.MVD3File*>&ref)             # <<<<<<<<<<<<<<
@@ -5049,13 +4753,13 @@ static struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_f_6python_7mvdtool_8MVD
  *     @staticmethod
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __pyx_t_1 = ((PyObject *)__pyx_f_6python_7mvdtool_8MVD3File_from_ptr(((MVD3::MVD3File *)(&__pyx_v_ref)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_6python_7mvdtool_8MVD3File_from_ptr(((MVD3::MVD3File *)(&__pyx_v_ref)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((struct __pyx_obj_6python_7mvdtool_MVD3File *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":223
+  /* "python/mvdtool.pyx":207
  * 
  *     @staticmethod
  *     cdef MVD3File from_ref(const MVD3.MVD3File &ref):             # <<<<<<<<<<<<<<
@@ -5074,7 +4778,7 @@ static struct __pyx_obj_6python_7mvdtool_MVD3File *__pyx_f_6python_7mvdtool_8MVD
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":227
+/* "python/mvdtool.pyx":211
  * 
  *     @staticmethod
  *     cdef list vector2list( std.vector[MVD3.MVD3File*] vec ):             # <<<<<<<<<<<<<<
@@ -5092,7 +4796,7 @@ static PyObject *__pyx_f_6python_7mvdtool_8MVD3File_vector2list(std::vector<MVD3
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("vector2list", 0);
 
-  /* "python/mvdtool.pyx":228
+  /* "python/mvdtool.pyx":212
  *     @staticmethod
  *     cdef list vector2list( std.vector[MVD3.MVD3File*] vec ):
  *         return [ MVD3File.from_ptr(elem) for elem in vec ]             # <<<<<<<<<<<<<<
@@ -5100,7 +4804,7 @@ static PyObject *__pyx_f_6python_7mvdtool_8MVD3File_vector2list(std::vector<MVD3
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_v_vec.begin();
   for (;;) {
@@ -5108,16 +4812,16 @@ static PyObject *__pyx_f_6python_7mvdtool_8MVD3File_vector2list(std::vector<MVD3
     __pyx_t_3 = *__pyx_t_2;
     ++__pyx_t_2;
     __pyx_v_elem = __pyx_t_3;
-    __pyx_t_4 = ((PyObject *)__pyx_f_6python_7mvdtool_8MVD3File_from_ptr(__pyx_v_elem)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_4 = ((PyObject *)__pyx_f_6python_7mvdtool_8MVD3File_from_ptr(__pyx_v_elem)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 228, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":227
+  /* "python/mvdtool.pyx":211
  * 
  *     @staticmethod
  *     cdef list vector2list( std.vector[MVD3.MVD3File*] vec ):             # <<<<<<<<<<<<<<
@@ -5137,7 +4841,7 @@ static PyObject *__pyx_f_6python_7mvdtool_8MVD3File_vector2list(std::vector<MVD3
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":245
+/* "python/mvdtool.pyx":229
  *               _MVD3: "MVD3"}
  * 
  *     def __init__(self, typ):             # <<<<<<<<<<<<<<
@@ -5174,11 +4878,11 @@ static PyObject *__pyx_pw_6python_7mvdtool_7MVDType_1__init__(PyObject *__pyx_se
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_typ)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(0, 245, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(0, 229, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 245, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 229, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5191,7 +4895,7 @@ static PyObject *__pyx_pw_6python_7mvdtool_7MVDType_1__init__(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 245, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 229, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("python.mvdtool.MVDType.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5211,7 +4915,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType___init__(CYTHON_UNUSED PyObj
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "python/mvdtool.pyx":246
+  /* "python/mvdtool.pyx":230
  * 
  *     def __init__(self, typ):
  *         assert typ in self._ITEMS             # <<<<<<<<<<<<<<
@@ -5220,27 +4924,27 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType___init__(CYTHON_UNUSED PyObj
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(!Py_OptimizeFlag)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_ITEMS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_ITEMS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_v_typ, __pyx_t_1, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_v_typ, __pyx_t_1, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 230, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(!(__pyx_t_2 != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 246, __pyx_L1_error)
+      __PYX_ERR(0, 230, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "python/mvdtool.pyx":247
+  /* "python/mvdtool.pyx":231
  *     def __init__(self, typ):
  *         assert typ in self._ITEMS
  *         self._id = typ             # <<<<<<<<<<<<<<
  * 
  *     def __eq__(self, other):
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_id, __pyx_v_typ) < 0) __PYX_ERR(0, 247, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_id, __pyx_v_typ) < 0) __PYX_ERR(0, 231, __pyx_L1_error)
 
-  /* "python/mvdtool.pyx":245
+  /* "python/mvdtool.pyx":229
  *               _MVD3: "MVD3"}
  * 
  *     def __init__(self, typ):             # <<<<<<<<<<<<<<
@@ -5261,7 +4965,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType___init__(CYTHON_UNUSED PyObj
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":249
+/* "python/mvdtool.pyx":233
  *         self._id = typ
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -5298,11 +5002,11 @@ static PyObject *__pyx_pw_6python_7mvdtool_7MVDType_3__eq__(PyObject *__pyx_self
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, 1); __PYX_ERR(0, 249, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, 1); __PYX_ERR(0, 233, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__eq__") < 0)) __PYX_ERR(0, 249, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__eq__") < 0)) __PYX_ERR(0, 233, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5315,7 +5019,7 @@ static PyObject *__pyx_pw_6python_7mvdtool_7MVDType_3__eq__(PyObject *__pyx_self
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 249, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 233, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("python.mvdtool.MVDType.__eq__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5338,7 +5042,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType_2__eq__(CYTHON_UNUSED PyObje
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("__eq__", 0);
 
-  /* "python/mvdtool.pyx":250
+  /* "python/mvdtool.pyx":234
  * 
  *     def __eq__(self, other):
  *         return isinstance(other, type(self)) and self._id == other._id             # <<<<<<<<<<<<<<
@@ -5346,20 +5050,20 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType_2__eq__(CYTHON_UNUSED PyObje
  *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyObject_IsInstance(__pyx_v_other, ((PyObject *)Py_TYPE(__pyx_v_self))); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_t_2 = PyObject_IsInstance(__pyx_v_other, ((PyObject *)Py_TYPE(__pyx_v_self))); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 234, __pyx_L1_error)
   if (__pyx_t_2) {
   } else {
-    __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 250, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 234, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_1 = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L3_bool_binop_done;
   }
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_INCREF(__pyx_t_5);
@@ -5370,7 +5074,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType_2__eq__(CYTHON_UNUSED PyObje
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":249
+  /* "python/mvdtool.pyx":233
  *         self._id = typ
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -5392,7 +5096,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType_2__eq__(CYTHON_UNUSED PyObje
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":252
+/* "python/mvdtool.pyx":236
  *         return isinstance(other, type(self)) and self._id == other._id
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -5422,7 +5126,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType_4__repr__(CYTHON_UNUSED PyOb
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "python/mvdtool.pyx":253
+  /* "python/mvdtool.pyx":237
  * 
  *     def __repr__(self):
  *         return "<MVDType.%s>" % (self._ITEMS[self._id])             # <<<<<<<<<<<<<<
@@ -5430,22 +5134,22 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType_4__repr__(CYTHON_UNUSED PyOb
  * # Actual "Enum" instances
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_ITEMS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_ITEMS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 237, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyString_Format(__pyx_kp_s_MVDType_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyString_Format(__pyx_kp_s_MVDType_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":252
+  /* "python/mvdtool.pyx":236
  *         return isinstance(other, type(self)) and self._id == other._id
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -5466,7 +5170,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_7MVDType_4__repr__(CYTHON_UNUSED PyOb
   return __pyx_r;
 }
 
-/* "python/mvdtool.pyx":261
+/* "python/mvdtool.pyx":245
  * 
  * 
  * def is_mvd_file(std.string filename):             # <<<<<<<<<<<<<<
@@ -5483,7 +5187,7 @@ static PyObject *__pyx_pw_6python_7mvdtool_1is_mvd_file(PyObject *__pyx_self, Py
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_mvd_file (wrapper)", 0);
   assert(__pyx_arg_filename); {
-    __pyx_v_filename = __pyx_convert_string_from_py_std__in_string(__pyx_arg_filename); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 261, __pyx_L3_error)
+    __pyx_v_filename = __pyx_convert_string_from_py_std__in_string(__pyx_arg_filename); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 245, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -5508,7 +5212,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_is_mvd_file(CYTHON_UNUSED PyObject *_
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("is_mvd_file", 0);
 
-  /* "python/mvdtool.pyx":262
+  /* "python/mvdtool.pyx":246
  * 
  * def is_mvd_file(std.string filename):
  *     return MVDType(MVD.is_mvd_file(filename))             # <<<<<<<<<<<<<<
@@ -5516,9 +5220,9 @@ static PyObject *__pyx_pf_6python_7mvdtool_is_mvd_file(CYTHON_UNUSED PyObject *_
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_MVDType(MVD::is_mvd_file(__pyx_v_filename)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_MVDType(MVD::is_mvd_file(__pyx_v_filename)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -5531,14 +5235,14 @@ static PyObject *__pyx_pf_6python_7mvdtool_is_mvd_file(CYTHON_UNUSED PyObject *_
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5547,20 +5251,20 @@ static PyObject *__pyx_pf_6python_7mvdtool_is_mvd_file(CYTHON_UNUSED PyObject *_
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 262, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 246, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
@@ -5570,7 +5274,7 @@ static PyObject *__pyx_pf_6python_7mvdtool_is_mvd_file(CYTHON_UNUSED PyObject *_
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "python/mvdtool.pyx":261
+  /* "python/mvdtool.pyx":245
  * 
  * 
  * def is_mvd_file(std.string filename):             # <<<<<<<<<<<<<<
@@ -5586,6 +5290,143 @@ static PyObject *__pyx_pf_6python_7mvdtool_is_mvd_file(CYTHON_UNUSED PyObject *_
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("python.mvdtool.is_mvd_file", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "python/mvdtool.pyx":249
+ * 
+ * 
+ * def open_mvd(std.string filename):             # <<<<<<<<<<<<<<
+ *     """Open either MVD2 or MVD3 and return an actual MVD2File or MVD3File object
+ *     """
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6python_7mvdtool_3open_mvd(PyObject *__pyx_self, PyObject *__pyx_arg_filename); /*proto*/
+static char __pyx_doc_6python_7mvdtool_2open_mvd[] = "Open either MVD2 or MVD3 and return an actual MVD2File or MVD3File object\n    ";
+static PyMethodDef __pyx_mdef_6python_7mvdtool_3open_mvd = {"open_mvd", (PyCFunction)__pyx_pw_6python_7mvdtool_3open_mvd, METH_O, __pyx_doc_6python_7mvdtool_2open_mvd};
+static PyObject *__pyx_pw_6python_7mvdtool_3open_mvd(PyObject *__pyx_self, PyObject *__pyx_arg_filename) {
+  std::string __pyx_v_filename;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("open_mvd (wrapper)", 0);
+  assert(__pyx_arg_filename); {
+    __pyx_v_filename = __pyx_convert_string_from_py_std__in_string(__pyx_arg_filename); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 249, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("python.mvdtool.open_mvd", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6python_7mvdtool_2open_mvd(__pyx_self, ((std::string)__pyx_v_filename));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6python_7mvdtool_2open_mvd(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_filename) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  int __pyx_t_4;
+  __Pyx_RefNannySetupContext("open_mvd", 0);
+
+  /* "python/mvdtool.pyx":252
+ *     """Open either MVD2 or MVD3 and return an actual MVD2File or MVD3File object
+ *     """
+ *     if MVD.is_mvd_file(filename) == MVD_MVDType._MVD2:             # <<<<<<<<<<<<<<
+ *         return MVD2File(filename)
+ *     return MVD3File(filename)
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_MVDType(MVD::is_mvd_file(__pyx_v_filename)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVD_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_MVD2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__pyx_t_4) {
+
+    /* "python/mvdtool.pyx":253
+ *     """
+ *     if MVD.is_mvd_file(filename) == MVD_MVDType._MVD2:
+ *         return MVD2File(filename)             # <<<<<<<<<<<<<<
+ *     return MVD3File(filename)
+ * 
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_filename); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 253, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
+    __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6python_7mvdtool_MVD2File), __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_r = __pyx_t_2;
+    __pyx_t_2 = 0;
+    goto __pyx_L0;
+
+    /* "python/mvdtool.pyx":252
+ *     """Open either MVD2 or MVD3 and return an actual MVD2File or MVD3File object
+ *     """
+ *     if MVD.is_mvd_file(filename) == MVD_MVDType._MVD2:             # <<<<<<<<<<<<<<
+ *         return MVD2File(filename)
+ *     return MVD3File(filename)
+ */
+  }
+
+  /* "python/mvdtool.pyx":254
+ *     if MVD.is_mvd_file(filename) == MVD_MVDType._MVD2:
+ *         return MVD2File(filename)
+ *     return MVD3File(filename)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_filename); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 254, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 254, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
+  __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6python_7mvdtool_MVD3File), __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 254, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "python/mvdtool.pyx":249
+ * 
+ * 
+ * def open_mvd(std.string filename):             # <<<<<<<<<<<<<<
+ *     """Open either MVD2 or MVD3 and return an actual MVD2File or MVD3File object
+ *     """
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("python.mvdtool.open_mvd", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -18129,16 +17970,90 @@ static PyTypeObject __pyx_type_6python_7mvdtool__py__base = {
   0, /*tp_finalize*/
   #endif
 };
+static struct __pyx_vtabstruct_6python_7mvdtool_MVDFile __pyx_vtable_6python_7mvdtool_MVDFile;
+
+static PyObject *__pyx_tp_new_6python_7mvdtool_MVDFile(PyTypeObject *t, PyObject *a, PyObject *k) {
+  struct __pyx_obj_6python_7mvdtool_MVDFile *p;
+  PyObject *o = __pyx_tp_new_6python_7mvdtool__py__base(t, a, k);
+  if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_6python_7mvdtool_MVDFile *)o);
+  p->__pyx_vtab = __pyx_vtabptr_6python_7mvdtool_MVDFile;
+  return o;
+}
+
+static PyMethodDef __pyx_methods_6python_7mvdtool_MVDFile[] = {
+  {"getNbNeuron", (PyCFunction)__pyx_pw_6python_7mvdtool_7MVDFile_1getNbNeuron, METH_NOARGS, 0},
+  {"getPositions", (PyCFunction)__pyx_pw_6python_7mvdtool_7MVDFile_3getPositions, METH_VARARGS|METH_KEYWORDS, 0},
+  {"getRotations", (PyCFunction)__pyx_pw_6python_7mvdtool_7MVDFile_5getRotations, METH_VARARGS|METH_KEYWORDS, 0},
+  {0, 0, 0, 0}
+};
+
+static PyTypeObject __pyx_type_6python_7mvdtool_MVDFile = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "python.mvdtool.MVDFile", /*tp_name*/
+  sizeof(struct __pyx_obj_6python_7mvdtool_MVDFile), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_6python_7mvdtool__py__base, /*tp_dealloc*/
+  0, /*tp_print*/
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
+  0, /*tp_doc*/
+  0, /*tp_traverse*/
+  0, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  __pyx_methods_6python_7mvdtool_MVDFile, /*tp_methods*/
+  0, /*tp_members*/
+  0, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  0, /*tp_init*/
+  0, /*tp_alloc*/
+  __pyx_tp_new_6python_7mvdtool_MVDFile, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+};
 static struct __pyx_vtabstruct_6python_7mvdtool_MVD2File __pyx_vtable_6python_7mvdtool_MVD2File;
 
 static PyObject *__pyx_tp_new_6python_7mvdtool_MVD2File(PyTypeObject *t, PyObject *a, PyObject *k) {
   struct __pyx_obj_6python_7mvdtool_MVD2File *p;
-  PyObject *o = __pyx_tp_new_6python_7mvdtool__py__base(t, a, k);
+  PyObject *o = __pyx_tp_new_6python_7mvdtool_MVDFile(t, a, k);
   if (unlikely(!o)) return 0;
   p = ((struct __pyx_obj_6python_7mvdtool_MVD2File *)o);
-  p->__pyx_vtab = __pyx_vtabptr_6python_7mvdtool_MVD2File;
+  p->__pyx_base.__pyx_vtab = (struct __pyx_vtabstruct_6python_7mvdtool_MVDFile*)__pyx_vtabptr_6python_7mvdtool_MVD2File;
   new((void*)&(p->_autodealoc)) std::unique_ptr<MVD2::MVD2File> ();
-  new((void*)&(p->colData)) MVD2::Data::MVD2ColData();
   return o;
 }
 
@@ -18150,17 +18065,13 @@ static void __pyx_tp_dealloc_6python_7mvdtool_MVD2File(PyObject *o) {
   }
   #endif
   __Pyx_call_destructor(p->_autodealoc);
-  __Pyx_call_destructor(p->colData);
   __pyx_tp_dealloc_6python_7mvdtool__py__base(o);
 }
 
 static PyMethodDef __pyx_methods_6python_7mvdtool_MVD2File[] = {
   {"getNbMorphoType", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD2File_3getNbMorphoType, METH_NOARGS, 0},
   {"getNbMorpho", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD2File_5getNbMorpho, METH_NOARGS, 0},
-  {"getNbNeuron", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD2File_7getNbNeuron, METH_NOARGS, 0},
-  {"getNbColumns", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD2File_9getNbColumns, METH_NOARGS, 0},
-  {"getPositions", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD2File_11getPositions, METH_NOARGS, 0},
-  {"getRotations", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD2File_13getRotations, METH_NOARGS, 0},
+  {"getNbColumns", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD2File_7getNbColumns, METH_NOARGS, 0},
   {0, 0, 0, 0}
 };
 
@@ -18221,20 +18132,20 @@ static PyTypeObject __pyx_type_6python_7mvdtool_MVD2File = {
   0, /*tp_finalize*/
   #endif
 };
-static struct __pyx_vtabstruct_6python_7mvdtool__MVD3_Range __pyx_vtable_6python_7mvdtool__MVD3_Range;
+static struct __pyx_vtabstruct_6python_7mvdtool__MVD_Range __pyx_vtable_6python_7mvdtool__MVD_Range;
 
-static PyObject *__pyx_tp_new_6python_7mvdtool__MVD3_Range(PyTypeObject *t, PyObject *a, PyObject *k) {
-  struct __pyx_obj_6python_7mvdtool__MVD3_Range *p;
+static PyObject *__pyx_tp_new_6python_7mvdtool__MVD_Range(PyTypeObject *t, PyObject *a, PyObject *k) {
+  struct __pyx_obj_6python_7mvdtool__MVD_Range *p;
   PyObject *o = __pyx_tp_new_6python_7mvdtool__py__base(t, a, k);
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_6python_7mvdtool__MVD3_Range *)o);
-  p->__pyx_vtab = __pyx_vtabptr_6python_7mvdtool__MVD3_Range;
-  new((void*)&(p->_autodealoc)) std::unique_ptr<MVD3::Range> ();
+  p = ((struct __pyx_obj_6python_7mvdtool__MVD_Range *)o);
+  p->__pyx_vtab = __pyx_vtabptr_6python_7mvdtool__MVD_Range;
+  new((void*)&(p->_autodealoc)) std::unique_ptr<MVD::Range> ();
   return o;
 }
 
-static void __pyx_tp_dealloc_6python_7mvdtool__MVD3_Range(PyObject *o) {
-  struct __pyx_obj_6python_7mvdtool__MVD3_Range *p = (struct __pyx_obj_6python_7mvdtool__MVD3_Range *)o;
+static void __pyx_tp_dealloc_6python_7mvdtool__MVD_Range(PyObject *o) {
+  struct __pyx_obj_6python_7mvdtool__MVD_Range *p = (struct __pyx_obj_6python_7mvdtool__MVD_Range *)o;
   #if PY_VERSION_HEX >= 0x030400a1
   if (unlikely(Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -18244,16 +18155,16 @@ static void __pyx_tp_dealloc_6python_7mvdtool__MVD3_Range(PyObject *o) {
   __pyx_tp_dealloc_6python_7mvdtool__py__base(o);
 }
 
-static PyMethodDef __pyx_methods_6python_7mvdtool__MVD3_Range[] = {
+static PyMethodDef __pyx_methods_6python_7mvdtool__MVD_Range[] = {
   {0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_6python_7mvdtool__MVD3_Range = {
+static PyTypeObject __pyx_type_6python_7mvdtool__MVD_Range = {
   PyVarObject_HEAD_INIT(0, 0)
-  "python.mvdtool._MVD3_Range", /*tp_name*/
-  sizeof(struct __pyx_obj_6python_7mvdtool__MVD3_Range), /*tp_basicsize*/
+  "python.mvdtool._MVD_Range", /*tp_name*/
+  sizeof(struct __pyx_obj_6python_7mvdtool__MVD_Range), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_6python_7mvdtool__MVD3_Range, /*tp_dealloc*/
+  __pyx_tp_dealloc_6python_7mvdtool__MVD_Range, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -18281,7 +18192,7 @@ static PyTypeObject __pyx_type_6python_7mvdtool__MVD3_Range = {
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_6python_7mvdtool__MVD3_Range, /*tp_methods*/
+  __pyx_methods_6python_7mvdtool__MVD_Range, /*tp_methods*/
   0, /*tp_members*/
   0, /*tp_getset*/
   0, /*tp_base*/
@@ -18289,9 +18200,9 @@ static PyTypeObject __pyx_type_6python_7mvdtool__MVD3_Range = {
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
   0, /*tp_dictoffset*/
-  __pyx_pw_6python_7mvdtool_11_MVD3_Range_1__init__, /*tp_init*/
+  __pyx_pw_6python_7mvdtool_10_MVD_Range_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_6python_7mvdtool__MVD3_Range, /*tp_new*/
+  __pyx_tp_new_6python_7mvdtool__MVD_Range, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -18309,10 +18220,10 @@ static struct __pyx_vtabstruct_6python_7mvdtool_MVD3File __pyx_vtable_6python_7m
 
 static PyObject *__pyx_tp_new_6python_7mvdtool_MVD3File(PyTypeObject *t, PyObject *a, PyObject *k) {
   struct __pyx_obj_6python_7mvdtool_MVD3File *p;
-  PyObject *o = __pyx_tp_new_6python_7mvdtool__py__base(t, a, k);
+  PyObject *o = __pyx_tp_new_6python_7mvdtool_MVDFile(t, a, k);
   if (unlikely(!o)) return 0;
   p = ((struct __pyx_obj_6python_7mvdtool_MVD3File *)o);
-  p->__pyx_vtab = __pyx_vtabptr_6python_7mvdtool_MVD3File;
+  p->__pyx_base.__pyx_vtab = (struct __pyx_vtabstruct_6python_7mvdtool_MVDFile*)__pyx_vtabptr_6python_7mvdtool_MVD3File;
   new((void*)&(p->_autodealoc)) std::unique_ptr<MVD3::MVD3File> ();
   return o;
 }
@@ -18329,22 +18240,19 @@ static void __pyx_tp_dealloc_6python_7mvdtool_MVD3File(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_6python_7mvdtool_MVD3File[] = {
-  {"getNbNeuron", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_3getNbNeuron, METH_NOARGS, 0},
-  {"getPositions", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_5getPositions, METH_VARARGS|METH_KEYWORDS, 0},
-  {"getRotations", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_7getRotations, METH_O, 0},
-  {"getMorphologies", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_9getMorphologies, METH_O, 0},
-  {"getEtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_11getEtypes, METH_O, 0},
-  {"getMtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_13getMtypes, METH_O, 0},
-  {"getSynapseClass", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_15getSynapseClass, METH_O, 0},
-  {"getIndexMorphologies", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_17getIndexMorphologies, METH_O, 0},
-  {"getIndexEtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_19getIndexEtypes, METH_O, 0},
-  {"getIndexMtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_21getIndexMtypes, METH_O, 0},
-  {"getIndexSynapseClass", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_23getIndexSynapseClass, METH_O, 0},
-  {"listAllMorphologies", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_25listAllMorphologies, METH_NOARGS, 0},
-  {"listAllEtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_27listAllEtypes, METH_NOARGS, 0},
-  {"listAllMtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_29listAllMtypes, METH_NOARGS, 0},
-  {"listAllSynapseClass", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_31listAllSynapseClass, METH_NOARGS, 0},
-  {"getCircuitSeeds", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_33getCircuitSeeds, METH_NOARGS, 0},
+  {"getMorphologies", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_3getMorphologies, METH_O, 0},
+  {"getEtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_5getEtypes, METH_O, 0},
+  {"getMtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_7getMtypes, METH_O, 0},
+  {"getSynapseClass", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_9getSynapseClass, METH_O, 0},
+  {"getIndexMorphologies", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_11getIndexMorphologies, METH_O, 0},
+  {"getIndexEtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_13getIndexEtypes, METH_O, 0},
+  {"getIndexMtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_15getIndexMtypes, METH_O, 0},
+  {"getIndexSynapseClass", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_17getIndexSynapseClass, METH_O, 0},
+  {"listAllMorphologies", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_19listAllMorphologies, METH_NOARGS, 0},
+  {"listAllEtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_21listAllEtypes, METH_NOARGS, 0},
+  {"listAllMtypes", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_23listAllMtypes, METH_NOARGS, 0},
+  {"listAllSynapseClass", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_25listAllSynapseClass, METH_NOARGS, 0},
+  {"getCircuitSeeds", (PyCFunction)__pyx_pw_6python_7mvdtool_8MVD3File_27getCircuitSeeds, METH_NOARGS, 0},
   {0, 0, 0, 0}
 };
 
@@ -19114,6 +19022,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_MVDType___init, __pyx_k_MVDType___init, sizeof(__pyx_k_MVDType___init), 0, 0, 1, 1},
   {&__pyx_n_s_MVDType___repr, __pyx_k_MVDType___repr, sizeof(__pyx_k_MVDType___repr), 0, 0, 1, 1},
   {&__pyx_kp_s_MVDType_s, __pyx_k_MVDType_s, sizeof(__pyx_k_MVDType_s), 0, 0, 1, 0},
+  {&__pyx_n_s_MVD_MVDType, __pyx_k_MVD_MVDType, sizeof(__pyx_k_MVD_MVDType), 0, 0, 1, 1},
   {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_kp_s_MemoryView_of_r_at_0x_x, __pyx_k_MemoryView_of_r_at_0x_x, sizeof(__pyx_k_MemoryView_of_r_at_0x_x), 0, 0, 1, 0},
   {&__pyx_kp_s_MemoryView_of_r_object, __pyx_k_MemoryView_of_r_object, sizeof(__pyx_k_MemoryView_of_r_object), 0, 0, 1, 0},
@@ -19153,7 +19062,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 0, 1, 1},
   {&__pyx_n_u_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 1, 0, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
-  {&__pyx_kp_s_home_leite_dev_MVD_tool_python, __pyx_k_home_leite_dev_MVD_tool_python, sizeof(__pyx_k_home_leite_dev_MVD_tool_python), 0, 0, 1, 0},
+  {&__pyx_kp_s_home_leite_dev_Functionalizer_d, __pyx_k_home_leite_dev_Functionalizer_d, sizeof(__pyx_k_home_leite_dev_Functionalizer_d), 0, 0, 1, 0},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
   {&__pyx_n_s_id_2, __pyx_k_id_2, sizeof(__pyx_k_id_2), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -19174,6 +19083,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
   {&__pyx_n_s_object, __pyx_k_object, sizeof(__pyx_k_object), 0, 0, 1, 1},
   {&__pyx_n_s_offset, __pyx_k_offset, sizeof(__pyx_k_offset), 0, 0, 1, 1},
+  {&__pyx_n_s_open_mvd, __pyx_k_open_mvd, sizeof(__pyx_k_open_mvd), 0, 0, 1, 1},
   {&__pyx_n_s_other, __pyx_k_other, sizeof(__pyx_k_other), 0, 0, 1, 1},
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
   {&__pyx_n_s_prepare, __pyx_k_prepare, sizeof(__pyx_k_prepare), 0, 0, 1, 1},
@@ -19203,7 +19113,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 221, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range_2); if (!__pyx_builtin_range) __PYX_ERR(1, 68, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 131, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 146, __pyx_L1_error)
@@ -19367,53 +19277,65 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 
-  /* "python/mvdtool.pyx":245
+  /* "python/mvdtool.pyx":229
  *               _MVD3: "MVD3"}
  * 
  *     def __init__(self, typ):             # <<<<<<<<<<<<<<
  *         assert typ in self._ITEMS
  *         self._id = typ
  */
-  __pyx_tuple__19 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_typ); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 245, __pyx_L1_error)
+  __pyx_tuple__19 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_typ); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__19);
   __Pyx_GIVEREF(__pyx_tuple__19);
-  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_leite_dev_MVD_tool_python, __pyx_n_s_init, 245, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 245, __pyx_L1_error)
+  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_leite_dev_Functionalizer_d, __pyx_n_s_init, 229, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 229, __pyx_L1_error)
 
-  /* "python/mvdtool.pyx":249
+  /* "python/mvdtool.pyx":233
  *         self._id = typ
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
  *         return isinstance(other, type(self)) and self._id == other._id
  * 
  */
-  __pyx_tuple__21 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 249, __pyx_L1_error)
+  __pyx_tuple__21 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__21);
   __Pyx_GIVEREF(__pyx_tuple__21);
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_leite_dev_MVD_tool_python, __pyx_n_s_eq, 249, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 249, __pyx_L1_error)
+  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_leite_dev_Functionalizer_d, __pyx_n_s_eq, 233, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 233, __pyx_L1_error)
 
-  /* "python/mvdtool.pyx":252
+  /* "python/mvdtool.pyx":236
  *         return isinstance(other, type(self)) and self._id == other._id
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return "<MVDType.%s>" % (self._ITEMS[self._id])
  * 
  */
-  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__23);
   __Pyx_GIVEREF(__pyx_tuple__23);
-  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_leite_dev_MVD_tool_python, __pyx_n_s_repr, 252, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_leite_dev_Functionalizer_d, __pyx_n_s_repr, 236, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 236, __pyx_L1_error)
 
-  /* "python/mvdtool.pyx":261
+  /* "python/mvdtool.pyx":245
  * 
  * 
  * def is_mvd_file(std.string filename):             # <<<<<<<<<<<<<<
  *     return MVDType(MVD.is_mvd_file(filename))
  * 
  */
-  __pyx_tuple__25 = PyTuple_Pack(2, __pyx_n_s_filename, __pyx_n_s_filename); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_tuple__25 = PyTuple_Pack(2, __pyx_n_s_filename, __pyx_n_s_filename); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__25);
   __Pyx_GIVEREF(__pyx_tuple__25);
-  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_leite_dev_MVD_tool_python, __pyx_n_s_is_mvd_file, 261, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_leite_dev_Functionalizer_d, __pyx_n_s_is_mvd_file, 245, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 245, __pyx_L1_error)
+
+  /* "python/mvdtool.pyx":249
+ * 
+ * 
+ * def open_mvd(std.string filename):             # <<<<<<<<<<<<<<
+ *     """Open either MVD2 or MVD3 and return an actual MVD2File or MVD3File object
+ *     """
+ */
+  __pyx_tuple__27 = PyTuple_Pack(2, __pyx_n_s_filename, __pyx_n_s_filename); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 249, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__27);
+  __Pyx_GIVEREF(__pyx_tuple__27);
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_leite_dev_Functionalizer_d, __pyx_n_s_open_mvd, 249, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 249, __pyx_L1_error)
 
   /* "View.MemoryView":282
  *         return self.name
@@ -19422,9 +19344,9 @@ static int __Pyx_InitCachedConstants(void) {
  * cdef strided = Enum("<strided and direct>") # default
  * cdef indirect = Enum("<strided and indirect>")
  */
-  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct_or_indirect); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(1, 282, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__27);
-  __Pyx_GIVEREF(__pyx_tuple__27);
+  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct_or_indirect); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(1, 282, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__29);
+  __Pyx_GIVEREF(__pyx_tuple__29);
 
   /* "View.MemoryView":283
  * 
@@ -19433,9 +19355,9 @@ static int __Pyx_InitCachedConstants(void) {
  * cdef indirect = Enum("<strided and indirect>")
  * 
  */
-  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(1, 283, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__28);
-  __Pyx_GIVEREF(__pyx_tuple__28);
+  __pyx_tuple__30 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(1, 283, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__30);
+  __Pyx_GIVEREF(__pyx_tuple__30);
 
   /* "View.MemoryView":284
  * cdef generic = Enum("<strided and direct or indirect>")
@@ -19444,9 +19366,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_kp_s_strided_and_indirect); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(1, 284, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__29);
-  __Pyx_GIVEREF(__pyx_tuple__29);
+  __pyx_tuple__31 = PyTuple_Pack(1, __pyx_kp_s_strided_and_indirect); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(1, 284, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__31);
+  __Pyx_GIVEREF(__pyx_tuple__31);
 
   /* "View.MemoryView":287
  * 
@@ -19455,9 +19377,9 @@ static int __Pyx_InitCachedConstants(void) {
  * cdef indirect_contiguous = Enum("<contiguous and indirect>")
  * 
  */
-  __pyx_tuple__30 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_direct); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(1, 287, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__30);
-  __Pyx_GIVEREF(__pyx_tuple__30);
+  __pyx_tuple__32 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_direct); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(1, 287, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__32);
+  __Pyx_GIVEREF(__pyx_tuple__32);
 
   /* "View.MemoryView":288
  * 
@@ -19466,9 +19388,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__31 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_indirect); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(1, 288, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__31);
-  __Pyx_GIVEREF(__pyx_tuple__31);
+  __pyx_tuple__33 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_indirect); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(1, 288, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__33);
+  __Pyx_GIVEREF(__pyx_tuple__33);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -19580,42 +19502,52 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_6python_7mvdtool__py__base) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6python_7mvdtool__py__base) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
   __pyx_type_6python_7mvdtool__py__base.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "_py__base", (PyObject *)&__pyx_type_6python_7mvdtool__py__base) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "_py__base", (PyObject *)&__pyx_type_6python_7mvdtool__py__base) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
   __pyx_ptype_6python_7mvdtool__py__base = &__pyx_type_6python_7mvdtool__py__base;
+  __pyx_vtabptr_6python_7mvdtool_MVDFile = &__pyx_vtable_6python_7mvdtool_MVDFile;
+  __pyx_vtable_6python_7mvdtool_MVDFile.ptr0 = (MVD::MVDFile *(*)(struct __pyx_obj_6python_7mvdtool_MVDFile *))__pyx_f_6python_7mvdtool_7MVDFile_ptr0;
+  __pyx_type_6python_7mvdtool_MVDFile.tp_base = __pyx_ptype_6python_7mvdtool__py__base;
+  if (PyType_Ready(&__pyx_type_6python_7mvdtool_MVDFile) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_type_6python_7mvdtool_MVDFile.tp_print = 0;
+  if (__Pyx_SetVtable(__pyx_type_6python_7mvdtool_MVDFile.tp_dict, __pyx_vtabptr_6python_7mvdtool_MVDFile) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "MVDFile", (PyObject *)&__pyx_type_6python_7mvdtool_MVDFile) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_ptype_6python_7mvdtool_MVDFile = &__pyx_type_6python_7mvdtool_MVDFile;
   __pyx_vtabptr_6python_7mvdtool_MVD2File = &__pyx_vtable_6python_7mvdtool_MVD2File;
+  __pyx_vtable_6python_7mvdtool_MVD2File.__pyx_base = *__pyx_vtabptr_6python_7mvdtool_MVDFile;
   __pyx_vtable_6python_7mvdtool_MVD2File.ptr = (MVD2::MVD2File *(*)(struct __pyx_obj_6python_7mvdtool_MVD2File *))__pyx_f_6python_7mvdtool_8MVD2File_ptr;
   __pyx_vtable_6python_7mvdtool_MVD2File.from_ptr = (struct __pyx_obj_6python_7mvdtool_MVD2File *(*)(MVD2::MVD2File *))__pyx_f_6python_7mvdtool_8MVD2File_from_ptr;
   __pyx_vtable_6python_7mvdtool_MVD2File.from_ref = (struct __pyx_obj_6python_7mvdtool_MVD2File *(*)(MVD2::MVD2File const &))__pyx_f_6python_7mvdtool_8MVD2File_from_ref;
   __pyx_vtable_6python_7mvdtool_MVD2File.vector2list = (PyObject *(*)(std::vector<MVD2::MVD2File *> ))__pyx_f_6python_7mvdtool_8MVD2File_vector2list;
-  __pyx_type_6python_7mvdtool_MVD2File.tp_base = __pyx_ptype_6python_7mvdtool__py__base;
-  if (PyType_Ready(&__pyx_type_6python_7mvdtool_MVD2File) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_type_6python_7mvdtool_MVD2File.tp_base = __pyx_ptype_6python_7mvdtool_MVDFile;
+  if (PyType_Ready(&__pyx_type_6python_7mvdtool_MVD2File) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
   __pyx_type_6python_7mvdtool_MVD2File.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_6python_7mvdtool_MVD2File.tp_dict, __pyx_vtabptr_6python_7mvdtool_MVD2File) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "MVD2File", (PyObject *)&__pyx_type_6python_7mvdtool_MVD2File) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6python_7mvdtool_MVD2File.tp_dict, __pyx_vtabptr_6python_7mvdtool_MVD2File) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "MVD2File", (PyObject *)&__pyx_type_6python_7mvdtool_MVD2File) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
   __pyx_ptype_6python_7mvdtool_MVD2File = &__pyx_type_6python_7mvdtool_MVD2File;
-  __pyx_vtabptr_6python_7mvdtool__MVD3_Range = &__pyx_vtable_6python_7mvdtool__MVD3_Range;
-  __pyx_vtable_6python_7mvdtool__MVD3_Range.ptr = (MVD3::Range *(*)(struct __pyx_obj_6python_7mvdtool__MVD3_Range *))__pyx_f_6python_7mvdtool_11_MVD3_Range_ptr;
-  __pyx_vtable_6python_7mvdtool__MVD3_Range.from_ptr = (struct __pyx_obj_6python_7mvdtool__MVD3_Range *(*)(MVD3::Range *))__pyx_f_6python_7mvdtool_11_MVD3_Range_from_ptr;
-  __pyx_vtable_6python_7mvdtool__MVD3_Range.from_ref = (struct __pyx_obj_6python_7mvdtool__MVD3_Range *(*)(MVD3::Range const &))__pyx_f_6python_7mvdtool_11_MVD3_Range_from_ref;
-  __pyx_vtable_6python_7mvdtool__MVD3_Range.vector2list = (PyObject *(*)(std::vector<MVD3::Range *> ))__pyx_f_6python_7mvdtool_11_MVD3_Range_vector2list;
-  __pyx_type_6python_7mvdtool__MVD3_Range.tp_base = __pyx_ptype_6python_7mvdtool__py__base;
-  if (PyType_Ready(&__pyx_type_6python_7mvdtool__MVD3_Range) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
-  __pyx_type_6python_7mvdtool__MVD3_Range.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_6python_7mvdtool__MVD3_Range.tp_dict, __pyx_vtabptr_6python_7mvdtool__MVD3_Range) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "_MVD3_Range", (PyObject *)&__pyx_type_6python_7mvdtool__MVD3_Range) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
-  __pyx_ptype_6python_7mvdtool__MVD3_Range = &__pyx_type_6python_7mvdtool__MVD3_Range;
+  __pyx_vtabptr_6python_7mvdtool__MVD_Range = &__pyx_vtable_6python_7mvdtool__MVD_Range;
+  __pyx_vtable_6python_7mvdtool__MVD_Range.ptr = (MVD::Range *(*)(struct __pyx_obj_6python_7mvdtool__MVD_Range *))__pyx_f_6python_7mvdtool_10_MVD_Range_ptr;
+  __pyx_vtable_6python_7mvdtool__MVD_Range.from_ptr = (struct __pyx_obj_6python_7mvdtool__MVD_Range *(*)(MVD::Range *))__pyx_f_6python_7mvdtool_10_MVD_Range_from_ptr;
+  __pyx_vtable_6python_7mvdtool__MVD_Range.from_ref = (struct __pyx_obj_6python_7mvdtool__MVD_Range *(*)(MVD::Range const &))__pyx_f_6python_7mvdtool_10_MVD_Range_from_ref;
+  __pyx_vtable_6python_7mvdtool__MVD_Range.vector2list = (PyObject *(*)(std::vector<MVD::Range *> ))__pyx_f_6python_7mvdtool_10_MVD_Range_vector2list;
+  __pyx_type_6python_7mvdtool__MVD_Range.tp_base = __pyx_ptype_6python_7mvdtool__py__base;
+  if (PyType_Ready(&__pyx_type_6python_7mvdtool__MVD_Range) < 0) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_type_6python_7mvdtool__MVD_Range.tp_print = 0;
+  if (__Pyx_SetVtable(__pyx_type_6python_7mvdtool__MVD_Range.tp_dict, __pyx_vtabptr_6python_7mvdtool__MVD_Range) < 0) __PYX_ERR(0, 119, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "_MVD_Range", (PyObject *)&__pyx_type_6python_7mvdtool__MVD_Range) < 0) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_ptype_6python_7mvdtool__MVD_Range = &__pyx_type_6python_7mvdtool__MVD_Range;
   __pyx_vtabptr_6python_7mvdtool_MVD3File = &__pyx_vtable_6python_7mvdtool_MVD3File;
+  __pyx_vtable_6python_7mvdtool_MVD3File.__pyx_base = *__pyx_vtabptr_6python_7mvdtool_MVDFile;
   __pyx_vtable_6python_7mvdtool_MVD3File.ptr = (MVD3::MVD3File *(*)(struct __pyx_obj_6python_7mvdtool_MVD3File *))__pyx_f_6python_7mvdtool_8MVD3File_ptr;
   __pyx_vtable_6python_7mvdtool_MVD3File.from_ptr = (struct __pyx_obj_6python_7mvdtool_MVD3File *(*)(MVD3::MVD3File *))__pyx_f_6python_7mvdtool_8MVD3File_from_ptr;
   __pyx_vtable_6python_7mvdtool_MVD3File.from_ref = (struct __pyx_obj_6python_7mvdtool_MVD3File *(*)(MVD3::MVD3File const &))__pyx_f_6python_7mvdtool_8MVD3File_from_ref;
   __pyx_vtable_6python_7mvdtool_MVD3File.vector2list = (PyObject *(*)(std::vector<MVD3::MVD3File *> ))__pyx_f_6python_7mvdtool_8MVD3File_vector2list;
-  __pyx_type_6python_7mvdtool_MVD3File.tp_base = __pyx_ptype_6python_7mvdtool__py__base;
-  if (PyType_Ready(&__pyx_type_6python_7mvdtool_MVD3File) < 0) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_type_6python_7mvdtool_MVD3File.tp_base = __pyx_ptype_6python_7mvdtool_MVDFile;
+  if (PyType_Ready(&__pyx_type_6python_7mvdtool_MVD3File) < 0) __PYX_ERR(0, 149, __pyx_L1_error)
   __pyx_type_6python_7mvdtool_MVD3File.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_6python_7mvdtool_MVD3File.tp_dict, __pyx_vtabptr_6python_7mvdtool_MVD3File) < 0) __PYX_ERR(0, 138, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "MVD3File", (PyObject *)&__pyx_type_6python_7mvdtool_MVD3File) < 0) __PYX_ERR(0, 138, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6python_7mvdtool_MVD3File.tp_dict, __pyx_vtabptr_6python_7mvdtool_MVD3File) < 0) __PYX_ERR(0, 149, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "MVD3File", (PyObject *)&__pyx_type_6python_7mvdtool_MVD3File) < 0) __PYX_ERR(0, 149, __pyx_L1_error)
   __pyx_ptype_6python_7mvdtool_MVD3File = &__pyx_type_6python_7mvdtool_MVD3File;
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
@@ -19664,91 +19596,91 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
  */
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_copyright, __pyx_kp_s_Copyright_2016_EPFL_BBP_project) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
 
-  /* "python/mvdtool.pyx":21
- * from libc cimport stdio
+  /* "python/mvdtool.pyx":17
+ * cimport boost
  * cimport MVD_MVDType
  * import numpy             # <<<<<<<<<<<<<<
  * 
  * cdef enum OPERATOR:
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_numpy, __pyx_t_1) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_numpy, __pyx_t_1) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/mvdtool.pyx":237
+  /* "python/mvdtool.pyx":221
  * # ======================================================================================================================
  * 
  * class MVDType(object):             # <<<<<<<<<<<<<<
  *     _UnknownFileType = MVD_MVDType.UnknownFileType
  *     _MVD2 = MVD_MVDType.MVD2
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_builtin_object);
   __Pyx_GIVEREF(__pyx_builtin_object);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_builtin_object);
-  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_MVDType, __pyx_n_s_MVDType, (PyObject *) NULL, __pyx_n_s_python_mvdtool, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_MVDType, __pyx_n_s_MVDType, (PyObject *) NULL, __pyx_n_s_python_mvdtool, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "python/mvdtool.pyx":238
+  /* "python/mvdtool.pyx":222
  * 
  * class MVDType(object):
  *     _UnknownFileType = MVD_MVDType.UnknownFileType             # <<<<<<<<<<<<<<
  *     _MVD2 = MVD_MVDType.MVD2
  *     _MVD3 = MVD_MVDType.MVD3
  */
-  __pyx_t_4 = __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_MVDType(MVD::MVDType::UnknownFileType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 238, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_MVDType(MVD::MVDType::UnknownFileType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_UnknownFileType, __pyx_t_4) < 0) __PYX_ERR(0, 238, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_UnknownFileType, __pyx_t_4) < 0) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "python/mvdtool.pyx":239
+  /* "python/mvdtool.pyx":223
  * class MVDType(object):
  *     _UnknownFileType = MVD_MVDType.UnknownFileType
  *     _MVD2 = MVD_MVDType.MVD2             # <<<<<<<<<<<<<<
  *     _MVD3 = MVD_MVDType.MVD3
  *     _ITEMS = {_UnknownFileType: "UnknownFileType",
  */
-  __pyx_t_4 = __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_MVDType(MVD::MVDType::MVD2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_MVDType(MVD::MVDType::MVD2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_MVD2, __pyx_t_4) < 0) __PYX_ERR(0, 239, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_MVD2, __pyx_t_4) < 0) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "python/mvdtool.pyx":240
+  /* "python/mvdtool.pyx":224
  *     _UnknownFileType = MVD_MVDType.UnknownFileType
  *     _MVD2 = MVD_MVDType.MVD2
  *     _MVD3 = MVD_MVDType.MVD3             # <<<<<<<<<<<<<<
  *     _ITEMS = {_UnknownFileType: "UnknownFileType",
  *               _MVD2: "MVD2",
  */
-  __pyx_t_4 = __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_MVDType(MVD::MVDType::MVD3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_enum__MVD_3a__3a_MVDType_3a__3a_MVDType(MVD::MVDType::MVD3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_MVD3, __pyx_t_4) < 0) __PYX_ERR(0, 240, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_MVD3, __pyx_t_4) < 0) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "python/mvdtool.pyx":241
+  /* "python/mvdtool.pyx":225
  *     _MVD2 = MVD_MVDType.MVD2
  *     _MVD3 = MVD_MVDType.MVD3
  *     _ITEMS = {_UnknownFileType: "UnknownFileType",             # <<<<<<<<<<<<<<
  *               _MVD2: "MVD2",
  *               _MVD3: "MVD3"}
  */
-  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_UnknownFileType);
   if (unlikely(!__pyx_t_5)) {
     PyErr_Clear();
     __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_UnknownFileType);
   }
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 241, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_t_5, __pyx_n_s_UnknownFileType_2) < 0) __PYX_ERR(0, 241, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_t_5, __pyx_n_s_UnknownFileType_2) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "python/mvdtool.pyx":242
+  /* "python/mvdtool.pyx":226
  *     _MVD3 = MVD_MVDType.MVD3
  *     _ITEMS = {_UnknownFileType: "UnknownFileType",
  *               _MVD2: "MVD2",             # <<<<<<<<<<<<<<
@@ -19760,12 +19692,12 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
     PyErr_Clear();
     __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVD2);
   }
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 242, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 226, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_t_5, __pyx_n_s_MVD2_2) < 0) __PYX_ERR(0, 241, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_t_5, __pyx_n_s_MVD2_2) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "python/mvdtool.pyx":243
+  /* "python/mvdtool.pyx":227
  *     _ITEMS = {_UnknownFileType: "UnknownFileType",
  *               _MVD2: "MVD2",
  *               _MVD3: "MVD3"}             # <<<<<<<<<<<<<<
@@ -19777,76 +19709,76 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
     PyErr_Clear();
     __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVD3);
   }
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 243, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_t_5, __pyx_n_s_MVD3_2) < 0) __PYX_ERR(0, 241, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_t_5, __pyx_n_s_MVD3_2) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_ITEMS, __pyx_t_4) < 0) __PYX_ERR(0, 241, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_ITEMS, __pyx_t_4) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "python/mvdtool.pyx":245
+  /* "python/mvdtool.pyx":229
  *               _MVD3: "MVD3"}
  * 
  *     def __init__(self, typ):             # <<<<<<<<<<<<<<
  *         assert typ in self._ITEMS
  *         self._id = typ
  */
-  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6python_7mvdtool_7MVDType_1__init__, 0, __pyx_n_s_MVDType___init, NULL, __pyx_n_s_python_mvdtool, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6python_7mvdtool_7MVDType_1__init__, 0, __pyx_n_s_MVDType___init, NULL, __pyx_n_s_python_mvdtool, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "python/mvdtool.pyx":249
+  /* "python/mvdtool.pyx":233
  *         self._id = typ
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
  *         return isinstance(other, type(self)) and self._id == other._id
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6python_7mvdtool_7MVDType_3__eq__, 0, __pyx_n_s_MVDType___eq, NULL, __pyx_n_s_python_mvdtool, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 249, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6python_7mvdtool_7MVDType_3__eq__, 0, __pyx_n_s_MVDType___eq, NULL, __pyx_n_s_python_mvdtool, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_eq, __pyx_t_4) < 0) __PYX_ERR(0, 249, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_eq, __pyx_t_4) < 0) __PYX_ERR(0, 233, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "python/mvdtool.pyx":252
+  /* "python/mvdtool.pyx":236
  *         return isinstance(other, type(self)) and self._id == other._id
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return "<MVDType.%s>" % (self._ITEMS[self._id])
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6python_7mvdtool_7MVDType_5__repr__, 0, __pyx_n_s_MVDType___repr, NULL, __pyx_n_s_python_mvdtool, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6python_7mvdtool_7MVDType_5__repr__, 0, __pyx_n_s_MVDType___repr, NULL, __pyx_n_s_python_mvdtool, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_repr, __pyx_t_4) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_repr, __pyx_t_4) < 0) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "python/mvdtool.pyx":237
+  /* "python/mvdtool.pyx":221
  * # ======================================================================================================================
  * 
  * class MVDType(object):             # <<<<<<<<<<<<<<
  *     _UnknownFileType = MVD_MVDType.UnknownFileType
  *     _MVD2 = MVD_MVDType.MVD2
  */
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_MVDType, __pyx_t_1, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_MVDType, __pyx_t_1, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MVDType, __pyx_t_4) < 0) __PYX_ERR(0, 237, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MVDType, __pyx_t_4) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/mvdtool.pyx":256
+  /* "python/mvdtool.pyx":240
  * 
  * # Actual "Enum" instances
  * MVDType.UnknownFileType = MVDType(MVDType._UnknownFileType)             # <<<<<<<<<<<<<<
  * MVDType.MVD2 = MVDType(MVDType._MVD2)
  * MVDType.MVD3 = MVDType(MVDType._MVD3)
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 256, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_UnknownFileType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 256, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_UnknownFileType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -19860,14 +19792,14 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -19876,43 +19808,43 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 256, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 240, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_GIVEREF(__pyx_t_4);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_4);
       __pyx_t_4 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_t_2, __pyx_n_s_UnknownFileType_2, __pyx_t_1) < 0) __PYX_ERR(0, 256, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_t_2, __pyx_n_s_UnknownFileType_2, __pyx_t_1) < 0) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "python/mvdtool.pyx":257
+  /* "python/mvdtool.pyx":241
  * # Actual "Enum" instances
  * MVDType.UnknownFileType = MVDType(MVDType._UnknownFileType)
  * MVDType.MVD2 = MVDType(MVDType._MVD2)             # <<<<<<<<<<<<<<
  * MVDType.MVD3 = MVDType(MVDType._MVD3)
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 241, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_MVD2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_MVD2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -19926,14 +19858,14 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_1)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_4};
-      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -19942,43 +19874,43 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_4};
-      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else
     #endif
     {
-      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 257, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 241, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5); __pyx_t_5 = NULL;
       __Pyx_GIVEREF(__pyx_t_4);
       PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_t_4);
       __pyx_t_4 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_t_1, __pyx_n_s_MVD2_2, __pyx_t_2) < 0) __PYX_ERR(0, 257, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_t_1, __pyx_n_s_MVD2_2, __pyx_t_2) < 0) __PYX_ERR(0, 241, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "python/mvdtool.pyx":258
+  /* "python/mvdtool.pyx":242
  * MVDType.UnknownFileType = MVDType(MVDType._UnknownFileType)
  * MVDType.MVD2 = MVDType(MVDType._MVD2)
  * MVDType.MVD3 = MVDType(MVDType._MVD3)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_MVD3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_MVD3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -19992,14 +19924,14 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -20008,110 +19940,122 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 258, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 242, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_GIVEREF(__pyx_t_4);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_4);
       __pyx_t_4 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_MVDType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_t_2, __pyx_n_s_MVD3_2, __pyx_t_1) < 0) __PYX_ERR(0, 258, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_t_2, __pyx_n_s_MVD3_2, __pyx_t_1) < 0) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "python/mvdtool.pyx":261
+  /* "python/mvdtool.pyx":245
  * 
  * 
  * def is_mvd_file(std.string filename):             # <<<<<<<<<<<<<<
  *     return MVDType(MVD.is_mvd_file(filename))
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6python_7mvdtool_1is_mvd_file, NULL, __pyx_n_s_python_mvdtool); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6python_7mvdtool_1is_mvd_file, NULL, __pyx_n_s_python_mvdtool); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_is_mvd_file, __pyx_t_2) < 0) __PYX_ERR(0, 261, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_is_mvd_file, __pyx_t_2) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "python/mvdtool.pyx":269
+  /* "python/mvdtool.pyx":249
+ * 
+ * 
+ * def open_mvd(std.string filename):             # <<<<<<<<<<<<<<
+ *     """Open either MVD2 or MVD3 and return an actual MVD2File or MVD3File object
+ *     """
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6python_7mvdtool_3open_mvd, NULL, __pyx_n_s_python_mvdtool); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 249, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_open_mvd, __pyx_t_2) < 0) __PYX_ERR(0, 249, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "python/mvdtool.pyx":260
  * # NAMESPACE Aliasing
  * #
  * class MVD2:             # <<<<<<<<<<<<<<
  *     File = MVD2File
  * 
  */
-  __pyx_t_2 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_MVD2_2, __pyx_n_s_MVD2_2, (PyObject *) NULL, __pyx_n_s_python_mvdtool, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_MVD2_2, __pyx_n_s_MVD2_2, (PyObject *) NULL, __pyx_n_s_python_mvdtool, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "python/mvdtool.pyx":270
+  /* "python/mvdtool.pyx":261
  * #
  * class MVD2:
  *     File = MVD2File             # <<<<<<<<<<<<<<
  * 
  * class MVD3:
  */
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_File, ((PyObject *)__pyx_ptype_6python_7mvdtool_MVD2File)) < 0) __PYX_ERR(0, 270, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_File, ((PyObject *)__pyx_ptype_6python_7mvdtool_MVD2File)) < 0) __PYX_ERR(0, 261, __pyx_L1_error)
 
-  /* "python/mvdtool.pyx":269
+  /* "python/mvdtool.pyx":260
  * # NAMESPACE Aliasing
  * #
  * class MVD2:             # <<<<<<<<<<<<<<
  *     File = MVD2File
  * 
  */
-  __pyx_t_1 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_MVD2_2, __pyx_empty_tuple, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_MVD2_2, __pyx_empty_tuple, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MVD2_2, __pyx_t_1) < 0) __PYX_ERR(0, 269, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MVD2_2, __pyx_t_1) < 0) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "python/mvdtool.pyx":272
+  /* "python/mvdtool.pyx":263
  *     File = MVD2File
  * 
  * class MVD3:             # <<<<<<<<<<<<<<
  *     File = MVD3File
- *     Range = _MVD3_Range
+ *     Range = _MVD_Range
  */
-  __pyx_t_2 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_MVD3_2, __pyx_n_s_MVD3_2, (PyObject *) NULL, __pyx_n_s_python_mvdtool, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_MVD3_2, __pyx_n_s_MVD3_2, (PyObject *) NULL, __pyx_n_s_python_mvdtool, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "python/mvdtool.pyx":273
+  /* "python/mvdtool.pyx":264
  * 
  * class MVD3:
  *     File = MVD3File             # <<<<<<<<<<<<<<
- *     Range = _MVD3_Range
+ *     Range = _MVD_Range
  */
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_File, ((PyObject *)__pyx_ptype_6python_7mvdtool_MVD3File)) < 0) __PYX_ERR(0, 273, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_File, ((PyObject *)__pyx_ptype_6python_7mvdtool_MVD3File)) < 0) __PYX_ERR(0, 264, __pyx_L1_error)
 
-  /* "python/mvdtool.pyx":274
+  /* "python/mvdtool.pyx":265
  * class MVD3:
  *     File = MVD3File
- *     Range = _MVD3_Range             # <<<<<<<<<<<<<<
+ *     Range = _MVD_Range             # <<<<<<<<<<<<<<
  */
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_Range, ((PyObject *)__pyx_ptype_6python_7mvdtool__MVD3_Range)) < 0) __PYX_ERR(0, 274, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_Range, ((PyObject *)__pyx_ptype_6python_7mvdtool__MVD_Range)) < 0) __PYX_ERR(0, 265, __pyx_L1_error)
 
-  /* "python/mvdtool.pyx":272
+  /* "python/mvdtool.pyx":263
  *     File = MVD2File
  * 
  * class MVD3:             # <<<<<<<<<<<<<<
  *     File = MVD3File
- *     Range = _MVD3_Range
+ *     Range = _MVD_Range
  */
-  __pyx_t_1 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_MVD3_2, __pyx_empty_tuple, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_MVD3_2, __pyx_empty_tuple, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MVD3_2, __pyx_t_1) < 0) __PYX_ERR(0, 272, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MVD3_2, __pyx_t_1) < 0) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
@@ -20145,7 +20089,7 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
  * cdef strided = Enum("<strided and direct>") # default
  * cdef indirect = Enum("<strided and indirect>")
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 282, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 282, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(generic);
   __Pyx_DECREF_SET(generic, __pyx_t_2);
@@ -20159,7 +20103,7 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
  * cdef indirect = Enum("<strided and indirect>")
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 283, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 283, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(strided);
   __Pyx_DECREF_SET(strided, __pyx_t_2);
@@ -20173,7 +20117,7 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 284, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(indirect);
   __Pyx_DECREF_SET(indirect, __pyx_t_2);
@@ -20187,7 +20131,7 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
  * cdef indirect_contiguous = Enum("<contiguous and indirect>")
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 287, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__32, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 287, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(contiguous);
   __Pyx_DECREF_SET(contiguous, __pyx_t_2);
@@ -20201,7 +20145,7 @@ PyMODINIT_FUNC PyInit_mvdtool(void)
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 288, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__33, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 288, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(indirect_contiguous);
   __Pyx_DECREF_SET(indirect_contiguous, __pyx_t_2);
@@ -23382,6 +23326,18 @@ __pyx_capsule_create(void *p, CYTHON_UNUSED const char *sig)
     }
 }
 
+/* MemviewDtypeToObject */
+              static CYTHON_INLINE PyObject *__pyx_memview_get_double(const char *itemp) {
+    return (PyObject *) PyFloat_FromDouble(*(double *) itemp);
+}
+static CYTHON_INLINE int __pyx_memview_set_double(const char *itemp, PyObject *obj) {
+    double value = __pyx_PyFloat_AsDouble(obj);
+    if ((value == (double)-1) && PyErr_Occurred())
+        return 0;
+    *(double *) itemp = value;
+    return 1;
+}
+
 /* CIntToPy */
               static CYTHON_INLINE PyObject* __Pyx_PyInt_From_std_3a__3a_size_t(std::size_t value) {
     const std::size_t neg_one = (std::size_t) -1, const_zero = (std::size_t) 0;
@@ -23411,30 +23367,6 @@ __pyx_capsule_create(void *p, CYTHON_UNUSED const char *sig)
         return _PyLong_FromByteArray(bytes, sizeof(std::size_t),
                                      little, !is_unsigned);
     }
-}
-
-/* MemviewDtypeToObject */
-              static CYTHON_INLINE PyObject *__pyx_memview_get_float(const char *itemp) {
-    return (PyObject *) PyFloat_FromDouble(*(float *) itemp);
-}
-static CYTHON_INLINE int __pyx_memview_set_float(const char *itemp, PyObject *obj) {
-    float value = __pyx_PyFloat_AsFloat(obj);
-    if ((value == (float)-1) && PyErr_Occurred())
-        return 0;
-    *(float *) itemp = value;
-    return 1;
-}
-
-/* MemviewDtypeToObject */
-              static CYTHON_INLINE PyObject *__pyx_memview_get_double(const char *itemp) {
-    return (PyObject *) PyFloat_FromDouble(*(double *) itemp);
-}
-static CYTHON_INLINE int __pyx_memview_set_double(const char *itemp, PyObject *obj) {
-    double value = __pyx_PyFloat_AsDouble(obj);
-    if ((value == (double)-1) && PyErr_Occurred())
-        return 0;
-    *(double *) itemp = value;
-    return 1;
 }
 
 /* MemviewSliceCopyTemplate */
@@ -24745,52 +24677,6 @@ fail:
 no_fail:
     __Pyx_RefNannyFinishContext();
     return retval;
-}
-
-/* ObjectToMemviewSlice */
-              static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(PyObject *obj) {
-    __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
-    __Pyx_BufFmt_StackElem stack[1];
-    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_FOLLOW), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
-    int retcode;
-    if (obj == Py_None) {
-        result.memview = (struct __pyx_memoryview_obj *) Py_None;
-        return result;
-    }
-    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
-                                                 (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT | PyBUF_WRITABLE), 2,
-                                                 &__Pyx_TypeInfo_float, stack,
-                                                 &result, obj);
-    if (unlikely(retcode == -1))
-        goto __pyx_fail;
-    return result;
-__pyx_fail:
-    result.memview = NULL;
-    result.data = NULL;
-    return result;
-}
-
-/* ObjectToMemviewSlice */
-              static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_float(PyObject *obj) {
-    __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
-    __Pyx_BufFmt_StackElem stack[1];
-    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
-    int retcode;
-    if (obj == Py_None) {
-        result.memview = (struct __pyx_memoryview_obj *) Py_None;
-        return result;
-    }
-    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
-                                                 PyBUF_RECORDS, 1,
-                                                 &__Pyx_TypeInfo_float, stack,
-                                                 &result, obj);
-    if (unlikely(retcode == -1))
-        goto __pyx_fail;
-    return result;
-__pyx_fail:
-    result.memview = NULL;
-    result.data = NULL;
-    return result;
 }
 
 /* ObjectToMemviewSlice */

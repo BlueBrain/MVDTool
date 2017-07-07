@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
+ *               2017 Fernando Pereira <fernando.pereira@epfl.ch>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,10 +20,10 @@
 #ifndef MVD2_MISC_HPP
 #define MVD2_MISC_HPP
 
-#include <boost/algorithm/string.hpp>
 #include <cstdlib>
 #include <cstdio>
-#include <set>
+#include <cstring>
+#include <boost/algorithm/string.hpp>
 
 #include "../mvd2.hpp"
 #include "../mvd_except.hpp"
@@ -53,10 +54,10 @@ inline DataSet getDataType(const char* line, const DataSet & prev_datatype){
 }
 
 /// SAX style parser for MVD2
-/// provided call back has to be with the signature void (DataSet type, const char* line)
+/// provided call back has to be with the signature bool (DataSet type, const char* line)
 ///
 template <typename Callback>
-inline void MVD2File::parse(Callback & lineParser){
+inline void MVD2File::parse(Callback & lineParser) const{
     FILE *data;
 
     //Look for the file
@@ -75,12 +76,15 @@ inline void MVD2File::parse(Callback & lineParser){
     size_t count = 0;
     while (fgets(line, 1024, data) != NULL) {
         DataSet prev_type = type;
-        if( (type= getDataType(line, prev_type)) != prev_type){
+        if( (type=getDataType(line, prev_type)) != prev_type){
             count = 0;
         }
 
         if(count>0){
-            lineParser(type, line);
+            int res = lineParser(type, line);
+            if(res == 1) {
+                break;
+            }
         }
         count++;
     }
@@ -88,6 +92,10 @@ inline void MVD2File::parse(Callback & lineParser){
 }
 
 
+
+/////////////////////////////////////////
+/// Raw parsers
+/////////////////////////////////////////
 
 // Precision force to float to maintain compability, need to switch to double in future
 inline void parseNeuronLine(const char* line, std::string & name, int& database, int &column, int &minicolumn, int &layer,
@@ -156,81 +164,195 @@ inline void parseElectroTypeLine(const char *line, std::string &electroType){
 }
 
 
-struct Counter{
-    Counter(size_t & nb_neuron, size_t & nb_morpho_type, size_t & columns) :
-        _nb_columns(columns),
-        _nb_neuron(nb_neuron),
-        _nb_morpho_type(nb_morpho_type){
+/////////////////////////////////////////////
+/// members of Counter
+////////////////////////////////////////////
 
-    }
+inline Counter::Counter() :
+        _nb_columns(0),
+        _nb_neuron(0),
+        _nb_morpho_type(0)
+    {    }
 
-    void operator()(DataSet type, const char* line){
-        (void) line;
-        switch(type){
-            case NeuronLoaded:{
-                _nb_neuron +=1;
-                std::string morpho, metype;
-                int trash;
-                std::vector<float> pos;
-                parseNeuronLine(line, morpho, trash, trash, trash, trash, trash, trash, pos, metype);
-                morphos.insert(morpho);
-                break;
-            }
-            case MorphTypes:{
-                _nb_morpho_type +=1;
-                break;
-            }
-            case(MiniColumnsPosition):{
-                _nb_columns +=1;
-                break;
-            }
-            default:{
-                break;
-            }
+inline int Counter::operator()(DataSet type, const char* line){
+    (void) line;
+    switch(type){
+        case NeuronLoaded:{
+            _nb_neuron +=1;
+            std::string morpho, metype;
+            int trash;
+            std::vector<float> pos;
+            parseNeuronLine(line, morpho, trash, trash, trash, trash, trash, trash, pos, metype);
+            morphos.insert(morpho);
+            break;
+        }
+        case MorphTypes:{
+            _nb_morpho_type +=1;
+            break;
+        }
+        case(MiniColumnsPosition):{
+            _nb_columns +=1;
+            break;
+        }
+        default:{
+            break;
         }
     }
+    return 0;
+}
 
-    size_t & _nb_columns;
-    size_t & _nb_neuron;
-    size_t & _nb_morpho_type;
-    std::set<std::string> morphos;
+
+/////////////////////////////////////////////////////////
+/// Structs defining the Callbacks
+/// to read Ranges of of positions and rotations
+/////////////////////////////////////////////////////////
+
+struct PositionData {
+
+    inline PositionData( MVD::Positions & positions, const MVD::Range & range = MVD::Range()) :
+        _positions(positions),
+        _range(range),
+        _cur_neuron(0),
+        _n_skipped(0)
+    { }
+
+    inline int operator()(DataSet type, const char* line){
+        // Only handle NeuronLoaded
+        if( type != NeuronLoaded )
+            return 0;
+
+        // Check count limit. _range.count==0 has the speciam meaning of DISABLED.
+        if( _range.count > 0 && _cur_neuron>=_range.count ) {
+            return 1;
+        }
+
+        std::string morpho, metype;
+        int trash;
+        std::vector<double> pos;
+        parseNeuronLine(line, morpho, trash, trash, trash, trash, trash, trash, pos, metype);
+
+        if (_range.offset > _n_skipped) {
+            _n_skipped++;
+        }
+        else {
+            std::copy(pos.begin(), pos.begin()+3, _positions[_cur_neuron].begin());
+            _cur_neuron += 1;
+        }
+        return 0;
+
+    }
+
+    MVD::Positions & _positions;
+
+private:
+    const MVD::Range _range;
+    size_t _cur_neuron;
+    size_t _n_skipped;
+};
+
+
+struct RotationData {
+    inline RotationData( MVD::Positions & rotations, const MVD::Range & range = MVD::Range() ) :
+        _rotations(rotations),
+        _range(range),
+        _cur_neuron(0),
+        _n_skipped(0)
+    { }
+
+    inline int operator()(DataSet type, const char* line){
+        // Only handle NeuronLoaded
+        if( type != NeuronLoaded )
+            return 0;
+
+        // Check count limit. _range.count==0 has the speciam meaning of DISABLED.
+        if( _range.count > 0 && _cur_neuron>=_range.count ) {
+            return 1;
+        }
+
+        std::string morpho, metype;
+        int trash;
+        std::vector<double> pos;
+        parseNeuronLine(line, morpho, trash, trash, trash, trash, trash, trash, pos, metype);
+
+        if (_range.offset > _n_skipped) {
+            _n_skipped++;
+        }
+        else {
+            _rotations[_cur_neuron][0] = pos[3];
+            _cur_neuron += 1;
+        }
+        return 0;
+
+    }
+
+    MVD::Rotations & _rotations;
+
+private:
+    const MVD::Range _range;
+    size_t _cur_neuron;
+    size_t _n_skipped;
 };
 
 
 
-inline size_t MVD2File::getNbNeuron(){
+
+/////////////////////////////////////////////////////////
+/// Class MVD2File members
+/////////////////////////////////////////////////////////
+
+inline size_t MVD2File::getNbNeuron() const {
     init_counter();
-    return _nb_neuron;
+    return counter._nb_neuron;
+}
+
+inline size_t MVD2File::getNbMorphoType() const {
+    init_counter();
+    return counter._nb_morpho_type;
+}
+
+inline size_t MVD2File::getNbMorpho() const {
+    init_counter();
+    return counter.morphos.size();
+}
+
+inline size_t MVD2File::getNbColumns() const {
+    init_counter();
+    return counter._nb_columns;
+}
+
+inline std::set<std::string> & MVD2File::getUniqueMorphologies() const {
+    init_counter();
+    return counter.morphos;
 }
 
 
-
-inline size_t MVD2File::getNbMorphoType(){
+inline MVD::Positions MVD2File::getPositions(const MVD::Range & range) const {
     init_counter();
-    return _nb_morpho_type;
+    size_t count = (range.count>0 && range.count<counter._nb_neuron)? range.count : counter._nb_neuron;
+    MVD::Positions posi_buff(boost::extents[count][3]);
+    PositionData posi_data_reader(posi_buff, range);
+    parse(posi_data_reader);
+    return posi_buff;
+}
+
+inline MVD::Rotations MVD2File::getRotations(const MVD::Range & range) const {
+    init_counter();
+    size_t count = (range.count>0 && range.count<counter._nb_neuron)? range.count : counter._nb_neuron;
+    MVD::Rotations rots_buff(boost::extents[count][1]);
+    RotationData rots_data_reader(rots_buff, range);
+    parse(rots_data_reader);
+    return rots_buff;
 }
 
 
-inline size_t MVD2File::getNbMorpho(){
-    init_counter();
-    return _nb_morpho;
-}
-
-inline size_t MVD2File::getNbColumns(){
-    init_counter();
-    return _nb_columns;
-}
-
-
-inline void MVD2File::init_counter(){
-    if(_nb_neuron == 0){
-        Counter c(_nb_neuron, _nb_morpho_type, _nb_columns);
-        parse(c);
-        _nb_morpho = c.morphos.size();
+inline void MVD2File::init_counter() const {
+    if(counter._nb_neuron == 0){
+        parse(counter);
     }
 }
 
-}
 
+
+} // ::MVD2
 
 #endif // MVD2_MISC_HPP

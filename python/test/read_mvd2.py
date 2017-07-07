@@ -29,8 +29,8 @@ class Test_Read_MVD2(test.TestCase):
 
         rots = mvd.getRotations()
         assert len(rots) == 1000
-        assert numpy.isclose(rots[0], -1.146572)
-        assert numpy.isclose(rots[146], -125.718090)
+        assert numpy.isclose(rots[0][0], -1.146572)
+        assert numpy.isclose(rots[146][0], -125.718090)
 
 
 

@@ -25,21 +25,14 @@
 
 #include <string>
 #include <highfive/H5File.hpp>
-#include <boost/multi_array.hpp>
+#include "mvd_base.hpp"
 
 namespace MVD3 {
 
 
-typedef boost::multi_array<double, 2> Positions;
-typedef boost::multi_array<double, 2> Rotations;
-
-
-struct Range{
-    Range(const size_t offset_, const size_t count_) : offset(offset_), count(count_) {}
-
-    size_t offset;
-    size_t count;
-};
+typedef MVD::Positions Positions;
+typedef MVD::Rotations Rotations;
+typedef MVD::Range Range;
 
 
 ///
@@ -47,7 +40,7 @@ struct Range{
 ///
 /// Represent a MVD 3.0 circuit file
 ///
-class MVD3File{
+class MVD3File : public MVD::MVDFile{
 public:
 
     ///

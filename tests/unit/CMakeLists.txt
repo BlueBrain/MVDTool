@@ -1,5 +1,5 @@
 
-if(UNIT_TESTS)
+if(MVDTOOL_UNIT_TESTS)
 
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS filesystem system unit_test_framework)
 

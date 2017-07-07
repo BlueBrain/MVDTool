@@ -8,32 +8,18 @@ __copyright__ = "Copyright 2016 EPFL BBP-project"
 from cython.operator cimport dereference as deref
 from libcpp cimport bool
 cimport std
-cimport boost
+from MVD cimport MVDFile, Range
 
 #Workaround for cython templates, which dont accept integers yet
 
 # ======================================================================================================================
 cdef extern from "mvd/mvd3.hpp" namespace "MVD3":
 # ----------------------------------------------------------------------------------------------------------------------
-    ctypedef int DIM2 "2"
-
-    ctypedef boost.multi_array[double, DIM2] Positions
-    ctypedef boost.multi_array[double, DIM2] Rotations
-
-    ###### Cybinding for class Range ######
-    cdef cppclass Range:
-        int offset
-        int count
-        Range(std.size_t, std.size_t)
 
     ###### Cybinding for class MVD3File ######
-    cdef cppclass MVD3File:
+    cdef cppclass MVD3File(MVDFile):
         MVD3File(std.string)
-        std.size_t getNbNeuron()
-        Positions getPositions(Range)
-        Positions getPositions()
-        Rotations getRotations(Range)
-        Rotations getRotations()
+        # Inherits getNbNeuron(), getPositions(MVD.Range=None), getRotations(Range=None)
         std.vector[std.string] getMorphologies(Range)
         std.vector[std.string] getEtypes(Range)
         std.vector[std.string] getMtypes(Range)

@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 
 enable_testing()
 
-set(VERSION_MAJOR 1)
-set(VERSION_MINOR 2)
+set(VERSION_MAJOR 2)
+set(VERSION_MINOR 0)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
       ${PROJECT_SOURCE_DIR}/CMake/portability
@@ -22,7 +22,6 @@ set(Boost_NO_BOOST_CMAKE TRUE)
 ## find dependencies
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
 find_package(HDF5 QUIET REQUIRED)
-
 
 file(GLOB MVD_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*)
 file(GLOB MVD_HEADERS_BITS ${CMAKE_CURRENT_SOURCE_DIR}/include/mvd/*/*)

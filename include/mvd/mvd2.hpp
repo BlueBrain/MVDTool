@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
+ *               2017 Fernando Pereira <fernando.pereira@epfl.ch>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,12 +27,13 @@
  *
  * */
 
-
 #include <vector>
+#include <set>
 #include <string>
 #include <cstring>
 #include <iostream>
 #include <cstdlib>
+#include "mvd_base.hpp"
 
 
 ///
@@ -53,52 +55,83 @@ enum DataSet{
 };
 
 
-class MVD2File{
-public:
-    MVD2File(const std::string & filename) :
-        _filename(filename),
-        _nb_columns(0),
-        _nb_neuron(0),
-        _nb_morpho_type(0),
-        _nb_morpho(0){
+///
+/// \brief The Counter struct
+/// Hold the counts of the different types
+///
+struct Counter {
+    Counter();
+    int operator()(DataSet type, const char* line);
 
-    }
+    size_t _nb_columns;
+    size_t _nb_neuron;
+    size_t _nb_morpho_type;
+    std::set<std::string> morphos;
+};
+
+
+class MVD2File : public MVD::MVDFile{
+public:
+    inline MVD2File(const std::string & filename) :
+        _filename(filename)
+    {    }
 
     ///
     /// \brief getNbMorpho
     /// \return number of morphologies in MVD file
-    size_t getNbMorphoType();
+    size_t getNbMorphoType() const;
 
     ///
-    size_t getNbMorpho();
+    size_t getNbMorpho() const;
 
     ///
     /// \brief getNbNeuron
     /// \return number of neurons in this MVD file
     ///
-    size_t getNbNeuron();
+    size_t getNbNeuron() const;
 
     ///
     /// \brief getNbColumns
     /// \return number of columns in this MVD file
     ///
-    size_t getNbColumns();
+    size_t getNbColumns() const;
+
+
+    std::set<std::string> & getUniqueMorphologies() const;
+
+
+    /// \brief getPositions
+    /// \param range: selection range, the default range (0,0) select the entire dataset
+    /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
+    ///  of each selected neurons ( all by default )
+    ///
+    MVD::Positions getPositions(const MVD::Range & range = MVD::Range(0,0)) const;
+
 
     ///
+    /// \brief Rotations
+    /// \return a double vector of size N with the rotations
+    /// of each selected neurons ( all by default )
     ///
-    ///
+    MVD::Rotations getRotations(const MVD::Range & range = MVD::Range(0,0)) const;
+
+
+
     template <typename Callback>
-    void parse(Callback & line_parser);
+    void parse(Callback & line_parser) const;
+
 
 private:
     std::string _filename;
-    size_t _nb_columns;
-    size_t _nb_neuron;
-    size_t _nb_morpho_type;
-    size_t _nb_morpho;
 
-    void init_counter();
+    // Counter is a kind of cache for the totals
+    // We set counter to mutable to allow all reader methods to be const
+    // It can be safely reconstructed without affecting bahvior, only performance
+    mutable Counter counter;
+    void init_counter() const;
+
 };
+
 
 //
 // parsing functions for use in callback

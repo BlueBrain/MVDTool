@@ -98,7 +98,8 @@ const std::string did_lib_circuit_seeds = "/circuit/seeds";
 
 namespace MVD3 {
 
-inline MVD3File::MVD3File(const std::string &str) : _filename(str), _hdf5_file(str), _nb_neurons(0) {}
+inline MVD3File::MVD3File(const std::string &str) : _filename(str), _hdf5_file(str), _nb_neurons(0)
+{ }
 
 inline size_t MVD3File::getNbNeuron() const{
     if(_nb_neurons == 0){
@@ -218,6 +219,7 @@ inline std::vector<std::string> MVD3File::listAllSynapseClass() const{
 
 inline std::vector<double> MVD3File::getCircuitSeeds() const{
         std::vector<double> seeds;
+
         HighFive::DataSet seeds_dataset = _hdf5_file.getDataSet(did_lib_circuit_seeds);
         seeds_dataset.read(seeds);
         if(seeds.size() < 4){

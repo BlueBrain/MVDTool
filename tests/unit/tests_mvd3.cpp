@@ -290,3 +290,20 @@ BOOST_AUTO_TEST_CASE( basicTestSeeds )
     }
 
 }
+
+
+BOOST_AUTO_TEST_CASE( genericMVDFile )
+{
+    using namespace MVD;
+
+    MVDFile *file = open_mvd(MVD3_FILENAME);
+
+    Positions neurons_pos = file->getPositions();
+
+    BOOST_CHECK_EQUAL(neurons_pos.shape()[0], 1000);
+    BOOST_CHECK_EQUAL(neurons_pos[0][0], static_cast<double>(40.821401));
+    BOOST_CHECK_EQUAL(neurons_pos[0][1], static_cast<double>(1986.506637));
+    BOOST_CHECK_EQUAL(neurons_pos[0][2], static_cast<double>(10.788424));
+
+    delete file;
+}

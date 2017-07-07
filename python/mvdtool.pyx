@@ -8,15 +8,11 @@ __copyright__ = "Copyright 2016 EPFL BBP-project"
 from cython.operator cimport dereference as deref
 from libcpp cimport bool
 cimport std
-from _globalns cimport *
 cimport MVD
 cimport MVD2
 cimport MVD3
 from libcpp.memory cimport unique_ptr
-from libcpp cimport bool
-from cython cimport view
 cimport boost
-from libc cimport stdio
 cimport MVD_MVDType
 import numpy
 
@@ -32,10 +28,41 @@ cdef class _py__base:
             return self._ptr==other._ptr
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+cdef class MVDFile(_py__base):
+# ----------------------------------------------------------------------------------------------------------------------
+    cdef MVD.MVDFile * ptr0(self):
+        return <MVD.MVDFile*> self._ptr
 
-# ======================================================================================================================
-# Python bindings to namespace
-# ======================================================================================================================
+    def getNbNeuron(self, ):
+        return self.ptr0().getNbNeuron()
+
+    def getPositions(self, _MVD_Range range_=None):
+        cdef MVD.Positions* posics
+        if range_ is None:
+            posics = new MVD.Positions(self.ptr0().getPositions())
+        else:
+            posics = new MVD.Positions(self.ptr0().getPositions(deref(range_.ptr())))
+        cdef double *addr = posics.data()
+        cdef const boost.size_type* shape = posics.shape()
+        cdef int x1=shape[0], x2=shape[1]
+        # We might have a data copy here... and miss the release of the allocated obj...
+        # We might do it manually in the future (numpy API)
+        cdef double[:,::1]y = <double[:x1,:x2]> addr
+        return numpy.asarray(y)
+
+    def getRotations(self, _MVD_Range range_=None):
+        cdef MVD.Rotations *rots
+        if range_ is None:
+            rots = new MVD.Rotations(self.ptr0().getRotations())
+        else:
+            rots = new MVD.Rotations(self.ptr0().getRotations(deref(range_.ptr())))
+        cdef double *addr = rots.data()
+        cdef const boost.size_type* shape = rots.shape()
+        cdef int x1=shape[0], x2=shape[1]
+        cdef double[:,::1]y = <double[:x1,:x2]> addr
+        return numpy.asarray(y)
+
 
 
 # ======================================================================================================================
@@ -44,20 +71,16 @@ cdef class _py__base:
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-cdef class MVD2File(_py__base):
+cdef class MVD2File(MVDFile):
     "Python wrapper class for MVD2File (ns=MVD2)"
 # ----------------------------------------------------------------------------------------------------------------------
     cdef unique_ptr[MVD2.MVD2File] _autodealoc
     cdef MVD2.MVD2File *ptr(self):
         return <MVD2.MVD2File*> self._ptr
 
-    cdef MVD2.MVD2ColData colData
-
     def __init__(self, std.string filename):
         self._ptr = new MVD2.MVD2File(filename)
         self._autodealoc.reset(self.ptr())
-        # Immediately load data to column format
-        self.ptr().parse(self.colData)
 
     def getNbMorphoType(self, ):
         return self.ptr().getNbMorphoType()
@@ -65,21 +88,9 @@ cdef class MVD2File(_py__base):
     def getNbMorpho(self, ):
         return self.ptr().getNbMorpho()
 
-    def getNbNeuron(self, ):
-        return self.ptr().getNbNeuron()
-
     def getNbColumns(self, ):
         return self.ptr().getNbColumns()
 
-    def getPositions(self,):
-        cdef float * pos_addr = <float*>self.colData.getPositions().data()
-        cdef float[:,::1]y = <float[:self.colData.getNbNeuron(),:3]> pos_addr
-        return numpy.asarray(y)
-
-    def getRotations(self,):
-        cdef float * rot_vec = <float*>self.colData.getRotations().data()
-        cdef float[:]y = <float[:self.colData.getNbNeuron()]> rot_vec
-        return numpy.asarray(y)
 
     @staticmethod
     cdef MVD2File from_ptr(MVD2.MVD2File *ptr):
@@ -105,37 +116,37 @@ cdef class MVD2File(_py__base):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-cdef class _MVD3_Range(_py__base):
+cdef class _MVD_Range(_py__base):
     "Python wrapper class for Range (ns=MVD3)"
 # ----------------------------------------------------------------------------------------------------------------------
-    cdef unique_ptr[MVD3.Range] _autodealoc
-    cdef MVD3.Range *ptr(self):
-        return <MVD3.Range*> self._ptr
+    cdef unique_ptr[MVD.Range] _autodealoc
+    cdef MVD.Range *ptr(self):
+        return <MVD.Range*> self._ptr
 
 
-    def __init__(self, std.size_t offset_, std.size_t count_):
-        self._ptr = new MVD3.Range(offset_, count_)
+    def __init__(self, std.size_t offset_=0, std.size_t count_=0):
+        self._ptr = new MVD.Range(offset_, count_)
         self._autodealoc.reset(self.ptr())
 
     @staticmethod
-    cdef _MVD3_Range from_ptr(MVD3.Range *ptr):
-        cdef _MVD3_Range obj = _MVD3_Range.__new__(_MVD3_Range)
+    cdef _MVD_Range from_ptr(MVD.Range *ptr):
+        cdef _MVD_Range obj = _MVD_Range.__new__(_MVD_Range)
         obj._ptr = ptr
         obj._autodealoc.reset(obj.ptr())
         return obj
 
     @staticmethod
-    cdef _MVD3_Range from_ref(const MVD3.Range &ref):
-        return _MVD3_Range.from_ptr(<MVD3.Range*>&ref)
+    cdef _MVD_Range from_ref(const MVD.Range &ref):
+        return _MVD_Range.from_ptr(<MVD.Range*>&ref)
 
     @staticmethod
-    cdef list vector2list( std.vector[MVD3.Range*] vec ):
-        return [ _MVD3_Range.from_ptr(elem) for elem in vec ]
+    cdef list vector2list( std.vector[MVD.Range*] vec ):
+        return [ _MVD_Range.from_ptr(elem) for elem in vec ]
 
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-cdef class MVD3File(_py__base):
+cdef class MVD3File(MVDFile):
     "Python wrapper class for MVD3File (ns=MVD3)"
 # ----------------------------------------------------------------------------------------------------------------------
     cdef unique_ptr[MVD3.MVD3File] _autodealoc
@@ -146,70 +157,43 @@ cdef class MVD3File(_py__base):
         self._ptr = new MVD3.MVD3File(filename)
         self._autodealoc.reset(self.ptr())
 
-    def getNbNeuron(self, ):
-        return self.ptr().getNbNeuron()
-
-    def getPositions(self, _MVD3_Range range_=None):
-        cdef MVD3.Positions* posics
-        if range_ is None:
-            posics = new MVD3.Positions(self.ptr().getPositions())
-        else:
-            posics = new MVD3.Positions(self.ptr().getPositions(deref(range_.ptr())))
-        cdef double *addr = posics.data()
-        cdef const boost.size_type* shape = posics.shape()
-        cdef int x1=shape[0], x2=shape[1]
-        cdef double[:,::1]y = <double[:x1,:x2]> addr
-        return numpy.asarray(y)
-
-    def getRotations(self, _MVD3_Range range_):
-        cdef MVD3.Rotations *rots
-        if range_ is None:
-            rots = new MVD3.Rotations(self.ptr().getRotations())
-        else:
-            rots = new MVD3.Rotations(self.ptr().getRotations(deref(range_.ptr())))
-        cdef double *addr = rots.data()
-        cdef const boost.size_type* shape = rots.shape()
-        cdef int x1=shape[0], x2=shape[1]
-        cdef double[:,::1]y = <double[:x1,:x2]> addr
-        return numpy.asarray(y)
-
-    def getMorphologies(self, _MVD3_Range range):
+    def getMorphologies(self, _MVD_Range range):
         return self.ptr().getMorphologies(deref(range.ptr()))
 
-    def getEtypes(self, _MVD3_Range range):
+    def getEtypes(self, _MVD_Range range):
         return self.ptr().getEtypes(deref(range.ptr()))
 
-    def getMtypes(self, _MVD3_Range range):
+    def getMtypes(self, _MVD_Range range):
         return self.ptr().getMtypes(deref(range.ptr()))
 
-    def getSynapseClass(self, _MVD3_Range range):
+    def getSynapseClass(self, _MVD_Range range):
         return self.ptr().getSynapseClass(deref(range.ptr()))
 
-    def getIndexMorphologies(self, _MVD3_Range range):
+    def getIndexMorphologies(self, _MVD_Range range):
         return self.ptr().getIndexMorphologies(deref(range.ptr()))
 
-    def getIndexEtypes(self, _MVD3_Range range):
+    def getIndexEtypes(self, _MVD_Range range):
         return self.ptr().getIndexEtypes(deref(range.ptr()))
 
-    def getIndexMtypes(self, _MVD3_Range range):
+    def getIndexMtypes(self, _MVD_Range range):
         return self.ptr().getIndexMtypes(deref(range.ptr()))
 
-    def getIndexSynapseClass(self, _MVD3_Range range):
+    def getIndexSynapseClass(self, _MVD_Range range):
         return self.ptr().getIndexSynapseClass(deref(range.ptr()))
 
-    def listAllMorphologies(self, ):
+    def listAllMorphologies(self):
         return self.ptr().listAllMorphologies()
 
-    def listAllEtypes(self, ):
+    def listAllEtypes(self):
         return self.ptr().listAllEtypes()
 
-    def listAllMtypes(self, ):
+    def listAllMtypes(self):
         return self.ptr().listAllMtypes()
 
-    def listAllSynapseClass(self, ):
+    def listAllSynapseClass(self):
         return self.ptr().listAllSynapseClass()
 
-    def getCircuitSeeds(self, ):
+    def getCircuitSeeds(self):
         return self.ptr().getCircuitSeeds()
 
     @staticmethod
@@ -262,6 +246,13 @@ def is_mvd_file(std.string filename):
     return MVDType(MVD.is_mvd_file(filename))
 
 
+def open_mvd(std.string filename):
+    """Open either MVD2 or MVD3 and return an actual MVD2File or MVD3File object
+    """
+    if MVD.is_mvd_file(filename) == MVD_MVDType._MVD2:
+        return MVD2File(filename)
+    return MVD3File(filename)
+
 
 # #####################################################
 # NAMESPACE Aliasing
@@ -271,4 +262,4 @@ class MVD2:
 
 class MVD3:
     File = MVD3File
-    Range = _MVD3_Range
+    Range = _MVD_Range
