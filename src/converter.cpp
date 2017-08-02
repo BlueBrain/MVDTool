@@ -41,9 +41,13 @@ struct MVD2Infos{
     inline MVD2Infos(const size_t n_neurons) :
         neuron_line(0),
         vec_xyzr(n_neurons),
+        prop_hypercolumn(n_neurons),
+        prop_minicolumn(n_neurons),
+        prop_layer(n_neurons),
         prop_mtype(n_neurons),
         prop_etype(n_neurons),
         morphologies(n_neurons),
+        me_combos(n_neurons),
         seeds(4,0)
     {
         for(std::vector< std::vector<double> >::iterator it = vec_xyzr.begin(); it < vec_xyzr.end(); ++it){
@@ -80,24 +84,28 @@ struct MVD2Infos{
 
     void parseNeuron(const char* line){
         assert(neuron_line < vec_xyzr.size());
-        int unused, mtype, etype;
-        std::string morpho_name, metype;
+        int unused, hypercolumn, minicolumn, layer, mtype, etype;
+        std::string morpho_name, me_combo;
         std::vector<double> xyzr;
 
         MVD2::parseNeuronLine(line,
                               morpho_name,
                               unused,
-                              unused,
-                              unused,
-                              unused,
+                              hypercolumn,
+                              minicolumn,
+                              layer,
                               mtype,
                               etype,
                               xyzr,
-                              metype);
+                              me_combo);
 
+        prop_hypercolumn[neuron_line] = hypercolumn;
+        prop_minicolumn[neuron_line] = minicolumn;
+        prop_layer[neuron_line] = 1 + layer;
         prop_mtype[neuron_line] = mtype;
         prop_etype[neuron_line] = etype;
         morphologies[neuron_line].swap(morpho_name);
+        me_combos[neuron_line].swap(me_combo);
         vec_xyzr[neuron_line].swap(xyzr);
 
         neuron_line +=1;
@@ -110,10 +118,11 @@ struct MVD2Infos{
     }
 
     void parseMorphType(const char* line){
-        std::string mtype_name, mtype_name2, mtype_class;
-        MVD2::parseMorphTypeLine(line, mtype_name, mtype_name2, mtype_class);
+        std::string mtype_name, morph_class, synapse_class;
+        MVD2::parseMorphTypeLine(line, mtype_name, morph_class, synapse_class);
         mtype_names.push_back(mtype_name);
-        mtype_syn_class.push_back(mtype_class);
+        mtype_mclass.push_back(morph_class);
+        mtype_syn_class.push_back(synapse_class);
     }
 
     // counter
@@ -121,9 +130,13 @@ struct MVD2Infos{
 
     // mvd2 infos
     std::vector< std::vector<double> > vec_xyzr;
+    std::vector<int> prop_hypercolumn;
+    std::vector<int> prop_minicolumn;
+    std::vector<int> prop_layer;
     std::vector<size_t> prop_mtype;
     std::vector<size_t> prop_etype;
     std::vector<std::string> morphologies;
+    std::vector<std::string> me_combos;
 
     std::vector<double> seeds;
 
@@ -132,11 +145,8 @@ struct MVD2Infos{
 
     // mtypes
     std::vector<std::string> mtype_names;
+    std::vector<std::string> mtype_mclass;
     std::vector<std::string> mtype_syn_class;
-
-
-
-
 };
 
 
@@ -153,26 +163,39 @@ struct MVD3Infos{
 
         }
 
+        prop_hypercolumn.resize(n_neurons);
+        prop_minicolumn.resize(n_neurons);
+        prop_layer.resize(n_neurons);
         prop_etype.resize(n_neurons);
         prop_mtype.resize(n_neurons);
         prop_morpho.resize(n_neurons);
+        prop_mclass.resize(n_neurons);
         prop_synclass.resize(n_neurons);
+        prop_me_combo.resize(n_neurons);
     }
 
     // neurons infos
     std::vector<std::vector<double> > position;
     std::vector<std::vector<double> > rotation;
+
     //properties
+    std::vector<int> prop_hypercolumn;
+    std::vector<int> prop_minicolumn;
+    std::vector<int> prop_layer;
     std::vector<size_t> prop_etype;
     std::vector<size_t> prop_morpho;
     std::vector<size_t> prop_mtype;
+    std::vector<size_t> prop_mclass;
     std::vector<size_t> prop_synclass;
+    std::vector<size_t> prop_me_combo;
 
     // infos
     std::vector<std::string> etypes;
     std::vector<std::string> morphologies;
+    std::vector<std::string> morph_class;
     std::vector<std::string> synapse_class;
     std::vector<std::string> mtypes;
+    std::vector<std::string> me_combos;
 
     // circuit
     std::vector<double> seeds;
@@ -217,32 +240,47 @@ void move_morphologies(MVD2Infos & infos, MVD3Infos & result){
     infos.morphologies.clear();
 }
 
+void move_me_combos(MVD2Infos & infos, MVD3Infos & result){
+    hdf5_index_create(infos.me_combos, result.prop_me_combo, result.me_combos);
+    infos.me_combos.clear();
+}
+
 void move_etype(MVD2Infos & infos, MVD3Infos & result){
     result.etypes.swap(infos.etypes);
     result.prop_etype.swap(infos.prop_etype);
 }
 
 
-void move_mtype_and_syn_class(MVD2Infos & infos, MVD3Infos & result){
+void move_mtype_all(MVD2Infos & infos, MVD3Infos & result){
     result.mtypes.swap(infos.mtype_names);
     result.prop_mtype.swap(infos.prop_mtype);
 
-    std::vector<size_t> index_morph_to_syn_class(infos.mtype_syn_class.size());
-    hdf5_index_create(infos.mtype_syn_class, index_morph_to_syn_class, result.synapse_class);
+    std::vector<size_t> index_mtype_to_mclass(infos.mtype_mclass.size());
+    hdf5_index_create(infos.mtype_mclass, index_mtype_to_mclass, result.morph_class);
 
+    std::vector<size_t> index_mtype_to_syn_class(infos.mtype_syn_class.size());
+    hdf5_index_create(infos.mtype_syn_class, index_mtype_to_syn_class, result.synapse_class);
+
+    result.prop_mclass.resize(result.prop_mtype.size(), 0);
     result.prop_synclass.resize(result.prop_mtype.size(), 0);
-
 
     for(size_t i = 0; i < result.prop_mtype.size(); ++i){
         const size_t index = result.prop_mtype[i];
-        assert(index < index_morph_to_syn_class.size());
-        result.prop_synclass[i] = index_morph_to_syn_class[index];
+        assert(index < index_mtype_to_mclass.size());
+        assert(index < index_mtype_to_syn_class.size());
+        result.prop_mclass[i] = index_mtype_to_mclass[index];
+        result.prop_synclass[i] = index_mtype_to_syn_class[index];
     }
 
+    infos.mtype_mclass.clear();
     infos.mtype_syn_class.clear();
 }
 
-
+void move_int_props(MVD2Infos & infos, MVD3Infos & result){
+    result.prop_hypercolumn.swap(infos.prop_hypercolumn);
+    result.prop_minicolumn.swap(infos.prop_minicolumn);
+    result.prop_layer.swap(infos.prop_layer);
+}
 
 
 void transform(MVD2Infos & infos, MVD3Infos & result){
@@ -252,9 +290,13 @@ void transform(MVD2Infos & infos, MVD3Infos & result){
 
     move_morphologies(infos, result);
 
+    move_me_combos(infos, result);
+
+    move_int_props(infos, result);
+
     move_etype(infos, result);
 
-    move_mtype_and_syn_class(infos, result);
+    move_mtype_all(infos, result);
 
     result.seeds = infos.seeds;
 }
@@ -290,13 +332,23 @@ void converter(const std::string & mvd2, const std::string & mvd3){
 
         Group properties = cells.createGroup("properties");
 
+        properties.createDataSet<int>("hypercolumn", DataSpace::From(mvd3_content.prop_hypercolumn)).write(mvd3_content.prop_hypercolumn);
+
+        properties.createDataSet<int>("minicolumn", DataSpace::From(mvd3_content.prop_minicolumn)).write(mvd3_content.prop_minicolumn);
+
+        properties.createDataSet<int>("layer", DataSpace::From(mvd3_content.prop_layer)).write(mvd3_content.prop_layer);
+
         properties.createDataSet<size_t>("etype", DataSpace::From(mvd3_content.prop_etype)).write(mvd3_content.prop_etype);
 
         properties.createDataSet<size_t>("mtype", DataSpace::From(mvd3_content.prop_mtype)).write(mvd3_content.prop_mtype);
 
         properties.createDataSet<size_t>("morphology", DataSpace::From(mvd3_content.prop_morpho)).write(mvd3_content.prop_morpho);
 
+        properties.createDataSet<size_t>("morph_class", DataSpace::From(mvd3_content.prop_mclass)).write(mvd3_content.prop_mclass);
+
         properties.createDataSet<size_t>("synapse_class", DataSpace::From(mvd3_content.prop_synclass)).write(mvd3_content.prop_synclass);
+
+        properties.createDataSet<size_t>("me_combo", DataSpace::From(mvd3_content.prop_me_combo)).write(mvd3_content.prop_me_combo);
 
         Group library = mvd3_file.createGroup("library");
 
@@ -307,7 +359,11 @@ void converter(const std::string & mvd2, const std::string & mvd3){
 
         library.createDataSet<std::string>("mtype", DataSpace::From(mvd3_content.mtypes)).write(mvd3_content.mtypes);
 
+        library.createDataSet<std::string>("morph_class", DataSpace::From(mvd3_content.morph_class)).write(mvd3_content.morph_class);
+
         library.createDataSet<std::string>("synapse_class", DataSpace::From(mvd3_content.synapse_class)).write(mvd3_content.synapse_class);
+
+        library.createDataSet<std::string>("me_combo", DataSpace::From(mvd3_content.me_combos)).write(mvd3_content.me_combos);
 
         Group circuit = mvd3_file.createGroup("circuit");
         circuit.createDataSet<double>("seeds", DataSpace::From(mvd3_content.seeds)).write(mvd3_content.seeds);
