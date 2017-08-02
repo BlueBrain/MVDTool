@@ -22,9 +22,10 @@ cmake ../
 make
 
 
-** Authors
-Adrien Devresse <adrien.devresse@epfl.ch>
-
+** Contributors
+Adrien Devresse  - <adrien.devresse@epfl.ch>
+Fernando Perreira - <fernando.pereira@epfl.ch>
+Arseny V. Povolotsky - <arseny.povolotsky@epfl.ch>
 
 ** License
 LGPLv2.1+
