@@ -4,7 +4,9 @@ find_package(PythonInterpLibs)
 find_package(Cython)
 
 option(BUILD_PYTHON_BINDINGS "Build python bindings?" ON)
-if(BUILD_PYTHON_BINDINGS)
+if(NOT BUILD_PYTHON_BINDINGS)
+  return()
+endif()
 
 ##############################################
 # Definitions
@@ -12,11 +14,6 @@ set(cymod_src "${CMAKE_CURRENT_SOURCE_DIR}/mvdtool.pyx")
 set(cybindings_cpp "${CMAKE_CURRENT_SOURCE_DIR}/mvdtool.cpp")
 set(local_includes_dir "${CMAKE_CURRENT_SOURCE_DIR}/includes")
 FILE(GLOB cy_srcs *.pyx *.pxi includes/*.pxd)
-
-# Target properties, required for the extension
-get_target_property(_link_libs mvd-tool LINK_LIBRARIES)
-get_target_property(_include_dirs mvd-tool INCLUDE_DIRECTORIES)
-
 
 ##############################################
 # Rules
@@ -42,12 +39,13 @@ add_custom_command(
 add_definitions("-std=c++11" "-Wfatal-errors" "-Wno-strict-aliasing")
 python_add_module(mvdtool ${cybindings_cpp})
 target_include_directories(mvdtool PUBLIC ${PYTHON_INCLUDE_DIRS} ${local_includes_dir})
-target_link_libraries(mvdtool ${_link_libs})
+target_link_libraries(mvdtool MVDTool)
 
 
 ##############################################
 # Python packaging
 
+get_target_property(_include_dirs mvd-tool INCLUDE_DIRECTORIES)
 set(_inc_str ${local_includes_dir})
 foreach(dir ${_include_dirs})
     set(_inc_str "${_inc_str}:${dir}")
@@ -99,5 +97,3 @@ add_test(NAME python_read_mvd3
          WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-
-endif() # /BUILD_PYTHON_BINDINGS
