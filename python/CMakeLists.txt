@@ -1,7 +1,7 @@
 ##############################################
 # Requirements
-find_package(PythonInterpLibs)
-find_package(Cython)
+find_package(PythonInterpLibs QUIET)
+find_package(Cython QUIET)
 
 option(BUILD_PYTHON_BINDINGS "Build python bindings?" ON)
 if(NOT BUILD_PYTHON_BINDINGS)
@@ -11,34 +11,40 @@ endif()
 ##############################################
 # Definitions
 set(cymod_src "${CMAKE_CURRENT_SOURCE_DIR}/mvdtool.pyx")
-set(cybindings_cpp "${CMAKE_CURRENT_SOURCE_DIR}/mvdtool.cpp")
-set(local_includes_dir "${CMAKE_CURRENT_SOURCE_DIR}/includes")
-FILE(GLOB cy_srcs *.pyx *.pxi includes/*.pxd)
+set(default_cybindings_cpp "${CMAKE_CURRENT_SOURCE_DIR}/mvdtool.cpp")
+set(cybindings_cpp "${CMAKE_CURRENT_BINARY_DIR}/mvdtool.cpp")
+set(local_include_dir "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(cy_sources
+  mvdtool.pyx
+  include/boost.pxd
+  include/MVD2.pxd
+  include/MVD3.pxd
+  include/MVD_MVDType.pxd
+  include/MVD.pxd
+  include/std.pxd)
 
 ##############################################
 # Rules
-set(OPT_REBUILD_OPTION_NAME REBUILD_PYTHON_BINDINGS)
-set(OPT_REBUILD_SOURCE_FILE ${cybindings_cpp})
-include(OptionRebuildSrcFile) # Do the checking
-
-if(REBUILD_PYTHON_BINDINGS AND NOT CYTHON_FOUND)
-    message(FATAL_ERROR "Cython is required to rebuild python bindings but was not found" )
-endif()
 
 # .pyx -> .cpp
-add_custom_command(
-    OUTPUT ${cybindings_cpp}
-    COMMAND PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR} ${CYTHON_EXECUTABLE} ${CYTHON_FLAGS} --fast-fail --cplus -I${local_includes_dir} --output-file ${cybindings_cpp} ${cymod_src}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    # No dependencies, except own sources
-    DEPENDS ${cy_srcs}
-    COMMENT "Cythonizing ${cymod_src}"
- )
+if(CYTHON_FOUND)
+    add_custom_command(
+        OUTPUT ${cybindings_cpp}
+        COMMAND PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR} ${CYTHON_EXECUTABLE} ${CYTHON_FLAGS} --fast-fail --cplus -I${local_include_dir} --output-file ${cybindings_cpp} ${cymod_src}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        # No dependencies, except own sources
+        DEPENDS ${cy_sources}
+        COMMENT "Cythonizing ${cymod_src}"
+    )
+else()
+    # No Cython available, copying the C++ source for the binding from the repo
+    configure_file(${default_cybindings_cpp} ${cybindings_cpp})
+endif()
 
 # .cpp -> shared_lib
 add_definitions("-std=c++11" "-Wfatal-errors" "-Wno-strict-aliasing")
 python_add_module(mvdtool ${cybindings_cpp})
-target_include_directories(mvdtool PUBLIC ${PYTHON_INCLUDE_DIRS} ${local_includes_dir})
+target_include_directories(mvdtool PRIVATE ${PYTHON_INCLUDE_DIRS} ${local_include_dir})
 target_link_libraries(mvdtool MVDTool)
 
 
@@ -46,7 +52,7 @@ target_link_libraries(mvdtool MVDTool)
 # Python packaging
 
 get_target_property(_include_dirs mvd-tool INCLUDE_DIRECTORIES)
-set(_inc_str ${local_includes_dir})
+set(_inc_str ${local_include_dir})
 foreach(dir ${_include_dirs})
     set(_inc_str "${_inc_str}:${dir}")
 endforeach()
