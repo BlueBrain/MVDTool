@@ -16,15 +16,19 @@ cimport boost
 cimport MVD_MVDType
 import numpy
 
-cdef enum OPERATOR:
-    LESS = 0, LESS_EQUAL, EQUAL, DIFF, GREATER, GREATER_EQUAL
-
+class OPERATOR:
+    LESS = 0
+    LESS_EQUAL = 1
+    EQUAL = 2
+    DIFF = 3
+    GREATER = 4
+    GREATER_EQUAL = 5
 
 cdef class _py__base:
     cdef void *_ptr
     # Basic comparison is done by comparing the inner obj ptr
     def __richcmp__(_py__base self, _py__base other, operation):
-        if operation == OPERATOR.EQUAL:
+        if operation == OPERATOR.EQUAL: #
             return self._ptr==other._ptr
 
 
