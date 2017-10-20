@@ -1,3 +1,0 @@
-[submodule "deps/highfive"]
-	path = deps/highfive
-	url = https://github.com/BlueBrain/HighFive.git

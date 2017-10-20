@@ -23,9 +23,6 @@ set(Boost_NO_BOOST_CMAKE TRUE)
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
 find_package(HDF5 QUIET REQUIRED)
 find_package(HighFive QUIET)
-if(NOT HighFive_FOUND)
-  add_subdirectory(${PROJECT_SOURCE_DIR}/deps/highfive)
-endif()
 
 include(PackageConfig)
 
