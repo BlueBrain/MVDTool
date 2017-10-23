@@ -4,6 +4,8 @@
 #  PYTHON_SITE_PACKAGES             = path to the python modules dir
 #  PYTHON_LIBRARIES                 = path to the python library
 #  PYTHON_INCLUDE_DIRS              = path to where Python.h is found
+#  CMAKE_INSTALL_PYTHON_PACKAGES    = path to install python modules
+#  CMAKE_INSTALL_FULL_PYTHON_PACKAGES = path to install python modules, absolute
 # --
 find_package(PythonInterp REQUIRED)
 
@@ -13,9 +15,10 @@ execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import
                 OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 # Site-packages
-execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))"
+execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import os; from distutils.sysconfig import get_python_lib; print(get_python_lib().split(os.sep)[-1:][0])"
                 OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
                 OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 
 # Include dir
 execute_process(COMMAND
@@ -43,13 +46,23 @@ set(PYTHON_LIBRARIES ${PYTHON_LIBRARY}
 set(PYTHON_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS}
     CACHE PATH "path to the python include dir")
 
+set(CMAKE_INSTALL_PYTHON_PACKAGES "${CMAKE_INSTALL_LIBDIR}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/${PYTHON_SITE_PACKAGES}"
+    CACHE PATH "path to the python package install directory")
+
+set(CMAKE_INSTALL_FULL_PYTHON_PACKAGES "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_PYTHON_PACKAGES}"
+    CACHE PATH "absolute path to the python package install directory")
+
+
 mark_as_advanced(PYTHON_SITE_PACKAGES)
 mark_as_advanced(PYTHON_LIBRARIES)
 mark_as_advanced(PYTHON_INCLUDE_DIRS)
+mark_as_advanced(CMAKE_INSTALL_PYTHON_PACKAGES)
+mark_as_advanced(CMAKE_INSTALL_FULL_PYTHON_PACKAGES)
+
 
 # Handle Options
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(PythonInterpLibs DEFAULT_MSG PYTHON_LIBRARIES PYTHON_INCLUDE_DIRS)
+find_package_handle_standard_args(PythonComplete DEFAULT_MSG PYTHON_LIBRARIES PYTHON_INCLUDE_DIRS)
 
 
 # function taken from the official FindPythonLibs.cmake (https://github.com/Kitware)

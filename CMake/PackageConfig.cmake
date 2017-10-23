@@ -7,7 +7,7 @@ target_link_libraries(MVDTool INTERFACE HighFive)
 target_compile_definitions(MVDTool INTERFACE -DH5_USE_BOOST)
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd
-        DESTINATION ${INCLUDE_INSTALL_DIR})
+        DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR})
 
 include(CMakePackageConfigHelpers)
 configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/MVDToolConfig.cmake.in
