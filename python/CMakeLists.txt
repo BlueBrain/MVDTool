@@ -1,7 +1,7 @@
 ##############################################
 # Requirements
 find_package(PythonComplete QUIET)
-find_package(Cython QUIET)
+find_package(Cython REQUIRED)
 
 
 
@@ -26,19 +26,14 @@ set(cy_sources
 # Rules
 
 # .pyx -> .cpp
-if(CYTHON_FOUND)
-    add_custom_command(
-        OUTPUT ${cybindings_cpp}
-        COMMAND PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR} ${CYTHON_EXECUTABLE} ${CYTHON_FLAGS} --fast-fail --cplus -I${local_include_dir} --output-file ${cybindings_cpp} ${cymod_src}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        # No dependencies, except own sources
-        DEPENDS ${cy_sources}
-        COMMENT "Cythonizing ${cymod_src}"
-    )
-else()
-    # No Cython available, copying the C++ source for the binding from the repo
-    configure_file(${default_cybindings_cpp} ${cybindings_cpp})
-endif()
+add_custom_command(
+    OUTPUT ${cybindings_cpp}
+    COMMAND PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR} ${CYTHON_EXECUTABLE} ${CYTHON_FLAGS} --fast-fail --cplus -I${local_include_dir} --output-file ${cybindings_cpp} ${cymod_src}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    # No dependencies, except own sources
+    DEPENDS ${cy_sources}
+    COMMENT "Cythonizing ${cymod_src}"
+)
 
 # .cpp -> shared_lib
 add_definitions("-std=c++11" "-Wfatal-errors" "-Wno-strict-aliasing")
