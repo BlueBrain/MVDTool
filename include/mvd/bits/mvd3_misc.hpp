@@ -183,7 +183,7 @@ inline std::vector<boost::int32_t> MVD3File::getMiniColumns(const Range & range)
     return get_data_for_selection<boost::int32_t>(set, range);
 }
 
-inline std::vector<boost::int32_t> MVD3File::getLayer(const Range & range) const{
+inline std::vector<boost::int32_t> MVD3File::getLayers(const Range & range) const{
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_layer);
     return get_data_for_selection<boost::int32_t>(set, range);
 }

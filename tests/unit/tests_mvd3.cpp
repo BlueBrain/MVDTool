@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE( basicLayer )
 
     MVD3File file(MVD3_FILENAME);
 
-    std::vector<boost::int32_t> layer = file.getLayer();
+    std::vector<boost::int32_t> layer = file.getLayers();
 
     BOOST_CHECK_EQUAL(layer[0], 1);
     BOOST_CHECK_EQUAL(layer[100], 2);

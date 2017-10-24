@@ -162,16 +162,47 @@ cdef class MVD3File(MVDFile):
         self._autodealoc.reset(self.ptr())
 
     def getMorphologies(self, _MVD_Range range):
-        return self.ptr().getMorphologies(deref(range.ptr()))
+        if(range is None):
+            return self.ptr().getMorphologies()
+        else:
+            return self.ptr().getMorphologies(deref(range.ptr()))
 
     def getEtypes(self, _MVD_Range range):
-        return self.ptr().getEtypes(deref(range.ptr()))
+        if(range is None):
+            return self.ptr().getEtypes()
+        else:
+            return self.ptr().getEtypes(deref(range.ptr()))
 
     def getMtypes(self, _MVD_Range range):
-        return self.ptr().getMtypes(deref(range.ptr()))
+        if(range is None):
+            return self.ptr().getMtypes()
+        else:
+            return self.ptr().getMtypes(deref(range.ptr()))
+
+    def getLayers(self, _MVD_Range range = None):
+        if(range is None):
+            return self.ptr().getLayers()
+        else:
+            return self.ptr().getLayers(deref(range.ptr()))
+
+
+    def getHyperColumns(self, _MVD_Range range = None):
+        if(range is None):
+            return self.ptr().getHyperColumns()
+        else:
+            return self.ptr().getHyperColumns(deref(range.ptr()))
+
+    def getMiniColumns(self, _MVD_Range range = None):
+        if(range is None):
+            return self.ptr().getMiniColumns()
+        else:
+            return self.ptr().getMiniColumns(deref(range.ptr()))
 
     def getSynapseClass(self, _MVD_Range range):
-        return self.ptr().getSynapseClass(deref(range.ptr()))
+        if(range is None):
+            return self.ptr().getSynapseClass()
+        else:
+            return self.ptr().getSynapseClass(deref(range.ptr()))
 
     def getIndexMorphologies(self, _MVD_Range range):
         return self.ptr().getIndexMorphologies(deref(range.ptr()))
