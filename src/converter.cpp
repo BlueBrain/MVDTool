@@ -27,6 +27,7 @@
 
 #include <boost/array.hpp>
 #include <boost/math/constants/constants.hpp>
+#include <boost/integer.hpp>
 
 #pragma GCC diagnostic pop
 
@@ -130,9 +131,9 @@ struct MVD2Infos{
 
     // mvd2 infos
     std::vector< std::vector<double> > vec_xyzr;
-    std::vector<int> prop_hypercolumn;
-    std::vector<int> prop_minicolumn;
-    std::vector<int> prop_layer;
+    std::vector<boost::int32_t> prop_hypercolumn;
+    std::vector<boost::int32_t> prop_minicolumn;
+    std::vector<boost::int32_t> prop_layer;
     std::vector<size_t> prop_mtype;
     std::vector<size_t> prop_etype;
     std::vector<std::string> morphologies;

@@ -24,7 +24,10 @@
 #endif
 
 #include <string>
+
+#include <boost/integer.hpp>
 #include <highfive/H5File.hpp>
+
 #include "mvd_base.hpp"
 
 namespace MVD3 {
@@ -97,6 +100,12 @@ public:
     /// \return vector of string with the Mtype name associated with each neuron
     ///
     std::vector<std::string> getMtypes(const Range & range = Range(0,0)) const;
+
+    ///
+    /// \brief getHyperColumns
+    /// \return vector of int32 with the hypercolumn associated with each neuron
+    ///
+    std::vector<boost::int32_t> getHyperColumns(const Range & range = Range(0,0)) const;
 
 
     ///

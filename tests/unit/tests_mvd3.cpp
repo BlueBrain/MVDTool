@@ -218,6 +218,23 @@ BOOST_AUTO_TEST_CASE( basicTestMypes )
 
 }
 
+
+
+BOOST_AUTO_TEST_CASE( basicTestHypercolumns )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    std::vector<boost::int32_t> hcolumns = file.getHyperColumns();
+
+    BOOST_CHECK_EQUAL(hcolumns[0], 0);
+    BOOST_CHECK_EQUAL(hcolumns[10], 0);
+    BOOST_CHECK_EQUAL(hcolumns[20], 0);
+
+}
+
+
 BOOST_AUTO_TEST_CASE( basicTestMtypeRange )
 {
     using namespace MVD3;
