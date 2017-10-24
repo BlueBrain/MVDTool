@@ -23,6 +23,7 @@
 #include <string>
 #include <algorithm>
 #include <boost/multi_array.hpp>
+
 #include "mvd_except.hpp"
 
 namespace MVD {

@@ -82,6 +82,9 @@ inline std::vector<T> resolve_index(HighFive::DataSet & index, const MVD3::Range
 // cells properties
 const std::string did_cells_positions = "/cells/positions";
 const std::string did_cells_rotations = "/cells/orientations";
+// cells properties namespace
+const std::string did_cells_hypercolumn = "/cells/properties/hypercolumn";
+
 // cells index
 const std::string did_cells_index_morpho = "/cells/properties/morphology";
 const std::string did_cells_index_etypes = "/cells/properties/etype";
@@ -165,6 +168,17 @@ inline std::vector<std::string> MVD3File::getMtypes(const Range & range) const{
     HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
     HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_mtypes);
     return resolve_index<std::string>(index, range, data);
+}
+
+inline std::vector<boost::int32_t> MVD3File::getHyperColumns(const Range & range) const{
+    std::vector<boost::int32_t> res;
+    HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_hypercolumn);
+    if(is_valid_range(range)){
+        set.select(size_to_vec(range.offset), size_to_vec(range.count))
+        .read(res);
+        return res;
+    }
+    set.read(res);
 }
 
 inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range) const{
