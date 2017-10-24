@@ -17,7 +17,7 @@ include(ReleaseDebugAutoFlags)
 
 option(MVDTOOL_INSTALL_HIGHFIVE "Install header of dependency HighFive (needed for subprojects)" ON)
 option(MVDTOOL_UNIT_TESTS "Enable or disable unit tests" ON)
-option(BUILD_PYTHON_BINDINGS "Build python bindings?" ON)
+option(BUILD_PYTHON_BINDINGS "Build python bindings?" OFF)
 set(Boost_NO_BOOST_CMAKE TRUE)
 
 ## find dependencies
