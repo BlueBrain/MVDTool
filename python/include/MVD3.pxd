@@ -18,18 +18,28 @@ cdef extern from "mvd/mvd3.hpp" namespace "MVD3":
 
     ###### Cybinding for class MVD3File ######
     cdef cppclass MVD3File(MVDFile):
-        MVD3File(std.string)
+        MVD3File(std.string) except+
         # Inherits getNbNeuron(), getPositions(MVD.Range=None), getRotations(Range=None)
-        std.vector[std.string] getMorphologies(Range)
-        std.vector[std.string] getEtypes(Range)
-        std.vector[std.string] getMtypes(Range)
-        std.vector[std.string] getSynapseClass(Range)
-        std.vector[std.size_t] getIndexMorphologies(Range)
-        std.vector[std.size_t] getIndexEtypes(Range)
-        std.vector[std.size_t] getIndexMtypes(Range)
-        std.vector[std.size_t] getIndexSynapseClass(Range)
-        std.vector[std.string] listAllMorphologies()
-        std.vector[std.string] listAllEtypes()
-        std.vector[std.string] listAllMtypes()
-        std.vector[std.string] listAllSynapseClass()
-        std.vector[double] getCircuitSeeds()
+        std.vector[std.string] getMorphologies(Range) except+
+        std.vector[std.string] getMorphologies() except+
+        std.vector[std.string] getEtypes(Range) except+
+        std.vector[std.string] getEtypes() except+
+        std.vector[std.string] getMtypes(Range) except+
+        std.vector[std.string] getMtypes() except+
+        std.vector[std.string] getSynapseClass(Range) except+
+        std.vector[std.string] getSynapseClass() except+
+        std.vector[int] getLayers(Range) except+
+        std.vector[int] getLayers() except+
+        std.vector[int] getHyperColumns(Range) except+
+        std.vector[int] getHyperColumns() except+
+        std.vector[int] getMiniColumns(Range) except+
+        std.vector[int] getMiniColumns() except+
+        std.vector[std.size_t] getIndexMorphologies(Range) except+
+        std.vector[std.size_t] getIndexEtypes(Range) except+
+        std.vector[std.size_t] getIndexMtypes(Range) except+
+        std.vector[std.size_t] getIndexSynapseClass(Range) except+
+        std.vector[std.string] listAllMorphologies() except+
+        std.vector[std.string] listAllEtypes() except+
+        std.vector[std.string] listAllMtypes() except+
+        std.vector[std.string] listAllSynapseClass() except+
+        std.vector[double] getCircuitSeeds() except+
