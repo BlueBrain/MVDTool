@@ -45,16 +45,16 @@ inline std::vector<size_t> size2D_to_vec(size_t d1, size_t d2){
 }
 
 template<typename T>
-inline std::vector<T> get_data_for_selection(HighFive::DataSet & index, const MVD3::Range & range){
-    std::vector<T> index_values;
+inline std::vector<T> get_data_for_selection(HighFive::DataSet & dataset, const MVD3::Range & range){
+    std::vector<T> data_values;
 
     if(is_valid_range(range)){
-        index.select(size_to_vec(range.offset), size_to_vec(range.count))
-                .read(index_values);
+        dataset.select(size_to_vec(range.offset), size_to_vec(range.count))
+                .read(data_values);
     }else{
-        index.read(index_values);
+        dataset.read(data_values);
     }
-    return index_values;
+    return data_values;
 }
 
 template<typename T>
@@ -84,6 +84,8 @@ const std::string did_cells_positions = "/cells/positions";
 const std::string did_cells_rotations = "/cells/orientations";
 // cells properties namespace
 const std::string did_cells_hypercolumn = "/cells/properties/hypercolumn";
+const std::string did_cells_minicolmun = "/cells/properties/minicolumn";
+const std::string did_cells_layer = "/cells/properties/layer";
 
 // cells index
 const std::string did_cells_index_morpho = "/cells/properties/morphology";
@@ -171,15 +173,21 @@ inline std::vector<std::string> MVD3File::getMtypes(const Range & range) const{
 }
 
 inline std::vector<boost::int32_t> MVD3File::getHyperColumns(const Range & range) const{
-    std::vector<boost::int32_t> res;
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_hypercolumn);
-    if(is_valid_range(range)){
-        set.select(size_to_vec(range.offset), size_to_vec(range.count))
-        .read(res);
-        return res;
-    }
-    set.read(res);
+    return get_data_for_selection<boost::int32_t>(set, range);
 }
+
+
+inline std::vector<boost::int32_t> MVD3File::getMiniColumns(const Range & range) const{
+    HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_minicolmun);
+    return get_data_for_selection<boost::int32_t>(set, range);
+}
+
+inline std::vector<boost::int32_t> MVD3File::getLayer(const Range & range) const{
+    HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_layer);
+    return get_data_for_selection<boost::int32_t>(set, range);
+}
+
 
 inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range) const{
     HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
