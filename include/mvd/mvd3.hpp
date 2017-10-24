@@ -103,9 +103,21 @@ public:
 
     ///
     /// \brief getHyperColumns
-    /// \return vector of int32 with the hypercolumn associated with each neuron
+    /// \return vector of int32 with the hyper-column associated with each neuron
     ///
     std::vector<boost::int32_t> getHyperColumns(const Range & range = Range(0,0)) const;
+
+    ///
+    /// \brief getMiniColumns
+    /// \return vector of int32 with the mini-column associated with each neuron
+    ///
+    std::vector<boost::int32_t> getMiniColumns(const Range & range = Range(0,0)) const;
+
+    ///
+    /// \brief getLayer
+    /// \return vector of int32 with the layer associated with each neuron
+    ///
+    std::vector<boost::int32_t> getLayer(const Range & range = Range(0,0)) const;
 
 
     ///

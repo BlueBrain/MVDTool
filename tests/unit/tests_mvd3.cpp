@@ -235,6 +235,39 @@ BOOST_AUTO_TEST_CASE( basicTestHypercolumns )
 }
 
 
+
+BOOST_AUTO_TEST_CASE( basicTestminicolumns )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    std::vector<boost::int32_t> mini_columns = file.getMiniColumns();
+
+    BOOST_CHECK_EQUAL(mini_columns[100], 1);
+    BOOST_CHECK_EQUAL(mini_columns[101], 2);
+    BOOST_CHECK_EQUAL(mini_columns[102], 3);
+
+}
+
+
+
+BOOST_AUTO_TEST_CASE( basicLayer )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    std::vector<boost::int32_t> layer = file.getLayer();
+
+    BOOST_CHECK_EQUAL(layer[0], 1);
+    BOOST_CHECK_EQUAL(layer[100], 2);
+    BOOST_CHECK_EQUAL(layer[200], 3);
+
+}
+
+
+
 BOOST_AUTO_TEST_CASE( basicTestMtypeRange )
 {
     using namespace MVD3;
