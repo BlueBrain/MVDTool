@@ -13,13 +13,48 @@ A simple C++ parser and tool for the MVD3 neuroscience file format
 
 ** compilation
 
-# fetch HighFive as submodule ( if not already done )
-git submodule update --recursive --init
+# MVDTool has three main dependencies
+ * boost 
+ * HDF5
+ * HighFive (https://github.com/BlueBrain/HighFive )
+
 
 # configure, compile
 mkdir build; pushd build
 cmake ../
 make
+
+# install
+make install
+
+
+** Python API example 
+# get all the position for all the neuron in a circuit 
+
+import mvdtool as mvd
+f = mvd.MVD3.File("tests/circuit.mvd3")
+p = f.getPositions()
+print(p)
+
+# list all the properties available in a circuit file
+
+import mvdtool as mvd
+f = mvd.MVD3.File("tests/circuit.mvd3")
+dir(f)
+
+# list all the morphologies used by every neuron
+
+import mvdtool as mvd
+f = mvd.MVD3.File("tests/circuit.mvd3")
+m = f.getMorphologies()
+print(m)
+
+
+
+
+
+
+
 
 
 ** Contributors

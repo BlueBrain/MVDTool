@@ -161,19 +161,19 @@ cdef class MVD3File(MVDFile):
         self._ptr = new MVD3.MVD3File(filename)
         self._autodealoc.reset(self.ptr())
 
-    def getMorphologies(self, _MVD_Range range):
+    def getMorphologies(self, _MVD_Range range= None):
         if(range is None):
             return self.ptr().getMorphologies()
         else:
             return self.ptr().getMorphologies(deref(range.ptr()))
 
-    def getEtypes(self, _MVD_Range range):
+    def getEtypes(self, _MVD_Range range = None):
         if(range is None):
             return self.ptr().getEtypes()
         else:
             return self.ptr().getEtypes(deref(range.ptr()))
 
-    def getMtypes(self, _MVD_Range range):
+    def getMtypes(self, _MVD_Range range = None):
         if(range is None):
             return self.ptr().getMtypes()
         else:
@@ -198,7 +198,7 @@ cdef class MVD3File(MVDFile):
         else:
             return self.ptr().getMiniColumns(deref(range.ptr()))
 
-    def getSynapseClass(self, _MVD_Range range):
+    def getSynapseClass(self, _MVD_Range range = None):
         if(range is None):
             return self.ptr().getSynapseClass()
         else:
