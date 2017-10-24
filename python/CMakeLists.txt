@@ -1,12 +1,11 @@
 ##############################################
 # Requirements
-find_package(PythonInterpLibs QUIET)
+find_package(PythonComplete QUIET)
 find_package(Cython QUIET)
 
-option(BUILD_PYTHON_BINDINGS "Build python bindings?" ON)
-if(NOT BUILD_PYTHON_BINDINGS)
-  return()
-endif()
+
+
+
 
 ##############################################
 # Definitions
@@ -77,17 +76,8 @@ add_custom_target(pysrcdist
 ##############################################
 # Install
 #
-set(_default_prefixes "/usr/local" "/usr")
-list(FIND _default_prefixes ${CMAKE_INSTALL_PREFIX} _index)
-if(${_index} GREATER -1)
-    # Default installations install Python to default site-packages
-    set(_py_install_prefix ${PYTHON_SITE_PACKAGES})
-else()
-    set(_py_install_prefix ${CMAKE_INSTALL_PREFIX})
-endif()
-
 install(TARGETS mvdtool
-        LIBRARY DESTINATION "${_py_install_prefix}" )
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_PYTHON_PACKAGES} )
 
 
 ##############################################
