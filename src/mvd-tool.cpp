@@ -181,15 +181,15 @@ int main(int argc, char** argv){
                break;
             }
 
-            case(3):{
+            case(4):{
                     std::cout << "version: " << version() << "\n";
                     exit(1);
                 }
 
-                default:{
-                    help(argv);
-                    exit(1);
-                }
+            default:{
+                help(argv);
+                exit(1);
+            }
 
         }
 
