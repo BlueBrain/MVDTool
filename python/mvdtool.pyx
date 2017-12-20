@@ -284,7 +284,7 @@ def is_mvd_file(std.string filename):
 def open_mvd(std.string filename):
     """Open either MVD2 or MVD3 and return an actual MVD2File or MVD3File object
     """
-    if MVD.is_mvd_file(filename) == MVD_MVDType._MVD2:
+    if int(MVD.is_mvd_file(filename)) == int(MVD_MVDType.MVD2):
         return MVD2File(filename)
     return MVD3File(filename)
 
