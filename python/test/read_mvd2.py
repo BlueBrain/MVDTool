@@ -7,7 +7,7 @@ _dir,_ = path.split(__file__)
 
 
 class Test_Read_MVD2(test.TestCase):
-    mvd_path = path.join(_dir, "circuit.mvd2")
+    mvd_path = path.join(_dir, "circuit.mvd2").encode()
 
     def test_is_mvd(self):
         assert mt.is_mvd_file(self.mvd_path) == mt.MVDType.MVD2
