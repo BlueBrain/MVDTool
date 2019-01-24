@@ -91,11 +91,13 @@ const std::string did_cells_layer = "/cells/properties/layer";
 const std::string did_cells_index_morpho = "/cells/properties/morphology";
 const std::string did_cells_index_etypes = "/cells/properties/etype";
 const std::string did_cells_index_mtypes = "/cells/properties/mtype";
+const std::string did_cells_index_regions = "/cells/properties/region";
 const std::string did_cells_index_synapse_class = "/cells/properties/synapse_class";
 // data
 const std::string did_lib_data_morpho = "/library/morphology";
 const std::string did_lib_data_etypes = "/library/etype";
 const std::string did_lib_data_mtypes = "/library/mtype";
+const std::string did_lib_data_regions = "/library/region";
 const std::string did_lib_data_syn_class = "/library/synapse_class";
 // circuit
 const std::string did_lib_circuit_seeds = "/circuit/seeds";
@@ -172,6 +174,12 @@ inline std::vector<std::string> MVD3File::getMtypes(const Range & range) const{
     return resolve_index<std::string>(index, range, data);
 }
 
+inline std::vector<std::string> MVD3File::getRegions(const Range & range) const{
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_regions);
+    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_regions);
+    return resolve_index<std::string>(index, range, data);
+}
+
 inline std::vector<boost::int32_t> MVD3File::getHyperColumns(const Range & range) const{
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_hypercolumn);
     return get_data_for_selection<boost::int32_t>(set, range);
@@ -212,6 +220,11 @@ inline std::vector<size_t> MVD3File::getIndexMtypes(const Range &range) const{
     return get_data_for_selection<size_t>(index, range);
 }
 
+inline std::vector<size_t> MVD3File::getIndexRegions(const Range &range) const{
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_regions);
+    return get_data_for_selection<size_t>(index, range);
+}
+
 inline std::vector<size_t> MVD3File::getIndexSynapseClass(const Range &range) const{
     HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
     return get_data_for_selection<size_t>(index, range);
@@ -231,6 +244,11 @@ inline std::vector<std::string> MVD3File::listAllEtypes() const{
 
 inline std::vector<std::string> MVD3File::listAllMtypes() const{
     HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
+    return get_data_for_selection<std::string>(index, Range(0,0));
+}
+
+inline std::vector<std::string> MVD3File::listAllRegions() const{
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_regions);
     return get_data_for_selection<std::string>(index, Range(0,0));
 }
 
