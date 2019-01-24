@@ -185,6 +185,12 @@ cdef class MVD3File(MVDFile):
         else:
             return self.ptr().getLayers(deref(range.ptr()))
 
+    def getRegions(self, _MVD_Range range = None):
+        if(range is None):
+            return self.ptr().getRegions()
+        else:
+            return self.ptr().getRegions(deref(range.ptr()))
+
 
     def getHyperColumns(self, _MVD_Range range = None):
         if(range is None):
@@ -216,6 +222,9 @@ cdef class MVD3File(MVDFile):
     def getIndexSynapseClass(self, _MVD_Range range):
         return self.ptr().getIndexSynapseClass(deref(range.ptr()))
 
+    def getIndexRegions(self, _MVD_Range range):
+        return self.ptr().getIndexRegions(deref(range.ptr()))
+
     def listAllMorphologies(self):
         return self.ptr().listAllMorphologies()
 
@@ -227,6 +236,9 @@ cdef class MVD3File(MVDFile):
 
     def listAllSynapseClass(self):
         return self.ptr().listAllSynapseClass()
+
+    def listAllRegions(self):
+        return self.ptr().listAllRegions()
 
     def getCircuitSeeds(self):
         return self.ptr().getCircuitSeeds()

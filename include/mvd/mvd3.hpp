@@ -102,6 +102,12 @@ public:
     std::vector<std::string> getMtypes(const Range & range = Range(0,0)) const;
 
     ///
+    /// \brief getRegions
+    /// \return vector of string with the region name associated with each neuron
+    ///
+    std::vector<std::string> getRegions(const Range & range = Range(0,0)) const;
+
+    ///
     /// \brief getHyperColumns
     /// \return vector of int32 with the hyper-column associated with each neuron
     ///
@@ -160,6 +166,14 @@ public:
     ///
     std::vector<size_t> getIndexSynapseClass(const Range & range = Range(0,0)) const;
 
+
+    ///
+    /// \brief getIndexRegions
+    /// \param range
+    /// \return values of the Regions index for neurons in the range, default: entire dataset
+    ///
+    std::vector<size_t> getIndexRegions(const Range & range = Range(0,0)) const;
+
     // Data related infos
 
     ///
@@ -179,6 +193,12 @@ public:
     /// \return vector of all unique Mtypes ( mvd3 /library section )
     ///
     std::vector<std::string> listAllMtypes() const;
+
+    ///
+    /// \brief listAllRegions
+    /// \return vector of all unique Regions ( mvd3 /library section )
+    ///
+    std::vector<std::string> listAllRegions() const;
 
     ///
     /// \brief listSynapseClass

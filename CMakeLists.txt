@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0)
 include(CTest)
 
 set(MVDTOOL_VERSION_MAJOR 1)
-set(MVDTOOL_VERSION_MINOR 4)
+set(MVDTOOL_VERSION_MINOR 5)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
       ${PROJECT_SOURCE_DIR}/CMake/portability
