@@ -1,14 +1,11 @@
 language: cpp
 
-before_install:
- - sudo mkdir -p /nix
- - sudo chown $USER /nix
+services:
+  - docker
 
-install:
- - curl https://nixos.org/nix/install | sh
+before_install:
+  - docker pull matz0xe/spack
+  - docker run -v $PWD:/source -w /source matz0xe/spack spack diy mvdtool@1.4
 
 script:
- - source /home/$USER/.nix-profile/etc/profile.d/nix.sh
- - git clone --recursive https://github.com/BlueBrain/bbp-nixpkgs
- - nix-build -I "BBPpkgs=${PWD}/bbp-nixpkgs" --arg testExec true  default.nix
-
+  - spack diy mvdtool@1.5
