@@ -1,11 +1,10 @@
-language: cpp
+language: generic
 
 services:
   - docker
 
 before_install:
   - docker pull matz0xe/spack
-  - docker run -v $PWD:/source -w /source matz0xe/spack spack diy mvdtool@1.4
+  - docker run -v $PWD:/source -w /source bluebrain/spack spack diy --run-tests mvdtool@develop
 
-script:
-  - spack diy mvdtool@1.5
+script: "ruby -ne 'puts $_ if /^==>.*make.*test/../.*phase.*install/ and not /^==>|make: \\*\\*\\*/' spack-build.out"
