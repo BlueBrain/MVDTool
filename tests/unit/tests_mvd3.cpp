@@ -220,6 +220,22 @@ BOOST_AUTO_TEST_CASE( basicTestMypes )
 
 
 
+BOOST_AUTO_TEST_CASE( basicTestRegions )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_FILENAME);
+
+    std::vector<std::string> region = file.getRegions();
+
+    BOOST_CHECK_EQUAL(region[1], "L1");
+    BOOST_CHECK_EQUAL(region[9], "L2");
+    BOOST_CHECK_EQUAL(region[10], "L3");
+    BOOST_CHECK_EQUAL(region[15], "L23");
+}
+
+
+
 BOOST_AUTO_TEST_CASE( basicTestHypercolumns )
 {
     using namespace MVD3;

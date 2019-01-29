@@ -1,14 +1,10 @@
-language: cpp
+language: generic
+
+services:
+  - docker
 
 before_install:
- - sudo mkdir -p /nix
- - sudo chown $USER /nix
+  - docker pull matz0xe/spack
+  - docker run -v $PWD:/source -w /source bluebrain/spack spack diy --run-tests mvdtool@develop
 
-install:
- - curl https://nixos.org/nix/install | sh
-
-script:
- - source /home/$USER/.nix-profile/etc/profile.d/nix.sh
- - git clone --recursive https://github.com/BlueBrain/bbp-nixpkgs
- - nix-build -I "BBPpkgs=${PWD}/bbp-nixpkgs" --arg testExec true  default.nix
-
+script: "ruby -ne 'puts $_ if /^==>.*make.*test/../.*phase.*install/ and not /^==>|make: \\*\\*\\*/' spack-build.out"
