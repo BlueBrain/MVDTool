@@ -18,10 +18,12 @@
  */
 #include <mvd/mvd_base.hpp>
 #include <mvd/mvd2.hpp>
-#define BOOST_TEST_MAIN mvd2Parser
-#include <boost/test/included/unit_test.hpp>
 
 
+#define BOOST_TEST_MODULE mvd2Parser
+#define BOOST_TEST_MAIN
+
+#include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE( parser_tests )
 {

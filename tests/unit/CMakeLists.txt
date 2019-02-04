@@ -5,6 +5,13 @@ endif()
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS filesystem system
   unit_test_framework)
 
+
+
+if(NOT Boost_USE_STATIC_LIBS)
+        add_definitions(-DBOOST_TEST_DYN_LINK=TRUE)
+endif()
+
+
 set(MVD2_TEST_FILE ${PROJECT_SOURCE_DIR}/tests/circuit.mvd2)
 set(MVD3_TEST_FILE ${PROJECT_SOURCE_DIR}/tests/circuit.mvd3)
 
