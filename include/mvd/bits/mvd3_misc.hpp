@@ -29,28 +29,16 @@
 
 namespace{
 
-inline bool is_valid_range(const MVD3::Range & range){
-    return (range.count !=0);
-}
-
-inline std::vector<size_t> size_to_vec(size_t s){
-    return std::vector<size_t>(1, s);
-}
-
-inline std::vector<size_t> size2D_to_vec(size_t d1, size_t d2){
-    std::vector<size_t> res;
-    res.push_back(d1);
-    res.push_back(d2);
-    return res;
+inline bool is_empty(const MVD3::Range & range){
+    return range.count == 0;
 }
 
 template<typename T>
 inline std::vector<T> get_data_for_selection(HighFive::DataSet & dataset, const MVD3::Range & range){
     std::vector<T> data_values;
 
-    if(is_valid_range(range)){
-        dataset.select(size_to_vec(range.offset), size_to_vec(range.count))
-                .read(data_values);
+    if(!is_empty(range)){
+        dataset.select({range.offset}, {range.count}).read(data_values);
     }else{
         dataset.read(data_values);
     }
@@ -59,21 +47,32 @@ inline std::vector<T> get_data_for_selection(HighFive::DataSet & dataset, const 
 
 template<typename T>
 inline std::vector<T> resolve_index(HighFive::DataSet & index, const MVD3::Range & range, HighFive::DataSet & data){
-    std::vector<T> full_data, result;
+    std::vector<T> values, result;
     std::vector<size_t> references = get_data_for_selection<size_t>(index, range);
-
     const size_t n_elem = data.getSpace().getDimensions()[0];
 
-    data.read(full_data);
-    result.reserve(references.size());
-
-    for(std::vector<size_t>::iterator it = references.begin(); it < references.end(); ++it){
-        if(*it >= n_elem){
+    size_t first = n_elem;
+    size_t last = 0;
+    for(auto i : references){
+        if(i >= n_elem){
             std::ostringstream ss;
-            ss << "Invalid index reference " << *it << " in an dataset of size " << n_elem;
+            ss << "Invalid index reference " << i << " in an dataset of size " << n_elem;
             throw MVDParserException(ss.str());
         }
-        result.push_back(full_data[*it]);
+        first = std::min(first, i);
+        last = std::max(last, i);
+    }
+
+    if(first == 0 && last == n_elem - 1){
+        data.read(values);
+    }else{
+        data.select({first}, {last - first + 1}).read(values);
+    }
+
+    result.reserve(references.size());
+
+    for(auto i : references){
+        result.push_back(values[i - first]);
     }
     return result;
 }
@@ -129,9 +128,8 @@ inline size_t MVD3File::getNbNeuron() const{
 inline Positions MVD3File::getPositions(const Range & range) const{
     Positions res;
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_positions);
-    if(is_valid_range(range)){
-                set.select(size2D_to_vec(range.offset, 0), size2D_to_vec(range.count, 3))
-                .read(res);
+    if(!is_empty(range)){
+        set.select({range.offset, 0}, {range.count, 3}).read(res);
         return res;
     }
     set.read(res);
@@ -142,9 +140,8 @@ inline Positions MVD3File::getPositions(const Range & range) const{
 inline Rotations MVD3File::getRotations(const Range & range) const{
     Rotations res;
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_rotations);
-    if(is_valid_range(range)){
-            set.select(size2D_to_vec(range.offset, 0), size2D_to_vec(range.count, 4))
-            .read(res);
+    if(!is_empty(range)){
+        set.select({range.offset, 0}, {range.count, 4}).read(res);
         return res;
     }
     set.read(res);
@@ -258,14 +255,14 @@ inline std::vector<std::string> MVD3File::listAllSynapseClass() const{
 }
 
 inline std::vector<double> MVD3File::getCircuitSeeds() const{
-        std::vector<double> seeds;
+    std::vector<double> seeds;
 
-        HighFive::DataSet seeds_dataset = _hdf5_file.getDataSet(did_lib_circuit_seeds);
-        seeds_dataset.read(seeds);
-        if(seeds.size() < 4){
-            throw MVDParserException("Invalid MVD3 /circuit/seeds size, MVD3 should provide at least 4 seeds");
-        }
-        return seeds;
+    HighFive::DataSet seeds_dataset = _hdf5_file.getDataSet(did_lib_circuit_seeds);
+    seeds_dataset.read(seeds);
+    if(seeds.size() < 4){
+        throw MVDParserException("Invalid MVD3 /circuit/seeds size, MVD3 should provide at least 4 seeds");
+    }
+    return seeds;
 }
 
 
