@@ -30,6 +30,8 @@ cdef extern from "mvd/mvd3.hpp" namespace "MVD3":
         std.vector[std.string] getSynapseClass() except+
         std.vector[int] getLayers(Range) except+
         std.vector[int] getLayers() except+
+        std.vector[std.string] getRegions(Range) except+
+        std.vector[std.string] getRegions() except+
         std.vector[int] getHyperColumns(Range) except+
         std.vector[int] getHyperColumns() except+
         std.vector[int] getMiniColumns(Range) except+
@@ -37,9 +39,11 @@ cdef extern from "mvd/mvd3.hpp" namespace "MVD3":
         std.vector[std.size_t] getIndexMorphologies(Range) except+
         std.vector[std.size_t] getIndexEtypes(Range) except+
         std.vector[std.size_t] getIndexMtypes(Range) except+
+        std.vector[std.size_t] getIndexRegions(Range) except+
         std.vector[std.size_t] getIndexSynapseClass(Range) except+
         std.vector[std.string] listAllMorphologies() except+
         std.vector[std.string] listAllEtypes() except+
         std.vector[std.string] listAllMtypes() except+
+        std.vector[std.string] listAllRegions() except+
         std.vector[std.string] listAllSynapseClass() except+
         std.vector[double] getCircuitSeeds() except+
