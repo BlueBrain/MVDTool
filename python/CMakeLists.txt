@@ -28,7 +28,7 @@ set(cy_sources
 # .pyx -> .cpp
 add_custom_command(
     OUTPUT ${cybindings_cpp}
-    COMMAND PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR} ${CYTHON_EXECUTABLE} ${CYTHON_FLAGS} --fast-fail --cplus -I${local_include_dir} --output-file ${cybindings_cpp} ${cymod_src}
+    COMMAND ${CYTHON_EXECUTABLE} ${CYTHON_FLAGS} --fast-fail --cplus -I${local_include_dir} --output-file ${cybindings_cpp} ${cymod_src}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     # No dependencies, except own sources
     DEPENDS ${cy_sources}
