@@ -24,7 +24,7 @@ set(Boost_NO_BOOST_CMAKE TRUE)
 ## find dependencies
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
 find_package(HDF5 QUIET REQUIRED)
-find_package(HighFive QUIET)
+find_package(HighFive QUIET REQUIRED)
 
 include(PackageConfig)
 
