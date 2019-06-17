@@ -5,4 +5,3 @@ target_link_libraries(mvd-tool PUBLIC MVDTool HighFive)
 target_include_directories(mvd-tool PUBLIC ${MVDTOOL_INCLUDE_DIRS} ${HIGHFIVE_INCLUDE_DIRS} ${HDF5_INCLUDE_DIRS})
 
 install(TARGETS mvd-tool RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR})
-

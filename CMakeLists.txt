@@ -5,7 +5,7 @@ include(CTest)
 
 set(MVDTOOL_VERSION_MAJOR 1)
 set(MVDTOOL_VERSION_MINOR 5)
-set(MVDTOOL_VERSION_PATCH 1)
+set(MVDTOOL_VERSION_PATCH 2)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
       ${PROJECT_SOURCE_DIR}/CMake/portability
@@ -24,7 +24,7 @@ set(Boost_NO_BOOST_CMAKE TRUE)
 ## find dependencies
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
 find_package(HDF5 QUIET REQUIRED)
-find_package(HighFive QUIET)
+find_package(HighFive QUIET REQUIRED)
 
 include(PackageConfig)
 
