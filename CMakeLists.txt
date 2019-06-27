@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.0)
 
 include(CTest)
 
-set(MVDTOOL_VERSION_MAJOR 1)
-set(MVDTOOL_VERSION_MINOR 5)
-set(MVDTOOL_VERSION_PATCH 2)
+set(MVDTOOL_VERSION_MAJOR 2)
+set(MVDTOOL_VERSION_MINOR 0)
+set(MVDTOOL_VERSION_PATCH 0)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
       ${PROJECT_SOURCE_DIR}/CMake/portability
@@ -32,10 +32,9 @@ FILE(GLOB MVDTOOL_HEADERS "include/mvd/*.hpp")
 FILE(GLOB MVDTOOLE_BITS_HEADERS "include/mvd/*/*.hpp")
 set(MVDTOOL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-add_subdirectory(src)
-
 if(BUILD_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
 
+add_subdirectory(src)
 add_subdirectory(tests/unit)
