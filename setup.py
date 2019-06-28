@@ -40,7 +40,7 @@ class CMakeBuild(build_ext):
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + extdir,
             "-DBUILD_PYTHON_BINDINGS:BOOL=ON",
             # Unit tests somehow pull in MPI
-            "-DMVDTOOL_UNIT_TESTS:BOOL=OFF",
+            "-DBUILD_UNIT_TESTS:BOOL=OFF",
             "-DPYTHON_EXECUTABLE=" + sys.executable,
         ]
 
