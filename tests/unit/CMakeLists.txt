@@ -1,4 +1,4 @@
-if(NOT MVDTOOL_UNIT_TESTS)
+if(NOT BUILD_UNIT_TESTS)
   return()
 endif()
 

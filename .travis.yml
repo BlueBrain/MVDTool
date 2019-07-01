@@ -5,6 +5,6 @@ services:
 
 before_install:
   - docker pull bluebrain/spack
-  - docker run -v $PWD:/source -w /source bluebrain/spack spack diy --test=root mvdtool@develop
+  - docker run -v $PWD:/source -w /source bluebrain/spack:latest spack diy --test=root mvdtool@develop
 
 script: "ruby -ne 'puts $_ if /^==>.*make.*test/../.*phase.*install/ and not /^==>|make: \\*\\*\\*/' spack-build.out"
