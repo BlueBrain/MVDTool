@@ -19,8 +19,9 @@
 #include <mvd/mvd3.hpp>
 #include <mvd/mvd_generic.hpp>
 
-#define BOOST_TEST_MAIN mvd3Parser
-#include <boost/test/included/unit_test.hpp>
+#define BOOST_TEST_MODULE mvd3Parser
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
 
 
 
