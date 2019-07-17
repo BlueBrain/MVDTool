@@ -23,6 +23,7 @@
 #include "mvd_base.hpp"
 #include "mvd2.hpp"
 #include "mvd3.hpp"
+#include "sonata.hpp"
 
 
 namespace MVD {
@@ -34,12 +35,49 @@ namespace MVD {
 /// \return Simple ptr to an MVD2File/MVD3File object (MVDFile interface)
 /// We should use unique_ptr here, but keeping compilation without c++11
 ///
+[[deprecated("use open()")]]
 inline MVDFile* open_mvd(const std::string & filename) {
     if( MVD::is_mvd_file(filename) == MVDType::MVD2 ) {
         return new MVD2::MVD2File(filename);
     }
 
     return new MVD3::MVD3File(filename);
+}
+
+///
+/// \brief open
+///
+/// Opens a file with the associated class. A basic check for file type is
+/// performed, but no guarantees about file correctness are made.
+///
+/// \param filename the path of the file to open
+/// \return a shared pointer to a mvd::File object
+///
+inline std::shared_ptr<File> open(const std::string& filename) {
+    const std::string mvd3 = ".mvd3";
+
+    std::cout << filename << "\n";
+
+    if (filename.size() >= mvd3.size() && filename.compare(filename.size() - mvd3.size(),
+                                                           mvd3.size(),
+                                                           mvd3) == 0) {
+        auto ptr = std::shared_ptr<File>(new MVD3::MVD3File(filename));
+        try {
+            ptr->size();
+            return ptr;
+        } catch (...) {
+            throw std::runtime_error("invalid MVD3 file");
+        }
+    }
+
+    // The only other file format we understand at this point is SONATA
+    auto ptr = std::shared_ptr<File>(new SonataFile(filename));
+    try {
+        ptr->size();
+    } catch (...) {
+        throw std::runtime_error("can't determine file type for: " + filename);
+    }
+    return ptr;
 }
 
 } //MVD

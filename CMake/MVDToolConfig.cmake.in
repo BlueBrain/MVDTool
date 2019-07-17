@@ -1,6 +1,7 @@
 find_library(Boost 1.41 QUIET REQUIRED COMPONENTS system)
 find_package(HDF5 QUIET REQUIRED)
 find_library(HighFive QUIET REQUIRED)
+find_library(sonata QUIET REQUIRED)
 if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/MVDToolTargets.cmake")
   include("${CMAKE_CURRENT_LIST_DIR}/MVDToolTargets.cmake")
 endif()
