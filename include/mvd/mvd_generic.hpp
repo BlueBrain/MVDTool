@@ -56,8 +56,6 @@ inline MVDFile* open_mvd(const std::string & filename) {
 inline std::shared_ptr<File> open(const std::string& filename) {
     const std::string mvd3 = ".mvd3";
 
-    std::cout << filename << "\n";
-
     if (filename.size() >= mvd3.size() && filename.compare(filename.size() - mvd3.size(),
                                                            mvd3.size(),
                                                            mvd3) == 0) {
