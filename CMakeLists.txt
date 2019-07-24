@@ -36,7 +36,6 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
 
 include(CTest)
 include(GNUInstallDirs)
-include(PackageConfig)
 include(ReleaseDebugAutoFlags)
 
 option(BUILD_UNIT_TESTS "Enable or disable unit tests" ON)
@@ -47,6 +46,9 @@ set(Boost_NO_BOOST_CMAKE TRUE)
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
 find_package(HDF5 QUIET REQUIRED)
 find_package(HighFive QUIET REQUIRED)
+find_package(sonata QUIET REQUIRED)
+
+include(PackageConfig)
 
 FILE(GLOB MVDTOOL_HEADERS "include/mvd/*.hpp")
 FILE(GLOB MVDTOOLE_BITS_HEADERS "include/mvd/*/*.hpp")

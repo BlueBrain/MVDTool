@@ -16,8 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD3_HPP
-#define MVD3_HPP
+#pragma once
 
 #ifndef H5_USE_BOOST
 #define H5_USE_BOOST
@@ -28,9 +27,11 @@
 #include <boost/integer.hpp>
 #include <highfive/H5File.hpp>
 
+#include <bbp/sonata/nodes.h>
+
 #include "mvd_base.hpp"
 
-namespace MVD3 {
+namespace MVD {
 
 
 typedef MVD::Positions Positions;
@@ -39,11 +40,11 @@ typedef MVD::Range Range;
 
 
 ///
-/// \brief The MVD3File class
+/// \brief The File class
 ///
-/// Represent a MVD 3.0 circuit file
+/// Represent a Sonata circuit file
 ///
-class MVD3File : public MVD::File{
+class SonataFile : public MVD::File {
 public:
 
     ///
@@ -53,14 +54,14 @@ public:
     /// Open an MVD3 file format at 'filename' path
     /// throw MVDException, or HighFive::Exception in case of error
     ///
-    MVD3File(const std::string & filename);
+    SonataFile(const std::string& filename, const std::string& population = "default");
 
 
     ///
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
     ///
-    size_t getNbNeuron() const override;
+    size_t getNbNeuron() const noexcept override { return size_; }
 
     ///
     /// \brief getPositions
@@ -107,24 +108,6 @@ public:
     ///
     std::vector<std::string> getRegions(const Range & range = Range(0,0)) const override;
 
-    ///
-    /// \brief getHyperColumns
-    /// \return vector of int32 with the hyper-column associated with each neuron
-    ///
-    std::vector<boost::int32_t> getHyperColumns(const Range & range = Range(0,0)) const;
-
-    ///
-    /// \brief getMiniColumns
-    /// \return vector of int32 with the mini-column associated with each neuron
-    ///
-    std::vector<boost::int32_t> getMiniColumns(const Range & range = Range(0,0)) const;
-
-    ///
-    /// \brief getLayer
-    /// \return vector of int32 with the layer associated with each neuron
-    ///
-    std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const;
-
 
     ///
     /// \brief getSynapseClass
@@ -134,13 +117,6 @@ public:
 
 
     // index related infos
-
-    ///
-    /// \brief getIndexMorphologies
-    /// \param range
-    /// \return values of the morphology index for neurons in the range, default: entire dataset
-    ///
-    std::vector<size_t> getIndexMorphologies(const Range & range = Range(0,0)) const;
 
 
 
@@ -177,12 +153,6 @@ public:
     // Data related infos
 
     ///
-    /// \brief getDataMorphologies
-    /// \return vector of all unique morphologies ( mvd3 /library section )
-    ///
-    std::vector<std::string> listAllMorphologies() const;
-
-    ///
     /// \brief listAllEtypes
     /// \return vector of all unique Etypes ( mvd3 /library section )
     ///
@@ -206,23 +176,11 @@ public:
     ///
     std::vector<std::string> listAllSynapseClass() const override;
 
-    // circuit infos
-    ///
-    /// \brief getCircuitSeeds
-    /// \return return a vector of the circuit seeds to use for random initialization
-    /// the vector has to be at least 4 elements
-    ///
-    std::vector<double> getCircuitSeeds() const;
-
 private:
-    std::string _filename;
-    HighFive::File _hdf5_file;
-    size_t _nb_neurons;
-
+    std::unique_ptr<bbp::sonata::NodePopulation> pop_;
+    size_t size_;
 };
 
 }
 
-#include "bits/mvd3_misc.hpp"
-
-#endif // MVD3_HPP
+#include "bits/sonata_misc.hpp"

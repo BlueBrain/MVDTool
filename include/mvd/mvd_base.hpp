@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
  *               2017 Fernando Pereira <fernando.pereira@epfl.ch>
+ *               2019 Matthias Wolf <matthias.wolf@epfl.ch>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD_BASE_HPP
-#define MVD_BASE_HPP
+#pragma once
 
 #include <string>
 #include <algorithm>
@@ -35,9 +35,10 @@ typedef boost::multi_array<double, 2> Rotations;
 
 namespace MVDType{
 enum MVDType{
-    UnknownFileType =0,
-    MVD2=20,
-    MVD3=30
+    UnknownFileType = 0,
+    MVD2 = 20,
+    MVD3 = 30,
+    Sonata = 40
 };
 }
 
@@ -61,10 +62,38 @@ public:
 
 
 ///
+/// \brief Higher level interface for functional access
+///
+class File : public MVDFile {
+public:
+    inline File() = default;
+    inline virtual ~File() = default;
+    virtual size_t size() const { return getNbNeuron(); }
+
+    virtual std::vector<std::string> getMorphologies(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<std::string> getEtypes(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<std::string> getMtypes(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<std::string> getRegions(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<std::string> getSynapseClass(const Range& range = Range(0, 0)) const = 0;
+
+    virtual std::vector<size_t> getIndexEtypes(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<size_t> getIndexMtypes(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<size_t> getIndexRegions(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<size_t> getIndexSynapseClass(const Range& range = Range(0, 0)) const = 0;
+
+    virtual std::vector<std::string> listAllEtypes() const = 0;
+    virtual std::vector<std::string> listAllMtypes() const = 0;
+    virtual std::vector<std::string> listAllRegions() const = 0;
+    virtual std::vector<std::string> listAllSynapseClass() const = 0;
+};
+
+
+///
 /// \brief is_mvd_file
 /// \param filename mvd file name
 /// \return the type of the MVD file or UnknownFileType if not recognized
 ///
+[[deprecated("incomplete implementation. use mvd::open instead")]]
 inline MVDType::MVDType is_mvd_file(const std::string & filename){
 
     // mvd2
@@ -79,5 +108,3 @@ inline MVDType::MVDType is_mvd_file(const std::string & filename){
 
 
 } // ::MVD
-
-#endif
