@@ -66,7 +66,7 @@ public:
 ///
 class File : public MVDFile {
 public:
-    inline File() {}
+    inline File() = default;
     inline virtual ~File() {}
     virtual size_t size() const { return getNbNeuron(); }
 
