@@ -61,7 +61,7 @@ public:
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
     ///
-    size_t getNbNeuron() const override { return size_; }
+    size_t getNbNeuron() const noexcept override { return size_; }
 
     ///
     /// \brief getPositions
