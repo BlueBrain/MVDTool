@@ -67,7 +67,7 @@ public:
 class File : public MVDFile {
 public:
     inline File() = default;
-    inline virtual ~File() {}
+    inline virtual ~File() = default;
     virtual size_t size() const { return getNbNeuron(); }
 
     virtual std::vector<std::string> getMorphologies(const Range& range = Range(0, 0)) const = 0;
