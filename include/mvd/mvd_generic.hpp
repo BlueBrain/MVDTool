@@ -53,7 +53,7 @@ inline MVDFile* open_mvd(const std::string & filename) {
 /// \param filename the path of the file to open
 /// \return a shared pointer to a mvd::File object
 ///
-inline std::shared_ptr<File> open(const std::string& filename) {
+inline std::shared_ptr<File> open(const std::string& filename, const std::string& population="default") {
     const std::string mvd3 = ".mvd3";
 
     if (filename.size() >= mvd3.size() && filename.compare(filename.size() - mvd3.size(),
@@ -69,7 +69,7 @@ inline std::shared_ptr<File> open(const std::string& filename) {
     }
 
     // The only other file format we understand at this point is SONATA
-    auto ptr = std::shared_ptr<File>(new SonataFile(filename));
+    auto ptr = std::shared_ptr<File>(new SonataFile(filename, population));
     try {
         ptr->size();
     } catch (...) {

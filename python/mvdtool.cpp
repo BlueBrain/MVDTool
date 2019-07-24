@@ -151,7 +151,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
     py::module mvd3 = mvd.def_submodule("MVD3", "Support for the MVD3 format");
     py::module sonata = mvd.def_submodule("sonata", "Support for the SONATA format");
 
-    mvd.def("open", &open, "filename"_a);
+    mvd.def("open", &open, "filename"_a, "population"_a = "default");
 
     py::class_<File, PyFile> file(mvd, "__File");
     file

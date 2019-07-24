@@ -47,34 +47,34 @@ def test_morphology_values(circuit):
 def test_etype_values(circuit):
     etypes = circuit.etypes()
 
-    etypes[0] == "cACint"
-    etypes[10] == "cACint"
-    etypes[20] == "cADpyr"
+    assert etypes[0] == "cACint"
+    assert etypes[10] == "cACint"
+    assert etypes[20] == "cADpyr"
 
 
 def test_mtype_values(circuit):
     mtypes = circuit.mtypes()
 
-    mtypes[0] == "L1_SLAC"
-    mtypes[10] == "L1_SLAC"
-    mtypes[20] == "L23_PC"
+    assert mtypes[0] == "L1_SLAC"
+    assert mtypes[10] == "L1_SLAC"
+    assert mtypes[20] == "L23_PC"
 
 
 def test_region_values(circuit):
     regions = circuit.regions()
 
-    regions[1] == "L1"
-    regions[9] == "L2"
-    regions[10] == "L3"
-    regions[15] == "L23"
+    assert regions[1] == "L1"
+    assert regions[9] == "L2"
+    assert regions[10] == "L3"
+    assert regions[15] == "L23"
 
 
 def test_classes_values(circuit):
     classes = circuit.synapse_classes()
 
-    classes[0] == "INH"
-    classes[10] == "INH"
-    classes[20] == "EXC"
+    assert classes[0] == "INH"
+    assert classes[10] == "INH"
+    assert classes[20] == "EXC"
 
 
 @pytest.mark.parametrize(
@@ -91,3 +91,13 @@ def test_ranges(attr, circuit):
 
     for n, i in enumerate(ranged):
         assert values[n + OFFSET] == indices[i]
+
+
+def test_population():
+    filename = path.join(_dir, "sonata.h5")
+    circuit = mt.open(filename, "truncated")
+
+    assert len(circuit) == 10
+
+    with pytest.raises(RuntimeError):
+        circuit = mt.open(filename, "non-existent")
