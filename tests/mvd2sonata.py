@@ -24,6 +24,7 @@ class Converter:
         sonata: the output filename
         population: the name of the nodeset in the SONATA file
         group: the node group to write
+        offset: the first entry to copy
         entries: the number of entries to copy
     """
 
@@ -35,13 +36,18 @@ class Converter:
         sonata: str,
         population: str = "default",
         group: int = 0,
+        offset: int = 0,
         entries: int = -1,
     ) -> None:
         self._mvd = h5py.File(mvd3, "r")
         self._sonata = h5py.File(sonata, "a")
         self._root = f"/nodes/{population}/"
         self._dirname = f"/nodes/{population}/{group}"
-        self._n = entries if entries > 0 else len(self._mvd)
+        self._0 = offset
+        if entries > 0:
+            self._n = offset + entries
+        else:
+            self._n = len(self._mvd) - offset
 
     def transfer_attribute(self, name: str) -> None:
         """Copy an enumeration attribute
@@ -54,7 +60,7 @@ class Converter:
         )
         self._sonata.create_dataset(
             f"{self._dirname}/{name}",
-            data=self._mvd[f"/cells/properties/{name}"][: self._n],
+            data=self._mvd[f"/cells/properties/{name}"][self._0 : self._n],
         )
 
     def create_ids(self) -> None:
@@ -62,10 +68,12 @@ class Converter:
         """
         pos = self._mvd[f"/cells/positions"]
         self._sonata.create_dataset(
-            f"{self._root}/node_type_id", data=np.zeros(shape=pos.shape[0])[: self._n]
+            f"{self._root}/node_type_id",
+            data=np.zeros(shape=pos.shape[0])[self._0 : self._n],
         )
         self._sonata.create_dataset(
-            f"{self._root}/node_group_id", data=np.zeros(shape=pos.shape[0])[: self._n]
+            f"{self._root}/node_group_id",
+            data=np.zeros(shape=pos.shape[0])[self._0 : self._n],
         )
 
     def transfer_positions(self) -> None:
@@ -74,7 +82,7 @@ class Converter:
         pos = self._mvd[f"/cells/positions"]
         for dim, name in enumerate("xyz"):
             self._sonata.create_dataset(
-                f"{self._dirname}/{name}", data=pos[: self._n, dim]
+                f"{self._dirname}/{name}", data=pos[self._0 : self._n, dim]
             )
 
     def transfer_orientations(self) -> None:
@@ -83,7 +91,7 @@ class Converter:
         rot = self._mvd[f"/cells/orientations"]
         for dim, name in enumerate("xyzw"):
             self._sonata.create_dataset(
-                f"{self._dirname}/orientation_{name}", data=rot[: self._n, dim]
+                f"{self._dirname}/orientation_{name}", data=rot[self._0 : self._n, dim]
             )
 
     def export(self) -> None:
@@ -102,6 +110,12 @@ if __name__ == "__main__":
         "--population", default="default", type=str, help="which population to write to"
     )
     parser.add_argument(
+        "--offset",
+        default=0,
+        type=int,
+        help="the first entry to copy (defaults to zero)",
+    )
+    parser.add_argument(
         "--entries",
         default=-1,
         type=int,
@@ -111,5 +125,9 @@ if __name__ == "__main__":
     parser.add_argument("SONATA")
     args = parser.parse_args()
     Converter(
-        args.MVD3, args.SONATA, population=args.population, entries=args.entries
+        args.MVD3,
+        args.SONATA,
+        population=args.population,
+        offset=args.offset,
+        entries=args.entries,
     ).export()
