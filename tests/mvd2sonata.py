@@ -26,6 +26,7 @@ class Converter:
         group: the node group to write
         offset: the first entry to copy
         entries: the number of entries to copy
+        stride: select every nth element
     """
 
     __ENUMS__ = ["etype", "mtype", "morphology", "region", "synapse_class"]
@@ -38,6 +39,7 @@ class Converter:
         group: int = 0,
         offset: int = 0,
         entries: int = -1,
+        stride: int = 1,
     ) -> None:
         self._mvd = h5py.File(mvd3, "r")
         self._sonata = h5py.File(sonata, "a")
@@ -45,9 +47,11 @@ class Converter:
         self._dirname = f"/nodes/{population}/{group}"
         self._0 = offset
         if entries > 0:
-            self._n = offset + entries
+            self._n = offset + entries * stride
         else:
-            self._n = len(self._mvd) - offset
+            self._n = len(self._mvd["/cells/properties/mtype"]) - offset
+        self._s = stride
+        print(f"{self._0}, {self._n}, {self._s}")
 
     def transfer_attribute(self, name: str) -> None:
         """Copy an enumeration attribute
@@ -60,7 +64,7 @@ class Converter:
         )
         self._sonata.create_dataset(
             f"{self._dirname}/{name}",
-            data=self._mvd[f"/cells/properties/{name}"][self._0 : self._n],
+            data=self._mvd[f"/cells/properties/{name}"][self._0 : self._n : self._s],
         )
 
     def create_ids(self) -> None:
@@ -69,11 +73,11 @@ class Converter:
         pos = self._mvd[f"/cells/positions"]
         self._sonata.create_dataset(
             f"{self._root}/node_type_id",
-            data=np.zeros(shape=pos.shape[0])[self._0 : self._n],
+            data=np.zeros(shape=pos.shape[0])[self._0 : self._n : self._s],
         )
         self._sonata.create_dataset(
             f"{self._root}/node_group_id",
-            data=np.zeros(shape=pos.shape[0])[self._0 : self._n],
+            data=np.zeros(shape=pos.shape[0])[self._0 : self._n : self._s],
         )
 
     def transfer_positions(self) -> None:
@@ -82,7 +86,7 @@ class Converter:
         pos = self._mvd[f"/cells/positions"]
         for dim, name in enumerate("xyz"):
             self._sonata.create_dataset(
-                f"{self._dirname}/{name}", data=pos[self._0 : self._n, dim]
+                f"{self._dirname}/{name}", data=pos[self._0 : self._n : self._s, dim]
             )
 
     def transfer_orientations(self) -> None:
@@ -91,7 +95,8 @@ class Converter:
         rot = self._mvd[f"/cells/orientations"]
         for dim, name in enumerate("xyzw"):
             self._sonata.create_dataset(
-                f"{self._dirname}/orientation_{name}", data=rot[self._0 : self._n, dim]
+                f"{self._dirname}/orientation_{name}",
+                data=rot[self._0 : self._n : self._s, dim],
             )
 
     def export(self) -> None:
@@ -101,7 +106,10 @@ class Converter:
         self.transfer_positions()
         self.transfer_orientations()
         for e in self.__ENUMS__:
-            self.transfer_attribute(e)
+            try:
+                self.transfer_attribute(e)
+            except KeyError as err:
+                print(f"Unable to transfer {e}: {err}")
 
 
 if __name__ == "__main__":
@@ -121,6 +129,13 @@ if __name__ == "__main__":
         type=int,
         help="how many entries to copy (must be greater zero, defaults to all)",
     )
+    parser.add_argument(
+        "--stride",
+        default=1,
+        type=int,
+        metavar="N",
+        help="copy every Nth entry (defaults to 1)",
+    )
     parser.add_argument("MVD3")
     parser.add_argument("SONATA")
     args = parser.parse_args()
@@ -130,4 +145,5 @@ if __name__ == "__main__":
         population=args.population,
         offset=args.offset,
         entries=args.entries,
+        stride=args.stride,
     ).export()
