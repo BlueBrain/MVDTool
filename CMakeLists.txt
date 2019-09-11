@@ -24,7 +24,7 @@ endif()
 
 # keep MAJOR.MINOR.PATCH
 string(REGEX
-       REPLACE "([0-9]+\\.[0-9]+\\.[0-9]+).*"
+       REPLACE "v?([0-9]+\\.[0-9]+\\.[0-9]+).*"
                "\\1"
                MVDTool_VERSION
                "${MVDTool_VERSION}")
