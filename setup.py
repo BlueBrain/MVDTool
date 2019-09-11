@@ -41,6 +41,7 @@ class CMakeBuild(build_ext):
             "-DBUILD_PYTHON_BINDINGS:BOOL=ON",
             # Unit tests somehow pull in MPI
             "-DBUILD_UNIT_TESTS:BOOL=OFF",
+            "-DMVDTool_VERSION=" + self.distribution.get_version(),
             "-DPYTHON_EXECUTABLE=" + sys.executable,
         ]
 
@@ -49,7 +50,7 @@ class CMakeBuild(build_ext):
 
         if platform.system() == "Windows":
             cmake_args += [
-                "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}".format(cfg.upper(), extdir)
+                "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}".format(cfg.upper(), extdir),
             ]
             if sys.maxsize > 2 ** 32:
                 cmake_args += ["-A", "x64"]
