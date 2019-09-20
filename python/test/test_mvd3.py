@@ -34,6 +34,7 @@ def test_rotation_values(circuit):
     posics = circuit.rotations()
     assert posics.shape[0] == 1000
     assert numpy.allclose(posics[0], [0, -0.010_005_561, 0, 0.999_949_943])
+    assert numpy.allclose(posics[20], [0, 0.923_706, 0, 0.383_102])
 
 def test_position_range(circuit):
     posics = circuit.positions()

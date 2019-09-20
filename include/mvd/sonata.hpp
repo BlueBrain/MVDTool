@@ -80,6 +80,22 @@ public:
     Rotations getRotations(const Range & range = Range(0,0)) const override;
 
     ///
+    /// \brief getQuaternionRotations
+    /// \param range: selection range, a null range (0,0) select the entire dataset
+    /// \return a double vector of size [N][4] with the rotation quaternions in the order (x,y,z,w)
+    /// of each selected neurons ( all by default )
+    ///
+    Rotations getQuaternionRotations(const Range & range = Range(0,0)) const;
+
+    ///
+    /// \brief getAngularRotations
+    /// \param range: selection range, a null range (0,0) select the entire dataset
+    /// \return a double vector of size [N][4] with the rotation quaternions in the order (x,y,z,w)
+    /// of each selected neurons ( all by default )
+    ///
+    Rotations getAngularRotations(const Range & range = Range(0,0)) const;
+
+    ///
     /// \brief hasRotations
     /// \return if the current file has a rotational dataset
     ///
