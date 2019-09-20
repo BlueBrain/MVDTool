@@ -30,6 +30,7 @@ make
 * Adrien Devresse  - <adrien.devresse@epfl.ch>
 * Fernando Perreira - <fernando.pereira@epfl.ch>
 * Arseny V. Povolotsky - <arseny.povolotsky@epfl.ch>
+* Matthias Wolf - <matthias.wolf@epfl.ch>
 
 ## License
 
