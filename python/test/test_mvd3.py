@@ -10,7 +10,7 @@ import mvdtool as mt
 _dir, _ = path.split(__file__)
 
 
-@pytest.fixture(params=["circuit.mvd3", "sonata.h5"])
+@pytest.fixture(params=["circuit.mvd3", "sonata.h5", "sonata_alt.h5"])
 def circuit(request):
     """Provide access to an circuit file
     """
@@ -27,6 +27,13 @@ def test_position_values(circuit):
     assert posics.shape[0] == 1000
     assert numpy.allclose(posics[0], [40.821_401, 1986.506_637, 10.788_424])
 
+
+def test_rotation_values(circuit):
+    assert circuit.rotated
+
+    posics = circuit.rotations()
+    assert posics.shape[0] == 1000
+    assert numpy.allclose(posics[0], [0, -0.010_005_561, 0, 0.999_949_943])
 
 def test_position_range(circuit):
     posics = circuit.positions()

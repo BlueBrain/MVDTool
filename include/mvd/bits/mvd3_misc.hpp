@@ -149,6 +149,11 @@ inline Rotations MVD3File::getRotations(const Range & range) const{
 }
 
 
+inline bool MVD3File::hasRotations() const {
+    return _hdf5_file.exist(did_cells_rotations);
+}
+
+
 inline std::vector<std::string> MVD3File::getMorphologies(const Range & range) const{
     HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
     HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_morpho);

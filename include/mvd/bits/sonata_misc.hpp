@@ -21,6 +21,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/math/quaternion.hpp>
+
 #include <highfive/H5DataSet.hpp>
 
 #include "../sonata.hpp"
@@ -71,23 +73,67 @@ inline Positions SonataFile::getPositions(const Range & range) const{
 }
 
 inline Rotations SonataFile::getRotations(const Range & range) const{
+    using Quaternion = boost::math::quaternion<double>;
+
     Positions res{boost::extents[range.count > 0 ? range.count : size_][4]};
 
-    auto xs = pop_->getAttribute<double>("orientation_x", select(range, size_));
-    auto ys = pop_->getAttribute<double>("orientation_y", select(range, size_));
-    auto zs = pop_->getAttribute<double>("orientation_z", select(range, size_));
-    auto ws = pop_->getAttribute<double>("orientation_w", select(range, size_));
+    const auto attrs = pop_->attributeNames();
+    const bool quat = (attrs.count("orientation_x") +
+                       attrs.count("orientation_y") +
+                       attrs.count("orientation_z") +
+                       attrs.count("orientation_w")) == 4;
 
-    // No direct slicing write access from std::vector
-    for (size_t i = 0; i < (range.count > 0 ? range.count : size_); ++i) {
-        res[i][0] = xs[i];
-        res[i][1] = ys[i];
-        res[i][2] = zs[i];
-        res[i][3] = ws[i];
+    if (quat) {
+        auto xs = pop_->getAttribute<double>("orientation_x", select(range, size_));
+        auto ys = pop_->getAttribute<double>("orientation_y", select(range, size_));
+        auto zs = pop_->getAttribute<double>("orientation_z", select(range, size_));
+        auto ws = pop_->getAttribute<double>("orientation_w", select(range, size_));
+
+        // No direct slicing write access from std::vector
+        for (size_t i = 0; i < (range.count > 0 ? range.count : size_); ++i) {
+            res[i][0] = xs[i];
+            res[i][1] = ys[i];
+            res[i][2] = zs[i];
+            res[i][3] = ws[i];
+        }
+    } else {
+        for (size_t i = 0; i < (range.count > 0 ? range.count : size_); ++i) {
+            Quaternion rot{1., 0., 0., 0.};
+
+            if (attrs.count("rotation_angle_zaxis") > 0) {
+                auto halfangle = pop_->getAttribute<double>("rotation_angle_zaxis", select(range, size_))[0] * .5;
+                rot *= Quaternion{cos(halfangle), 0., 0., sin(halfangle)};
+            }
+            if (attrs.count("rotation_angle_yaxis") > 0) {
+                auto halfangle = pop_->getAttribute<double>("rotation_angle_yaxis", select(range, size_))[0] * .5;
+                rot *= Quaternion{cos(halfangle), 0., sin(halfangle), 0.};
+            }
+            if (attrs.count("rotation_angle_xaxis") > 0) {
+                auto halfangle = pop_->getAttribute<double>("rotation_angle_xaxis", select(range, size_))[0] * .5;
+                rot *= Quaternion{cos(halfangle), sin(halfangle), 0., 0.};
+            }
+            res[i][0] = rot.R_component_2();
+            res[i][1] = rot.R_component_3();
+            res[i][2] = rot.R_component_4();
+            res[i][3] = rot.R_component_1();
+        }
     }
 
     return res;
 }
+
+inline bool SonataFile::hasRotations() const {
+    const auto attrs = pop_->attributeNames();
+    const bool quat = (attrs.count("orientation_x") +
+                       attrs.count("orientation_y") +
+                       attrs.count("orientation_z") +
+                       attrs.count("orientation_w")) == 4;
+    const bool angle = (attrs.count("rotation_angle_xaxis") +
+                        attrs.count("rotation_angle_yaxis") +
+                        attrs.count("rotation_angle_zaxis")) > 0;
+    return quat or angle;
+}
+
 
 inline std::vector<std::string> SonataFile::getMorphologies(const Range & range) const{
     return pop_->getAttribute<std::string>(did_morpho, select(range, size_));
