@@ -37,6 +37,14 @@ class PyFile : public File {
             getRotations
         );
     }
+    bool hasRotations() const override {
+        PYBIND11_OVERLOAD_PURE_NAME(
+            bool,
+            File,
+            "rotated",
+            hasRotations
+        );
+    }
 
     std::vector<std::string> getMorphologies(const Range& range = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
@@ -230,6 +238,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def_property_readonly("rotated", &File::hasRotations)
         .def_property_readonly("all_etypes", &File::listAllEtypes)
         .def_property_readonly("all_mtypes", &File::listAllMtypes)
         .def_property_readonly("all_regions", &File::listAllRegions)

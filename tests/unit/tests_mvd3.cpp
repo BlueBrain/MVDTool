@@ -91,6 +91,8 @@ BOOST_AUTO_TEST_CASE( basicTestRotations )
 
     MVD3File file(MVD3_FILENAME);
 
+    BOOST_CHECK( file.hasRotations() );
+
     Rotations neurons_rot = file.getRotations();
 
     BOOST_CHECK_EQUAL(neurons_rot.shape()[0], 1000);

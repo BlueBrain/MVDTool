@@ -95,6 +95,21 @@ BOOST_AUTO_TEST_CASE( basicTestRotations )
 }
 
 
+
+BOOST_AUTO_TEST_CASE( basicTestRotationsConverted )
+{
+    SonataFile file(SONATA_FILENAME_ALTERNATIVE);
+
+    Rotations neurons_rot = file.getRotations();
+
+    BOOST_CHECK_EQUAL(neurons_rot.shape()[0], 1000);
+    BOOST_CHECK( std::abs(neurons_rot[0][0] - 0.) < std::numeric_limits<double>::epsilon()*10 );
+    BOOST_CHECK( std::abs(neurons_rot[0][1] - -0.010005561303180392) < std::numeric_limits<double>::epsilon()*10 );
+    BOOST_CHECK( std::abs(neurons_rot[0][2] - 0.) < std::numeric_limits<double>::epsilon()*10 );
+    BOOST_CHECK( std::abs(neurons_rot[0][3] - 0.99994994311865848) < std::numeric_limits<double>::epsilon()*10 );
+}
+
+
 BOOST_AUTO_TEST_CASE( basicTestRotationRange )
 {
     SonataFile file(SONATA_FILENAME);

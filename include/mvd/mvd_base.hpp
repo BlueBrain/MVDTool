@@ -70,6 +70,8 @@ public:
     inline virtual ~File() = default;
     virtual size_t size() const { return getNbNeuron(); }
 
+    virtual bool hasRotations() const = 0;
+
     virtual std::vector<std::string> getMorphologies(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getEtypes(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getMtypes(const Range& range = Range(0, 0)) const = 0;
