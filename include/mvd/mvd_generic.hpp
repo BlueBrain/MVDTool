@@ -35,14 +35,20 @@ namespace MVD {
 /// \return Simple ptr to an MVD2File/MVD3File object (MVDFile interface)
 /// We should use unique_ptr here, but keeping compilation without c++11
 ///
-[[deprecated("use open()")]]
+[[deprecated("For newer formats and API use open()")]]
 inline MVDFile* open_mvd(const std::string & filename) {
-    if( MVD::is_mvd_file(filename) == MVDType::MVD2 ) {
-        return new MVD2::MVD2File(filename);
+    switch(_mvd_format(filename)) {
+        case MVDType::MVD2:
+            return new MVD2::MVD2File(filename);
+            break;
+        case MVDType::MVD3:
+            return new MVD3::MVD3File(filename);
+            break;
+        default:
+            throw std::runtime_error("Format not supported");
     }
-
-    return new MVD3::MVD3File(filename);
 }
+
 
 ///
 /// \brief open
@@ -53,30 +59,32 @@ inline MVDFile* open_mvd(const std::string & filename) {
 /// \param filename the path of the file to open
 /// \return a shared pointer to a mvd::File object
 ///
-inline std::shared_ptr<File> open(const std::string& filename, const std::string& population="default") {
-    const std::string mvd3 = ".mvd3";
-
-    if (filename.size() >= mvd3.size() && filename.compare(filename.size() - mvd3.size(),
-                                                           mvd3.size(),
-                                                           mvd3) == 0) {
-        auto ptr = std::shared_ptr<File>(new MVD3::MVD3File(filename));
-        try {
-            ptr->size();
-            return ptr;
-        } catch (...) {
-            throw std::runtime_error("invalid MVD3 file");
-        }
+inline std::shared_ptr<File> open(const std::string& filename,
+                                  const std::string& population="default") {
+    std::shared_ptr<File> mvdfile;
+    switch(_mvd_format(filename)) {
+        case MVDType::MVD2:
+            throw std::runtime_error("MVD2 not supported in the new MVD API");
+        case MVDType::MVD3:
+            try {
+                mvdfile.reset(new MVD3::MVD3File(filename));
+                mvdfile->size();
+            } catch (...) {
+                throw std::runtime_error("invalid MVD3 file");
+            }
+            break;
+        default:
+            try {
+                mvdfile.reset(new SonataFile(filename, population));
+                mvdfile->size();
+            } catch (...) {
+                throw std::runtime_error("invalid Sonata file");
+            }
+            break;
     }
-
-    // The only other file format we understand at this point is SONATA
-    auto ptr = std::shared_ptr<File>(new SonataFile(filename, population));
-    try {
-        ptr->size();
-    } catch (...) {
-        throw std::runtime_error("can't determine file type for: " + filename);
-    }
-    return ptr;
+    return mvdfile;
 }
+
 
 } //MVD
 

@@ -23,6 +23,7 @@
 #include <string>
 #include <algorithm>
 #include <boost/multi_array.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 #include "mvd_except.hpp"
 
@@ -90,21 +91,21 @@ public:
 };
 
 
-///
-/// \brief is_mvd_file
-/// \param filename mvd file name
-/// \return the type of the MVD file or UnknownFileType if not recognized
-///
-[[deprecated("incomplete implementation. use mvd::open instead")]]
-inline MVDType::MVDType is_mvd_file(const std::string & filename){
 
+
+
+inline MVDType::MVDType _mvd_format(const std::string & filename) {
+    using boost::algorithm::ends_with;
     // mvd2
     const std::string mvd_ext = ".mvd2";
-    if(std::search(filename.rbegin(), filename.rend(), mvd_ext.rbegin(), mvd_ext.rend()) != filename.rend()){
+    if (ends_with(filename, ".mvd2")) {
         return MVDType::MVD2;
     }
-    // everything else mvd3 for now
-    return MVDType::MVD3;
+    if (ends_with(filename, ".mvd3")) {
+        return MVDType::MVD3;
+    }
+    // everything else Sonata for now
+    return MVDType::Sonata;
 }
 
 
