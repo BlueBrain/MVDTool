@@ -13,146 +13,98 @@ class PyFile : public File {
     using File::File;
 
     size_t getNbNeuron() const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            size_t,
-            File,
-            "__len__",
-            getNbNeuron,
-        );
+        PYBIND11_OVERLOAD_PURE_NAME(size_t, File, "__len__", getNbNeuron);
     }
-
-    Positions getPositions(const Range & range = Range(0,0)) const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            Positions,
-            File,
-            "positions",
-            getPositions
-        );
+    Positions getPositions(const Range & = Range(0,0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(Positions, File, "positions", getPositions);
     }
-    Rotations getRotations(const Range & range = Range(0,0)) const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            Rotations,
-            File,
-            "rotations",
-            getRotations
-        );
+    Rotations getRotations(const Range & = Range(0,0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(Rotations, File,"rotations", getRotations);
     }
     bool hasRotations() const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            bool,
-            File,
-            "rotated",
-            hasRotations
-        );
+        PYBIND11_OVERLOAD_PURE_NAME(bool, File, "rotated", hasRotations);
     }
-
-    std::vector<std::string> getMorphologies(const Range& range = Range(0, 0)) const override {
+    std::vector<std::string> getMorphologies(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<std::string>,
-            File,
-            "morphologies",
-            getMorphologies
-        );
+            std::vector<std::string>, File, "morphologies", getMorphologies);
     }
-    std::vector<std::string> getEtypes(const Range& range = Range(0, 0)) const override {
+    std::vector<std::string> getEtypes(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "etypes", getEtypes);
+    }
+    std::vector<std::string> getMtypes(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "mtypes", getMtypes);
+    }
+    std::vector<std::string> getRegions(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "regions", getRegions);
+    }
+    std::vector<std::string> getSynapseClass(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<std::string>,
-            File,
-            "etypes",
-            getEtypes
-        );
+            std::vector<std::string>, File, "synapse_classes", getSynapseClass);
     }
-    std::vector<std::string> getMtypes(const Range& range = Range(0, 0)) const override {
+    std::vector<size_t> getIndexEtypes(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_etypes", getIndexEtypes);
+    }
+    std::vector<size_t> getIndexMtypes(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_mtypes", getIndexMtypes);
+    }
+    std::vector<size_t> getIndexRegions(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_regions", getIndexRegions);
+    }
+    std::vector<size_t> getIndexSynapseClass(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<std::string>,
-            File,
-            "mtypes",
-            getMtypes
-        );
+            std::vector<size_t>, File, "raw_synapse_classes", getIndexSynapseClass);
     }
-    std::vector<std::string> getRegions(const Range& range = Range(0, 0)) const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<std::string>,
-            File,
-            "regions",
-            getRegions
-        );
-    }
-    std::vector<std::string> getSynapseClass(const Range& range = Range(0, 0)) const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<std::string>,
-            File,
-            "synapse_classes",
-            getSynapseClass
-        );
-    }
-
-    std::vector<size_t> getIndexEtypes(const Range& range = Range(0, 0)) const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<size_t>,
-            File,
-            "raw_etypes",
-            getIndexEtypes
-        );
-    }
-    std::vector<size_t> getIndexMtypes(const Range& range = Range(0, 0)) const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<size_t>,
-            File,
-            "raw_mtypes",
-            getIndexMtypes
-        );
-    }
-    std::vector<size_t> getIndexRegions(const Range& range = Range(0, 0)) const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<size_t>,
-            File,
-            "raw_regions",
-            getIndexRegions
-        );
-    }
-    std::vector<size_t> getIndexSynapseClass(const Range& range = Range(0, 0)) const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<size_t>,
-            File,
-            "raw_synapse_classes",
-            getIndexSynapseClass
-        );
-    }
-
     std::vector<std::string> listAllEtypes() const {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<std::string>,
-            File,
-            "all_etypes",
-            listAllEtypes,
-        );
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_etypes", listAllEtypes);
     }
     std::vector<std::string> listAllMtypes() const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<std::string>,
-            File,
-            "all_mtypes",
-            listAllMtypes,
-        );
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_mtypes", listAllMtypes);
     }
     std::vector<std::string> listAllRegions() const override {
-        PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<std::string>,
-            File,
-            "all_regions",
-            listAllRegions,
-        );
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_regions", listAllRegions);
     }
     std::vector<std::string> listAllSynapseClass() const override {
         PYBIND11_OVERLOAD_PURE_NAME(
-            std::vector<std::string>,
-            File,
-            "all_synapse_classes",
-            listAllSynapseClass,
-        );
+            std::vector<std::string>, File, "all_synapse_classes", listAllSynapseClass);
     }
+
 };
+
+
+namespace {  // Intenal
+
+template <typename T>
+using pyarray = py::array_t<T, py::array::c_style | py::array::forcecast>;
+
+/**
+ * Extract several elements given their indices from a function accepting a range
+ * NOTE: Indexes must be in ascending order
+ */
+template <typename T, typename FuncT>
+inline std::vector<T> _atIndices(const FuncT& f,
+                                 const size_t n_records,
+                                 const pyarray<size_t>& idx) {
+    const size_t CHUNK_SIZE = 256;
+    const auto indices = idx.template unchecked<1>();
+    const auto count = static_cast<size_t>(indices.size());
+    std::vector<T> v(count);
+
+    size_t offset = 0;
+    std::vector<T> chunk;
+
+    for (size_t i=0; i < count; i++) {
+        const size_t elem_i = indices[i];
+        if(elem_i - offset >= chunk.size()) {
+            offset = elem_i;
+            chunk = f(Range(offset, std::min(CHUNK_SIZE, n_records - offset)));
+        }
+        v[i] = chunk[elem_i - offset];
+    }
+    return v;
+}
+
+} // namespace (unnamed)
+
 
 PYBIND11_MODULE(mvdtool, mvd) {
     mvd.doc() = "Module to read neuron circuits";
@@ -179,37 +131,56 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
-
         .def("etypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getEtypes(r);
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("etypes", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getEtypes(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
         .def("mtypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getMtypes(r);
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("mtypes", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getMtypes(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
         .def("morphologies", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getMorphologies(r);
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("morphologies", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getMorphologies(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
         .def("synapse_classes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getSynapseClass(r);
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("synapse_classes", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getSynapseClass(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
         .def("regions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getRegions(r);
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("regions", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getRegions(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
         .def("raw_etypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexEtypes(r);

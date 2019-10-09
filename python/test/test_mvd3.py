@@ -52,6 +52,15 @@ def test_morphology_values(circuit):
     assert morphos[21] == "dend-rr110114C1_idA_axon-sm110131a1-3_INT_idA"
 
 
+def test_morphology_values_indices(circuit):
+    morphos = circuit.morphologies([0, 20, 21])
+    assert len(morphos) == 3
+
+    assert morphos[0] == "sm090227a1-2_idC"
+    assert morphos[1] == "dend-C280998A-P3_axon-sm110131a1-3_INT_idA"
+    assert morphos[2] == "dend-rr110114C1_idA_axon-sm110131a1-3_INT_idA"
+
+
 def test_etype_values(circuit):
     etypes = circuit.etypes()
 
