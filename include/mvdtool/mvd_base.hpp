@@ -27,6 +27,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include "mvd_except.hpp"
+#include "tsv.hpp"
 
 namespace MVD {
 
@@ -70,7 +71,11 @@ class File : public MVDFile {
 public:
     inline File() = default;
     inline virtual ~File() = default;
-    virtual size_t size() const { return getNbNeuron(); }
+    virtual size_t size() const {
+        return getNbNeuron();
+    }
+
+    virtual void readTSVInfo(const std::string& filename) = 0;
 
     virtual bool hasRotations() const = 0;
 
@@ -80,6 +85,7 @@ public:
     virtual std::vector<std::string> getEmodels(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getRegions(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getSynapseClass(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<TSV::TSVInfo> getTSVInfo(const Range& range = Range(0, 0)) const = 0;
 
     virtual bool hasCurrents() const = 0;
     virtual std::vector<double> getThresholdCurrents(const Range& range = Range(0, 0)) const = 0;
@@ -103,10 +109,10 @@ public:
 inline MVDType::MVDType _mvd_format(const std::string & filename) {
     using boost::algorithm::ends_with;
     // mvd2
-    const std::string mvd_ext = ".mvd2";
     if (ends_with(filename, ".mvd2")) {
         return MVDType::MVD2;
     }
+    // mvd3
     if (ends_with(filename, ".mvd3")) {
         return MVDType::MVD3;
     }

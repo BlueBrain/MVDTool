@@ -1,4 +1,4 @@
-#include <mvd/mvd_generic.hpp>
+#include <mvdtool/mvd_generic.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
@@ -8,10 +8,14 @@ namespace py = pybind11;
 using namespace pybind11::literals;
 using namespace MVD;
 using namespace MVD3;
+using namespace TSV;
 
 class PyFile : public File {
     using File::File;
 
+    void readTSVInfo(const std::string & ) override {
+        PYBIND11_OVERLOAD_PURE_NAME(void, File, "read_tsv_info", readTSVInfo);
+    }
     size_t getNbNeuron() const override {
         PYBIND11_OVERLOAD_PURE_NAME(size_t, File, "__len__", getNbNeuron);
     }
@@ -124,6 +128,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
     mvd.doc() = "Module to read neuron circuits";
     py::module mvd3 = mvd.def_submodule("MVD3", "Support for the MVD3 format");
     py::module sonata = mvd.def_submodule("sonata", "Support for the SONATA format");
+    py::module tsv = mvd.def_submodule("tsv", "Support for the TSV format");
 
     mvd.def("open", &open, "filename"_a, "population"_a = "");
 
@@ -131,6 +136,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
     file
         .def(py::init<>())
         .def("__len__", &File::size)
+        .def("read_tsv_info", [](File& f, const std::string & filename) {
+                f.readTSVInfo(filename);
+             },
+             "filename"_a)
         .def("positions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getPositions(r);
@@ -217,6 +226,16 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getSynapseClass(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("tsv_info", [](const File& f, int offset, int count) {
+                Range r(offset, count);
+                return f.getTSVInfo(r);
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("tsv_info", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getTSVInfo(r);};
+                return _atIndices<TSVInfo>(func, f.size(), idx);
+             })
         .def("regions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getRegions(r);
@@ -283,5 +302,19 @@ PYBIND11_MODULE(mvdtool, mvd) {
 
     py::class_<SonataFile, std::shared_ptr<SonataFile>>(sonata, "File", file)
         .def(py::init<const std::string&>())
+        ;
+    py::class_<TSVFile, std::shared_ptr<TSVFile>>(tsv, "File", file)
+        .def(py::init<const std::string&>())
+        ;
+    py::class_<TSVInfo>(tsv, "TSVInfo")
+        .def(py::init<>())
+        .def_readonly("morphologyName", &TSVInfo::morphologyName)
+        .def_readonly("layer", &TSVInfo::layer)
+        .def_readonly("fullMType", &TSVInfo::fullMType)
+        .def_readonly("eType", &TSVInfo::eType)
+        .def_readonly("eModel", &TSVInfo::eModel)
+        .def_readonly("comboName", &TSVInfo::comboName)
+        .def_readonly("thresholdCurrent", &TSVInfo::thresholdCurrent)
+        .def_readonly("holdingCurrent", &TSVInfo::holdingCurrent)
         ;
 }

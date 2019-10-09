@@ -27,24 +27,24 @@
  *
  * */
 
-#include <vector>
-#include <set>
-#include <string>
+#include "mvd_base.hpp"
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <cstdlib>
-#include "mvd_base.hpp"
+#include <set>
+#include <string>
+#include <vector>
 
 
 ///
 /// MVD2 parsing / helper functions
 ///
-namespace MVD2{
+namespace MVD2 {
 
 ///
 /// \brief data type in the current MVD2 line
 ///
-enum DataSet{
+enum DataSet {
     None = 0,
     NeuronLoaded = 1,
     MicroBoxData = 2,
@@ -129,7 +129,6 @@ private:
     // It can be safely reconstructed without affecting bahvior, only performance
     mutable Counter counter;
     void init_counter() const;
-
 };
 
 

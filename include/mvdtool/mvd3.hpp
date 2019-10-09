@@ -56,6 +56,15 @@ public:
     MVD3File(const std::string & filename);
 
     ///
+    /// \brief readTSVInfo
+    /// \param filename
+    ///
+    /// Open an TSV file format at 'filename' path
+    /// throw TSVException in case of error
+    ///
+    void readTSVInfo(const std::string& filename) override;
+
+    ///
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
     ///
@@ -140,6 +149,13 @@ public:
     ///
     std::vector<std::string> getSynapseClass(const Range & range = Range(0,0)) const override;
 
+    ///
+    /// \brief getTSVInfo
+    /// \param range: selection range, a null range (0,0) select the entire dataset
+    /// \return vector of TSVInfo with the parsed info from the tsv file for the
+    ///         corresponding neuron
+    ///
+    std::vector<TSV::TSVInfo> getTSVInfo(const Range& range = Range(0, 0)) const override;
 
     // index related infos
 
@@ -251,6 +267,7 @@ public:
 private:
     std::string _filename;
     HighFive::File _hdf5_file;
+    std::unique_ptr<TSV::TSVFile> _tsv_file;
     size_t _nb_neurons;
 
     inline std::vector<std::string> get_resolve_field(const std::string& field,

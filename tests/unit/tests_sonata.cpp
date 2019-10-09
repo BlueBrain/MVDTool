@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#include <mvd/mvd_generic.hpp>
+#include <mvdtool/mvd_generic.hpp>
 
 #define BOOST_TEST_MODULE mvd3Parser
 #define BOOST_TEST_MAIN

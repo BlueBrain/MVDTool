@@ -6,7 +6,7 @@ target_include_directories(MVDTool SYSTEM INTERFACE ${Boost_INCLUDE_DIR})
 target_link_libraries(MVDTool INTERFACE HighFive sonata::sonata_shared)
 target_compile_definitions(MVDTool INTERFACE -DH5_USE_BOOST)
 
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvd
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/mvdtool
         DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR})
 
 include(CMakePackageConfigHelpers)

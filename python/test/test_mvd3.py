@@ -126,3 +126,63 @@ def test_population():
 
     with pytest.raises(RuntimeError):
         circuit = mt.open(filename, "non-existent")
+
+
+@pytest.fixture
+def mvd3_file():
+    return path.join(_dir, "circuit_tsv.mvd3")
+
+
+@pytest.fixture
+def tsv_file():
+    return path.join(_dir, "mecombo_emodel.tsv")
+
+
+@pytest.fixture
+def circuit_mvd3_tsv(mvd3_file, tsv_file):
+    mvd3filename = path.join(_dir, mvd3_file)
+    tsvfilename = path.join(_dir, tsv_file)
+    mvd3file = mt.open(mvd3filename)
+    mvd3file.read_tsv_info(tsvfilename)
+    return mvd3file
+
+
+def test_number_neurons_mvd3_tsv(circuit_mvd3_tsv):
+    assert len(circuit_mvd3_tsv.tsv_info()) == 34
+
+def test_tsv_layer(circuit_mvd3_tsv):
+    tsvinfos = circuit_mvd3_tsv.tsv_info()
+
+    assert tsvinfos[0].layer == 1
+    assert tsvinfos[9].layer == 1
+    assert tsvinfos[33].layer == 6
+
+def test_tsv_mecombos(circuit_mvd3_tsv):
+    tsvinfos = circuit_mvd3_tsv.tsv_info()
+
+    assert tsvinfos[0].comboName == "bAC_1_02583f52ff47b88961e4216e2972ee8c"
+    assert tsvinfos[9].comboName == "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"
+    assert tsvinfos[33].comboName == "cADpyr_6_97957c6ebc6ac6397bf0fa077d39580c"
+
+
+def test_tsv_mecombos_indices(circuit_mvd3_tsv):
+    tsvinfos = circuit_mvd3_tsv.tsv_info([0,9,33])
+
+    assert tsvinfos[0].comboName == "bAC_1_02583f52ff47b88961e4216e2972ee8c"
+    assert tsvinfos[1].comboName == "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"
+    assert tsvinfos[2].comboName == "cADpyr_6_97957c6ebc6ac6397bf0fa077d39580c"
+
+
+def test_tsv_threshold_current(circuit_mvd3_tsv):
+    tsvinfos = circuit_mvd3_tsv.tsv_info()
+
+    assert tsvinfos[0].thresholdCurrent == 0
+    assert tsvinfos[9].thresholdCurrent == 0
+    assert tsvinfos[33].thresholdCurrent == 0.2
+
+def test_tsv_holding_current(circuit_mvd3_tsv):
+    tsvinfos = circuit_mvd3_tsv.tsv_info()
+
+    assert tsvinfos[0].holdingCurrent == 0
+    assert tsvinfos[9].holdingCurrent == 0.1
+    assert tsvinfos[33].holdingCurrent == 0.15

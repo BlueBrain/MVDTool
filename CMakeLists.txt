@@ -52,8 +52,8 @@ find_package(sonata QUIET REQUIRED)
 
 include(PackageConfig)
 
-FILE(GLOB MVDTOOL_HEADERS "include/mvd/*.hpp")
-FILE(GLOB MVDTOOLE_BITS_HEADERS "include/mvd/*/*.hpp")
+FILE(GLOB MVDTOOL_HEADERS "include/mvdtool/*.hpp")
+FILE(GLOB MVDTOOLE_BITS_HEADERS "include/mvdtool/*/*.hpp")
 set(MVDTOOL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 if(BUILD_PYTHON_BINDINGS)

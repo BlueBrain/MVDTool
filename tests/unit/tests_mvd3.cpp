@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#include <mvd/mvd_generic.hpp>
+#include <mvdtool/mvd_generic.hpp>
 
 #define BOOST_TEST_MODULE mvd3Parser
 #define BOOST_TEST_MAIN
@@ -373,4 +373,24 @@ BOOST_AUTO_TEST_CASE( genericMVDFile )
     BOOST_CHECK_EQUAL(neurons_pos[0][0], static_cast<double>(40.821401));
     BOOST_CHECK_EQUAL(neurons_pos[0][1], static_cast<double>(1986.506637));
     BOOST_CHECK_EQUAL(neurons_pos[0][2], static_cast<double>(10.788424));
+}
+
+
+BOOST_AUTO_TEST_CASE( MVDTSVFiles )
+{
+    using namespace MVD;
+
+    auto file = MVD::open(MVD3_TSV_FILENAME);
+    file->readTSVInfo(TSV_FILENAME);
+
+    std::vector<TSV::TSVInfo> TSVInfos = file->getTSVInfo();
+
+    TSV::TSVInfo info = TSVInfos[9];
+
+    std::string referenceTSVInfo("87dd39e6b0255ec053001f16da85b0e0, 1, L1_DAC, dSTUT, dSTUT_321707905, dSTUT_1_87dd39e6b0255ec053001f16da85b0e0, 0, 0.1");
+
+    std::stringstream ss;
+    ss << info.morphologyName << ", " << info.layer << ", " << info.fullMType << ", " << info.eType << ", " << info.eModel << ", " << info.comboName << ", " << info.thresholdCurrent  << ", " << info.holdingCurrent;
+
+    BOOST_CHECK_EQUAL(referenceTSVInfo, ss.str());
 }

@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 
+#include <boost/range/combine.hpp>
 #include <highfive/H5DataSet.hpp>
 
 #include "../mvd3.hpp"
@@ -113,8 +114,14 @@ const std::string did_lib_circuit_seeds = "/circuit/seeds";
 
 namespace MVD3 {
 
-inline MVD3File::MVD3File(const std::string &str) : _filename(str), _hdf5_file(str), _nb_neurons(0)
-{ }
+inline MVD3File::MVD3File(const std::string& str)
+    : _filename(str)
+    , _hdf5_file(str)
+    , _nb_neurons(0) {}
+
+inline void MVD3File::readTSVInfo(const std::string& filename) {
+    _tsv_file = std::unique_ptr<TSV::TSVFile>(new TSV::TSVFile(filename));
+}
 
 inline size_t MVD3File::getNbNeuron() const{
     if(_nb_neurons == 0){
@@ -219,6 +226,28 @@ inline std::vector<boost::int32_t> MVD3File::getLayers(const Range & range) cons
 inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range) const{
     return get_resolve_field(did_lib_data_syn_class, did_cells_index_synapse_class, range);
 }
+
+
+inline std::vector<TSV::TSVInfo> MVD3File::getTSVInfo(const Range& range) const {
+    if (_tsv_file == nullptr) {
+        std::ostringstream ss;
+        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract information from"
+           << std::endl;
+        throw MVDException(ss.str());
+    }
+    std::vector<std::string> etypes = getEtypes(range);
+    std::vector<boost::int32_t> layers = getLayers(range);
+    std::vector<std::string> morphologies = getMorphologies(range);
+    std::vector<TSV::TSVInfo> tsvInfos;
+    for (const auto& mecombo_tupple: boost::combine(etypes, layers, morphologies)) {
+        tsvInfos.push_back(_tsv_file->getTSVInfo(boost::get<0>(mecombo_tupple) + "_" +
+                                                     std::to_string(boost::get<1>(mecombo_tupple)) +
+                                                     "_" + boost::get<2>(mecombo_tupple),
+                                                 boost::get<2>(mecombo_tupple)));
+    }
+    return tsvInfos;
+}
+
 
 inline std::vector<size_t> MVD3File::getIndexMorphologies(const Range & range) const{
     HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);

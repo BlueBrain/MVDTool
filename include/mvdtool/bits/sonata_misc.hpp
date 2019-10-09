@@ -33,6 +33,7 @@ namespace {
 
 using namespace bbp;
 
+
 // Naming convention
 const std::string default_population_name = "default";
 const std::string did_layer = "layer";
@@ -110,6 +111,9 @@ inline SonataFile::SonataFile(const std::string &filename, const std::string& po
     : pop_(open_population(filename, pop_name))
     , size_(pop_->size())
 { }
+
+
+inline void SonataFile::readTSVInfo(const std::string&) {}
 
 inline Positions SonataFile::getPositions(const Range & range) const{
     Positions res{boost::extents[range.count > 0 ? range.count : size_][3]};

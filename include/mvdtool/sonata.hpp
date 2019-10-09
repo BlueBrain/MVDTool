@@ -56,6 +56,16 @@ public:
     ///
     SonataFile(const std::string& filename, const std::string& pop_name = "");
 
+
+    ///
+    /// \brief readTSVInfo
+    /// \param filename
+    ///
+    /// Open an TSV file format at 'filename' path
+    /// throw TSVException in case of error
+    ///
+    void readTSVInfo(const std::string& filename) override;
+
     ///
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
@@ -156,6 +166,15 @@ public:
     /// \return a vector<double> with all the neurons holding currents
     ///
     std::vector<double> getHoldingCurrents(const Range& range = Range(0, 0)) const override;
+
+
+    ///
+    /// \brief getTSVInfo
+    /// \param range: selection range, a null range (0,0) select the entire dataset
+    /// \return vector of TSVInfo with the parsed info from the tsv file for the
+    ///         corresponding neuron
+    ///
+    std::vector<TSV::TSVInfo> getTSVInfo(const Range& range = Range(0, 0)) const override;
 
 
     // index related infos
