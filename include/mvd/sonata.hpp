@@ -33,8 +33,6 @@
 
 namespace MVD {
 
-using namespace bbp;
-
 
 typedef MVD::Positions Positions;
 typedef MVD::Rotations Rotations;
