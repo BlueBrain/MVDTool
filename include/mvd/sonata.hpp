@@ -54,8 +54,7 @@ public:
     /// Open an MVD3 file format at 'filename' path
     /// throw MVDException, or HighFive::Exception in case of error
     ///
-    SonataFile(const std::string& filename, const std::string& population = "default");
-
+    SonataFile(const std::string& filename, const std::string& pop_name = "");
 
     ///
     /// \brief getNbNeuron

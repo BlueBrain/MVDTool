@@ -27,9 +27,13 @@
 
 #include "../sonata.hpp"
 
-namespace{
+
+namespace {
+
+using namespace bbp;
 
 // Naming convention
+const std::string default_population_name = "default";
 const std::string did_layer = "layer";
 const std::string did_morpho = "morphology";
 const std::string did_etypes = "etype";
@@ -37,21 +41,42 @@ const std::string did_mtypes = "mtype";
 const std::string did_regions = "region";
 const std::string did_synapse_class = "synapse_class";
 
-bbp::sonata::Selection select(const MVD::Range& range, size_t size) {
-    if (range.count > 0) {
-        return bbp::sonata::Selection({{range.offset, range.offset + range.count}});
-    }
-    return bbp::sonata::Selection({{range.offset, size - range.offset}});
+
+inline auto select(const MVD::Range& range, size_t size) {
+    auto range_end = (range.count > 0)? range.offset + range.count : size - range.offset;
+    return sonata::Selection({{range.offset, range_end}});
 }
 
+
+inline decltype(auto) open_population(const std::string &filename, std::string pop_name) {
+    sonata::NodeStorage _storage(filename);
+    const auto& populations = _storage.populationNames();
+    if (populations.empty()) {
+        throw MVDException("Sonata file doesnt constain any population");
+    }
+    // Attempt to load the default or single population
+    if (pop_name.empty()) {
+        if (populations.count(default_population_name)) {
+            pop_name = default_population_name;
+        } else if (populations.size() == 1) {
+            pop_name = *populations.begin();
+        } else {
+            throw MVDException("Multiple populations found in Sonata file. "
+                               "Please select one population explicitly.");
+        }
+    }
+    return std::make_unique<sonata::NodePopulation>(filename, "", pop_name);
 }
+
+}  // namespace
+
 
 namespace MVD {
 
 using namespace bbp::sonata;
 
-inline SonataFile::SonataFile(const std::string &filename, const std::string& name)
-    : pop_(new NodePopulation(filename, "", name))
+inline SonataFile::SonataFile(const std::string &filename, const std::string& pop_name)
+    : pop_(open_population(filename, pop_name))
     , size_(pop_->size())
 { }
 
