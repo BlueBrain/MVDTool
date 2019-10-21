@@ -2,9 +2,8 @@ if(NOT BUILD_UNIT_TESTS)
   return()
 endif()
 
-find_package(Boost 1.41 QUIET REQUIRED COMPONENTS filesystem system
-  unit_test_framework)
-
+find_package(Boost 1.41 QUIET REQUIRED COMPONENTS
+             filesystem system unit_test_framework)
 
 
 if(NOT Boost_USE_STATIC_LIBS)

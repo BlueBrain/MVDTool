@@ -20,6 +20,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 #include <boost/math/quaternion.hpp>
 
@@ -66,6 +67,32 @@ inline decltype(auto) open_population(const std::string &filename, std::string p
         }
     }
     return std::make_unique<sonata::NodePopulation>(filename, "", pop_name);
+}
+
+
+// An implementation to drop duplicates without changing order
+template <typename T>
+inline void vector_remove_dups(std::vector<T>& vec) {
+    std::unordered_set<T> set;
+    std::size_t pos = 0;
+    for (T& v : vec) if(set.insert(v).second) {
+        std::swap(vec[pos++], v);  // works even if src-dst are same
+    }
+    vec.resize(pos);
+}
+
+
+// In case the enumeration is not available, get all values and drop duplicates in order
+inline std::vector<std::string> listAllValues(const sonata::NodePopulation* pop,
+                                              const std::string& did) {
+    try {
+        return pop->enumerationValues(did);
+    } catch (const std::runtime_error&) {
+        auto values = pop->getAttribute<std::string>(did,
+            sonata::Selection({{0, pop->size()}}));
+        vector_remove_dups(values);
+        return values;
+    }
 }
 
 }  // namespace
@@ -151,7 +178,7 @@ inline Rotations SonataFile::getAngularRotations(const Range & range) const{
     return res;
 }
 
-inline Rotations SonataFile::getRotations(const Range & range) const{
+inline Rotations SonataFile::getRotations(const Range& range) const{
     const auto attrs = pop_->attributeNames();
     const bool quat = (attrs.count("orientation_x") +
                        attrs.count("orientation_y") +
@@ -214,19 +241,19 @@ inline std::vector<size_t> SonataFile::getIndexSynapseClass(const Range &range) 
 }
 
 inline std::vector<std::string> SonataFile::listAllEtypes() const{
-    return pop_->enumerationValues(did_etypes);
+    return listAllValues(pop_.get(), did_etypes);
 }
 
 inline std::vector<std::string> SonataFile::listAllMtypes() const{
-    return pop_->enumerationValues(did_mtypes);
+    return listAllValues(pop_.get(), did_mtypes);
 }
 
 inline std::vector<std::string> SonataFile::listAllRegions() const{
-    return pop_->enumerationValues(did_regions);
+    return listAllValues(pop_.get(), did_regions);
 }
 
 inline std::vector<std::string> SonataFile::listAllSynapseClass() const{
-    return pop_->enumerationValues(did_synapse_class);
+    return listAllValues(pop_.get(), did_synapse_class);
 }
 
 }
