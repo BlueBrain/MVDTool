@@ -376,7 +376,7 @@ BOOST_AUTO_TEST_CASE( genericMVDFile )
 }
 
 
-BOOST_AUTO_TEST_CASE( MVDTSVFiles )
+BOOST_AUTO_TEST_CASE( mvdTsvFiles )
 {
     using namespace MVD;
 
@@ -393,4 +393,34 @@ BOOST_AUTO_TEST_CASE( MVDTSVFiles )
     ss << info.morphologyName << ", " << info.layer << ", " << info.fullMType << ", " << info.eType << ", " << info.eModel << ", " << info.comboName << ", " << info.thresholdCurrent  << ", " << info.holdingCurrent;
 
     BOOST_CHECK_EQUAL(referenceTSVInfo, ss.str());
+}
+
+
+BOOST_AUTO_TEST_CASE( mvdTsvMtypes)
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_TSV_FILENAME);
+    file.readTSVInfo(TSV_FILENAME);
+
+    std::vector<std::string> mTypes = file.getMtypes();
+
+    BOOST_CHECK_EQUAL(mTypes[0], "L1_DAC");
+    BOOST_CHECK_EQUAL(mTypes[9], "L1_DAC");
+    BOOST_CHECK_EQUAL(mTypes[33], "L6_UPC");
+}
+
+
+BOOST_AUTO_TEST_CASE( mvdTsvEmodels)
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_TSV_FILENAME);
+    file.readTSVInfo(TSV_FILENAME);
+
+    std::vector<std::string> Emodels = file.getEmodels();
+
+    BOOST_CHECK_EQUAL(Emodels[0], "bAC_327962063");
+    BOOST_CHECK_EQUAL(Emodels[9], "dSTUT_321707905");
+    BOOST_CHECK_EQUAL(Emodels[33], "L6_cADpyr_471819401");
 }

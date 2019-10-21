@@ -297,6 +297,36 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("emodels", [](const MVD3File& f, int offset, int count) {
+                Range r(offset, count);
+                return f.getEmodels(r);
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("emodels", [](const MVD3File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getEmodels(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
+        .def("threshold_currents", [](const MVD3File& f, int offset, int count) {
+                Range r(offset, count);
+                return f.getThresholdCurrents(r);
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("threshold_currents", [](const MVD3File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getThresholdCurrents(r);};
+                return _atIndices<double>(func, f.size(), idx);
+             })
+        .def("holding_currents", [](const MVD3File& f, int offset, int count) {
+                Range r(offset, count);
+                return f.getHoldingCurrents(r);
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("holding_currents", [](const MVD3File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getHoldingCurrents(r);};
+                return _atIndices<double>(func, f.size(), idx);
+             })
         .def_property_readonly("all_morphologies", &MVD3File::listAllMorphologies)
         ;
 

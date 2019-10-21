@@ -142,12 +142,35 @@ public:
     ///
     std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const;
 
+    ///
+    /// \brief getEmodels
+    /// \return vector of string with the EModel associated with each neuron
+    ///
+    std::vector<std::string> getEmodels(const Range& range = Range(0,0)) const;
+
+    ///
+    /// \brief getThresholdCurrents
+    /// \return vector of double with the Threshold Current associated with each neuron
+    ///
+    std::vector<double> getThresholdCurrents(const Range& range = Range(0,0)) const;
+
+    ///
+    /// \brief getHoldingCurrents
+    /// \return vector of double with the Holding Current associated with each neuron
+    ///
+    std::vector<double> getHoldingCurrents(const Range& range = Range(0,0)) const;
 
     ///
     /// \brief getSynapseClass
     /// \return vector of string with the synapse type associated with each neuron
     ///
     std::vector<std::string> getSynapseClass(const Range & range = Range(0,0)) const override;
+
+    ///
+    /// \brief getSynapseClass
+    /// \return vector of string with the synapse type associated with each neuron
+    ///
+    std::vector<std::string> getMECombos(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getTSVInfo

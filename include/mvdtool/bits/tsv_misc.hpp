@@ -25,11 +25,13 @@
 #include <stdexcept>
 #include <unordered_map>
 
+#include <boost/range/combine.hpp>
+
 #include "../tsv_except.hpp"
 
 namespace TSV {
 
-inline std::vector<TSVInfo> TSVFile::getTSVInfo() {
+inline std::vector<TSVInfo> TSVFile::getTSVInfos() {
     std::vector<TSVInfo> tsvFileInfoVec;
     for (auto it_infos: tsvFileInfo) {
         tsvFileInfoVec.push_back(it_infos.second);
@@ -37,15 +39,74 @@ inline std::vector<TSVInfo> TSVFile::getTSVInfo() {
     return tsvFileInfoVec;
 }
 
-inline TSVInfo TSVFile::getTSVInfo(const std::string& me_combo, const std::string& morphology) {
-    auto hasMEType = tsvFileInfo.find(std::make_pair(morphology, me_combo));
-    if (hasMEType != tsvFileInfo.end()) {
-        return hasMEType->second;
+inline std::vector<TSVInfo> TSVFile::getTSVInfos(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
+    std::vector<TSV::TSVInfo> tsvInfos;
+    for (const auto& mecombo_tupple: boost::combine(me_combos, morphologies)) {
+        auto hasMEType = tsvFileInfo.find(std::make_pair(boost::get<0>(mecombo_tupple), boost::get<1>(mecombo_tupple)));
+        if (hasMEType != tsvFileInfo.end()) {
+            tsvInfos.push_back(hasMEType->second);
+        } else {
+            std::ostringstream ss;
+            ss << "me_combo " << boost::get<0>(mecombo_tupple) << " or morphology " << boost::get<1>(mecombo_tupple) << " not found in "
+               << _filename << std::endl;
+            throw TSVException(ss.str());
+        }
     }
-    std::ostringstream ss;
-    ss << "me_combo " << me_combo << " or morphology " << morphology << " not found in "
-       << _filename << std::endl;
-    throw TSVException(ss.str());
+    return tsvInfos;
+}
+
+inline std::vector<boost::int32_t> TSVFile::getLayers(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
+    std::vector<boost::int32_t> tsvLayers;
+    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
+    for (const auto& tsvInfo: tsvInfos) {
+        tsvLayers.push_back(tsvInfo.layer);
+    }
+    return tsvLayers;
+}
+
+inline std::vector<std::string> TSVFile::getMtypes(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
+    std::vector<std::string> tsvMtypes;
+    std::vector<TSV::TSVInfo> tsvInfos = TSVFile::getTSVInfos(me_combos, morphologies);
+    for (const auto& tsvInfo: tsvInfos) {
+        tsvMtypes.push_back(tsvInfo.fullMType);
+    }
+    return tsvMtypes;
+}
+
+inline std::vector<std::string> TSVFile::getEtypes(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
+    std::vector<std::string> tsvEtypes;
+    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
+    for (const auto& tsvInfo: tsvInfos) {
+        tsvEtypes.push_back(tsvInfo.eType);
+    }
+    return tsvEtypes;
+}
+
+inline std::vector<std::string> TSVFile::getEmodels(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
+    std::vector<std::string> tsvEmodels;
+    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
+    for (const auto& tsvInfo: tsvInfos) {
+        tsvEmodels.push_back(tsvInfo.eModel);
+    }
+    return tsvEmodels;
+}
+
+inline std::vector<double> TSVFile::getThresholdCurrents(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
+    std::vector<double> tsvThresholdCurrents;
+    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
+    for (const auto& tsvInfo: tsvInfos) {
+        tsvThresholdCurrents.push_back(tsvInfo.thresholdCurrent);
+    }
+    return tsvThresholdCurrents;
+}
+
+inline std::vector<double> TSVFile::getHoldingCurrents(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
+    std::vector<double> tsvHoldingCurrents;
+    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
+    for (const auto& tsvInfo: tsvInfos) {
+        tsvHoldingCurrents.push_back(tsvInfo.holdingCurrent);
+    }
+    return tsvHoldingCurrents;
 }
 
 inline void split(const std::string& s, char delim, std::vector<std::string>& elems) {
@@ -100,7 +161,7 @@ inline unordered_pair_map TSVFile::readTSVFile(const std::string& filename) {
             tsvInfoLine.thresholdCurrent = std::stod(line_info[6]);
             tsvInfoLine.holdingCurrent = std::stod(line_info[7]);
         }
-        tsvInfos.insert({{tsvInfoLine.morphologyName, tsvInfoLine.comboName}, tsvInfoLine});
+        tsvInfos.insert({{tsvInfoLine.comboName, tsvInfoLine.morphologyName}, tsvInfoLine});
         line_info.clear();
     }
 

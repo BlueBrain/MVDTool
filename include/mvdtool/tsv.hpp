@@ -88,19 +88,91 @@ class TSVFile {
     ///
     /// Get all the me types defined in the tsv file
     ///
-    std::vector<TSVInfo> getTSVInfo();
+    std::vector<TSVInfo> getTSVInfos();
 
     ///
     /// \brief TSVFile
-    /// \param me_combo me_combo string of the neuron me type
-    /// \param morphology morphology name of the neuron me type
+    /// \param me_combo me_combo strings of the neurons me types
+    /// \param morphology morphology names of the neurons me types
     ///
-    /// Get the info included in the tsv file for the neuron type
-    /// with the me_combo and morphology name requested
+    /// Get the info included in the tsv file for the neuron types
+    /// with the me_combos and morphology names requested
     /// throw TSVException, if me_combo or morphology don't match
     /// an entry in tsvFileInfo
     ///
-    TSVInfo getTSVInfo(const std::string& me_combo, const std::string& morphology);
+    std::vector<TSVInfo> getTSVInfos(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+
+    ///
+    /// \brief TSVFile
+    /// \param me_combo me_combo strings of the neurons me types
+    /// \param morphology morphology names of the neurons me types
+    ///
+    /// Get the info included in the tsv file for the neuron types
+    /// with the me_combos and morphology names requested
+    /// throw TSVException, if me_combo or morphology don't match
+    /// an entry in tsvFileInfo
+    ///
+    std::vector<boost::int32_t> getLayers(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+
+    ///
+    /// \brief TSVFile
+    /// \param me_combo me_combo strings of the neurons me types
+    /// \param morphology morphology names of the neurons me types
+    ///
+    /// Get the info included in the tsv file for the neuron types
+    /// with the me_combos and morphology names requested
+    /// throw TSVException, if me_combo or morphology don't match
+    /// an entry in tsvFileInfo
+    ///
+    std::vector<std::string> getMtypes(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+
+    ///
+    /// \brief TSVFile
+    /// \param me_combo me_combo strings of the neurons me types
+    /// \param morphology morphology names of the neurons me types
+    ///
+    /// Get the info included in the tsv file for the neuron types
+    /// with the me_combos and morphology names requested
+    /// throw TSVException, if me_combo or morphology don't match
+    /// an entry in tsvFileInfo
+    ///
+    std::vector<std::string> getEtypes(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+
+    ///
+    /// \brief TSVFile
+    /// \param me_combo me_combo strings of the neurons me types
+    /// \param morphology morphology names of the neurons me types
+    ///
+    /// Get the info included in the tsv file for the neuron types
+    /// with the me_combos and morphology names requested
+    /// throw TSVException, if me_combo or morphology don't match
+    /// an entry in tsvFileInfo
+    ///
+    std::vector<std::string> getEmodels(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+
+    ///
+    /// \brief TSVFile
+    /// \param me_combo me_combo strings of the neurons me types
+    /// \param morphology morphology names of the neurons me types
+    ///
+    /// Get the info included in the tsv file for the neuron types
+    /// with the me_combos and morphology names requested
+    /// throw TSVException, if me_combo or morphology don't match
+    /// an entry in tsvFileInfo
+    ///
+    std::vector<double> getThresholdCurrents(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+
+    ///
+    /// \brief TSVFile
+    /// \param me_combo me_combo strings of the neurons me types
+    /// \param morphology morphology names of the neurons me types
+    ///
+    /// Get the info included in the tsv file for the neuron types
+    /// with the me_combos and morphology names requested
+    /// throw TSVException, if me_combo or morphology don't match
+    /// an entry in tsvFileInfo
+    ///
+    std::vector<double> getHoldingCurrents(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
 
   private:
     std::string _filename;

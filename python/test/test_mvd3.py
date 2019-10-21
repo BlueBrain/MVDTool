@@ -151,19 +151,25 @@ def test_number_neurons_mvd3_tsv(circuit_mvd3_tsv):
     assert len(circuit_mvd3_tsv.tsv_info()) == 34
 
 def test_tsv_layer(circuit_mvd3_tsv):
-    tsvinfos = circuit_mvd3_tsv.tsv_info()
+    layers = circuit_mvd3_tsv.layers()
 
-    assert tsvinfos[0].layer == 1
-    assert tsvinfos[9].layer == 1
-    assert tsvinfos[33].layer == 6
+    assert layers[0] == 1
+    assert layers[9] == 1
+    assert layers[33] == 6
 
-def test_tsv_mecombos(circuit_mvd3_tsv):
-    tsvinfos = circuit_mvd3_tsv.tsv_info()
+def test_tsv_emodels(circuit_mvd3_tsv):
+    emodels = circuit_mvd3_tsv.emodels()
 
-    assert tsvinfos[0].comboName == "bAC_1_02583f52ff47b88961e4216e2972ee8c"
-    assert tsvinfos[9].comboName == "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"
-    assert tsvinfos[33].comboName == "cADpyr_6_97957c6ebc6ac6397bf0fa077d39580c"
+    assert emodels[0] == "bAC_327962063"
+    assert emodels[9] == "dSTUT_321707905"
+    assert emodels[33] == "L6_cADpyr_471819401"
 
+def test_tsv_emodels_indices(circuit_mvd3_tsv):
+    emodels = circuit_mvd3_tsv.emodels([0,9,33])
+
+    assert emodels[0] == "bAC_327962063"
+    assert emodels[1] == "dSTUT_321707905"
+    assert emodels[2] == "L6_cADpyr_471819401"
 
 def test_tsv_mecombos_indices(circuit_mvd3_tsv):
     tsvinfos = circuit_mvd3_tsv.tsv_info([0,9,33])
@@ -174,15 +180,15 @@ def test_tsv_mecombos_indices(circuit_mvd3_tsv):
 
 
 def test_tsv_threshold_current(circuit_mvd3_tsv):
-    tsvinfos = circuit_mvd3_tsv.tsv_info()
+    threshold_currents = circuit_mvd3_tsv.threshold_currents()
 
-    assert tsvinfos[0].thresholdCurrent == 0
-    assert tsvinfos[9].thresholdCurrent == 0
-    assert tsvinfos[33].thresholdCurrent == 0.2
+    assert threshold_currents[0] == 0
+    assert threshold_currents[9] == 0
+    assert threshold_currents[33] == 0.2
 
 def test_tsv_holding_current(circuit_mvd3_tsv):
-    tsvinfos = circuit_mvd3_tsv.tsv_info()
+    holding_currents = circuit_mvd3_tsv.holding_currents()
 
-    assert tsvinfos[0].holdingCurrent == 0
-    assert tsvinfos[9].holdingCurrent == 0.1
-    assert tsvinfos[33].holdingCurrent == 0.15
+    assert holding_currents[0] == 0
+    assert holding_currents[9] == 0.1
+    assert holding_currents[33] == 0.15

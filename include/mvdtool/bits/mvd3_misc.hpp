@@ -22,7 +22,6 @@
 #include <string>
 #include <vector>
 
-#include <boost/range/combine.hpp>
 #include <highfive/H5DataSet.hpp>
 
 #include "../mvd3.hpp"
@@ -175,7 +174,13 @@ inline std::vector<std::string> MVD3File::getMorphologies(const Range & range) c
 }
 
 inline std::vector<std::string> MVD3File::getEtypes(const Range & range) const{
-    return get_resolve_field(did_lib_data_etypes, did_cells_index_etypes, range);
+    if (_tsv_file == nullptr ) {
+        return get_resolve_field(did_lib_data_etypes, did_cells_index_etypes, range);
+    } else {
+        std::vector<std::string> morphologies = getMorphologies(range);
+        std::vector<std::string> me_combos = getMECombos(range);
+        return _tsv_file->getEtypes(me_combos, morphologies);
+    }
 }
 
 inline std::vector<std::string> MVD3File::getEmodels(const Range&) const {
@@ -188,6 +193,16 @@ inline std::vector<std::string> MVD3File::getMtypes(const Range & range) const{
 
 inline std::vector<std::string> MVD3File::getMECombos(const Range& range) const {
     return get_resolve_field(did_lib_data_mecombo, did_cells_index_mecombo, range);
+}
+
+inline std::vector<std::string> MVD3File::getMtypes(const Range& range) const{
+    if (_tsv_file == nullptr ) {
+        return get_resolve_field(did_lib_data_mtypes, did_cells_index_mtypes, range);
+    } else {
+        std::vector<std::string> morphologies = getMorphologies(range);
+        std::vector<std::string> me_combos = getMECombos(range);
+        return _tsv_file->getMtypes(me_combos, morphologies);
+    }
 }
 
 inline std::vector<std::string> MVD3File::getRegions(const Range & range) const{
@@ -217,14 +232,65 @@ inline std::vector<boost::int32_t> MVD3File::getMiniColumns(const Range & range)
     return get_data_for_selection<boost::int32_t>(set, range);
 }
 
-inline std::vector<boost::int32_t> MVD3File::getLayers(const Range & range) const{
-    HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_layer);
-    return get_data_for_selection<boost::int32_t>(set, range);
+inline std::vector<boost::int32_t> MVD3File::getLayers(const Range& range) const{
+    if (_tsv_file == nullptr ) {
+        HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_layer);
+        return get_data_for_selection<boost::int32_t>(set, range);
+    } else {
+        std::vector<std::string> morphologies = getMorphologies(range);
+        std::vector<std::string> me_combos = getMECombos(range);
+        return _tsv_file->getLayers(me_combos, morphologies);
+    }
+}
+
+inline std::vector<std::string> MVD3File::getEmodels(const Range& range) const{
+    if (_tsv_file == nullptr ) {
+        std::ostringstream ss;
+        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract eModel information from"
+           << std::endl;
+        throw MVDException(ss.str());
+    }
+    std::vector<std::string> morphologies = getMorphologies(range);
+    std::vector<std::string> me_combos = getMECombos(range);
+    return _tsv_file->getEmodels(me_combos, morphologies);
+}
+
+
+inline std::vector<double> MVD3File::getThresholdCurrents(const Range& range) const{
+    if (_tsv_file == nullptr ) {
+        std::ostringstream ss;
+        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract Threshold Current information from"
+           << std::endl;
+        throw MVDException(ss.str());
+    }
+    std::vector<std::string> morphologies = getMorphologies(range);
+    std::vector<std::string> me_combos = getMECombos(range);
+    return _tsv_file->getThresholdCurrents(me_combos, morphologies);
+}
+
+
+inline std::vector<double> MVD3File::getHoldingCurrents(const Range& range) const{
+    if (_tsv_file == nullptr ) {
+        std::ostringstream ss;
+        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract Holding Current information from"
+           << std::endl;
+        throw MVDException(ss.str());
+    }
+    std::vector<std::string> morphologies = getMorphologies(range);
+    std::vector<std::string> me_combos = getMECombos(range);
+    return _tsv_file->getHoldingCurrents(me_combos, morphologies);
 }
 
 
 inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range) const{
     return get_resolve_field(did_lib_data_syn_class, did_cells_index_synapse_class, range);
+}
+
+
+inline std::vector<std::string> MVD3File::getMECombos(const Range & range) const{
+    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_me_combo);
+    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_me_combo);
+    return resolve_index<std::string>(index, range, data);
 }
 
 
@@ -235,17 +301,10 @@ inline std::vector<TSV::TSVInfo> MVD3File::getTSVInfo(const Range& range) const 
            << std::endl;
         throw MVDException(ss.str());
     }
-    std::vector<std::string> etypes = getEtypes(range);
-    std::vector<boost::int32_t> layers = getLayers(range);
     std::vector<std::string> morphologies = getMorphologies(range);
-    std::vector<TSV::TSVInfo> tsvInfos;
-    for (const auto& mecombo_tupple: boost::combine(etypes, layers, morphologies)) {
-        tsvInfos.push_back(_tsv_file->getTSVInfo(boost::get<0>(mecombo_tupple) + "_" +
-                                                     std::to_string(boost::get<1>(mecombo_tupple)) +
-                                                     "_" + boost::get<2>(mecombo_tupple),
-                                                 boost::get<2>(mecombo_tupple)));
-    }
-    return tsvInfos;
+    std::vector<std::string> me_combos = getMECombos(range);
+
+    return _tsv_file->getTSVInfos(me_combos, morphologies);
 }
 
 
@@ -283,13 +342,25 @@ inline std::vector<std::string> MVD3File::listAllMorphologies() const{
 
 
 inline std::vector<std::string> MVD3File::listAllEtypes() const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_etypes);
-    return get_data_for_selection<std::string>(index, Range(0,0));
+    if (_tsv_file == nullptr ) {
+        HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_etypes);
+        return get_data_for_selection<std::string>(index, Range(0, 0));
+    } else {
+        std::vector<std::string> morphologies = getMorphologies(Range(0, 0));
+        std::vector<std::string> me_combos = getMECombos(Range(0, 0));
+        return _tsv_file->getEtypes(me_combos, morphologies);
+    }
 }
 
 inline std::vector<std::string> MVD3File::listAllMtypes() const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
-    return get_data_for_selection<std::string>(index, Range(0,0));
+    if (_tsv_file == nullptr ) {
+        HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
+        return get_data_for_selection<std::string>(index, Range(0,0));
+    } else {
+        std::vector<std::string> morphologies = getMorphologies(Range(0, 0));
+        std::vector<std::string> me_combos = getMECombos(Range(0, 0));
+        return _tsv_file->getMtypes(me_combos, morphologies);
+    }
 }
 
 inline std::vector<std::string> MVD3File::listAllRegions() const{
