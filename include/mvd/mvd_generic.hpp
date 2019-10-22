@@ -60,7 +60,7 @@ inline MVDFile* open_mvd(const std::string & filename) {
 /// \return a shared pointer to a mvd::File object
 ///
 inline std::shared_ptr<File> open(const std::string& filename,
-                                  const std::string& population="default") {
+                                  const std::string& population="") {
     std::shared_ptr<File> mvdfile;
     switch(_mvd_format(filename)) {
         case MVDType::MVD2:

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <algorithm>
 #include <boost/multi_array.hpp>
 #include <boost/algorithm/string/predicate.hpp>
