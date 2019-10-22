@@ -64,6 +64,8 @@ struct pair_hash {
 using unordered_pair_map =
     std::unordered_map<std::pair<std::string, std::string>, TSVInfo, pair_hash>;
 
+enum tsv_columns {morph_name, layer, fullmtype, etype, emodel, combo_name, threshold_current, holding_current};
+
 ///
 /// \brief The TSVFile class
 ///
@@ -81,7 +83,18 @@ class TSVFile {
     ///
     TSVFile(const std::string& filename)
         : _filename(filename)
-        , tsvFileInfo(readTSVFile(filename)) {}
+        , tsvFileInfo(readTSVFile(filename, combo_name)) {}
+
+    ///
+    /// \brief TSVFile
+    /// \param filename tsv file name
+    ///
+    /// Open and read a tsv file format at 'filename' path
+    /// throw TSVException, or HighFive::Exception in case of error
+    ///
+    TSVFile(const std::string& filename, tsv_columns id)
+            : _filename(filename)
+            , tsvFileInfo(readTSVFile(filename, id)) {}
 
     ///
     /// \brief TSVFile
@@ -177,7 +190,7 @@ class TSVFile {
   private:
     std::string _filename;
     const unordered_pair_map tsvFileInfo;
-    unordered_pair_map readTSVFile(const std::string& filename);
+    unordered_pair_map readTSVFile(const std::string& filename, tsv_columns id);
 };
 
 }  // namespace TSV

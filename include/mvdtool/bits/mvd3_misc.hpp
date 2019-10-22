@@ -119,7 +119,7 @@ inline MVD3File::MVD3File(const std::string& str)
     , _nb_neurons(0) {}
 
 inline void MVD3File::readTSVInfo(const std::string& filename) {
-    _tsv_file = std::unique_ptr<TSV::TSVFile>(new TSV::TSVFile(filename));
+    _tsv_file = std::make_unique<TSV::TSVFile>(filename, TSV::tsv_columns::combo_name);
 }
 
 inline size_t MVD3File::getNbNeuron() const{
@@ -233,7 +233,7 @@ inline std::vector<boost::int32_t> MVD3File::getMiniColumns(const Range & range)
 }
 
 inline std::vector<boost::int32_t> MVD3File::getLayers(const Range& range) const{
-    if (_tsv_file == nullptr ) {
+    if (!_tsv_file) {
         HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_layer);
         return get_data_for_selection<boost::int32_t>(set, range);
     } else {
@@ -244,7 +244,7 @@ inline std::vector<boost::int32_t> MVD3File::getLayers(const Range& range) const
 }
 
 inline std::vector<std::string> MVD3File::getEmodels(const Range& range) const{
-    if (_tsv_file == nullptr ) {
+    if (!_tsv_file) {
         std::ostringstream ss;
         ss << "No tsv file is opened with MVD3 file " << _filename << " to extract eModel information from"
            << std::endl;
@@ -257,7 +257,7 @@ inline std::vector<std::string> MVD3File::getEmodels(const Range& range) const{
 
 
 inline std::vector<double> MVD3File::getThresholdCurrents(const Range& range) const{
-    if (_tsv_file == nullptr ) {
+    if (!_tsv_file) {
         std::ostringstream ss;
         ss << "No tsv file is opened with MVD3 file " << _filename << " to extract Threshold Current information from"
            << std::endl;
@@ -270,7 +270,7 @@ inline std::vector<double> MVD3File::getThresholdCurrents(const Range& range) co
 
 
 inline std::vector<double> MVD3File::getHoldingCurrents(const Range& range) const{
-    if (_tsv_file == nullptr ) {
+    if (!_tsv_file) {
         std::ostringstream ss;
         ss << "No tsv file is opened with MVD3 file " << _filename << " to extract Holding Current information from"
            << std::endl;
@@ -295,7 +295,7 @@ inline std::vector<std::string> MVD3File::getMECombos(const Range & range) const
 
 
 inline std::vector<TSV::TSVInfo> MVD3File::getTSVInfo(const Range& range) const {
-    if (_tsv_file == nullptr) {
+    if (!_tsv_file) {
         std::ostringstream ss;
         ss << "No tsv file is opened with MVD3 file " << _filename << " to extract information from"
            << std::endl;
@@ -342,7 +342,7 @@ inline std::vector<std::string> MVD3File::listAllMorphologies() const{
 
 
 inline std::vector<std::string> MVD3File::listAllEtypes() const{
-    if (_tsv_file == nullptr ) {
+    if (!_tsv_file) {
         HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_etypes);
         return get_data_for_selection<std::string>(index, Range(0, 0));
     } else {
@@ -353,7 +353,7 @@ inline std::vector<std::string> MVD3File::listAllEtypes() const{
 }
 
 inline std::vector<std::string> MVD3File::listAllMtypes() const{
-    if (_tsv_file == nullptr ) {
+    if (!_tsv_file) {
         HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
         return get_data_for_selection<std::string>(index, Range(0,0));
     } else {

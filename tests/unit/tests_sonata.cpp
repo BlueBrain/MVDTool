@@ -278,3 +278,35 @@ BOOST_AUTO_TEST_CASE( genericMVDFile )
     BOOST_CHECK_EQUAL(neurons_pos[0][1], static_cast<double>(1986.506637));
     BOOST_CHECK_EQUAL(neurons_pos[0][2], static_cast<double>(10.788424));
 }
+
+
+BOOST_AUTO_TEST_CASE( basicTestEmodel )
+{
+    SonataFile file(SONATA_FILENAME_NEW_FORMAT);
+    file.readTSVInfo(TSV_FILENAME);
+
+    std::vector <std::string> emodels;
+
+    emodels = file.getEmodels();
+
+    BOOST_CHECK_EQUAL(emodels[0], "bAC_327962063");
+    BOOST_CHECK_EQUAL(emodels[9], "dSTUT_321707905");
+    BOOST_CHECK_EQUAL(emodels[33], "L6_cADpyr_471819401");
+
+}
+
+
+BOOST_AUTO_TEST_CASE( basicTestAlternativeEmodel )
+{
+    SonataFile file(SONATA_FILENAME_ALTERNATIVE);
+    file.readTSVInfo(TSV_FILENAME);
+
+    std::vector <std::string> emodels;
+
+    try {
+        emodels = file.getEmodels();
+    } catch(...) {
+        std::cout << "Morphologies do not match the tsv file" << std::endl;
+    }
+
+}

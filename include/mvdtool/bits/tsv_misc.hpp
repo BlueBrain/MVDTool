@@ -118,7 +118,7 @@ inline void split(const std::string& s, char delim, std::vector<std::string>& el
     }
 }
 
-inline unordered_pair_map TSVFile::readTSVFile(const std::string& filename) {
+inline unordered_pair_map TSVFile::readTSVFile(const std::string& filename, tsv_columns id_column) {
     std::ifstream file(filename);
     std::string line;
     std::vector<std::string> line_info;
@@ -148,20 +148,20 @@ inline unordered_pair_map TSVFile::readTSVFile(const std::string& filename) {
                << std::endl;
             throw TSVParserException(ss.str());
         }
-        tsvInfoLine.morphologyName = line_info[0];
-        tsvInfoLine.layer = std::stoi(line_info[1]);
-        tsvInfoLine.fullMType = line_info[2];
-        tsvInfoLine.eType = line_info[3];
-        tsvInfoLine.eModel = line_info[4];
-        tsvInfoLine.comboName = line_info[5];
+        tsvInfoLine.morphologyName = line_info[morph_name];
+        tsvInfoLine.layer = std::stoi(line_info[layer]);
+        tsvInfoLine.fullMType = line_info[fullmtype];
+        tsvInfoLine.eType = line_info[etype];
+        tsvInfoLine.eModel = line_info[emodel];
+        tsvInfoLine.comboName = line_info[combo_name];
         if (line_info.size() == 6 ) {
             tsvInfoLine.thresholdCurrent = 0;
             tsvInfoLine.holdingCurrent = 0;
         } else if (line_info.size() == 8) {
-            tsvInfoLine.thresholdCurrent = std::stod(line_info[6]);
-            tsvInfoLine.holdingCurrent = std::stod(line_info[7]);
+            tsvInfoLine.thresholdCurrent = std::stod(line_info[threshold_current]);
+            tsvInfoLine.holdingCurrent = std::stod(line_info[holding_current]);
         }
-        tsvInfos.insert({{tsvInfoLine.comboName, tsvInfoLine.morphologyName}, tsvInfoLine});
+        tsvInfos.insert({{line_info[id_column], tsvInfoLine.morphologyName}, tsvInfoLine});
         line_info.clear();
     }
 
