@@ -34,6 +34,9 @@ class PyFile : public File {
     std::vector<std::string> getMtypes(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "mtypes", getMtypes);
     }
+    std::vector<std::string> getEmodels(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "emodels", getEmodels);
+    }
     std::vector<std::string> getRegions(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "regions", getRegions);
     }
@@ -149,6 +152,16 @@ PYBIND11_MODULE(mvdtool, mvd) {
              "count"_a = 0)
         .def("mtypes", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMtypes(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
+        .def("emodels", [](const File& f, int offset, int count) {
+                Range r(offset, count);
+                return f.getEmodels(r);
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("emodels", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getEmodels(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
         .def("morphologies", [](const File& f, int offset, int count) {

@@ -211,6 +211,17 @@ BOOST_AUTO_TEST_CASE( basicTestMypes )
 }
 
 
+BOOST_AUTO_TEST_CASE( basicTestEmodels )
+{
+    MVD3::MVD3File file(MVD3_FILENAME);
+
+    std::vector<std::string> mtype = file.getEmodels();
+
+    BOOST_CHECK_EQUAL(mtype[0], "cACint2090_L1_SLAC_1_sm090227a1-2_idC");
+    BOOST_CHECK_EQUAL(mtype[10], "cACint2090_L1_SLAC_1_sm090227a1-2_idC");
+    BOOST_CHECK_EQUAL(mtype[20], "cADpyr2280_L23_PC_2_dend-C280998A-P3_axon-sm110131a1-3_INT_idA");
+}
+
 
 BOOST_AUTO_TEST_CASE( basicTestRegions )
 {

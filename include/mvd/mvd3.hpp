@@ -108,6 +108,12 @@ public:
     std::vector<std::string> getMtypes(const Range & range = Range(0,0)) const override;
 
     ///
+    /// \brief getEmodels
+    /// \return vector of string with the Emodel name associated with each neuron
+    ///
+    std::vector<std::string> getEmodels(const Range& range = Range(0, 0)) const override;
+
+    ///
     /// \brief getRegions
     /// \return vector of string with the region name associated with each neuron
     ///
@@ -172,7 +178,6 @@ public:
     ///
     std::vector<size_t> getIndexSynapseClass(const Range & range = Range(0,0)) const override;
 
-
     ///
     /// \brief getIndexRegions
     /// \param range
@@ -224,6 +229,10 @@ private:
     std::string _filename;
     HighFive::File _hdf5_file;
     size_t _nb_neurons;
+
+    inline std::vector<std::string> get_resolve_field(const std::string& field,
+                                                      const std::string& library,
+                                                      const Range & range) const;
 
 };
 

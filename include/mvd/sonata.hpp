@@ -100,9 +100,6 @@ public:
     ///
     bool hasRotations() const override;
 
-
-
-
     ///
     /// \brief getMorphologies
     /// \param range: selection range, a null range (0,0) select the entire dataset
@@ -122,6 +119,12 @@ public:
     /// \return vector of string with the Mtype name associated with each neuron
     ///
     std::vector<std::string> getMtypes(const Range & range = Range(0,0)) const override;
+
+    ///
+    /// \brief getEmodels
+    /// \return vector of string with the Emodel name associated with each neuron
+    ///
+    std::vector<std::string> getEmodels(const Range& range = Range(0, 0)) const override;
 
     ///
     /// \brief getRegions
