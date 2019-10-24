@@ -93,7 +93,7 @@ const std::string did_cells_layer = "/cells/properties/layer";
 const std::string did_cells_index_morpho = "/cells/properties/morphology";
 const std::string did_cells_index_etypes = "/cells/properties/etype";
 const std::string did_cells_index_mtypes = "/cells/properties/mtype";
-const std::string did_cells_index_emodel = "/cells/properties/me_combo";
+const std::string did_cells_index_mecombo = "/cells/properties/me_combo";
 const std::string did_cells_index_regions = "/cells/properties/region";
 const std::string did_cells_index_synapse_class = "/cells/properties/synapse_class";
 
@@ -101,7 +101,7 @@ const std::string did_cells_index_synapse_class = "/cells/properties/synapse_cla
 const std::string did_lib_data_morpho = "/library/morphology";
 const std::string did_lib_data_etypes = "/library/etype";
 const std::string did_lib_data_mtypes = "/library/mtype";
-const std::string did_lib_data_emodel = "/library/me_combo";
+const std::string did_lib_data_mecombo = "/library/me_combo";
 const std::string did_lib_data_regions = "/library/region";
 const std::string did_lib_data_syn_class = "/library/synapse_class";
 
@@ -171,12 +171,16 @@ inline std::vector<std::string> MVD3File::getEtypes(const Range & range) const{
     return get_resolve_field(did_lib_data_etypes, did_cells_index_etypes, range);
 }
 
-inline std::vector<std::string> MVD3File::getEmodels(const Range& range) const {
-    return get_resolve_field(did_lib_data_emodel, did_cells_index_emodel, range);
+inline std::vector<std::string> MVD3File::getEmodels(const Range&) const {
+    throw MVDException("Emodel not available in mvd3");
 }
 
 inline std::vector<std::string> MVD3File::getMtypes(const Range & range) const{
     return get_resolve_field(did_lib_data_mtypes, did_cells_index_mtypes, range);
+}
+
+inline std::vector<std::string> MVD3File::getMECombos(const Range& range) const {
+    return get_resolve_field(did_lib_data_mecombo, did_cells_index_mecombo, range);
 }
 
 inline std::vector<std::string> MVD3File::getRegions(const Range & range) const{

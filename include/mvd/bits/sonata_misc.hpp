@@ -220,7 +220,7 @@ inline std::vector<std::string> SonataFile::getMtypes(const Range & range) const
 inline std::vector<std::string> SonataFile::getEmodels(const Range & range) const{
     auto model_tpl = pop_->getAttribute<std::string>(did_emodel, select(range, size_));
     for (auto& model : model_tpl) {
-        model = model.substr(4);
+        model = model.substr(model.find(':'));
     }
     return model_tpl;
 }

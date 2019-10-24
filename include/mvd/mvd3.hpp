@@ -55,7 +55,6 @@ public:
     ///
     MVD3File(const std::string & filename);
 
-
     ///
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
@@ -83,9 +82,6 @@ public:
     /// \return if the current file has a rotational dataset
     ///
     bool hasRotations() const override;
-
-
-
 
     ///
     /// \brief getMorphologies
@@ -216,6 +212,15 @@ public:
     /// \return vector of all unique Synapse Class ( mvd3 /library section )
     ///
     std::vector<std::string> listAllSynapseClass() const override;
+
+    // Specific properties
+    // ===================
+
+    /// \brief getMeCombo - The specific MECombo property in mvd3
+    /// \return vector of string with the MECombo name associated with each neuron
+    ///
+    std::vector<std::string> getMECombos(const Range& range = Range(0,0)) const;
+
 
     // circuit infos
     ///
