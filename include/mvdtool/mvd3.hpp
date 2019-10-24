@@ -65,6 +65,17 @@ public:
     void readTSVInfo(const std::string& filename) override;
 
     ///
+    /// \brief getTSVdata
+    /// \param range: selection range, the default range (0,0) select the entire dataset
+    /// \param tsvGetter: function of TSVFile to return the required data
+    /// \return vector of data needed to return from the tsv file
+    ///
+    /// Get the data from the tsv file based on the tsvGetter
+    ///
+    template <typename T, typename FuncT>
+    std::vector<T> getTSVdata(const Range& range, const FuncT& tsvGetter) const;
+
+    ///
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
     ///

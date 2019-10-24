@@ -173,13 +173,32 @@ inline std::vector<std::string> MVD3File::getMorphologies(const Range & range) c
     return get_resolve_field(did_lib_data_morpho, did_cells_index_morpho, range);
 }
 
+
+template <typename T, typename FuncT>
+inline std::vector<T> MVD3File::getTSVdata(const Range& range, const FuncT& tsvGetter) const{
+    const size_t CHUNK_SIZE = 256;
+    size_t start = range.offset;
+    size_t end = range.count;
+    std::vector<T> retData;
+    if(start == 0 && end == 0){
+        end = getNbNeuron();
+    }
+    for (auto index = start; index < end; index += CHUNK_SIZE) {
+        std::vector <std::string> morphologies = getMorphologies(Range(index, std::min(CHUNK_SIZE, end - index)));
+        std::vector <std::string> me_combos = getMECombos(Range(index, std::min(CHUNK_SIZE, end - index)));
+        auto chunkData = tsvGetter(me_combos, morphologies);
+        retData.insert(retData.end(), chunkData.begin(), chunkData.end());
+    }
+    return retData;
+}
+
+
 inline std::vector<std::string> MVD3File::getEtypes(const Range & range) const{
     if (_tsv_file == nullptr ) {
         return get_resolve_field(did_lib_data_etypes, did_cells_index_etypes, range);
     } else {
-        std::vector<std::string> morphologies = getMorphologies(range);
-        std::vector<std::string> me_combos = getMECombos(range);
-        return _tsv_file->getEtypes(me_combos, morphologies);
+        const auto& getEtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEtypes(me_combos, morphologies);};
+        return getTSVdata<std::string>(range, getEtypesLambda);
     }
 }
 
@@ -199,9 +218,8 @@ inline std::vector<std::string> MVD3File::getMtypes(const Range& range) const{
     if (_tsv_file == nullptr ) {
         return get_resolve_field(did_lib_data_mtypes, did_cells_index_mtypes, range);
     } else {
-        std::vector<std::string> morphologies = getMorphologies(range);
-        std::vector<std::string> me_combos = getMECombos(range);
-        return _tsv_file->getMtypes(me_combos, morphologies);
+        const auto& getMtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getMtypes(me_combos, morphologies);};
+        return getTSVdata<std::string>(range, getMtypesLambda);
     }
 }
 
@@ -237,9 +255,8 @@ inline std::vector<boost::int32_t> MVD3File::getLayers(const Range& range) const
         HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_layer);
         return get_data_for_selection<boost::int32_t>(set, range);
     } else {
-        std::vector<std::string> morphologies = getMorphologies(range);
-        std::vector<std::string> me_combos = getMECombos(range);
-        return _tsv_file->getLayers(me_combos, morphologies);
+        const auto& getLayersLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getLayers(me_combos, morphologies);};
+        return getTSVdata<boost::int32_t>(range, getLayersLambda);
     }
 }
 
@@ -250,9 +267,8 @@ inline std::vector<std::string> MVD3File::getEmodels(const Range& range) const{
            << std::endl;
         throw MVDException(ss.str());
     }
-    std::vector<std::string> morphologies = getMorphologies(range);
-    std::vector<std::string> me_combos = getMECombos(range);
-    return _tsv_file->getEmodels(me_combos, morphologies);
+    const auto& getEmodelsLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEmodels(me_combos, morphologies);};
+    return getTSVdata<std::string>(range, getEmodelsLambda);
 }
 
 
@@ -263,9 +279,8 @@ inline std::vector<double> MVD3File::getThresholdCurrents(const Range& range) co
            << std::endl;
         throw MVDException(ss.str());
     }
-    std::vector<std::string> morphologies = getMorphologies(range);
-    std::vector<std::string> me_combos = getMECombos(range);
-    return _tsv_file->getThresholdCurrents(me_combos, morphologies);
+    const auto& getThresholdCurrentsLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getThresholdCurrents(me_combos, morphologies);};
+    return getTSVdata<double>(range, getThresholdCurrentsLamba);
 }
 
 
@@ -276,9 +291,8 @@ inline std::vector<double> MVD3File::getHoldingCurrents(const Range& range) cons
            << std::endl;
         throw MVDException(ss.str());
     }
-    std::vector<std::string> morphologies = getMorphologies(range);
-    std::vector<std::string> me_combos = getMECombos(range);
-    return _tsv_file->getHoldingCurrents(me_combos, morphologies);
+    const auto& getHoldingCurrentsLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getHoldingCurrents(me_combos, morphologies);};
+    return getTSVdata<double>(range, getHoldingCurrentsLamba);
 }
 
 
@@ -301,10 +315,20 @@ inline std::vector<TSV::TSVInfo> MVD3File::getTSVInfo(const Range& range) const 
            << std::endl;
         throw MVDException(ss.str());
     }
-    std::vector<std::string> morphologies = getMorphologies(range);
-    std::vector<std::string> me_combos = getMECombos(range);
-
-    return _tsv_file->getTSVInfos(me_combos, morphologies);
+    const size_t CHUNK_SIZE = 256;
+    size_t start = range.offset;
+    size_t end = range.count;
+    std::vector<TSV::TSVInfo> tsvInfos;
+    if(start == 0 && end == 0){
+        end = getNbNeuron();
+    }
+    for (auto index = start; index < end; index += CHUNK_SIZE) {
+        std::vector <std::string> morphologies = getMorphologies(Range(index, std::min(CHUNK_SIZE, end - index)));
+        std::vector <std::string> me_combos = getMECombos(Range(index, std::min(CHUNK_SIZE, end - index)));
+        auto chunkData = _tsv_file->getTSVInfos(me_combos, morphologies);
+        tsvInfos.insert(tsvInfos.end(), chunkData.begin(), chunkData.end());
+    }
+    return tsvInfos;
 }
 
 
@@ -346,9 +370,8 @@ inline std::vector<std::string> MVD3File::listAllEtypes() const{
         HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_etypes);
         return get_data_for_selection<std::string>(index, Range(0, 0));
     } else {
-        std::vector<std::string> morphologies = getMorphologies(Range(0, 0));
-        std::vector<std::string> me_combos = getMECombos(Range(0, 0));
-        return _tsv_file->getEtypes(me_combos, morphologies);
+        const auto& getEtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEtypes(me_combos, morphologies);};
+        return getTSVdata<std::string>(Range(0, 0), getEtypesLambda);
     }
 }
 
@@ -357,9 +380,8 @@ inline std::vector<std::string> MVD3File::listAllMtypes() const{
         HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
         return get_data_for_selection<std::string>(index, Range(0,0));
     } else {
-        std::vector<std::string> morphologies = getMorphologies(Range(0, 0));
-        std::vector<std::string> me_combos = getMECombos(Range(0, 0));
-        return _tsv_file->getMtypes(me_combos, morphologies);
+        const auto& getMtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getMtypes(me_combos, morphologies);};
+        return getTSVdata<std::string>(Range(0, 0), getMtypesLambda);
     }
 }
 

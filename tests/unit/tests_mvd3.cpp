@@ -396,7 +396,7 @@ BOOST_AUTO_TEST_CASE( mvdTsvFiles )
 }
 
 
-BOOST_AUTO_TEST_CASE( mvdTsvMtypes)
+BOOST_AUTO_TEST_CASE( mvdTsvMtypes )
 {
     using namespace MVD3;
 
@@ -411,16 +411,16 @@ BOOST_AUTO_TEST_CASE( mvdTsvMtypes)
 }
 
 
-BOOST_AUTO_TEST_CASE( mvdTsvEmodels)
+BOOST_AUTO_TEST_CASE( mvdTsvEmodels )
 {
     using namespace MVD3;
 
     MVD3File file(MVD3_TSV_FILENAME);
     file.readTSVInfo(TSV_FILENAME);
 
-    std::vector<std::string> Emodels = file.getEmodels();
+    std::vector<std::string> eModels = file.getEmodels();
 
-    BOOST_CHECK_EQUAL(Emodels[0], "bAC_327962063");
-    BOOST_CHECK_EQUAL(Emodels[9], "dSTUT_321707905");
-    BOOST_CHECK_EQUAL(Emodels[33], "L6_cADpyr_471819401");
+    BOOST_CHECK_EQUAL(eModels[0], "bAC_327962063");
+    BOOST_CHECK_EQUAL(eModels[9], "dSTUT_321707905");
+    BOOST_CHECK_EQUAL(eModels[33], "L6_cADpyr_471819401");
 }
