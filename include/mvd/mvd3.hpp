@@ -55,7 +55,6 @@ public:
     ///
     MVD3File(const std::string & filename);
 
-
     ///
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
@@ -84,9 +83,6 @@ public:
     ///
     bool hasRotations() const override;
 
-
-
-
     ///
     /// \brief getMorphologies
     /// \param range: selection range, a null range (0,0) select the entire dataset
@@ -106,6 +102,12 @@ public:
     /// \return vector of string with the Mtype name associated with each neuron
     ///
     std::vector<std::string> getMtypes(const Range & range = Range(0,0)) const override;
+
+    ///
+    /// \brief getEmodels
+    /// \return vector of string with the Emodel name associated with each neuron
+    ///
+    std::vector<std::string> getEmodels(const Range& range = Range(0, 0)) const override;
 
     ///
     /// \brief getRegions
@@ -172,7 +174,6 @@ public:
     ///
     std::vector<size_t> getIndexSynapseClass(const Range & range = Range(0,0)) const override;
 
-
     ///
     /// \brief getIndexRegions
     /// \param range
@@ -212,6 +213,15 @@ public:
     ///
     std::vector<std::string> listAllSynapseClass() const override;
 
+    // Specific properties
+    // ===================
+
+    /// \brief getMeCombo - The specific MECombo property in mvd3
+    /// \return vector of string with the MECombo name associated with each neuron
+    ///
+    std::vector<std::string> getMECombos(const Range& range = Range(0,0)) const;
+
+
     // circuit infos
     ///
     /// \brief getCircuitSeeds
@@ -224,6 +234,10 @@ private:
     std::string _filename;
     HighFive::File _hdf5_file;
     size_t _nb_neurons;
+
+    inline std::vector<std::string> get_resolve_field(const std::string& field,
+                                                      const std::string& library,
+                                                      const Range & range) const;
 
 };
 

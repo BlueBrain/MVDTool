@@ -39,6 +39,7 @@ const std::string did_layer = "layer";
 const std::string did_morpho = "morphology";
 const std::string did_etypes = "etype";
 const std::string did_mtypes = "mtype";
+const std::string did_emodel = "model_template";
 const std::string did_regions = "region";
 const std::string did_synapse_class = "synapse_class";
 
@@ -214,6 +215,14 @@ inline std::vector<std::string> SonataFile::getEtypes(const Range & range) const
 
 inline std::vector<std::string> SonataFile::getMtypes(const Range & range) const{
     return pop_->getAttribute<std::string>(did_mtypes, select(range, size_));
+}
+
+inline std::vector<std::string> SonataFile::getEmodels(const Range & range) const{
+    auto model_tpl = pop_->getAttribute<std::string>(did_emodel, select(range, size_));
+    for (auto& model : model_tpl) {
+        model = model.substr(model.find(':'));
+    }
+    return model_tpl;
 }
 
 inline std::vector<std::string> SonataFile::getRegions(const Range & range) const{

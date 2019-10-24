@@ -27,7 +27,7 @@
 #include "../mvd3.hpp"
 #include "../mvd_except.hpp"
 
-namespace{
+namespace {
 
 inline bool is_empty(const MVD3::Range & range){
     return range.count == 0;
@@ -46,7 +46,9 @@ inline std::vector<T> get_data_for_selection(HighFive::DataSet & dataset, const 
 }
 
 template<typename T>
-inline std::vector<T> resolve_index(HighFive::DataSet & index, const MVD3::Range & range, HighFive::DataSet & data){
+inline std::vector<T> resolve_index(HighFive::DataSet & index,
+                                    const MVD3::Range & range,
+                                    HighFive::DataSet & data) {
     std::vector<T> values, result;
     std::vector<size_t> references = get_data_for_selection<size_t>(index, range);
     const size_t n_elem = data.getSpace().getDimensions()[0];
@@ -81,6 +83,7 @@ inline std::vector<T> resolve_index(HighFive::DataSet & index, const MVD3::Range
 // cells properties
 const std::string did_cells_positions = "/cells/positions";
 const std::string did_cells_rotations = "/cells/orientations";
+
 // cells properties namespace
 const std::string did_cells_hypercolumn = "/cells/properties/hypercolumn";
 const std::string did_cells_minicolmun = "/cells/properties/minicolumn";
@@ -90,17 +93,23 @@ const std::string did_cells_layer = "/cells/properties/layer";
 const std::string did_cells_index_morpho = "/cells/properties/morphology";
 const std::string did_cells_index_etypes = "/cells/properties/etype";
 const std::string did_cells_index_mtypes = "/cells/properties/mtype";
+const std::string did_cells_index_mecombo = "/cells/properties/me_combo";
 const std::string did_cells_index_regions = "/cells/properties/region";
 const std::string did_cells_index_synapse_class = "/cells/properties/synapse_class";
+
 // data
 const std::string did_lib_data_morpho = "/library/morphology";
 const std::string did_lib_data_etypes = "/library/etype";
 const std::string did_lib_data_mtypes = "/library/mtype";
+const std::string did_lib_data_mecombo = "/library/me_combo";
 const std::string did_lib_data_regions = "/library/region";
 const std::string did_lib_data_syn_class = "/library/synapse_class";
+
 // circuit
 const std::string did_lib_circuit_seeds = "/circuit/seeds";
+
 }
+
 
 namespace MVD3 {
 
@@ -154,32 +163,28 @@ inline bool MVD3File::hasRotations() const {
 }
 
 
-inline std::vector<std::string> MVD3File::getMorphologies(const Range & range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
-    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_morpho);
-    return resolve_index<std::string>(index, range, data);
+inline std::vector<std::string> MVD3File::getMorphologies(const Range & range) const {
+    return get_resolve_field(did_lib_data_morpho, did_cells_index_morpho, range);
 }
-
-
-
 
 inline std::vector<std::string> MVD3File::getEtypes(const Range & range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
-    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_etypes);
-    return resolve_index<std::string>(index, range, data);
+    return get_resolve_field(did_lib_data_etypes, did_cells_index_etypes, range);
 }
 
+inline std::vector<std::string> MVD3File::getEmodels(const Range&) const {
+    throw MVDException("Emodel not available in mvd3");
+}
 
 inline std::vector<std::string> MVD3File::getMtypes(const Range & range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
-    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_mtypes);
-    return resolve_index<std::string>(index, range, data);
+    return get_resolve_field(did_lib_data_mtypes, did_cells_index_mtypes, range);
+}
+
+inline std::vector<std::string> MVD3File::getMECombos(const Range& range) const {
+    return get_resolve_field(did_lib_data_mecombo, did_cells_index_mecombo, range);
 }
 
 inline std::vector<std::string> MVD3File::getRegions(const Range & range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_regions);
-    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_regions);
-    return resolve_index<std::string>(index, range, data);
+    return get_resolve_field(did_lib_data_regions, did_cells_index_regions, range);
 }
 
 inline std::vector<boost::int32_t> MVD3File::getHyperColumns(const Range & range) const{
@@ -200,11 +205,8 @@ inline std::vector<boost::int32_t> MVD3File::getLayers(const Range & range) cons
 
 
 inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
-    HighFive::DataSet data = _hdf5_file.getDataSet(did_lib_data_syn_class);
-    return resolve_index<std::string>(index, range, data);
+    return get_resolve_field(did_lib_data_syn_class, did_cells_index_synapse_class, range);
 }
-
 
 inline std::vector<size_t> MVD3File::getIndexMorphologies(const Range & range) const{
     HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
@@ -270,8 +272,14 @@ inline std::vector<double> MVD3File::getCircuitSeeds() const{
     return seeds;
 }
 
-
-
+inline std::vector<std::string> MVD3File::get_resolve_field(const std::string& field,
+                                                            const std::string& library,
+                                                            const Range & range) const {
+    HighFive::DataSet index = _hdf5_file.getDataSet(library);
+    HighFive::DataSet data = _hdf5_file.getDataSet(field);
+    return resolve_index<std::string>(index, range, data);
 }
+
+}  // namespace MVD3
 
 #endif // MVD3_MISC_HPP

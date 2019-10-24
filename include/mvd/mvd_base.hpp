@@ -77,6 +77,7 @@ public:
     virtual std::vector<std::string> getMorphologies(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getEtypes(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getMtypes(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<std::string> getEmodels(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getRegions(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getSynapseClass(const Range& range = Range(0, 0)) const = 0;
 
