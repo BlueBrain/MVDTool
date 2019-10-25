@@ -192,6 +192,18 @@ inline std::vector<boost::int32_t> MVD3File::getHyperColumns(const Range & range
     return get_data_for_selection<boost::int32_t>(set, range);
 }
 
+inline bool MVD3File::hasCurrents() const  {
+    return false;
+}
+
+inline std::vector<double> MVD3File::getThresholdCurrents(const Range&) const {
+    throw MVDException("ThresholdCurrents not available in mvd3");
+}
+
+inline std::vector<double> MVD3File::getHoldingCurrents(const Range&) const {
+    throw MVDException("HoldingCurrents not available in mvd3");
+}
+
 
 inline std::vector<boost::int32_t> MVD3File::getMiniColumns(const Range & range) const{
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_minicolmun);

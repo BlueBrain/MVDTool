@@ -81,6 +81,10 @@ public:
     virtual std::vector<std::string> getRegions(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getSynapseClass(const Range& range = Range(0, 0)) const = 0;
 
+    virtual bool hasCurrents() const = 0;
+    virtual std::vector<double> getThresholdCurrents(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<double> getHoldingCurrents(const Range& range = Range(0, 0)) const = 0;
+
     virtual std::vector<size_t> getIndexEtypes(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<size_t> getIndexMtypes(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<size_t> getIndexRegions(const Range& range = Range(0, 0)) const = 0;

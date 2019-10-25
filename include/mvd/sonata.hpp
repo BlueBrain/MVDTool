@@ -139,6 +139,24 @@ public:
     ///
     std::vector<std::string> getSynapseClass(const Range & range = Range(0,0)) const override;
 
+    ///
+    /// \brief Checks whether these two extra fields are available
+    /// \return bool whether thw two current properties are available
+    ///
+    bool hasCurrents() const override;
+
+    ///
+    /// \brief Retrieves the threshold currents
+    /// \return a vector<double> with all the neurons threshold currents
+    ///
+    std::vector<double> getThresholdCurrents(const Range& range = Range(0, 0)) const override;
+
+    ///
+    /// \brief Retrieves the holding currents
+    /// \return a vector<double> with all the neurons holding currents
+    ///
+    std::vector<double> getHoldingCurrents(const Range& range = Range(0, 0)) const override;
+
 
     // index related infos
 

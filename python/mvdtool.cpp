@@ -44,6 +44,17 @@ class PyFile : public File {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<std::string>, File, "synapse_classes", getSynapseClass);
     }
+    bool hasCurrents() const override {
+        PYBIND11_OVERLOAD_PURE_NAME(bool, File, "hasCurrents", hasCurrents);
+    }
+    std::vector<double> getThresholdCurrents(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(
+            std::vector<double>, File, "threshold_currents", getThresholdCurrents);
+    }
+    std::vector<double> getHoldingCurrents(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(
+            std::vector<double>, File, "holding_currents", getHoldingCurrents);
+    }
     std::vector<size_t> getIndexEtypes(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_etypes", getIndexEtypes);
     }
@@ -164,6 +175,28 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getEmodels(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("threshold_currents", [](const File& f, int offset, int count) {
+                auto res = f.getThresholdCurrents(Range(offset, count));
+                return py::array(res.size(), res.data());
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("threshold_currents", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getThresholdCurrents(r);};
+                auto values = _atIndices<double>(func, f.size(), idx);
+                return py::array(values.size(), values.data());
+             })
+        .def("holding_currents", [](const File& f, int offset, int count) {
+                auto res = f.getHoldingCurrents(Range(offset, count));
+                return py::array(res.size(), res.data());
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("holding_currents", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getHoldingCurrents(r);};
+                auto values = _atIndices<double>(func, f.size(), idx);
+                return py::array(values.size(), values.data());
+             })
         .def("morphologies", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getMorphologies(r);
@@ -222,6 +255,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("hasCurrents", &File::hasCurrents)
         .def_property_readonly("rotated", &File::hasRotations)
         .def_property_readonly("all_etypes", &File::listAllEtypes)
         .def_property_readonly("all_mtypes", &File::listAllMtypes)
