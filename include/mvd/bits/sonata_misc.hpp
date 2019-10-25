@@ -43,6 +43,9 @@ const std::string did_emodel = "model_template";
 const std::string did_regions = "region";
 const std::string did_synapse_class = "synapse_class";
 
+const std::string did_threshold_current = "threshold_current";
+const std::string did_holding_current = "holding_current";
+
 
 inline auto select(const MVD::Range& range, size_t size) {
     auto range_end = (range.count > 0)? range.offset + range.count : size - range.offset;
@@ -231,6 +234,19 @@ inline std::vector<std::string> SonataFile::getRegions(const Range & range) cons
 
 inline std::vector<std::string> SonataFile::getSynapseClass(const Range & range) const{
     return pop_->getAttribute<std::string>(did_synapse_class, select(range, size_));
+}
+
+inline bool SonataFile::hasCurrents() const {
+    const auto& dynAttrs = pop_->dynamicsAttributeNames();
+    return dynAttrs.count(did_threshold_current) && dynAttrs.count(did_holding_current);
+}
+
+inline std::vector<double> SonataFile::getThresholdCurrents(const Range& range) const {
+    return pop_->getDynamicsAttribute<double>(did_threshold_current, select(range, size_));
+}
+
+inline std::vector<double> SonataFile::getHoldingCurrents(const Range& range) const {
+    return pop_->getDynamicsAttribute<double>(did_holding_current, select(range, size_));
 }
 
 inline std::vector<size_t> SonataFile::getIndexEtypes(const Range &range) const{
