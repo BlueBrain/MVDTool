@@ -171,6 +171,13 @@ def test_tsv_emodels_indices(circuit_mvd3_tsv):
     assert emodels[1] == "dSTUT_321707905"
     assert emodels[2] == "L6_cADpyr_471819401"
 
+def test_mvd3_mecombos_indices(circuit_mvd3_tsv):
+    me_combos = circuit_mvd3_tsv.me_combos([0,9,33])
+
+    assert me_combos[0].comboName == "bAC_1_02583f52ff47b88961e4216e2972ee8c"
+    assert me_combos[1].comboName == "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"
+    assert me_combos[2].comboName == "cADpyr_6_97957c6ebc6ac6397bf0fa077d39580c"
+
 def test_tsv_mecombos_indices(circuit_mvd3_tsv):
     tsvinfos = circuit_mvd3_tsv.tsv_info([0,9,33])
 

@@ -25,7 +25,6 @@
 
 #include <string>
 
-#include <boost/integer.hpp>
 #include <highfive/H5File.hpp>
 
 #include "mvd_base.hpp"
@@ -151,25 +150,19 @@ public:
     /// \brief getLayer
     /// \return vector of int32 with the layer associated with each neuron
     ///
-    std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const;
-
-    ///
-    /// \brief getEmodels
-    /// \return vector of string with the EModel associated with each neuron
-    ///
-    std::vector<std::string> getEmodels(const Range& range = Range(0,0)) const;
+    std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const override;
 
     ///
     /// \brief getThresholdCurrents
     /// \return vector of double with the Threshold Current associated with each neuron
     ///
-    std::vector<double> getThresholdCurrents(const Range& range = Range(0,0)) const;
+    std::vector<double> getThresholdCurrents(const Range& range = Range(0,0)) const override;
 
     ///
     /// \brief getHoldingCurrents
     /// \return vector of double with the Holding Current associated with each neuron
     ///
-    std::vector<double> getHoldingCurrents(const Range& range = Range(0,0)) const;
+    std::vector<double> getHoldingCurrents(const Range& range = Range(0,0)) const override;
 
     ///
     /// \brief getSynapseClass
@@ -178,18 +171,12 @@ public:
     std::vector<std::string> getSynapseClass(const Range & range = Range(0,0)) const override;
 
     ///
-    /// \brief getSynapseClass
-    /// \return vector of string with the synapse type associated with each neuron
-    ///
-    std::vector<std::string> getMECombos(const Range & range = Range(0,0)) const;
-
-    ///
     /// \brief getTSVInfo
     /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return vector of TSVInfo with the parsed info from the tsv file for the
     ///         corresponding neuron
     ///
-    std::vector<TSV::TSVInfo> getTSVInfo(const Range& range = Range(0, 0)) const override;
+    std::vector<TSV::TSVInfo> getTSVInfo(const Range& range = Range(0, 0)) const;
 
     // index related infos
 
@@ -250,6 +237,18 @@ public:
     /// \return vector of all unique Mtypes ( mvd3 /library section )
     ///
     std::vector<std::string> listAllMtypes() const override;
+
+    ///
+    /// \brief listAllLayers
+    /// \return vector of all unique Layers ( mvd3 /library section )
+    ///
+    std::vector<boost::int32_t> listAllLayers() const override;
+
+    ///
+    /// \brief listAllEmodels
+    /// \return vector of all unique Emodels ( mvd3 /library section )
+    ///
+    std::vector<std::string> listAllEmodels() const override;
 
     ///
     /// \brief listAllRegions

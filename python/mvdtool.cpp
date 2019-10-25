@@ -38,6 +38,9 @@ class PyFile : public File {
     std::vector<std::string> getMtypes(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "mtypes", getMtypes);
     }
+    std::vector<boost::int32_t> getLayers(const Range& = Range(0, 0)) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<boost::int32_t>, File, "layers", getLayers);
+    }
     std::vector<std::string> getEmodels(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "emodels", getEmodels);
     }
@@ -77,6 +80,12 @@ class PyFile : public File {
     }
     std::vector<std::string> listAllMtypes() const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_mtypes", listAllMtypes);
+    }
+    std::vector<boost::int32_t> listAllLayers() const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<boost::int32_t>, File, "all_layers", listAllLayers);
+    }
+    std::vector<std::string> listAllEmodels() const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_emodels", listAllEmodels);
     }
     std::vector<std::string> listAllRegions() const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_regions", listAllRegions);
@@ -136,10 +145,6 @@ PYBIND11_MODULE(mvdtool, mvd) {
     file
         .def(py::init<>())
         .def("__len__", &File::size)
-        .def("read_tsv_info", [](File& f, const std::string & filename) {
-                f.readTSVInfo(filename);
-             },
-             "filename"_a)
         .def("positions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getPositions(r);
@@ -278,6 +283,8 @@ PYBIND11_MODULE(mvdtool, mvd) {
         .def_property_readonly("rotated", &File::hasRotations)
         .def_property_readonly("all_etypes", &File::listAllEtypes)
         .def_property_readonly("all_mtypes", &File::listAllMtypes)
+        .def_property_readonly("all_layers", &File::listAllLayers)
+        .def_property_readonly("all_emodels", &File::listAllEmodels)
         .def_property_readonly("all_regions", &File::listAllRegions)
         .def_property_readonly("all_synapse_classes", &File::listAllSynapseClass)
         ;
@@ -297,35 +304,15 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
-        .def("emodels", [](const MVD3File& f, int offset, int count) {
+        .def("me_combos", [](const MVD3File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getEmodels(r);
              },
              "offset"_a = 0,
              "count"_a = 0)
-        .def("emodels", [](const MVD3File& f, pyarray<size_t> idx) {
-                const auto& func = [&f](const MVD::Range& r){return f.getEmodels(r);};
+        .def("me_combos", [](const MVD3File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getMECombos(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
-             })
-        .def("threshold_currents", [](const MVD3File& f, int offset, int count) {
-                Range r(offset, count);
-                return f.getThresholdCurrents(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
-        .def("threshold_currents", [](const MVD3File& f, pyarray<size_t> idx) {
-                const auto& func = [&f](const MVD::Range& r){return f.getThresholdCurrents(r);};
-                return _atIndices<double>(func, f.size(), idx);
-             })
-        .def("holding_currents", [](const MVD3File& f, int offset, int count) {
-                Range r(offset, count);
-                return f.getHoldingCurrents(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
-        .def("holding_currents", [](const MVD3File& f, pyarray<size_t> idx) {
-                const auto& func = [&f](const MVD::Range& r){return f.getHoldingCurrents(r);};
-                return _atIndices<double>(func, f.size(), idx);
              })
         .def_property_readonly("all_morphologies", &MVD3File::listAllMorphologies)
         ;

@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <boost/multi_array.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/integer.hpp>
 
 #include "mvd_except.hpp"
 #include "tsv.hpp"
@@ -82,7 +83,10 @@ public:
     virtual std::vector<std::string> getMorphologies(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getEtypes(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getMtypes(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<boost::int32_t> getLayers(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getEmodels(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<double> getThresholdCurrents(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<double> getHoldingCurrents(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getRegions(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<std::string> getSynapseClass(const Range& range = Range(0, 0)) const = 0;
     virtual std::vector<TSV::TSVInfo> getTSVInfo(const Range& range = Range(0, 0)) const = 0;
@@ -98,6 +102,8 @@ public:
 
     virtual std::vector<std::string> listAllEtypes() const = 0;
     virtual std::vector<std::string> listAllMtypes() const = 0;
+    virtual std::vector<boost::int32_t> listAllLayers() const = 0;
+    virtual std::vector<std::string> listAllEmodels() const = 0;
     virtual std::vector<std::string> listAllRegions() const = 0;
     virtual std::vector<std::string> listAllSynapseClass() const = 0;
 };

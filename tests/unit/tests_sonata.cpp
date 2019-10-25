@@ -280,33 +280,54 @@ BOOST_AUTO_TEST_CASE( genericMVDFile )
 }
 
 
-BOOST_AUTO_TEST_CASE( basicTestEmodel )
+BOOST_AUTO_TEST_CASE( newSonataTestEmodel )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
-    file.readTSVInfo(TSV_FILENAME);
 
-    std::vector <std::string> emodels;
+    std::vector<std::string> emodels;
 
     emodels = file.getEmodels();
 
-    BOOST_CHECK_EQUAL(emodels[0], "bAC_327962063");
-    BOOST_CHECK_EQUAL(emodels[9], "dSTUT_321707905");
-    BOOST_CHECK_EQUAL(emodels[33], "L6_cADpyr_471819401");
+    BOOST_CHECK_EQUAL(emodels[0], "CA1_int_cAC_990611HP2_2019032816214");
+    BOOST_CHECK_EQUAL(emodels[42], "CA1_pyr_cACpyr_oh140807_A0_idJ_2019032814272");
+    BOOST_CHECK_EQUAL(emodels[2615], "CA1_int_cNAC_990111HP2_2019032915570");
 
 }
 
 
-BOOST_AUTO_TEST_CASE( basicTestAlternativeEmodel )
+BOOST_AUTO_TEST_CASE( newSonataTestEtype )
 {
-    SonataFile file(SONATA_FILENAME_ALTERNATIVE);
-    file.readTSVInfo(TSV_FILENAME);
+    SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector <std::string> emodels;
+    std::vector<std::string> eTypes;
 
-    try {
-        emodels = file.getEmodels();
-    } catch(...) {
-        std::cout << "Morphologies do not match the tsv file" << std::endl;
-    }
+    eTypes = file.getEtypes();
 
+    BOOST_CHECK_EQUAL(eTypes[0], "cAC");
+    BOOST_CHECK_EQUAL(eTypes[41], "cACpyr");
+    BOOST_CHECK_EQUAL(eTypes[2615], "cNAC");
+}
+
+
+BOOST_AUTO_TEST_CASE( newSonataTestThresholdCurrent )
+{
+    SonataFile file(SONATA_FILENAME_NEW_FORMAT);
+
+    std::vector<double> thresholdCurrents = file.getThresholdCurrents();
+
+    BOOST_CHECK_EQUAL(thresholdCurrents[0], static_cast<double>(0.33203125));
+    BOOST_CHECK_EQUAL(thresholdCurrents[42], static_cast<double>(0.5078125));
+    BOOST_CHECK_EQUAL(thresholdCurrents[2615], static_cast<double>(0.3515625));
+}
+
+
+BOOST_AUTO_TEST_CASE( newSonataTestHoldingCurrent )
+{
+    SonataFile file(SONATA_FILENAME_NEW_FORMAT);
+
+    std::vector<double> holdingCurrents = file.getHoldingCurrents();
+
+    BOOST_CHECK_EQUAL(holdingCurrents[0], static_cast<double>(0.0058290600165378202));
+    BOOST_CHECK_EQUAL(holdingCurrents[42], static_cast<double>(-0.22734983535883702));
+    BOOST_CHECK_EQUAL(holdingCurrents[2615], static_cast<double>(-0.0028034338583893302));
 }

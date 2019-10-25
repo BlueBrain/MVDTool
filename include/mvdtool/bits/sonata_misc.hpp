@@ -28,12 +28,10 @@
 
 #include "../sonata.hpp"
 
-
 namespace {
 
 using namespace bbp;
 using namespace std::placeholders;
-
 
 // Naming convention
 const std::string default_population_name = "default";
@@ -59,7 +57,7 @@ inline decltype(auto) open_population(const std::string &filename, std::string p
     sonata::NodeStorage _storage(filename);
     const auto& populations = _storage.populationNames();
     if (populations.empty()) {
-        throw MVDException("Sonata file doesnt constain any population");
+        throw MVDException("Sonata file doesn't contain any population");
     }
     // Attempt to load the default or single population
     if (pop_name.empty()) {
@@ -111,102 +109,7 @@ namespace MVD {
     inline SonataFile::SonataFile(const std::string &filename, const std::string &pop_name)
             : pop_(open_population(filename, pop_name)), size_(pop_->size()) {}
 
-
-    inline void SonataFile::readTSVInfo(const std::string &filename) {
-        try {
-            auto temp = pop_->getAttribute<boost::int32_t>(did_layer, select(Range(0, 1), size_));
-            _tsv_file = std::make_unique<TSV::TSVFile>(filename, TSV::tsv_columns::combo_name);
-        } catch (const std::runtime_error &) {
-            try {
-                auto temp = pop_->getAttribute<std::string>(did_model_template, select(Range(0, 1), size_));
-                _tsv_file = std::make_unique<TSV::TSVFile>(filename, TSV::tsv_columns::emodel);
-            } catch (const std::runtime_error &) {
-                try {
-                    auto temp = pop_->getAttribute<std::string>(did_mtypes, select(Range(0, 1), size_));
-                    _tsv_file = std::make_unique<TSV::TSVFile>(filename, TSV::tsv_columns::combo_name);
-                } catch (const std::runtime_error &) {
-                    std::ostringstream ss;
-                    ss << "model_template, layer or mtype not defined in SONATA file. "
-                          "Cannot parse TSV file" << std::endl;
-                    throw MVDException(ss.str());
-                }
-            }
-        }
-    }
-
-    inline std::vector <std::string> SonataFile::getTSVkeys(const Range &range) const {
-        try {
-            // construct the combo_name to return is as the field key
-            auto layers = pop_->getAttribute<boost::int32_t>(did_layer, select(range, size_));
-            auto morphologies = pop_->getAttribute<std::string>(did_morpho, select(range, size_));
-            auto etypes = pop_->getAttribute<std::string>(did_etypes, select(range, size_));
-            std::vector <std::string> tsvKey;
-            tsvKey.resize(morphologies.size());
-            int i = 0;
-            for (const auto &mecombo_tupple: boost::combine(etypes, layers, morphologies)) {
-                tsvKey[i] = boost::get<0>(mecombo_tupple) + "_" + std::to_string(boost::get<1>(mecombo_tupple)) + "_" +
-                            boost::get<2>(mecombo_tupple);
-                i++;
-            }
-            return tsvKey;
-        } catch (const std::runtime_error &) {
-            try {
-                // return the emodel as field key
-                auto tsvKey = pop_->getAttribute<std::string>(did_model_template, select(range, size_));
-                for (auto &emodel: tsvKey) {
-                    emodel = emodel.substr(emodel.find(":") + 1, emodel.length());
-                }
-                return tsvKey;
-            } catch (const std::runtime_error &) {
-                // retrieve the layer from mtype to return it as the field key
-                auto mtypes = pop_->getAttribute<std::string>(did_mtypes, select(range, size_));
-                for (auto &mtype: mtypes) {
-                    mtype = mtype.substr(0, mtype.find("_")).erase(0, 1);
-                }
-                auto morphologies = pop_->getAttribute<std::string>(did_morpho, select(range, size_));
-                auto etypes = pop_->getAttribute<std::string>(did_etypes, select(range, size_));
-                std::vector <std::string> tsvKey;
-                tsvKey.resize(morphologies.size());
-                int i = 0;
-                for (const auto &mecombo_tupple: boost::combine(etypes, mtypes, morphologies)) {
-                    if (boost::get<1>(mecombo_tupple) == "23") {
-                        std::vector <std::string> mtype;
-                        try { // test for layer 2
-                            tsvKey[i] = boost::get<0>(mecombo_tupple) + "_2_" +
-                                        boost::get<2>(mecombo_tupple);
-                            mtype = _tsv_file->getMtypes(std::vector < std::string > {{tsvKey[i]}},
-                                                         std::vector < std::string > {{boost::get<2>(mecombo_tupple)}});
-                        } catch (const std::runtime_error &) {
-                            try { // test for layer 3
-                                tsvKey[i] = boost::get<0>(mecombo_tupple) + "_3_" +
-                                            boost::get<2>(mecombo_tupple);
-                                mtype = _tsv_file->getMtypes(std::vector < std::string > {{tsvKey[i]}},
-                                                             std::vector < std::string >
-                                                             {{boost::get<2>(mecombo_tupple)}});
-                            } catch (const std::runtime_error &) { // test for layer 23
-                                tsvKey[i] = boost::get<0>(mecombo_tupple) + "_23_" +
-                                            boost::get<2>(mecombo_tupple);
-                                mtype = _tsv_file->getMtypes(std::vector < std::string > {{tsvKey[i]}},
-                                                             std::vector < std::string >
-                                                             {{boost::get<2>(mecombo_tupple)}});
-                            }
-                        }
-                        if (mtype[0] != tsvKey[i]) {
-                            std::ostringstream ss;
-                            ss << "Layer of mtype " << mtype[0] << " doesn't correspond to the correct layer in the"
-                                                                   "tsv file" << std::endl;
-                            throw MVDException(ss.str());
-                        }
-                    } else {
-                        tsvKey[i] = boost::get<0>(mecombo_tupple) + "_" + boost::get<1>(mecombo_tupple) + "_" +
-                                    boost::get<2>(mecombo_tupple);
-                    }
-                    i++;
-                }
-                return tsvKey;
-            }
-        }
-    }
+    inline void SonataFile::readTSVInfo(const std::string&) {}
 
     inline Positions SonataFile::getPositions(const Range &range) const {
         Positions res{boost::extents[range.count > 0 ? range.count : size_][3]};
@@ -279,7 +182,7 @@ namespace MVD {
         return res;
     }
 
-    inline Rotations SonataFile::getRotations(const Range &range) const {
+    inline Rotations SonataFile::getRotations(const Range& range) const{
         const auto attrs = pop_->attributeNames();
         const bool quat = (attrs.count("orientation_x") +
                            attrs.count("orientation_y") +
@@ -304,76 +207,24 @@ namespace MVD {
         return quat or angle;
     }
 
-template<class T>
-inline std::vector<T> SonataFile::getInfoFromSonataOrTsv(const std::string& did, const Range& range, std::function<std::vector<T>(std::vector<std::string>, std::vector<std::string>)> getter, const std::string field) const {
-    std::vector<T> retInfo;
-    try {
-        retInfo = pop_->getAttribute<T>(did, select(range, size_));
-    } catch (const std::runtime_error&) {
-        if (_tsv_file) {
-            std::vector<std::string> morphologies = getMorphologies(range);
-            std::vector<std::string> tsvKeys = getTSVkeys(range);
-            retInfo = getter(tsvKeys, morphologies);
-        } else {
-            std::ostringstream ss;
-            ss << field << " information were not found in Sonata file and no mecombo.tsv"
-               << "file is opened" << std::endl;
-            throw MVDException(ss.str());
-        }
-    }
-    return retInfo;
-}
 
-inline Rotations SonataFile::getRotations(const Range& range) const {
-    const auto attrs = pop_->attributeNames();
-    const bool quat = (attrs.count("orientation_x") +
-                       attrs.count("orientation_y") +
-                       attrs.count("orientation_z") +
-                       attrs.count("orientation_w")) == 4;
-}
-
-inline std::vector<std::string> SonataFile::getMorphologies(const Range & range) const{
+inline std::vector<std::string> SonataFile::getMorphologies(const Range& range) const{
     return pop_->getAttribute<std::string>(did_morpho, select(range, size_));
 }
 
-inline std::vector<std::string> SonataFile::getEtypes(const Range & range) const{
-    if (_tsv_file) {
-        return getInfoFromSonataOrTsv<std::string>(did_etypes, range,
-                                                   std::bind(&TSV::TSVFile::getEtypes, *_tsv_file, _1, _2), "eType");
-    } else {
-        return pop_->getAttribute<std::string>(did_etypes, select(range, size_));
-    }
+inline std::vector<std::string> SonataFile::getEtypes(const Range& range) const{
+    return pop_->getAttribute<std::string>(did_etypes, select(range, size_));
 }
 
-inline std::vector<std::string> SonataFile::getMtypes(const Range & range) const{
-    if (_tsv_file) {
-        return getInfoFromSonataOrTsv<std::string>(did_mtypes, range, std::bind(&TSV::TSVFile::getMtypes, *_tsv_file, _1, _2), "mType");
-    } else {
-        return pop_->getAttribute<std::string>(did_mtypes, select(range, size_));
-    }
-}
-
-inline std::vector<std::string> SonataFile::getEmodels(const Range & range) const{
-    if (_tsv_file) {
-        return getInfoFromSonataOrTsv<std::string>(did_emodel, range, std::bind(&TSV::TSVFile::getEmodels, *_tsv_file, _1, _2), "eModel");
-    } else {
-        return pop_->getAttribute<std::string>(did_emodel, select(range, size_));
-    }
+inline std::vector<std::string> SonataFile::getMtypes(const Range& range) const{
+    return pop_->getAttribute<std::string>(did_mtypes, select(range, size_));
 }
 
 inline std::vector<boost::int32_t> SonataFile::getLayers(const Range& range) const{
-    if (_tsv_file) {
-        return getInfoFromSonataOrTsv<boost::int32_t>(did_layer, range, std::bind(&TSV::TSVFile::getLayers, *_tsv_file, _1, _2), "Layer");
-    } else {
-        return pop_->getAttribute<boost::int32_t>(did_layer, select(range, size_));
-    }
+    return pop_->getAttribute<boost::int32_t>(did_layer, select(range, size_));
 }
 
-inline std::vector<std::string> SonataFile::getModelTemplates(const Range& range) const{
-    return pop_->getAttribute<std::string>(did_model_template, select(range, size_));
-}
-
-inline std::vector<std::string> SonataFile::getEmodels(const Range & range) const{
+inline std::vector<std::string> SonataFile::getEmodels(const Range& range) const{
     auto model_tpl = pop_->getAttribute<std::string>(did_emodel, select(range, size_));
     for (auto& model : model_tpl) {
         model = model.substr(model.find(':') + 1);
@@ -424,6 +275,15 @@ inline std::vector<std::string> SonataFile::listAllEtypes() const{
 
 inline std::vector<std::string> SonataFile::listAllMtypes() const{
     return listAllValues(pop_.get(), did_mtypes);
+}
+
+inline std::vector<boost::int32_t> SonataFile::listAllLayers() const{
+    //return listAllValues(pop_.get(), did_layer);
+    return {};
+}
+
+inline std::vector<std::string> SonataFile::listAllEmodels() const{
+    return listAllValues(pop_.get(), did_emodel);
 }
 
 inline std::vector<std::string> SonataFile::listAllRegions() const{

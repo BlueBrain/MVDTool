@@ -25,7 +25,6 @@
 #include <string>
 #include <functional>
 
-#include <boost/integer.hpp>
 #include <highfive/H5File.hpp>
 
 #include <bbp/sonata/nodes.h>
@@ -142,21 +141,13 @@ public:
     /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return vector of string with the Layer associated with each neuron
     ///
-    std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const;
-
-    ///
-    /// \brief getModelTemplates
-    /// \param range: selection range, a null range (0,0) select the entire dataset
-    /// \return vector of string with the model template associated with each neuron
-    ///
-    std::vector<std::string> getModelTemplates(const Range & range = Range(0,0)) const;
+    std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const override;
 
     ///
     /// \brief getRegions
     /// \return vector of string with the region name associated with each neuron
     ///
     std::vector<std::string> getRegions(const Range & range = Range(0,0)) const override;
-
 
     ///
     /// \brief getSynapseClass
@@ -190,10 +181,7 @@ public:
     ///
     std::vector<TSV::TSVInfo> getTSVInfo(const Range& range = Range(0, 0)) const override;
 
-
     // index related infos
-
-
 
     ///
     /// \brief getIndexEtypes
@@ -240,6 +228,18 @@ public:
     std::vector<std::string> listAllMtypes() const override;
 
     ///
+    /// \brief listAllLayers
+    /// \return vector of all unique Layers ( mvd3 /library section )
+    ///
+    std::vector<boost::int32_t> listAllLayers() const override;
+
+    ///
+    /// \brief listAllEmodels
+    /// \return vector of all unique Emodels ( mvd3 /library section )
+    ///
+    std::vector<std::string> listAllEmodels() const override;
+
+    ///
     /// \brief listAllRegions
     /// \return vector of all unique Regions ( mvd3 /library section )
     ///
@@ -253,33 +253,8 @@ public:
 
 private:
     std::unique_ptr<bbp::sonata::NodePopulation> pop_;
-    std::unique_ptr<TSV::TSVFile> _tsv_file;
     size_t size_;
 
-    ///
-    /// \brief getInfoFromSonataOrTsv
-    /// \param did: dataset id of the attribute in the sonata file
-    /// \param range: selection range, the default range (0,0) select the entire dataset
-    /// \param tsvGetter: function of TSVFile to get the required field
-    /// \param field: string of the field name
-    /// \return vector of the values of the requested field
-    ///
-    /// Open an TSV file format at 'filename' path
-    /// throw TSVException in case of error
-    ///
-    template<class T>
-    std::vector<T> getInfoFromSonataOrTsv(const std::string& did, const Range& range, std::function<std::vector<T>(std::vector<std::string>, std::vector<std::string>)> tsvGetter, const std::string field) const;
-
-    ///
-    /// \brief getTSVkeys
-    /// \param range: selection range, the default range (0,0) select the entire dataset
-    /// \return vector of the keys required to access the TSVFile data. Could be combo_name
-    /// or emodel
-    ///
-    /// Return the keys to access the TSV file info based on the fields existing in the
-    /// SONATA file
-    ///
-    std::vector<std::string> getTSVkeys(const Range & range = Range(0,0)) const;
 };
 
 }
