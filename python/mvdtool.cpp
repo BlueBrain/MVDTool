@@ -145,6 +145,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
     file
         .def(py::init<>())
         .def("__len__", &File::size)
+        .def("read_tsv_info", [](File& f, const std::string & filename) {
+                f.readTSVInfo(filename);
+             },
+             "filename"_a)
         .def("positions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getPositions(r);
@@ -178,6 +182,18 @@ PYBIND11_MODULE(mvdtool, mvd) {
         .def("mtypes", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMtypes(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
+             })
+        .def("layers", [](const File& f, int offset, int count) {
+                Range r(offset, count);
+                auto res = f.getLayers(r);
+                return py::array(res.size(), res.data());
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("layers", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
+                auto values = _atIndices<boost::int32_t>(func, f.size(), idx);
+                return py::array(values.size(), values.data());
              })
         .def("emodels", [](const File& f, int offset, int count) {
                 Range r(offset, count);
@@ -291,12 +307,6 @@ PYBIND11_MODULE(mvdtool, mvd) {
 
     py::class_<MVD3File, std::shared_ptr<MVD3File>>(mvd3, "File", file)
         .def(py::init<const std::string&>())
-        .def("layers", [](const MVD3File& f, int offset, int count) {
-                Range r(offset, count);
-                return f.getLayers(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
         .def("raw_morphologies", [](const MVD3File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexMorphologies(r);
@@ -306,7 +316,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
              "count"_a = 0)
         .def("me_combos", [](const MVD3File& f, int offset, int count) {
                 Range r(offset, count);
-                return f.getEmodels(r);
+                return f.getMECombos(r);
              },
              "offset"_a = 0,
              "count"_a = 0)

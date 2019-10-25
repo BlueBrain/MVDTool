@@ -331,3 +331,25 @@ BOOST_AUTO_TEST_CASE( newSonataTestHoldingCurrent )
     BOOST_CHECK_EQUAL(holdingCurrents[42], static_cast<double>(-0.22734983535883702));
     BOOST_CHECK_EQUAL(holdingCurrents[2615], static_cast<double>(-0.0028034338583893302));
 }
+
+BOOST_AUTO_TEST_CASE( newSonataTestAllMtypes )
+{
+    SonataFile file(SONATA_FILENAME_NEW_FORMAT);
+
+    std::vector<std::string> allMtypes = file.listAllMtypes();
+
+    BOOST_CHECK_EQUAL(allMtypes[0], "SO_BP");
+    BOOST_CHECK_EQUAL(allMtypes[1], "SO_BS");
+    BOOST_CHECK_EQUAL(allMtypes[2], "SO_OLM");
+}
+
+BOOST_AUTO_TEST_CASE( newSonataTestAllLayers )
+{
+    SonataFile file(SONATA_FILENAME_NEW_FORMAT);
+
+    std::vector<boost::int32_t> allLayers = file.listAllLayers();
+
+    BOOST_CHECK_EQUAL(allLayers[0], 1);
+    BOOST_CHECK_EQUAL(allLayers[1], 2);
+    BOOST_CHECK_EQUAL(allLayers[2], 3);
+}

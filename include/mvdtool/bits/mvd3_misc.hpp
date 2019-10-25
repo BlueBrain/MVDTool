@@ -26,6 +26,7 @@
 
 #include "../mvd3.hpp"
 #include "../mvd_except.hpp"
+#include "../utils.hpp"
 
 namespace {
 
@@ -142,6 +143,35 @@ inline std::vector<T> MVD3File::getTSVdata(const Range& range, const FuncT& tsvG
     return retData;
 }
 
+template <typename T, typename FuncT>
+inline std::vector<T> MVD3File::getDataFromTsvOrMvd3WithIndex(const std::string& did_lib, const std::string& did_index, const Range& range, const FuncT& tsvGetter) const{
+    if (_tsv_file) {
+        return getTSVdata<T>(range, tsvGetter);
+    } else {
+        return get_resolve_field(did_lib, did_index, range);
+    }
+}
+
+template <typename T, typename FuncT>
+inline std::vector<T> MVD3File::getDataFromTsvOrMvd3WithoutIndex(const std::string& did, const Range& range, const FuncT& tsvGetter) const{
+    if (_tsv_file) {
+        return getTSVdata<T>(range, tsvGetter);
+    } else {
+        HighFive::DataSet set = _hdf5_file.getDataSet(did);
+        return get_data_for_selection<boost::int32_t>(set, range);
+    }
+}
+
+template <typename T, typename FuncT>
+inline std::vector<T> MVD3File::getDataFromTsv(const std::string& fieldName, const Range& range, const FuncT& tsvGetter) const{
+    if (!_tsv_file) {
+        std::ostringstream ss;
+        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract " << fieldName << " information from"
+           << std::endl;
+        throw MVDException(ss.str());
+    }
+    return getTSVdata<T>(range, tsvGetter);
+}
 
 inline size_t MVD3File::getNbNeuron() const{
     if(_nb_neurons == 0){
@@ -195,32 +225,18 @@ inline std::vector<std::string> MVD3File::getMorphologies(const Range & range) c
 }
 
 inline std::vector<std::string> MVD3File::getEtypes(const Range & range) const{
-    if (_tsv_file) {
-        const auto& getEtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEtypes(me_combos, morphologies);};
-        return getTSVdata<std::string>(range, getEtypesLambda);
-    } else {
-        return get_resolve_field(did_lib_data_etypes, did_cells_index_etypes, range);
-    }
+    const auto& getEtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEtypes(me_combos, morphologies);};
+    return getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_etypes, did_cells_index_etypes, range, getEtypesLambda);
 }
 
 inline std::vector<std::string> MVD3File::getEmodels(const Range& range) const{
-    if (!_tsv_file) {
-        std::ostringstream ss;
-        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract eModel information from"
-           << std::endl;
-        throw MVDException(ss.str());
-    }
     const auto& getEmodelsLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEmodels(me_combos, morphologies);};
-    return getTSVdata<std::string>(range, getEmodelsLambda);
+    return getDataFromTsv<std::string>("eModel", range, getEmodelsLambda);
 }
 
 inline std::vector<std::string> MVD3File::getMtypes(const Range& range) const{
-    if (_tsv_file) {
-        const auto& getMtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getMtypes(me_combos, morphologies);};
-        return getTSVdata<std::string>(range, getMtypesLambda);
-    } else {
-        return get_resolve_field(did_lib_data_mtypes, did_cells_index_mtypes, range);
-    }
+    const auto& getMtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getMtypes(me_combos, morphologies);};
+    return getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_mtypes, did_cells_index_mtypes, range, getMtypesLambda);
 }
 
 inline std::vector<std::string> MVD3File::getMECombos(const Range& range) const {
@@ -255,36 +271,19 @@ inline std::vector<boost::int32_t> MVD3File::getMiniColumns(const Range & range)
 }
 
 inline std::vector<boost::int32_t> MVD3File::getLayers(const Range& range) const{
-    if (_tsv_file) {
-        const auto& getLayersLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getLayers(me_combos, morphologies);};
-        return getTSVdata<boost::int32_t>(range, getLayersLambda);
-    } else {
-        HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_layer);
-        return get_data_for_selection<boost::int32_t>(set, range);
-    }
+    const auto& getLayersLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getLayers(me_combos, morphologies);};
+    return getDataFromTsvOrMvd3WithoutIndex<boost::int32_t>(did_cells_layer, range, getLayersLambda);
 }
 
 inline std::vector<double> MVD3File::getThresholdCurrents(const Range& range) const{
-    if (!_tsv_file) {
-        std::ostringstream ss;
-        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract Threshold Current information from"
-           << std::endl;
-        throw MVDException(ss.str());
-    }
     const auto& getThresholdCurrentsLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getThresholdCurrents(me_combos, morphologies);};
-    return getTSVdata<double>(range, getThresholdCurrentsLamba);
+    return getDataFromTsv<double>("Threshold Current", range, getThresholdCurrentsLamba);
 }
 
 
 inline std::vector<double> MVD3File::getHoldingCurrents(const Range& range) const{
-    if (!_tsv_file) {
-        std::ostringstream ss;
-        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract Holding Current information from"
-           << std::endl;
-        throw MVDException(ss.str());
-    }
     const auto& getHoldingCurrentsLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getHoldingCurrents(me_combos, morphologies);};
-    return getTSVdata<double>(range, getHoldingCurrentsLamba);
+    return getDataFromTsv<double>("Holding Current", range, getHoldingCurrentsLamba);
 }
 
 
@@ -294,14 +293,8 @@ inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range) c
 
 
 inline std::vector<TSV::TSVInfo> MVD3File::getTSVInfo(const Range& range) const {
-    if (!_tsv_file) {
-        std::ostringstream ss;
-        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract information from"
-           << std::endl;
-        throw MVDException(ss.str());
-    }
     const auto& getTSVInfosLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getTSVInfos(me_combos, morphologies);};
-    return getTSVdata<TSV::TSVInfo>(range, getTSVInfosLamba);
+    return getDataFromTsv<TSV::TSVInfo>("", range, getTSVInfosLamba);
 }
 
 
@@ -339,44 +332,31 @@ inline std::vector<std::string> MVD3File::listAllMorphologies() const{
 
 
 inline std::vector<std::string> MVD3File::listAllEtypes() const{
-    if (!_tsv_file) {
-        HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_etypes);
-        return get_data_for_selection<std::string>(index, Range(0, 0));
-    } else {
-        const auto& getEtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEtypes(me_combos, morphologies);};
-        return getTSVdata<std::string>(Range(0, 0), getEtypesLambda);
-    }
+    const auto& getEtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEtypes(me_combos, morphologies);};
+    auto allEtypes = getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_etypes, did_cells_index_etypes, Range(0,0), getEtypesLambda);
+    vector_remove_dups(allEtypes);
+    return allEtypes;
 }
 
 inline std::vector<std::string> MVD3File::listAllMtypes() const{
-    if (!_tsv_file) {
-        HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_mtypes);
-        return get_data_for_selection<std::string>(index, Range(0,0));
-    } else {
-        const auto& getMtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getMtypes(me_combos, morphologies);};
-        return getTSVdata<std::string>(Range(0, 0), getMtypesLambda);
-    }
+    const auto& getMtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getMtypes(me_combos, morphologies);};
+    auto allMtypes = getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_mtypes, did_cells_index_mtypes, Range(0,0), getMtypesLambda);
+    vector_remove_dups(allMtypes);
+    return allMtypes;
 }
 
 inline std::vector<boost::int32_t> MVD3File::listAllLayers() const{
-    if (!_tsv_file) {
-        HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_layer);
-        return get_data_for_selection<boost::int32_t>(set, Range(0,0));
-    } else {
-        const auto& getLayersLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getLayers(me_combos, morphologies);};
-        return getTSVdata<boost::int32_t>(Range(0, 0), getLayersLambda);
-    }
+    const auto& getLayersLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getLayers(me_combos, morphologies);};
+    auto allLayers = getDataFromTsvOrMvd3WithoutIndex<boost::int32_t>(did_cells_layer, Range(0,0), getLayersLambda);
+    vector_remove_dups(allLayers);
+    return allLayers;
 }
 
 inline std::vector<std::string> MVD3File::listAllEmodels() const{
-    if (!_tsv_file) {
-        std::ostringstream ss;
-        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract eModel information from"
-           << std::endl;
-        throw MVDException(ss.str());
-    }
     const auto& getEmodelsLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEmodels(me_combos, morphologies);};
-    return getTSVdata<std::string>(Range(0, 0), getEmodelsLambda);
+    auto allEmodels = getDataFromTsv<std::string>("eModel", Range(0,0), getEmodelsLambda);
+    vector_remove_dups(allEmodels);
+    return allEmodels;
 }
 
 inline std::vector<std::string> MVD3File::listAllRegions() const{

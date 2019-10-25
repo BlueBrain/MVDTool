@@ -20,13 +20,13 @@
 
 #include <string>
 #include <vector>
-#include <unordered_set>
 
 #include <boost/math/quaternion.hpp>
 
 #include <highfive/H5DataSet.hpp>
 
 #include "../sonata.hpp"
+#include "../utils.hpp"
 
 namespace {
 
@@ -71,18 +71,6 @@ inline decltype(auto) open_population(const std::string &filename, std::string p
         }
     }
     return std::make_unique<sonata::NodePopulation>(filename, "", pop_name);
-}
-
-
-// An implementation to drop duplicates without changing order
-template <typename T>
-inline void vector_remove_dups(std::vector<T>& vec) {
-    std::unordered_set<T> set;
-    std::size_t pos = 0;
-    for (T& v : vec) if(set.insert(v).second) {
-        std::swap(vec[pos++], v);  // works even if src-dst are same
-    }
-    vec.resize(pos);
 }
 
 
@@ -278,8 +266,10 @@ inline std::vector<std::string> SonataFile::listAllMtypes() const{
 }
 
 inline std::vector<boost::int32_t> SonataFile::listAllLayers() const{
-    //return listAllValues(pop_.get(), did_layer);
-    return {};
+    auto allLayers = pop_->getAttribute<boost::int32_t>(did_layer,
+                                                 sonata::Selection({{0, pop_->size()}}));
+    vector_remove_dups(allLayers);
+    return allLayers;
 }
 
 inline std::vector<std::string> SonataFile::listAllEmodels() const{

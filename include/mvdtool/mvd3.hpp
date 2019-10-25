@@ -75,6 +75,44 @@ public:
     std::vector<T> getTSVdata(const Range& range, const FuncT& tsvGetter) const;
 
     ///
+    /// \brief getDataFromTsv
+    /// \param fieldName field trying to access
+    /// \param range: selection range, the default range (0,0) select the entire dataset
+    /// \param tsvGetter: function of TSVFile to return the required data
+    /// \return vector of data needed to return from the tsv file
+    ///
+    /// Wrapper to check if tsv file exists and call getTSVdata
+    ///
+    template <typename T, typename FuncT>
+    inline std::vector<T> getDataFromTsv(const std::string& fieldName, const Range& range, const FuncT& tsvGetter) const;
+
+    ///
+    /// \brief getDataFromTsvOrMvd3
+    /// \param fieldName field trying to access
+    /// \param range: selection range, the default range (0,0) select the entire dataset
+    /// \param tsvGetter: function of TSVFile to return the required data
+    /// \return vector of data needed to return from the tsv file
+    ///
+    /// Wrapper to check if tsv file exists and if yes call getTSVdata, otherwise get data
+    /// from MVD3 file
+    ///
+    template <typename T, typename FuncT>
+    inline std::vector<T> getDataFromTsvOrMvd3WithIndex(const std::string& did_lib, const std::string& did_index, const Range& range, const FuncT& tsvGetter) const;
+
+    ///
+    /// \brief getDataFromTsvOrMvd3WithoutIndex
+    /// \param fieldName field trying to access
+    /// \param range: selection range, the default range (0,0) select the entire dataset
+    /// \param tsvGetter: function of TSVFile to return the required data
+    /// \return vector of data needed to return from the tsv file
+    ///
+    /// Wrapper to check if tsv file exists and if yes call getTSVdata, otherwise get data
+    /// from MVD3 file
+    ///
+    template <typename T, typename FuncT>
+    inline std::vector<T> getDataFromTsvOrMvd3WithoutIndex(const std::string& did, const Range& range, const FuncT& tsvGetter) const;
+
+    ///
     /// \brief getNbNeuron
     /// \return total number of neurons contained in the receipe
     ///
