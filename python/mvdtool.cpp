@@ -38,9 +38,6 @@ class PyFile : public File {
     std::vector<std::string> getMtypes(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "mtypes", getMtypes);
     }
-    std::vector<boost::int32_t> getLayers(const Range& = Range(0, 0)) const override {
-        PYBIND11_OVERLOAD_PURE_NAME(std::vector<boost::int32_t>, File, "layers", getLayers);
-    }
     std::vector<std::string> getEmodels(const Range& = Range(0, 0)) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "emodels", getEmodels);
     }
@@ -80,9 +77,6 @@ class PyFile : public File {
     }
     std::vector<std::string> listAllMtypes() const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_mtypes", listAllMtypes);
-    }
-    std::vector<boost::int32_t> listAllLayers() const override {
-        PYBIND11_OVERLOAD_PURE_NAME(std::vector<boost::int32_t>, File, "all_layers", listAllLayers);
     }
     std::vector<std::string> listAllEmodels() const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_emodels", listAllEmodels);
@@ -183,18 +177,6 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMtypes(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
-        .def("layers", [](const File& f, int offset, int count) {
-                Range r(offset, count);
-                auto res = f.getLayers(r);
-                return py::array(res.size(), res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
-        .def("layers", [](const File& f, pyarray<size_t> idx) {
-                const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
-                auto values = _atIndices<boost::int32_t>(func, f.size(), idx);
-                return py::array(values.size(), values.data());
-             })
         .def("emodels", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getEmodels(r);
@@ -247,16 +229,6 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getSynapseClass(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
-        .def("tsv_info", [](const File& f, int offset, int count) {
-                Range r(offset, count);
-                return f.getTSVInfo(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
-        .def("tsv_info", [](const File& f, pyarray<size_t> idx) {
-                const auto& func = [&f](const MVD::Range& r){return f.getTSVInfo(r);};
-                return _atIndices<TSVInfo>(func, f.size(), idx);
-             })
         .def("regions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getRegions(r);
@@ -299,7 +271,6 @@ PYBIND11_MODULE(mvdtool, mvd) {
         .def_property_readonly("rotated", &File::hasRotations)
         .def_property_readonly("all_etypes", &File::listAllEtypes)
         .def_property_readonly("all_mtypes", &File::listAllMtypes)
-        .def_property_readonly("all_layers", &File::listAllLayers)
         .def_property_readonly("all_emodels", &File::listAllEmodels)
         .def_property_readonly("all_regions", &File::listAllRegions)
         .def_property_readonly("all_synapse_classes", &File::listAllSynapseClass)
@@ -324,11 +295,31 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMECombos(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("layers", [](const MVD3File& f, int offset, int count) {
+                return f.getLayers(Range(offset, count));
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("layers", [](const MVD3File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
+                return _atIndices<boost::int32_t>(func, f.size(), idx);
+             })
+        .def_property_readonly("all_layers", &MVD3File::listAllLayers)
         .def_property_readonly("all_morphologies", &MVD3File::listAllMorphologies)
         ;
 
     py::class_<SonataFile, std::shared_ptr<SonataFile>>(sonata, "File", file)
         .def(py::init<const std::string&>())
+        .def("layers", [](const SonataFile& f, int offset, int count) {
+                return f.getLayers(Range(offset, count));
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("layers", [](const SonataFile& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
+        .def_property_readonly("all_layers", &SonataFile::listAllLayers)
         ;
     py::class_<TSVFile, std::shared_ptr<TSVFile>>(tsv, "File", file)
         .def(py::init<const std::string&>())

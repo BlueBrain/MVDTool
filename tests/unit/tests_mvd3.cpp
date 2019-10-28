@@ -376,26 +376,6 @@ BOOST_AUTO_TEST_CASE( genericMVDFile )
 }
 
 
-BOOST_AUTO_TEST_CASE( mvdTsvFiles )
-{
-    using namespace MVD;
-
-    auto file = MVD::open(MVD3_TSV_FILENAME);
-    file->readTSVInfo(TSV_FILENAME);
-
-    std::vector<TSV::TSVInfo> TSVInfos = file->getTSVInfo();
-
-    TSV::TSVInfo info = TSVInfos[9];
-
-    std::string referenceTSVInfo("87dd39e6b0255ec053001f16da85b0e0, 1, L1_DAC, dSTUT, dSTUT_321707905, dSTUT_1_87dd39e6b0255ec053001f16da85b0e0, 0, 0.1");
-
-    std::stringstream ss;
-    ss << info.morphologyName << ", " << info.layer << ", " << info.fullMType << ", " << info.eType << ", " << info.eModel << ", " << info.comboName << ", " << info.thresholdCurrent  << ", " << info.holdingCurrent;
-
-    BOOST_CHECK_EQUAL(referenceTSVInfo, ss.str());
-}
-
-
 BOOST_AUTO_TEST_CASE( mvdTsvMtypes )
 {
     using namespace MVD3;
@@ -423,4 +403,34 @@ BOOST_AUTO_TEST_CASE( mvdTsvEmodels )
     BOOST_CHECK_EQUAL(eModels[0], "bAC_327962063");
     BOOST_CHECK_EQUAL(eModels[9], "dSTUT_321707905");
     BOOST_CHECK_EQUAL(eModels[33], "L6_cADpyr_471819401");
+}
+
+
+BOOST_AUTO_TEST_CASE( mvdTsvLayers )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_TSV_FILENAME);
+    file.readTSVInfo(TSV_FILENAME);
+
+    std::vector<boost::int32_t> layers = file.getLayers();
+
+    BOOST_CHECK_EQUAL(layers[0], static_cast<boost::int32_t>(1));
+    BOOST_CHECK_EQUAL(layers[9], static_cast<boost::int32_t>(1));
+    BOOST_CHECK_EQUAL(layers[33], static_cast<boost::int32_t>(6));
+}
+
+
+BOOST_AUTO_TEST_CASE( mvdTsvAllLayers )
+{
+    using namespace MVD3;
+
+    MVD3File file(MVD3_TSV_FILENAME);
+    file.readTSVInfo(TSV_FILENAME);
+
+    std::vector<boost::int32_t> allLayers = file.listAllLayers();
+
+    BOOST_CHECK_EQUAL(allLayers[0], static_cast<boost::int32_t>(1));
+    BOOST_CHECK_EQUAL(allLayers[1], static_cast<boost::int32_t>(2));
+    BOOST_CHECK_EQUAL(allLayers[2], static_cast<boost::int32_t>(3));
 }

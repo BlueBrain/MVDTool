@@ -208,8 +208,8 @@ inline std::vector<std::string> SonataFile::getMtypes(const Range& range) const{
     return pop_->getAttribute<std::string>(did_mtypes, select(range, size_));
 }
 
-inline std::vector<boost::int32_t> SonataFile::getLayers(const Range& range) const{
-    return pop_->getAttribute<boost::int32_t>(did_layer, select(range, size_));
+inline std::vector<std::string> SonataFile::getLayers(const Range& range) const{
+    return pop_->getAttribute<std::string>(did_layer, select(range, size_));
 }
 
 inline std::vector<std::string> SonataFile::getEmodels(const Range& range) const{
@@ -265,11 +265,8 @@ inline std::vector<std::string> SonataFile::listAllMtypes() const{
     return listAllValues(pop_.get(), did_mtypes);
 }
 
-inline std::vector<boost::int32_t> SonataFile::listAllLayers() const{
-    auto allLayers = pop_->getAttribute<boost::int32_t>(did_layer,
-                                                 sonata::Selection({{0, pop_->size()}}));
-    vector_remove_dups(allLayers);
-    return allLayers;
+inline std::vector<std::string> SonataFile::listAllLayers() const{
+    return listAllValues(pop_.get(), did_layer);
 }
 
 inline std::vector<std::string> SonataFile::listAllEmodels() const{

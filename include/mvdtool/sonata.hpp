@@ -141,7 +141,7 @@ public:
     /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return vector of string with the Layer associated with each neuron
     ///
-    std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const override;
+    std::vector<std::string> getLayers(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getRegions
@@ -172,14 +172,6 @@ public:
     /// \return a vector<double> with all the neurons holding currents
     ///
     std::vector<double> getHoldingCurrents(const Range& range = Range(0, 0)) const override;
-
-    ///
-    /// \brief getTSVInfo
-    /// \param range: selection range, a null range (0,0) select the entire dataset
-    /// \return vector of TSVInfo with the parsed info from the tsv file for the
-    ///         corresponding neuron
-    ///
-    std::vector<TSV::TSVInfo> getTSVInfo(const Range& range = Range(0, 0)) const override;
 
     // index related infos
 
@@ -231,7 +223,7 @@ public:
     /// \brief listAllLayers
     /// \return vector of all unique Layers ( mvd3 /library section )
     ///
-    std::vector<boost::int32_t> listAllLayers() const override;
+    std::vector<std::string> listAllLayers() const;
 
     ///
     /// \brief listAllEmodels

@@ -188,19 +188,7 @@ public:
     /// \brief getLayer
     /// \return vector of int32 with the layer associated with each neuron
     ///
-    std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const override;
-
-    ///
-    /// \brief getThresholdCurrents
-    /// \return vector of double with the Threshold Current associated with each neuron
-    ///
-    std::vector<double> getThresholdCurrents(const Range& range = Range(0,0)) const override;
-
-    ///
-    /// \brief getHoldingCurrents
-    /// \return vector of double with the Holding Current associated with each neuron
-    ///
-    std::vector<double> getHoldingCurrents(const Range& range = Range(0,0)) const override;
+    std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getSynapseClass
@@ -280,7 +268,7 @@ public:
     /// \brief listAllLayers
     /// \return vector of all unique Layers ( mvd3 /library section )
     ///
-    std::vector<boost::int32_t> listAllLayers() const override;
+    std::vector<boost::int32_t> listAllLayers() const;
 
     ///
     /// \brief listAllEmodels

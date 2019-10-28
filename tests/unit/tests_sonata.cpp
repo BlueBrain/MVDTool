@@ -347,9 +347,9 @@ BOOST_AUTO_TEST_CASE( newSonataTestAllLayers )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<boost::int32_t> allLayers = file.listAllLayers();
+    std::vector<std::string> allLayers = file.listAllLayers();
 
-    BOOST_CHECK_EQUAL(allLayers[0], 1);
-    BOOST_CHECK_EQUAL(allLayers[1], 2);
-    BOOST_CHECK_EQUAL(allLayers[2], 3);
+    BOOST_CHECK_EQUAL(allLayers[0], "SR");
+    BOOST_CHECK_EQUAL(allLayers[1], "SP");
+    BOOST_CHECK_EQUAL(allLayers[2], "SO");
 }

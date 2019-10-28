@@ -224,44 +224,38 @@ inline std::vector<std::string> MVD3File::getMorphologies(const Range & range) c
     return get_resolve_field(did_lib_data_morpho, did_cells_index_morpho, range);
 }
 
+
 inline std::vector<std::string> MVD3File::getEtypes(const Range & range) const{
     const auto& getEtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEtypes(me_combos, morphologies);};
     return getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_etypes, did_cells_index_etypes, range, getEtypesLambda);
 }
+
 
 inline std::vector<std::string> MVD3File::getEmodels(const Range& range) const{
     const auto& getEmodelsLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEmodels(me_combos, morphologies);};
     return getDataFromTsv<std::string>("eModel", range, getEmodelsLambda);
 }
 
+
 inline std::vector<std::string> MVD3File::getMtypes(const Range& range) const{
     const auto& getMtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getMtypes(me_combos, morphologies);};
     return getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_mtypes, did_cells_index_mtypes, range, getMtypesLambda);
 }
 
+
 inline std::vector<std::string> MVD3File::getMECombos(const Range& range) const {
     return get_resolve_field(did_lib_data_mecombo, did_cells_index_mecombo, range);
 }
+
 
 inline std::vector<std::string> MVD3File::getRegions(const Range & range) const{
     return get_resolve_field(did_lib_data_regions, did_cells_index_regions, range);
 }
 
+
 inline std::vector<boost::int32_t> MVD3File::getHyperColumns(const Range & range) const{
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_hypercolumn);
     return get_data_for_selection<boost::int32_t>(set, range);
-}
-
-inline bool MVD3File::hasCurrents() const  {
-    return false;
-}
-
-inline std::vector<double> MVD3File::getThresholdCurrents(const Range&) const {
-    throw MVDException("ThresholdCurrents not available in mvd3");
-}
-
-inline std::vector<double> MVD3File::getHoldingCurrents(const Range&) const {
-    throw MVDException("HoldingCurrents not available in mvd3");
 }
 
 
@@ -270,10 +264,17 @@ inline std::vector<boost::int32_t> MVD3File::getMiniColumns(const Range & range)
     return get_data_for_selection<boost::int32_t>(set, range);
 }
 
+
 inline std::vector<boost::int32_t> MVD3File::getLayers(const Range& range) const{
     const auto& getLayersLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getLayers(me_combos, morphologies);};
     return getDataFromTsvOrMvd3WithoutIndex<boost::int32_t>(did_cells_layer, range, getLayersLambda);
 }
+
+
+inline bool MVD3File::hasCurrents() const  {
+    return false;
+}
+
 
 inline std::vector<double> MVD3File::getThresholdCurrents(const Range& range) const{
     const auto& getThresholdCurrentsLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getThresholdCurrents(me_combos, morphologies);};
@@ -289,12 +290,6 @@ inline std::vector<double> MVD3File::getHoldingCurrents(const Range& range) cons
 
 inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range) const{
     return get_resolve_field(did_lib_data_syn_class, did_cells_index_synapse_class, range);
-}
-
-
-inline std::vector<TSV::TSVInfo> MVD3File::getTSVInfo(const Range& range) const {
-    const auto& getTSVInfosLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getTSVInfos(me_combos, morphologies);};
-    return getDataFromTsv<TSV::TSVInfo>("", range, getTSVInfosLamba);
 }
 
 

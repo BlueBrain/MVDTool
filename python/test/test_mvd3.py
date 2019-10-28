@@ -147,15 +147,13 @@ def circuit_mvd3_tsv(mvd3_file, tsv_file):
     return mvd3file
 
 
-def test_number_neurons_mvd3_tsv(circuit_mvd3_tsv):
-    assert len(circuit_mvd3_tsv.tsv_info()) == 34
-
 def test_tsv_layer(circuit_mvd3_tsv):
     layers = circuit_mvd3_tsv.layers()
 
     assert layers[0] == 1
     assert layers[9] == 1
     assert layers[33] == 6
+
 
 def test_tsv_emodels(circuit_mvd3_tsv):
     emodels = circuit_mvd3_tsv.emodels()
@@ -164,6 +162,7 @@ def test_tsv_emodels(circuit_mvd3_tsv):
     assert emodels[9] == "dSTUT_321707905"
     assert emodels[33] == "L6_cADpyr_471819401"
 
+
 def test_tsv_emodels_indices(circuit_mvd3_tsv):
     emodels = circuit_mvd3_tsv.emodels([0,9,33])
 
@@ -171,19 +170,13 @@ def test_tsv_emodels_indices(circuit_mvd3_tsv):
     assert emodels[1] == "dSTUT_321707905"
     assert emodels[2] == "L6_cADpyr_471819401"
 
+
 def test_mvd3_mecombos_indices(circuit_mvd3_tsv):
     me_combos = circuit_mvd3_tsv.me_combos([0,9,33])
 
     assert me_combos[0] == "bAC_1_02583f52ff47b88961e4216e2972ee8c"
     assert me_combos[1] == "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"
     assert me_combos[2] == "cADpyr_6_97957c6ebc6ac6397bf0fa077d39580c"
-
-def test_tsv_mecombos_indices(circuit_mvd3_tsv):
-    tsvinfos = circuit_mvd3_tsv.tsv_info([0,9,33])
-
-    assert tsvinfos[0].comboName == "bAC_1_02583f52ff47b88961e4216e2972ee8c"
-    assert tsvinfos[1].comboName == "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"
-    assert tsvinfos[2].comboName == "cADpyr_6_97957c6ebc6ac6397bf0fa077d39580c"
 
 
 def test_tsv_threshold_current(circuit_mvd3_tsv):
@@ -200,15 +193,18 @@ def test_tsv_holding_current(circuit_mvd3_tsv):
     assert holding_currents[9] == 0.1
     assert holding_currents[33] == 0.15
 
+
 @pytest.fixture
 def new_sonata_file():
     return path.join(_dir, "nodes.h5")
+
 
 @pytest.fixture
 def circuit_new_sonata(new_sonata_file):
     sonatafilename = path.join(_dir, new_sonata_file)
     sonata = mt.open(new_sonata_file)
     return sonata
+
 
 def test_emodels(circuit_new_sonata):
     emodels = circuit_new_sonata.emodels()
@@ -217,17 +213,18 @@ def test_emodels(circuit_new_sonata):
     assert emodels[42] == "CA1_pyr_cACpyr_oh140807_A0_idJ_2019032814272"
     assert emodels[2615] == "CA1_int_cNAC_990111HP2_2019032915570"
 
+
 def test_layers(circuit_new_sonata):
     layers = circuit_new_sonata.layers()
 
-    assert layers[0] == "1"
-    assert layers[1] == "2"
-    assert layers[2] == "3"
+    assert layers[0] == "SR"
+    assert layers[42] == "SP"
+    assert layers[2615] == "SO"
 
 
 def test_list_allLayers(circuit_new_sonata):
     allLayers = circuit_new_sonata.all_layers
 
-    assert allLayers[0] == "1"
-    assert allLayers[1] == "2"
-    assert allLayers[2] == "3"
+    assert allLayers[0] == "SR"
+    assert allLayers[1] == "SP"
+    assert allLayers[2] == "SO"
