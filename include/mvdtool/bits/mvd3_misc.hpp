@@ -293,6 +293,12 @@ inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range) c
 }
 
 
+inline std::vector<TSV::TSVInfo> MVD3File::getTSVInfo(const Range& range) const {
+    const auto& getTSVInfosLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getTSVInfos(me_combos, morphologies);};
+    return getDataFromTsv<TSV::TSVInfo>("", range, getTSVInfosLamba);
+}
+
+
 inline std::vector<size_t> MVD3File::getIndexMorphologies(const Range & range) const{
     HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
     return get_data_for_selection<size_t>(index, range);
