@@ -204,8 +204,8 @@ inline std::vector<T> TSVFile::getField(const std::vector<std::string>& me_combo
                                         const MEComboEntry::Column column) const {
     std::vector<T> entries;
     entries.reserve(me_combos.size());
-    for (const auto& item: get(me_combos, morphologies)) {
-        entries.push_back(item.get().template get<T>(column));
+    for (const MEComboEntry& item: get(me_combos, morphologies)) {
+        entries.push_back(item.get<T>(column));
     }
     return entries;
 }
