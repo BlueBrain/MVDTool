@@ -19,6 +19,7 @@
 #ifndef MVD3_MISC_HPP
 #define MVD3_MISC_HPP
 
+#include <algorithm>
 #include <set>
 #include <string>
 #include <vector>
@@ -89,12 +90,12 @@ std::vector<T> tsv_get_chunked(const MVD3::MVD3File& mvd,
     const size_t CHUNK_SIZE = 256;
     std::vector<T> output;
     const size_t end = is_empty(range)? mvd.getNbNeuron() : range.offset + range.count;
+    output.reserve(end - range.offset);
 
     for (auto index = range.offset; index < end; index += CHUNK_SIZE) {
         const MVD::Range subrange(index, std::min(CHUNK_SIZE, end - index));
-        const auto chunk = f(mvd.getMECombos(subrange),
-                             mvd.getMorphologies(subrange));
-        output.insert(output.end(), chunk.begin(), chunk.end());
+        auto chunk = f(mvd.getMECombos(subrange), mvd.getMorphologies(subrange));
+        std::move(chunk.begin(), chunk.end(), std::back_inserter(output));
     }
     return output;
 }
