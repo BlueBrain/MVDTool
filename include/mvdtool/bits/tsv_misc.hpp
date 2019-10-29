@@ -130,7 +130,7 @@ inline double MEComboEntry::get<double>(const Column col_id) const {
         return holdingCurrent;
     default:
         throw MVDException(
-            std::string("Cannot fetch field ") + std::to_string(col_id) + " as string");
+            std::string("Cannot fetch field ") + std::to_string(col_id) + " as double");
     }
 }
 
@@ -141,7 +141,7 @@ inline int32_t MEComboEntry::get<int32_t>(const Column col_id) const {
         return layer;
     default:
         throw MVDException(
-            std::string("Cannot fetch field ") + std::to_string(col_id) + " as string");
+            std::string("Cannot fetch field ") + std::to_string(col_id) + " as int32_t");
     }
 }
 

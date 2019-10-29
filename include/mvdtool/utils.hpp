@@ -20,8 +20,8 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <unordered_set>
+#include <vector>
 
 namespace MVD {
 namespace utils {
@@ -32,8 +32,8 @@ inline void vector_remove_dups(std::vector<T>& vec) {
     std::unordered_set<T> set;
     std::size_t pos = 0;
     for (T& v : vec) if(set.insert(v).second) {
-            std::swap(vec[pos++], v);  // works even if src-dst are same
-        }
+        std::swap(vec[pos++], v);  // works even if src-dst are same
+    }
     vec.resize(pos);
 }
 

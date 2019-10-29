@@ -82,6 +82,23 @@ inline std::vector<T> resolve_index(const HighFive::DataSet& index,
     return result;
 }
 
+template <typename T, typename FuncT>
+std::vector<T> tsv_get_chunked(const MVD3::MVD3File& mvd,
+                               const FuncT& f,
+                               const MVD3::Range& range) {
+    const size_t CHUNK_SIZE = 256;
+    std::vector<T> output;
+    const size_t end = is_empty(range)? mvd.getNbNeuron() : range.offset + range.count;
+
+    for (auto index = range.offset; index < end; index += CHUNK_SIZE) {
+        const MVD::Range subrange(index, std::min(CHUNK_SIZE, end - index));
+        const auto chunk = f(mvd.getMECombos(subrange),
+                             mvd.getMorphologies(subrange));
+        output.insert(output.end(), chunk.begin(), chunk.end());
+    }
+    return output;
+}
+
 
 // cells properties
 const std::string did_cells_positions = "/cells/positions";
@@ -113,6 +130,8 @@ const MVD::Range range_ALL(0, 0);
 
 // circuit
 const std::string did_lib_circuit_seeds = "/circuit/seeds";
+
+using vec_string = std::vector<std::string>;
 
 } // namespace
 
@@ -301,9 +320,10 @@ inline std::vector<std::string> MVD3File::listAllEmodels() const {
     std::vector<std::string> emodels;
     const auto all_entries = _tsv_file->getAll();
     emodels.reserve(all_entries.size());
-    for (const auto& entry : all_entries) {
-        emodels.push_back(entry.get().eModel);
+    for (const TSV::MEComboEntry& entry : all_entries) {
+        emodels.push_back(entry.eModel);
     }
+    vector_remove_dups(emodels);
     return emodels;
 }
 
@@ -321,12 +341,15 @@ inline std::vector<double> MVD3File::getCircuitSeeds() const {
 }
 
 
-inline std::vector<std::reference_wrapper<const TSV::MEComboEntry>>
-MVD3File::getTSVInfo(const Range& range) const {
+inline TSV::TSVFile::vector_ref MVD3File::getTSVInfo(const Range& range) const {
     if(!_tsv_file) {
-        throw MVDException("No TSV file is opened the with MVD3 file to get the TSVInfo");
+        throw MVDException("No TSV file is opened with MVD3. Unable to get the TSVInfo");
     }
-    return _tsv_file->get(getMECombos(range), getMorphologies(range));
+    const auto& f = [this](const vec_string& combos, const vec_string& morphos) {
+        return  _tsv_file->get(combos, morphos);
+    };
+    using T = std::reference_wrapper<const TSV::MEComboEntry>;
+    return tsv_get_chunked<T>(*this, f, range);
 }
 
 
@@ -337,23 +360,13 @@ template <typename T>
 inline std::vector<T> MVD3File::getDataFromTSV(const TSV::MEComboEntry::Column col,
                                                const Range range) const {
     if (!_tsv_file) {
-        std::ostringstream ss;
-        ss << "No tsv file is opened with MVD3 file " << _filename
-           << " to extract col #" << col << std::endl;
-        throw MVDException(ss.str());
+        throw MVDException("No TSV file is opened with MVD3. Unable to extract col #"
+                           + std::to_string(col));
     }
-    const size_t CHUNK_SIZE = 256;
-    std::vector<T> retData;
-
-    const size_t end = is_empty(range)? getNbNeuron() : range.offset + range.count;
-    for (auto index = range.offset; index < end; index += CHUNK_SIZE) {
-        const size_t last = std::min(CHUNK_SIZE, end - index);
-        const auto morphologies = getMorphologies(Range(index, last));
-        const auto me_combos = getMECombos(Range(index, last));
-        const auto chunkData = _tsv_file->getField<T>(me_combos, morphologies, col);
-        retData.insert(retData.end(), chunkData.begin(), chunkData.end());
-    }
-    return retData;
+    const auto& f = [this, col](const vec_string& combos, const vec_string& morphos) {
+       return  _tsv_file->getField<T>(combos, morphos, col);
+    };
+    return tsv_get_chunked<T>(*this, f, range);
 }
 
 
