@@ -143,7 +143,7 @@ def circuit_mvd3_tsv(mvd3_file, tsv_file):
     mvd3filename = path.join(_dir, mvd3_file)
     tsvfilename = path.join(_dir, tsv_file)
     mvd3file = mt.open(mvd3filename)
-    mvd3file.read_tsv_info(tsvfilename)
+    mvd3file.open_combo_tsv(tsvfilename)
     return mvd3file
 
 

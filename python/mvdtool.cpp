@@ -13,8 +13,8 @@ using namespace TSV;
 class PyFile : public File {
     using File::File;
 
-    void readTSVInfo(const std::string & ) override {
-        PYBIND11_OVERLOAD_PURE_NAME(void, File, "read_tsv_info", readTSVInfo);
+    void openComboTsv(const std::string & ) override {
+        PYBIND11_OVERLOAD_PURE_NAME(void, File, "open_combo_tsv", openComboTsv);
     }
     size_t getNbNeuron() const override {
         PYBIND11_OVERLOAD_PURE_NAME(size_t, File, "__len__", getNbNeuron);
@@ -139,8 +139,8 @@ PYBIND11_MODULE(mvdtool, mvd) {
     file
         .def(py::init<>())
         .def("__len__", &File::size)
-        .def("read_tsv_info", [](File& f, const std::string & filename) {
-                f.readTSVInfo(filename);
+        .def("open_combo_tsv", [](File& f, const std::string & filename) {
+                f.openComboTsv(filename);
              },
              "filename"_a)
         .def("positions", [](const File& f, int offset, int count) {
@@ -304,7 +304,6 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
                 return _atIndices<boost::int32_t>(func, f.size(), idx);
              })
-        .def_property_readonly("all_layers", &MVD3File::listAllLayers)
         .def_property_readonly("all_morphologies", &MVD3File::listAllMorphologies)
         ;
 
@@ -324,15 +323,15 @@ PYBIND11_MODULE(mvdtool, mvd) {
     py::class_<TSVFile, std::shared_ptr<TSVFile>>(tsv, "File", file)
         .def(py::init<const std::string&>())
         ;
-    py::class_<TSVInfo>(tsv, "TSVInfo")
+    py::class_<MEComboEntry>(tsv, "MEComboEntry")
         .def(py::init<>())
-        .def_readonly("morphologyName", &TSVInfo::morphologyName)
-        .def_readonly("layer", &TSVInfo::layer)
-        .def_readonly("fullMType", &TSVInfo::fullMType)
-        .def_readonly("eType", &TSVInfo::eType)
-        .def_readonly("eModel", &TSVInfo::eModel)
-        .def_readonly("comboName", &TSVInfo::comboName)
-        .def_readonly("thresholdCurrent", &TSVInfo::thresholdCurrent)
-        .def_readonly("holdingCurrent", &TSVInfo::holdingCurrent)
+        .def_readonly("morphologyName", &MEComboEntry::morphologyName)
+        .def_readonly("layer", &MEComboEntry::layer)
+        .def_readonly("fullMType", &MEComboEntry::fullMType)
+        .def_readonly("eType", &MEComboEntry::eType)
+        .def_readonly("eModel", &MEComboEntry::eModel)
+        .def_readonly("comboName", &MEComboEntry::comboName)
+        .def_readonly("thresholdCurrent", &MEComboEntry::thresholdCurrent)
+        .def_readonly("holdingCurrent", &MEComboEntry::holdingCurrent)
         ;
 }
