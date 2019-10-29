@@ -19,6 +19,7 @@
 #ifndef MVD3_MISC_HPP
 #define MVD3_MISC_HPP
 
+#include <set>
 #include <string>
 #include <vector>
 
@@ -30,34 +31,35 @@
 
 namespace {
 
-inline bool is_empty(const MVD3::Range & range){
+inline bool is_empty(const MVD3::Range& range) {
     return range.count == 0;
 }
 
-template<typename T>
-inline std::vector<T> get_data_for_selection(HighFive::DataSet & dataset, const MVD3::Range & range){
+template <typename T>
+inline std::vector<T> get_data_for_selection(const HighFive::DataSet& dataset,
+                                             const MVD3::Range& range) {
     std::vector<T> data_values;
 
-    if(!is_empty(range)){
+    if (!is_empty(range)) {
         dataset.select({range.offset}, {range.count}).read(data_values);
-    }else{
+    } else {
         dataset.read(data_values);
     }
     return data_values;
 }
 
-template<typename T>
-inline std::vector<T> resolve_index(HighFive::DataSet & index,
-                                    const MVD3::Range & range,
-                                    HighFive::DataSet & data) {
+template <typename T>
+inline std::vector<T> resolve_index(const HighFive::DataSet& index,
+                                    const MVD3::Range& range,
+                                    const HighFive::DataSet& data) {
     std::vector<T> values, result;
     std::vector<size_t> references = get_data_for_selection<size_t>(index, range);
     const size_t n_elem = data.getSpace().getDimensions()[0];
 
     size_t first = n_elem;
     size_t last = 0;
-    for(auto i : references){
-        if(i >= n_elem){
+    for (auto i: references) {
+        if (i >= n_elem) {
             std::ostringstream ss;
             ss << "Invalid index reference " << i << " in an dataset of size " << n_elem;
             throw MVDParserException(ss.str());
@@ -66,15 +68,15 @@ inline std::vector<T> resolve_index(HighFive::DataSet & index,
         last = std::max(last, i);
     }
 
-    if(first == 0 && last == n_elem - 1){
+    if (first == 0 && last == n_elem - 1) {
         data.read(values);
-    }else{
+    } else {
         data.select({first}, {last - first + 1}).read(values);
     }
 
     result.reserve(references.size());
 
-    for(auto i : references){
+    for (auto i: references) {
         result.push_back(values[i - first]);
     }
     return result;
@@ -106,13 +108,20 @@ const std::string did_lib_data_mecombo = "/library/me_combo";
 const std::string did_lib_data_regions = "/library/region";
 const std::string did_lib_data_syn_class = "/library/synapse_class";
 
+const std::string did_lib_NONE = "";
+const MVD::Range range_ALL(0, 0);
+
 // circuit
 const std::string did_lib_circuit_seeds = "/circuit/seeds";
 
-}
+} // namespace
 
 
 namespace MVD3 {
+
+using namespace MVD::utils;
+using TSVColumn = TSV::MEComboEntry::Column;
+
 
 inline MVD3File::MVD3File(const std::string& str)
     : _filename(str)
@@ -120,81 +129,35 @@ inline MVD3File::MVD3File(const std::string& str)
     , _nb_neurons(0) {}
 
 
-inline void MVD3File::readTSVInfo(const std::string& filename) {
-    _tsv_file = std::make_unique<TSV::TSVFile>(filename, TSV::tsv_columns::combo_name);
+inline void MVD3File::openComboTsv(const std::string& filename) {
+    _tsv_file = std::make_unique<TSV::TSVFile>(filename, TSVColumn::ComboName);
 }
 
 
-template <typename T, typename FuncT>
-inline std::vector<T> MVD3File::getTSVdata(const Range& range, const FuncT& tsvGetter) const{
-    const size_t CHUNK_SIZE = 256;
-    size_t start = range.offset;
-    size_t end = range.count;
-    std::vector<T> retData;
-    if(start == 0 && end == 0){
-        end = getNbNeuron();
-    }
-    for (auto index = start; index < end; index += CHUNK_SIZE) {
-        std::vector <std::string> morphologies = getMorphologies(Range(index, std::min(CHUNK_SIZE, end - index)));
-        std::vector <std::string> me_combos = getMECombos(Range(index, std::min(CHUNK_SIZE, end - index)));
-        auto chunkData = tsvGetter(me_combos, morphologies);
-        retData.insert(retData.end(), chunkData.begin(), chunkData.end());
-    }
-    return retData;
-}
-
-template <typename T, typename FuncT>
-inline std::vector<T> MVD3File::getDataFromTsvOrMvd3WithIndex(const std::string& did_lib, const std::string& did_index, const Range& range, const FuncT& tsvGetter) const{
-    if (_tsv_file) {
-        return getTSVdata<T>(range, tsvGetter);
-    } else {
-        return get_resolve_field(did_lib, did_index, range);
-    }
-}
-
-template <typename T, typename FuncT>
-inline std::vector<T> MVD3File::getDataFromTsvOrMvd3WithoutIndex(const std::string& did, const Range& range, const FuncT& tsvGetter) const{
-    if (_tsv_file) {
-        return getTSVdata<T>(range, tsvGetter);
-    } else {
-        HighFive::DataSet set = _hdf5_file.getDataSet(did);
-        return get_data_for_selection<boost::int32_t>(set, range);
-    }
-}
-
-template <typename T, typename FuncT>
-inline std::vector<T> MVD3File::getDataFromTsv(const std::string& fieldName, const Range& range, const FuncT& tsvGetter) const{
-    if (!_tsv_file) {
-        std::ostringstream ss;
-        ss << "No tsv file is opened with MVD3 file " << _filename << " to extract " << fieldName << " information from"
-           << std::endl;
-        throw MVDException(ss.str());
-    }
-    return getTSVdata<T>(range, tsvGetter);
-}
-
-inline size_t MVD3File::getNbNeuron() const{
-    if(_nb_neurons == 0){
-        try{
-            std::vector<size_t> dims = _hdf5_file.getDataSet(did_cells_positions).getSpace().getDimensions();
-            if(dims.size() < 1){
+inline size_t MVD3File::getNbNeuron() const {
+    if (_nb_neurons == 0) {
+        try {
+            std::vector<size_t> dims =
+                _hdf5_file.getDataSet(did_cells_positions).getSpace().getDimensions();
+            if (dims.size() < 1) {
                 throw MVDParserException("Invalid Dataset dimension in MVD3 file");
             }
-            (const_cast<size_t&>(_nb_neurons)) = dims[0]; // cache number of neurons in MVD3 file itself
-        }catch(HighFive::Exception & e){
+            (const_cast<size_t&>(_nb_neurons)) = dims[0];  // cache number of neurons in MVD3 file
+                                                           // itself
+        } catch (HighFive::Exception& e) {
             std::ostringstream ss;
-            ss << "Unable to parse "<< _filename << " " << e.what();
+            ss << "Unable to parse " << _filename << " " << e.what();
             throw MVDParserException(ss.str());
         }
     }
-   return _nb_neurons;
+    return _nb_neurons;
 }
 
 
-inline Positions MVD3File::getPositions(const Range & range) const{
+inline Positions MVD3File::getPositions(const Range& range) const {
     Positions res;
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_positions);
-    if(!is_empty(range)){
+    if (!is_empty(range)) {
         set.select({range.offset, 0}, {range.count, 3}).read(res);
         return res;
     }
@@ -203,10 +166,10 @@ inline Positions MVD3File::getPositions(const Range & range) const{
 }
 
 
-inline Rotations MVD3File::getRotations(const Range & range) const{
+inline Rotations MVD3File::getRotations(const Range& range) const {
     Rotations res;
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_rotations);
-    if(!is_empty(range)){
+    if (!is_empty(range)) {
         set.select({range.offset, 0}, {range.count, 4}).read(res);
         return res;
     }
@@ -220,175 +183,204 @@ inline bool MVD3File::hasRotations() const {
 }
 
 
-inline std::vector<std::string> MVD3File::getMorphologies(const Range & range) const {
-    return get_resolve_field(did_lib_data_morpho, did_cells_index_morpho, range);
+inline std::vector<std::string> MVD3File::getMorphologies(const Range& range) const {
+    return getDataFromMVD(did_cells_index_morpho, did_lib_data_morpho, range);
 }
 
 
-inline std::vector<std::string> MVD3File::getEtypes(const Range & range) const{
-    const auto& getEtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEtypes(me_combos, morphologies);};
-    return getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_etypes, did_cells_index_etypes, range, getEtypesLambda);
+inline std::vector<std::string> MVD3File::getEtypes(const Range& range) const {
+    return getDataFromTSVorMVD(
+        did_cells_index_etypes, did_lib_data_etypes, TSVColumn::EType, range);
 }
 
 
-inline std::vector<std::string> MVD3File::getEmodels(const Range& range) const{
-    const auto& getEmodelsLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEmodels(me_combos, morphologies);};
-    return getDataFromTsv<std::string>("eModel", range, getEmodelsLambda);
+inline std::vector<std::string> MVD3File::getEmodels(const Range& range) const {
+    return getDataFromTSV(TSVColumn::EModel, range);
 }
 
 
-inline std::vector<std::string> MVD3File::getMtypes(const Range& range) const{
-    const auto& getMtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getMtypes(me_combos, morphologies);};
-    return getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_mtypes, did_cells_index_mtypes, range, getMtypesLambda);
+inline std::vector<std::string> MVD3File::getMtypes(const Range& range) const {
+    return getDataFromTSVorMVD(
+        did_cells_index_mtypes, did_lib_data_mtypes, TSVColumn::FullMType, range);
 }
 
 
 inline std::vector<std::string> MVD3File::getMECombos(const Range& range) const {
-    return get_resolve_field(did_lib_data_mecombo, did_cells_index_mecombo, range);
+    return getDataFromMVD(did_cells_index_mecombo, did_lib_data_mecombo, range);
 }
 
 
-inline std::vector<std::string> MVD3File::getRegions(const Range & range) const{
-    return get_resolve_field(did_lib_data_regions, did_cells_index_regions, range);
+inline std::vector<std::string> MVD3File::getRegions(const Range& range) const {
+    return getDataFromMVD(did_cells_index_regions, did_lib_data_regions, range);
 }
 
 
-inline std::vector<boost::int32_t> MVD3File::getHyperColumns(const Range & range) const{
-    HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_hypercolumn);
-    return get_data_for_selection<boost::int32_t>(set, range);
+inline std::vector<int32_t> MVD3File::getHyperColumns(const Range& range) const {
+    return getDataFromMVD<int32_t>(did_cells_hypercolumn, did_lib_NONE, range);
 }
 
 
-inline std::vector<boost::int32_t> MVD3File::getMiniColumns(const Range & range) const{
-    HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_minicolmun);
-    return get_data_for_selection<boost::int32_t>(set, range);
+inline std::vector<int32_t> MVD3File::getMiniColumns(const Range& range) const {
+    return getDataFromMVD<int32_t>(did_cells_minicolmun, did_lib_NONE, range);
 }
 
 
-inline std::vector<boost::int32_t> MVD3File::getLayers(const Range& range) const{
-    const auto& getLayersLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getLayers(me_combos, morphologies);};
-    return getDataFromTsvOrMvd3WithoutIndex<boost::int32_t>(did_cells_layer, range, getLayersLambda);
+inline std::vector<int32_t> MVD3File::getLayers(const Range& range) const {
+    return getDataFromTSVorMVD<int32_t>(did_cells_layer, did_lib_NONE, TSVColumn::Layer, range);
 }
 
 
-inline bool MVD3File::hasCurrents() const  {
-    return false;
+inline bool MVD3File::hasCurrents() const {
+    return static_cast<bool>(_tsv_file);
 }
 
 
-inline std::vector<double> MVD3File::getThresholdCurrents(const Range& range) const{
-    const auto& getThresholdCurrentsLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getThresholdCurrents(me_combos, morphologies);};
-    return getDataFromTsv<double>("Threshold Current", range, getThresholdCurrentsLamba);
+inline std::vector<double> MVD3File::getThresholdCurrents(const Range& range) const {
+    return getDataFromTSV<double>(TSVColumn::ThresholdCurrent, range);
 }
 
 
-inline std::vector<double> MVD3File::getHoldingCurrents(const Range& range) const{
-    const auto& getHoldingCurrentsLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getHoldingCurrents(me_combos, morphologies);};
-    return getDataFromTsv<double>("Holding Current", range, getHoldingCurrentsLamba);
+inline std::vector<double> MVD3File::getHoldingCurrents(const Range& range) const {
+   return getDataFromTSV<double>(TSVColumn::HoldingCurrent, range);
 }
 
 
-inline std::vector<std::string> MVD3File::getSynapseClass(const Range & range) const{
-    return get_resolve_field(did_lib_data_syn_class, did_cells_index_synapse_class, range);
+inline std::vector<std::string> MVD3File::getSynapseClass(const Range& range) const {
+    return getDataFromMVD(did_cells_index_synapse_class, did_lib_data_syn_class, range);
 }
 
 
-inline std::vector<TSV::TSVInfo> MVD3File::getTSVInfo(const Range& range) const {
-    const auto& getTSVInfosLamba = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getTSVInfos(me_combos, morphologies);};
-    return getDataFromTsv<TSV::TSVInfo>("", range, getTSVInfosLamba);
+inline std::vector<size_t> MVD3File::getIndexMorphologies(const Range& range) const {
+    return getDataFromMVD<size_t>(did_cells_index_morpho, did_lib_NONE, range);
 }
 
 
-inline std::vector<size_t> MVD3File::getIndexMorphologies(const Range & range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_morpho);
-    return get_data_for_selection<size_t>(index, range);
+inline std::vector<size_t> MVD3File::getIndexEtypes(const Range& range) const {
+    return getDataFromMVD<size_t>(did_cells_index_etypes, did_lib_NONE, range);
+}
+
+inline std::vector<size_t> MVD3File::getIndexMtypes(const Range& range) const {
+    return getDataFromMVD<size_t>(did_cells_index_mtypes, did_lib_NONE, range);
+}
+
+inline std::vector<size_t> MVD3File::getIndexRegions(const Range& range) const {
+    return getDataFromMVD<size_t>(did_cells_index_regions, did_lib_NONE, range);
+}
+
+inline std::vector<size_t> MVD3File::getIndexSynapseClass(const Range& range) const {
+    return getDataFromMVD<size_t>(did_cells_index_synapse_class, did_lib_NONE, range);
+}
+
+// list ALL group
+
+inline std::vector<std::string> MVD3File::listAllMorphologies() const {
+    return getDataFromMVD(did_lib_data_morpho, did_lib_NONE, range_ALL);
+}
+
+inline std::vector<std::string> MVD3File::listAllEtypes() const {
+    return getDataFromMVD(did_lib_data_etypes, did_lib_NONE, range_ALL);
+}
+
+inline std::vector<std::string> MVD3File::listAllMtypes() const {
+    return getDataFromMVD(did_lib_data_mtypes, did_lib_NONE, range_ALL);
+}
+
+inline std::vector<std::string> MVD3File::listAllRegions() const {
+    return getDataFromMVD(did_lib_data_regions, did_lib_NONE, range_ALL);
+}
+
+inline std::vector<std::string> MVD3File::listAllSynapseClass() const {
+    return getDataFromMVD(did_lib_data_syn_class, did_lib_NONE, range_ALL);
+}
+
+// Emodels are only avail within TSV
+inline std::vector<std::string> MVD3File::listAllEmodels() const {
+    if(!_tsv_file) {
+        throw MVDException("No TSV file is opened with MVD3 to extract all the emodels.");
+    }
+    std::vector<std::string> emodels;
+    const auto all_entries = _tsv_file->getAll();
+    emodels.reserve(all_entries.size());
+    for (const auto& entry : all_entries) {
+        emodels.push_back(entry.get().eModel);
+    }
+    return emodels;
 }
 
 
-inline std::vector<size_t> MVD3File::getIndexEtypes(const Range &range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_etypes);
-    return get_data_for_selection<size_t>(index, range);
-}
-
-inline std::vector<size_t> MVD3File::getIndexMtypes(const Range &range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_mtypes);
-    return get_data_for_selection<size_t>(index, range);
-}
-
-inline std::vector<size_t> MVD3File::getIndexRegions(const Range &range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_regions);
-    return get_data_for_selection<size_t>(index, range);
-}
-
-inline std::vector<size_t> MVD3File::getIndexSynapseClass(const Range &range) const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_cells_index_synapse_class);
-    return get_data_for_selection<size_t>(index, range);
-}
-
-
-inline std::vector<std::string> MVD3File::listAllMorphologies() const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_morpho);
-    return get_data_for_selection<std::string>(index, Range(0,0));
-}
-
-
-inline std::vector<std::string> MVD3File::listAllEtypes() const{
-    const auto& getEtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEtypes(me_combos, morphologies);};
-    auto allEtypes = getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_etypes, did_cells_index_etypes, Range(0,0), getEtypesLambda);
-    vector_remove_dups(allEtypes);
-    return allEtypes;
-}
-
-inline std::vector<std::string> MVD3File::listAllMtypes() const{
-    const auto& getMtypesLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getMtypes(me_combos, morphologies);};
-    auto allMtypes = getDataFromTsvOrMvd3WithIndex<std::string>(did_lib_data_mtypes, did_cells_index_mtypes, Range(0,0), getMtypesLambda);
-    vector_remove_dups(allMtypes);
-    return allMtypes;
-}
-
-inline std::vector<boost::int32_t> MVD3File::listAllLayers() const{
-    const auto& getLayersLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getLayers(me_combos, morphologies);};
-    auto allLayers = getDataFromTsvOrMvd3WithoutIndex<boost::int32_t>(did_cells_layer, Range(0,0), getLayersLambda);
-    vector_remove_dups(allLayers);
-    return allLayers;
-}
-
-inline std::vector<std::string> MVD3File::listAllEmodels() const{
-    const auto& getEmodelsLambda = [=](std::vector<std::string>& me_combos, std::vector<std::string>& morphologies){return _tsv_file->getEmodels(me_combos, morphologies);};
-    auto allEmodels = getDataFromTsv<std::string>("eModel", Range(0,0), getEmodelsLambda);
-    vector_remove_dups(allEmodels);
-    return allEmodels;
-}
-
-inline std::vector<std::string> MVD3File::listAllRegions() const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_regions);
-    return get_data_for_selection<std::string>(index, Range(0,0));
-}
-
-inline std::vector<std::string> MVD3File::listAllSynapseClass() const{
-    HighFive::DataSet index = _hdf5_file.getDataSet(did_lib_data_syn_class);
-    return get_data_for_selection<std::string>(index, Range(0,0));
-}
-
-inline std::vector<double> MVD3File::getCircuitSeeds() const{
+inline std::vector<double> MVD3File::getCircuitSeeds() const {
     std::vector<double> seeds;
 
     HighFive::DataSet seeds_dataset = _hdf5_file.getDataSet(did_lib_circuit_seeds);
     seeds_dataset.read(seeds);
-    if(seeds.size() < 4){
-        throw MVDParserException("Invalid MVD3 /circuit/seeds size, MVD3 should provide at least 4 seeds");
+    if (seeds.size() < 4) {
+        throw MVDParserException(
+            "Invalid MVD3 /circuit/seeds size, MVD3 should provide at least 4 seeds");
     }
     return seeds;
 }
 
-inline std::vector<std::string> MVD3File::get_resolve_field(const std::string& field,
-                                                            const std::string& library,
-                                                            const Range & range) const {
-    HighFive::DataSet index = _hdf5_file.getDataSet(library);
-    HighFive::DataSet data = _hdf5_file.getDataSet(field);
-    return resolve_index<std::string>(index, range, data);
+
+inline std::vector<std::reference_wrapper<const TSV::MEComboEntry>>
+MVD3File::getTSVInfo(const Range& range) const {
+    if(!_tsv_file) {
+        throw MVDException("No TSV file is opened the with MVD3 file to get the TSVInfo");
+    }
+    return _tsv_file->get(getMECombos(range), getMorphologies(range));
 }
+
+
+
+// Protected
+
+template <typename T>
+inline std::vector<T> MVD3File::getDataFromTSV(const TSV::MEComboEntry::Column col,
+                                               const Range range) const {
+    if (!_tsv_file) {
+        std::ostringstream ss;
+        ss << "No tsv file is opened with MVD3 file " << _filename
+           << " to extract col #" << col << std::endl;
+        throw MVDException(ss.str());
+    }
+    const size_t CHUNK_SIZE = 256;
+    std::vector<T> retData;
+
+    const size_t end = is_empty(range)? getNbNeuron() : range.offset + range.count;
+    for (auto index = range.offset; index < end; index += CHUNK_SIZE) {
+        const size_t last = std::min(CHUNK_SIZE, end - index);
+        const auto morphologies = getMorphologies(Range(index, last));
+        const auto me_combos = getMECombos(Range(index, last));
+        const auto chunkData = _tsv_file->getField<T>(me_combos, morphologies, col);
+        retData.insert(retData.end(), chunkData.begin(), chunkData.end());
+    }
+    return retData;
+}
+
+
+template <typename T>
+inline std::vector<T> MVD3File::getDataFromMVD(const std::string& did_ds,
+                                               const std::string& did_lib,
+                                               const Range& range) const {
+    const auto raw_data = _hdf5_file.getDataSet(did_ds);
+    if (did_lib.empty()) {
+        return get_data_for_selection<T>(raw_data, range);
+    }
+    return resolve_index<T>(raw_data, range, _hdf5_file.getDataSet(did_lib));
+}
+
+
+template <typename T>
+inline std::vector<T> MVD3File::getDataFromTSVorMVD(const std::string& did_ds,
+                                                    const std::string& did_lib,
+                                                    const TSV::MEComboEntry::Column col,
+                                                    const Range& range) const {
+    if (_tsv_file) {
+        return getDataFromTSV<T>(col, range);
+    }
+    return getDataFromMVD<T>(did_ds, did_lib, range);
+}
+
 
 }  // namespace MVD3
 
-#endif // MVD3_MISC_HPP
+#endif  // MVD3_MISC_HPP

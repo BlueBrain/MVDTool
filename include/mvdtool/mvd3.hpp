@@ -28,6 +28,7 @@
 #include <highfive/H5File.hpp>
 
 #include "mvd_base.hpp"
+#include "tsv.hpp"
 
 namespace MVD3 {
 
@@ -55,62 +56,11 @@ public:
     MVD3File(const std::string & filename);
 
     ///
-    /// \brief readTSVInfo
+    /// \brief readMEComboEntry Open an TSV file format at 'filename' path
     /// \param filename
+    /// \throw TSVException in case of error
     ///
-    /// Open an TSV file format at 'filename' path
-    /// throw TSVException in case of error
-    ///
-    void readTSVInfo(const std::string& filename) override;
-
-    ///
-    /// \brief getTSVdata
-    /// \param range: selection range, the default range (0,0) select the entire dataset
-    /// \param tsvGetter: function of TSVFile to return the required data
-    /// \return vector of data needed to return from the tsv file
-    ///
-    /// Get the data from the tsv file based on the tsvGetter
-    ///
-    template <typename T, typename FuncT>
-    std::vector<T> getTSVdata(const Range& range, const FuncT& tsvGetter) const;
-
-    ///
-    /// \brief getDataFromTsv
-    /// \param fieldName field trying to access
-    /// \param range: selection range, the default range (0,0) select the entire dataset
-    /// \param tsvGetter: function of TSVFile to return the required data
-    /// \return vector of data needed to return from the tsv file
-    ///
-    /// Wrapper to check if tsv file exists and call getTSVdata
-    ///
-    template <typename T, typename FuncT>
-    inline std::vector<T> getDataFromTsv(const std::string& fieldName, const Range& range, const FuncT& tsvGetter) const;
-
-    ///
-    /// \brief getDataFromTsvOrMvd3
-    /// \param fieldName field trying to access
-    /// \param range: selection range, the default range (0,0) select the entire dataset
-    /// \param tsvGetter: function of TSVFile to return the required data
-    /// \return vector of data needed to return from the tsv file
-    ///
-    /// Wrapper to check if tsv file exists and if yes call getTSVdata, otherwise get data
-    /// from MVD3 file
-    ///
-    template <typename T, typename FuncT>
-    inline std::vector<T> getDataFromTsvOrMvd3WithIndex(const std::string& did_lib, const std::string& did_index, const Range& range, const FuncT& tsvGetter) const;
-
-    ///
-    /// \brief getDataFromTsvOrMvd3WithoutIndex
-    /// \param fieldName field trying to access
-    /// \param range: selection range, the default range (0,0) select the entire dataset
-    /// \param tsvGetter: function of TSVFile to return the required data
-    /// \return vector of data needed to return from the tsv file
-    ///
-    /// Wrapper to check if tsv file exists and if yes call getTSVdata, otherwise get data
-    /// from MVD3 file
-    ///
-    template <typename T, typename FuncT>
-    inline std::vector<T> getDataFromTsvOrMvd3WithoutIndex(const std::string& did, const Range& range, const FuncT& tsvGetter) const;
+    void openComboTsv(const std::string& filename) override;
 
     ///
     /// \brief getNbNeuron
@@ -176,19 +126,19 @@ public:
     /// \brief getHyperColumns
     /// \return vector of int32 with the hyper-column associated with each neuron
     ///
-    std::vector<boost::int32_t> getHyperColumns(const Range & range = Range(0,0)) const;
+    std::vector<int32_t> getHyperColumns(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getMiniColumns
     /// \return vector of int32 with the mini-column associated with each neuron
     ///
-    std::vector<boost::int32_t> getMiniColumns(const Range & range = Range(0,0)) const;
+    std::vector<int32_t> getMiniColumns(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getLayer
     /// \return vector of int32 with the layer associated with each neuron
     ///
-    std::vector<boost::int32_t> getLayers(const Range & range = Range(0,0)) const;
+    std::vector<int32_t> getLayers(const Range & range = Range(0,0)) const;
 
     ///
     /// \brief getSynapseClass
@@ -196,13 +146,6 @@ public:
     ///
     std::vector<std::string> getSynapseClass(const Range & range = Range(0,0)) const override;
 
-    ///
-    /// \brief getTSVInfo
-    /// \param range: selection range, a null range (0,0) select the entire dataset
-    /// \return vector of TSVInfo with the parsed info from the tsv file for the
-    ///         corresponding neuron
-    ///
-    std::vector<TSV::TSVInfo> getTSVInfo(const Range& range = Range(0, 0)) const;
 
     // index related infos
 
@@ -265,12 +208,6 @@ public:
     std::vector<std::string> listAllMtypes() const override;
 
     ///
-    /// \brief listAllLayers
-    /// \return vector of all unique Layers ( mvd3 /library section )
-    ///
-    std::vector<boost::int32_t> listAllLayers() const;
-
-    ///
     /// \brief listAllEmodels
     /// \return vector of all unique Emodels ( mvd3 /library section )
     ///
@@ -323,19 +260,41 @@ public:
     ///
     std::vector<double> getCircuitSeeds() const;
 
+
+    // tsv structs
+
+    ///
+    /// \brief Get all the ME combo entries from the TSV for the requested cells
+    ///
+    std::vector<std::reference_wrapper<const TSV::MEComboEntry>>
+        getTSVInfo(const Range& range = Range(0,0)) const;
+
+
+protected:
+    template <typename T = std::string>
+    std::vector<T> getDataFromTSV(const TSV::MEComboEntry::Column col,
+                                  const Range range) const;
+
+    template <typename T = std::string>
+    std::vector<T> getDataFromMVD(const std::string& field,
+                                  const std::string& library,
+                                  const Range& range) const;
+
+    template <typename T = std::string>
+    std::vector<T> getDataFromTSVorMVD(const std::string& field,
+                                       const std::string& library,
+                                       const TSV::MEComboEntry::Column col,
+                                       const Range& range) const;
+
 private:
     std::string _filename;
     HighFive::File _hdf5_file;
     std::unique_ptr<TSV::TSVFile> _tsv_file;
     size_t _nb_neurons;
 
-    inline std::vector<std::string> get_resolve_field(const std::string& field,
-                                                      const std::string& library,
-                                                      const Range & range) const;
-
 };
 
-}
+}  // namespace MVD3
 
 #include "bits/mvd3_misc.hpp"
 

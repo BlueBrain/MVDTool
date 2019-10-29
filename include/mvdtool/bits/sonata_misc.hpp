@@ -31,7 +31,7 @@
 namespace {
 
 using namespace bbp;
-using namespace std::placeholders;
+using namespace MVD::utils;
 
 // Naming convention
 const std::string default_population_name = "default";
@@ -97,7 +97,7 @@ namespace MVD {
     inline SonataFile::SonataFile(const std::string &filename, const std::string &pop_name)
             : pop_(open_population(filename, pop_name)), size_(pop_->size()) {}
 
-    inline void SonataFile::readTSVInfo(const std::string&) {}
+    inline void SonataFile::openComboTsv(const std::string&) {}
 
     inline Positions SonataFile::getPositions(const Range &range) const {
         Positions res{boost::extents[range.count > 0 ? range.count : size_][3]};

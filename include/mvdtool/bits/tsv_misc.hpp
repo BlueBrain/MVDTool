@@ -27,87 +27,12 @@
 
 #include <boost/range/combine.hpp>
 
-#include "../tsv_except.hpp"
+#include "../mvd_except.hpp"
+
 
 namespace TSV {
 
-inline std::vector<TSVInfo> TSVFile::getTSVInfos() {
-    std::vector<TSVInfo> tsvFileInfoVec;
-    for (auto it_infos: tsvFileInfo) {
-        tsvFileInfoVec.push_back(it_infos.second);
-    }
-    return tsvFileInfoVec;
-}
-
-inline std::vector<TSVInfo> TSVFile::getTSVInfos(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
-    std::vector<TSV::TSVInfo> tsvInfos;
-    for (const auto& mecombo_tupple: boost::combine(me_combos, morphologies)) {
-        auto hasMEType = tsvFileInfo.find(std::make_pair(boost::get<0>(mecombo_tupple), boost::get<1>(mecombo_tupple)));
-        if (hasMEType != tsvFileInfo.end()) {
-            tsvInfos.push_back(hasMEType->second);
-        } else {
-            std::ostringstream ss;
-            ss << "me_combo " << boost::get<0>(mecombo_tupple) << " or morphology " << boost::get<1>(mecombo_tupple) << " not found in "
-               << _filename << std::endl;
-            throw TSVException(ss.str());
-        }
-    }
-    return tsvInfos;
-}
-
-inline std::vector<boost::int32_t> TSVFile::getLayers(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
-    std::vector<boost::int32_t> tsvLayers;
-    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
-    for (const auto& tsvInfo: tsvInfos) {
-        tsvLayers.push_back(tsvInfo.layer);
-    }
-    return tsvLayers;
-}
-
-inline std::vector<std::string> TSVFile::getMtypes(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
-    std::vector<std::string> tsvMtypes;
-    std::vector<TSV::TSVInfo> tsvInfos = TSVFile::getTSVInfos(me_combos, morphologies);
-    for (const auto& tsvInfo: tsvInfos) {
-        tsvMtypes.push_back(tsvInfo.fullMType);
-    }
-    return tsvMtypes;
-}
-
-inline std::vector<std::string> TSVFile::getEtypes(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
-    std::vector<std::string> tsvEtypes;
-    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
-    for (const auto& tsvInfo: tsvInfos) {
-        tsvEtypes.push_back(tsvInfo.eType);
-    }
-    return tsvEtypes;
-}
-
-inline std::vector<std::string> TSVFile::getEmodels(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
-    std::vector<std::string> tsvEmodels;
-    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
-    for (const auto& tsvInfo: tsvInfos) {
-        tsvEmodels.push_back(tsvInfo.eModel);
-    }
-    return tsvEmodels;
-}
-
-inline std::vector<double> TSVFile::getThresholdCurrents(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
-    std::vector<double> tsvThresholdCurrents;
-    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
-    for (const auto& tsvInfo: tsvInfos) {
-        tsvThresholdCurrents.push_back(tsvInfo.thresholdCurrent);
-    }
-    return tsvThresholdCurrents;
-}
-
-inline std::vector<double> TSVFile::getHoldingCurrents(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const {
-    std::vector<double> tsvHoldingCurrents;
-    std::vector<TSV::TSVInfo> tsvInfos = getTSVInfos(me_combos, morphologies);
-    for (const auto& tsvInfo: tsvInfos) {
-        tsvHoldingCurrents.push_back(tsvInfo.holdingCurrent);
-    }
-    return tsvHoldingCurrents;
-}
+namespace detail {
 
 inline void split(const std::string& s, char delim, std::vector<std::string>& elems) {
     std::stringstream ss;
@@ -118,11 +43,12 @@ inline void split(const std::string& s, char delim, std::vector<std::string>& el
     }
 }
 
-inline unordered_pair_map TSVFile::readTSVFile(const std::string& filename, tsv_columns id_column) {
+inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
+                                               const MEComboEntry::Column id_column) {
     std::ifstream file(filename);
     std::string line;
     std::vector<std::string> line_info;
-    unordered_pair_map tsvInfos;
+    TSVFile::unordered_pair_map MEComboEntrys;
 
     // Read first line to calculate the number of columns/info
     int line_index = 0;
@@ -139,33 +65,151 @@ inline unordered_pair_map TSVFile::readTSVFile(const std::string& filename, tsv_
 
     while (std::getline(file, line)) {
         line_index++;
-        TSVInfo tsvInfoLine;
+        MEComboEntry MEComboEntryLine;
         split(line, '\t', line_info);
         if (line_info.size() != 6 && line_info.size() != 8) {
             std::ostringstream ss;
-            ss << "Error in " << filename << " line " << line_index << ", unexpected nfields "
-               << line_info.size() << "; expecting 6 (hippocampus) or 8 (somatosensory)"
-               << std::endl;
+            ss << "Error in " << filename << " line " << line_index << ". "
+               << "Unexpected nfields " << line_info.size() << ". "
+               << "Expecting 6 (hippocampus) or 8 (somatosensory)" << std::endl;
             throw TSVParserException(ss.str());
         }
-        tsvInfoLine.morphologyName = line_info[morph_name];
-        tsvInfoLine.layer = std::stoi(line_info[layer]);
-        tsvInfoLine.fullMType = line_info[fullmtype];
-        tsvInfoLine.eType = line_info[etype];
-        tsvInfoLine.eModel = line_info[emodel];
-        tsvInfoLine.comboName = line_info[combo_name];
-        if (line_info.size() == 6 ) {
-            tsvInfoLine.thresholdCurrent = 0;
-            tsvInfoLine.holdingCurrent = 0;
+        MEComboEntryLine.morphologyName = line_info[MEComboEntry::MorphologyName];
+        MEComboEntryLine.layer = std::stoi(line_info[MEComboEntry::Layer]);
+        MEComboEntryLine.fullMType = line_info[MEComboEntry::FullMType];
+        MEComboEntryLine.eType = line_info[MEComboEntry::EType];
+        MEComboEntryLine.eModel = line_info[MEComboEntry::EModel];
+        MEComboEntryLine.comboName = line_info[MEComboEntry::ComboName];
+        if (line_info.size() == 6) {
+            MEComboEntryLine.thresholdCurrent = 0;
+            MEComboEntryLine.holdingCurrent = 0;
         } else if (line_info.size() == 8) {
-            tsvInfoLine.thresholdCurrent = std::stod(line_info[threshold_current]);
-            tsvInfoLine.holdingCurrent = std::stod(line_info[holding_current]);
+            MEComboEntryLine.thresholdCurrent = std::stod(line_info[MEComboEntry::ThresholdCurrent]);
+            MEComboEntryLine.holdingCurrent = std::stod(line_info[MEComboEntry::HoldingCurrent]);
         }
-        tsvInfos.insert({{line_info[id_column], tsvInfoLine.morphologyName}, tsvInfoLine});
+        MEComboEntrys.insert(
+            {{line_info[id_column], MEComboEntryLine.morphologyName}, MEComboEntryLine});
         line_info.clear();
     }
 
-    return tsvInfos;
+    return MEComboEntrys;
 }
+
+}  // namespace detail
+
+
+using namespace detail;
+
+
+// class MEComboEntry
+template <>
+inline std::string MEComboEntry::get<std::string>(const Column col_id) const {
+    switch (col_id) {
+    case MorphologyName:
+        return morphologyName;
+    case FullMType:
+        return fullMType;
+    case EType:
+        return eType;
+    case EModel:
+        return eModel;
+    case ComboName:
+        return comboName;
+    default:
+        throw MVDException(
+            std::string("Cannot fetch field ") + std::to_string(col_id) + " as string");
+    }
+}
+
+template <>
+inline double MEComboEntry::get<double>(const Column col_id) const {
+    switch (col_id) {
+    case ThresholdCurrent:
+        return thresholdCurrent;
+    case HoldingCurrent:
+        return holdingCurrent;
+    default:
+        throw MVDException(
+            std::string("Cannot fetch field ") + std::to_string(col_id) + " as string");
+    }
+}
+
+template <>
+inline int32_t MEComboEntry::get<int32_t>(const Column col_id) const {
+    switch (col_id) {
+    case Layer:
+        return layer;
+    default:
+        throw MVDException(
+            std::string("Cannot fetch field ") + std::to_string(col_id) + " as string");
+    }
+}
+
+
+
+inline std::ostream& operator<<(std::ostream& os, MEComboEntry const& MEComboEntry) {
+    return os << MEComboEntry.morphologyName << "\t" << MEComboEntry.layer << "\t"
+              << MEComboEntry.fullMType << "\t" << MEComboEntry.eType << "\t" << MEComboEntry.eModel
+              << "\t" << MEComboEntry.comboName << "\t" << MEComboEntry.thresholdCurrent << "\t"
+              << MEComboEntry.holdingCurrent << std::endl;
+}
+
+
+
+// class TSVFile
+
+inline TSVFile::TSVFile(const std::string& filename)
+    : _filename(filename)
+    , tsvFileInfo(readTSVFile(filename, MEComboEntry::ComboName)) {}
+
+
+inline TSVFile::TSVFile(const std::string& filename, MEComboEntry::Column column)
+    : _filename(filename)
+    , tsvFileInfo(readTSVFile(filename, column)) {}
+
+
+inline TSVFile::vector_ref TSVFile::getAll() const {
+    TSVFile::vector_ref entries;
+    entries.reserve(tsvFileInfo.size());
+    for (const auto& it_infos: tsvFileInfo) {
+        entries.push_back(it_infos.second);
+    }
+    return entries;
+}
+
+
+inline TSVFile::vector_ref TSVFile::get(const std::vector<std::string>& me_combos,
+                                        const std::vector<std::string>& morphologies) const {
+    TSVFile::vector_ref entries;
+    entries.reserve(me_combos.size());
+    for (const auto& mecombo_tuple: boost::combine(me_combos, morphologies)) {
+        auto metype = tsvFileInfo.find(std::make_pair(boost::get<0>(mecombo_tuple),
+                                                      boost::get<1>(mecombo_tuple)));
+        if (metype != tsvFileInfo.end()) {
+            entries.push_back(metype->second);
+        } else {
+            std::ostringstream ss;
+            ss << "me_combo " << boost::get<0>(mecombo_tuple) << " or morphology "
+               << boost::get<1>(mecombo_tuple) << " not found in " << _filename << std::endl;
+            throw TSVException(ss.str());
+        }
+    }
+    return entries;
+}
+
+
+template <typename T>
+inline std::vector<T> TSVFile::getField(const std::vector<std::string>& me_combos,
+                                        const std::vector<std::string>& morphologies,
+                                        const MEComboEntry::Column column) const {
+    std::vector<T> entries;
+    entries.reserve(me_combos.size());
+    for (const auto& item: get(me_combos, morphologies)) {
+        entries.push_back(item.get().template get<T>(column));
+    }
+    return entries;
+}
+
+
 
 }  // namespace TSV

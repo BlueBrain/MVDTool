@@ -76,7 +76,7 @@ public:
         return getNbNeuron();
     }
 
-    virtual void readTSVInfo(const std::string& filename) = 0;
+    virtual void openComboTsv(const std::string& filename) = 0;
 
     virtual bool hasRotations() const = 0;
 

@@ -58,13 +58,13 @@ public:
 
 
     ///
-    /// \brief readTSVInfo
+    /// \brief openComboTsv
     /// \param filename
     ///
     /// Open an TSV file format at 'filename' path
     /// throw TSVException in case of error
     ///
-    void readTSVInfo(const std::string& filename) override;
+    void openComboTsv(const std::string& filename) override;
 
     ///
     /// \brief getNbNeuron

@@ -39,5 +39,24 @@ public:
 };
 
 
+///
+/// \brief Generic TSV exception
+///
+class TSVException: public MVDException {
+  public:
+    TSVException(const std::string& str)
+        : MVDException(str) {}
+};
+
+///
+/// \brief Exception related to TSV file parsing
+///
+class TSVParserException: public TSVException {
+  public:
+    TSVParserException(const std::string& str)
+        : TSVException(str) {}
+};
+
+
 #endif // MVD_EXCEPT_HPP
 

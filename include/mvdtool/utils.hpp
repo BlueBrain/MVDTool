@@ -23,7 +23,8 @@
 #include <vector>
 #include <unordered_set>
 
-namespace {
+namespace MVD {
+namespace utils {
 
 // An implementation to drop duplicates without changing order
 template <typename T>
@@ -36,4 +37,5 @@ inline void vector_remove_dups(std::vector<T>& vec) {
     vec.resize(pos);
 }
 
-}
+}  // namespace utils
+}  // namespace MVD

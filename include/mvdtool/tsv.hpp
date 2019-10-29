@@ -29,16 +29,27 @@
 
 #include <boost/integer.hpp>
 
+
+namespace MVD3 {
+
+class MVD3File;  // fwd decl
+
+}  // namespace MVD3
+
+
 namespace TSV {
 
+class TSVFile;  // Fwd decl
+
+
 ///
-/// \brief The TSVInfo class
+/// \brief The MEComboEntry class
 ///
 /// Includes all the information of a mecombo entry of the tsv file
 ///
-struct TSVInfo {
+struct MEComboEntry {
     std::string morphologyName;
-    boost::int32_t layer;
+    int32_t layer;
     std::string fullMType;
     std::string eType;
     std::string eModel;
@@ -46,33 +57,43 @@ struct TSVInfo {
     double thresholdCurrent;
     double holdingCurrent;
 
-    friend std::ostream& operator<<(std::ostream& os, TSVInfo const& tsvInfo) {
-        return os << tsvInfo.morphologyName << "\t" << tsvInfo.layer << "\t" << tsvInfo.fullMType
-                  << "\t" << tsvInfo.eType << "\t" << tsvInfo.eModel << "\t" << tsvInfo.comboName
-                  << "\t" << tsvInfo.thresholdCurrent << "\t" << tsvInfo.holdingCurrent
-                  << std::endl;
-    }
+    enum Column {
+        MorphologyName,
+        Layer,
+        FullMType,
+        EType,
+        EModel,
+        ComboName,
+        ThresholdCurrent,
+        HoldingCurrent
+    };
+
+    // operator << is a friend
+    friend std::ostream& operator<<(std::ostream& os, MEComboEntry const& MEComboEntry);
+
+  protected:
+    friend class TSVFile;
+
+    template <typename T>
+    T get(const Column col_id) const;
+
 };
 
-struct pair_hash {
-    template <class T1, class T2>
-    std::size_t operator()(const std::pair<T1, T2>& pair) const {
-        return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
-    }
-};
-
-using unordered_pair_map =
-    std::unordered_map<std::pair<std::string, std::string>, TSVInfo, pair_hash>;
-
-enum tsv_columns {morph_name, layer, fullmtype, etype, emodel, combo_name, threshold_current, holding_current};
 
 ///
 /// \brief The TSVFile class
 ///
 /// Represent a tsv me combo file. Reads the information from the mecombo_emodel.tsv file
-/// and saves them in a vector of TSVInfo objects.
+/// and saves them in a vector of MEComboEntry objects.
 ///
 class TSVFile {
+  protected:
+    friend class MVD3::MVD3File;
+    template <typename T>
+    std::vector<T> getField(const std::vector<std::string>& me_combos,
+                            const std::vector<std::string>& morphologies,
+                            const MEComboEntry::Column col_id) const;
+
   public:
     ///
     /// \brief TSVFile
@@ -81,9 +102,7 @@ class TSVFile {
     /// Open and read a tsv file format at 'filename' path
     /// throw TSVException, or HighFive::Exception in case of error
     ///
-    TSVFile(const std::string& filename)
-        : _filename(filename)
-        , tsvFileInfo(readTSVFile(filename, combo_name)) {}
+    TSVFile(const std::string& filename);
 
     ///
     /// \brief TSVFile
@@ -92,16 +111,16 @@ class TSVFile {
     /// Open and read a tsv file format at 'filename' path
     /// throw TSVException, or HighFive::Exception in case of error
     ///
-    TSVFile(const std::string& filename, tsv_columns id)
-            : _filename(filename)
-            , tsvFileInfo(readTSVFile(filename, id)) {}
+    TSVFile(const std::string& filename, MEComboEntry::Column column);
+
+    using vector_ref = std::vector<std::reference_wrapper<const MEComboEntry>>;
 
     ///
     /// \brief TSVFile
     ///
     /// Get all the me types defined in the tsv file
     ///
-    std::vector<TSVInfo> getTSVInfos();
+    vector_ref getAll() const;
 
     ///
     /// \brief TSVFile
@@ -113,7 +132,8 @@ class TSVFile {
     /// throw TSVException, if me_combo or morphology don't match
     /// an entry in tsvFileInfo
     ///
-    std::vector<TSVInfo> getTSVInfos(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+    vector_ref get(const std::vector<std::string>& me_combos,
+                   const std::vector<std::string>& morphologies) const;
 
     ///
     /// \brief TSVFile
@@ -125,7 +145,10 @@ class TSVFile {
     /// throw TSVException, if me_combo or morphology don't match
     /// an entry in tsvFileInfo
     ///
-    std::vector<boost::int32_t> getLayers(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+    inline std::vector<int32_t> getLayers(const std::vector<std::string>& me_combos,
+                                          const std::vector<std::string>& morphologies) const {
+        return getField<int32_t>(me_combos, morphologies, MEComboEntry::Layer);
+    }
 
     ///
     /// \brief TSVFile
@@ -137,7 +160,10 @@ class TSVFile {
     /// throw TSVException, if me_combo or morphology don't match
     /// an entry in tsvFileInfo
     ///
-    std::vector<std::string> getMtypes(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+    inline std::vector<std::string> getMtypes(const std::vector<std::string>& me_combos,
+                                       const std::vector<std::string>& morphologies) const {
+        return getField<std::string>(me_combos, morphologies, MEComboEntry::FullMType);
+    }
 
     ///
     /// \brief TSVFile
@@ -149,7 +175,10 @@ class TSVFile {
     /// throw TSVException, if me_combo or morphology don't match
     /// an entry in tsvFileInfo
     ///
-    std::vector<std::string> getEtypes(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+    inline std::vector<std::string> getEtypes(const std::vector<std::string>& me_combos,
+                                       const std::vector<std::string>& morphologies) const {
+        return getField<std::string>(me_combos, morphologies, MEComboEntry::EType);
+    }
 
     ///
     /// \brief TSVFile
@@ -161,7 +190,10 @@ class TSVFile {
     /// throw TSVException, if me_combo or morphology don't match
     /// an entry in tsvFileInfo
     ///
-    std::vector<std::string> getEmodels(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+    inline std::vector<std::string> getEmodels(const std::vector<std::string>& me_combos,
+                                        const std::vector<std::string>& morphologies) const {
+        return getField<std::string>(me_combos, morphologies, MEComboEntry::EModel);
+    }
 
     ///
     /// \brief TSVFile
@@ -173,7 +205,10 @@ class TSVFile {
     /// throw TSVException, if me_combo or morphology don't match
     /// an entry in tsvFileInfo
     ///
-    std::vector<double> getThresholdCurrents(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+    inline std::vector<double> getThresholdCurrents(const std::vector<std::string>& me_combos,
+                                             const std::vector<std::string>& morphologies) const {
+        return getField<double>(me_combos, morphologies, MEComboEntry::ThresholdCurrent);
+    }
 
     ///
     /// \brief TSVFile
@@ -185,12 +220,26 @@ class TSVFile {
     /// throw TSVException, if me_combo or morphology don't match
     /// an entry in tsvFileInfo
     ///
-    std::vector<double> getHoldingCurrents(const std::vector<std::string>& me_combos, const std::vector<std::string>& morphologies) const;
+    inline std::vector<double> getHoldingCurrents(const std::vector<std::string>& me_combos,
+                                           const std::vector<std::string>& morphologies) const {
+        return getField<double>(me_combos, morphologies, MEComboEntry::HoldingCurrent);
+    }
+
+
+    struct pair_hash {
+        template <class T1, class T2>
+        inline std::size_t operator()(const std::pair<T1, T2>& pair) const {
+            return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
+        }
+    };
+    using unordered_pair_map =
+        std::unordered_map<std::pair<std::string, std::string>, MEComboEntry, pair_hash>;
+
 
   private:
     std::string _filename;
     const unordered_pair_map tsvFileInfo;
-    unordered_pair_map readTSVFile(const std::string& filename, tsv_columns id);
+
 };
 
 }  // namespace TSV

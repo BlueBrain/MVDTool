@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE( basicTestHypercolumns )
 
     MVD3File file(MVD3_FILENAME);
 
-    std::vector<boost::int32_t> hcolumns = file.getHyperColumns();
+    std::vector<int32_t> hcolumns = file.getHyperColumns();
 
     BOOST_CHECK_EQUAL(hcolumns[0], 0);
     BOOST_CHECK_EQUAL(hcolumns[10], 0);
@@ -261,27 +261,11 @@ BOOST_AUTO_TEST_CASE( basicTestminicolumns )
 
     MVD3File file(MVD3_FILENAME);
 
-    std::vector<boost::int32_t> mini_columns = file.getMiniColumns();
+    std::vector<int32_t> mini_columns = file.getMiniColumns();
 
     BOOST_CHECK_EQUAL(mini_columns[100], 1);
     BOOST_CHECK_EQUAL(mini_columns[101], 2);
     BOOST_CHECK_EQUAL(mini_columns[102], 3);
-
-}
-
-
-
-BOOST_AUTO_TEST_CASE( basicLayer )
-{
-    using namespace MVD3;
-
-    MVD3File file(MVD3_FILENAME);
-
-    std::vector<boost::int32_t> layer = file.getLayers();
-
-    BOOST_CHECK_EQUAL(layer[0], 1);
-    BOOST_CHECK_EQUAL(layer[100], 2);
-    BOOST_CHECK_EQUAL(layer[200], 3);
 
 }
 
@@ -379,20 +363,20 @@ BOOST_AUTO_TEST_CASE( genericMVDFile )
 BOOST_AUTO_TEST_CASE( mvdTsvFiles )
 {
     using namespace MVD3;
-
     MVD3File file(MVD3_TSV_FILENAME);
-    file.readTSVInfo(TSV_FILENAME);
+    file.openComboTsv(TSV_FILENAME);
 
-    std::vector<TSV::TSVInfo> TSVInfos = file.getTSVInfo();
+    auto TSVInfos = file.getTSVInfo();
+    const TSV::MEComboEntry& info = TSVInfos[9];
 
-    TSV::TSVInfo info = TSVInfos[9];
-
-    std::string referenceTSVInfo("87dd39e6b0255ec053001f16da85b0e0, 1, L1_DAC, dSTUT, dSTUT_321707905, dSTUT_1_87dd39e6b0255ec053001f16da85b0e0, 0, 0.1");
-
-    std::stringstream ss;
-    ss << info.morphologyName << ", " << info.layer << ", " << info.fullMType << ", " << info.eType << ", " << info.eModel << ", " << info.comboName << ", " << info.thresholdCurrent  << ", " << info.holdingCurrent;
-
-    BOOST_CHECK_EQUAL(referenceTSVInfo, ss.str());
+    BOOST_CHECK_EQUAL(info.morphologyName, "87dd39e6b0255ec053001f16da85b0e0");
+    BOOST_CHECK_EQUAL(info.layer, 1);
+    BOOST_CHECK_EQUAL(info.fullMType, "L1_DAC");
+    BOOST_CHECK_EQUAL(info.eType, "dSTUT");
+    BOOST_CHECK_EQUAL(info.eModel, "dSTUT_321707905");
+    BOOST_CHECK_EQUAL(info.comboName, "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0");
+    BOOST_CHECK_EQUAL(info.thresholdCurrent, 0);
+    BOOST_CHECK_EQUAL(info.holdingCurrent, 0.1);
 }
 
 
@@ -401,7 +385,7 @@ BOOST_AUTO_TEST_CASE( mvdTsvMtypes )
     using namespace MVD3;
 
     MVD3File file(MVD3_TSV_FILENAME);
-    file.readTSVInfo(TSV_FILENAME);
+    file.openComboTsv(TSV_FILENAME);
 
     std::vector<std::string> mTypes = file.getMtypes();
 
@@ -416,7 +400,7 @@ BOOST_AUTO_TEST_CASE( mvdTsvEmodels )
     using namespace MVD3;
 
     MVD3File file(MVD3_TSV_FILENAME);
-    file.readTSVInfo(TSV_FILENAME);
+    file.openComboTsv(TSV_FILENAME);
 
     std::vector<std::string> eModels = file.getEmodels();
 
@@ -431,26 +415,13 @@ BOOST_AUTO_TEST_CASE( mvdTsvLayers )
     using namespace MVD3;
 
     MVD3File file(MVD3_TSV_FILENAME);
-    file.readTSVInfo(TSV_FILENAME);
+    file.openComboTsv(TSV_FILENAME);
 
-    std::vector<boost::int32_t> layers = file.getLayers();
+    std::vector<int32_t> layers = file.getLayers();
 
-    BOOST_CHECK_EQUAL(layers[0], static_cast<boost::int32_t>(1));
-    BOOST_CHECK_EQUAL(layers[9], static_cast<boost::int32_t>(1));
-    BOOST_CHECK_EQUAL(layers[33], static_cast<boost::int32_t>(6));
+    BOOST_CHECK_EQUAL(layers[0], static_cast<int32_t>(1));
+    BOOST_CHECK_EQUAL(layers[9], static_cast<int32_t>(1));
+    BOOST_CHECK_EQUAL(layers[33], static_cast<int32_t>(6));
 }
 
 
-BOOST_AUTO_TEST_CASE( mvdTsvAllLayers )
-{
-    using namespace MVD3;
-
-    MVD3File file(MVD3_TSV_FILENAME);
-    file.readTSVInfo(TSV_FILENAME);
-
-    std::vector<boost::int32_t> allLayers = file.listAllLayers();
-
-    BOOST_CHECK_EQUAL(allLayers[0], static_cast<boost::int32_t>(1));
-    BOOST_CHECK_EQUAL(allLayers[1], static_cast<boost::int32_t>(2));
-    BOOST_CHECK_EQUAL(allLayers[2], static_cast<boost::int32_t>(3));
-}

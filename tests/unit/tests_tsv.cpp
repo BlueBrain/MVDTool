@@ -31,12 +31,20 @@ BOOST_AUTO_TEST_CASE( ReadTSVFile )
 
     TSVFile mecombofile(TSV_FILENAME);
 
-    auto infos = mecombofile.getTSVInfos({"dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"}, {"87dd39e6b0255ec053001f16da85b0e0"});
+    auto infos = mecombofile.get({"dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"},
+                                 {"87dd39e6b0255ec053001f16da85b0e0"});
 
     std::string referenceTSVInfo("87dd39e6b0255ec053001f16da85b0e0, 1, L1_DAC, dSTUT, dSTUT_321707905, dSTUT_1_87dd39e6b0255ec053001f16da85b0e0, 0, 0.1");
-
+    const MEComboEntry& entry = infos[0];
     std::stringstream ss;
-    ss << infos[0].morphologyName << ", " << infos[0].layer << ", " << infos[0].fullMType << ", " << infos[0].eType << ", " << infos[0].eModel << ", " << infos[0].comboName << ", " << infos[0].thresholdCurrent  << ", " << infos[0].holdingCurrent;
+    ss << entry.morphologyName << ", "
+       << entry.layer << ", "
+       << entry.fullMType << ", "
+       << entry.eType << ", "
+       << entry.eModel << ", "
+       << entry.comboName << ", "
+       << entry.thresholdCurrent  << ", "
+       << entry.holdingCurrent;
 
     BOOST_CHECK_EQUAL(referenceTSVInfo, ss.str());
 
@@ -48,13 +56,9 @@ BOOST_AUTO_TEST_CASE( TSVFileParsing )
 
     TSVFile mecombofile(TSV_FILENAME);
 
-    // try to get infos from mecombo that doesn't exist in the mecombo.tsv file
-    try {
-        auto infos = mecombofile.getTSVInfos({"dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"}, {"a4dc631127a7bde0adf5f58634397757"});
-
-        BOOST_FAIL("Should report error the requested morphology is not found in the tsv file");
-    } catch(...){
-
-    }
+    // Ensure it throws when asking mecombo that doesn't exist in the mecombo.tsv file
+    BOOST_CHECK_THROW(mecombofile.get({"dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"},
+                                      {"a4dc631127a7bde0adf5f58634397757"}),
+                      TSVException);
 
 }
