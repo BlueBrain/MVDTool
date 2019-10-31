@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
+ * Copyright (C) 2019, Blue Brain Project, EPFL.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,8 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD3_MISC_HPP
-#define MVD3_MISC_HPP
+#pragma once
 
 #include <algorithm>
 #include <set>
@@ -140,7 +139,6 @@ using vec_string = std::vector<std::string>;
 namespace MVD3 {
 
 using namespace MVD::utils;
-using TSVColumn = TSV::MEComboEntry::Column;
 
 
 inline MVD3File::MVD3File(const std::string& str)
@@ -358,8 +356,8 @@ inline TSV::TSVFile::vector_ref MVD3File::getTSVInfo(const Range& range) const {
 // Protected
 
 template <typename T>
-inline std::vector<T> MVD3File::getDataFromTSV(const TSV::MEComboEntry::Column col,
-                                               const Range range) const {
+inline std::vector<T> MVD3File::getDataFromTSV(const TSVColumn& col,
+                                               const Range& range) const {
     if (!_tsv_file) {
         throw MVDException("No TSV file is opened with MVD3. Unable to extract col #"
                            + std::to_string(col));
@@ -386,7 +384,7 @@ inline std::vector<T> MVD3File::getDataFromMVD(const std::string& did_ds,
 template <typename T>
 inline std::vector<T> MVD3File::getDataFromTSVorMVD(const std::string& did_ds,
                                                     const std::string& did_lib,
-                                                    const TSV::MEComboEntry::Column col,
+                                                    const TSVColumn& col,
                                                     const Range& range) const {
     if (_tsv_file) {
         return getDataFromTSV<T>(col, range);
@@ -396,5 +394,3 @@ inline std::vector<T> MVD3File::getDataFromTSVorMVD(const std::string& did_ds,
 
 
 }  // namespace MVD3
-
-#endif  // MVD3_MISC_HPP

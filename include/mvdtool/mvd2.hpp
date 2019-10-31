@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
- *               2017 Fernando Pereira <fernando.pereira@epfl.ch>
+ * Copyright (C) 2019, Blue Brain Project, EPFL.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,17 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD2_HPP
-#define MVD2_HPP
+#pragma once
 
-/**
- * @file mvd2.hpp
- *
- * mvd2 file parser
- *
- * */
-
-#include "mvd_base.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -35,6 +25,7 @@
 #include <string>
 #include <vector>
 
+#include "mvd_base.hpp"
 
 ///
 /// MVD2 parsing / helper functions
@@ -156,5 +147,3 @@ void parseMorphTypeLine(const char* line, std::string & name, std::string & name
 
 
 #include "bits/mvd2_misc.hpp"
-
-#endif // MVD2_HPP

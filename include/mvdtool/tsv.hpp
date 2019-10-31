@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 #pragma once
 
 #ifndef H5_USE_BOOST
@@ -92,7 +91,7 @@ class TSVFile {
     template <typename T>
     std::vector<T> getField(const std::vector<std::string>& me_combos,
                             const std::vector<std::string>& morphologies,
-                            const MEComboEntry::Column col_id) const;
+                            const MEComboEntry::Column& col_id) const;
 
   public:
     ///
@@ -111,7 +110,7 @@ class TSVFile {
     /// Open and read a tsv file format at 'filename' path
     /// throw TSVException, or HighFive::Exception in case of error
     ///
-    TSVFile(const std::string& filename, MEComboEntry::Column column);
+    TSVFile(const std::string& filename, const MEComboEntry::Column& column);
 
     using vector_ref = std::vector<std::reference_wrapper<const MEComboEntry>>;
 

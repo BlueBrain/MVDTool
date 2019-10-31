@@ -16,7 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 #pragma once
 
 #include <fstream>
@@ -44,7 +43,7 @@ inline void split(const std::string& s, char delim, std::vector<std::string>& el
 }
 
 inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
-                                               const MEComboEntry::Column id_column) {
+                                               const MEComboEntry::Column& column) {
     std::ifstream file(filename);
     std::string line;
     std::vector<std::string> line_info;
@@ -88,7 +87,7 @@ inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
             MEComboEntryLine.holdingCurrent = std::stod(line_info[MEComboEntry::HoldingCurrent]);
         }
         MEComboEntrys.insert(
-            {{line_info[id_column], MEComboEntryLine.morphologyName}, MEComboEntryLine});
+            {{line_info[column], MEComboEntryLine.morphologyName}, MEComboEntryLine});
         line_info.clear();
     }
 
@@ -163,7 +162,7 @@ inline TSVFile::TSVFile(const std::string& filename)
     , tsvFileInfo(readTSVFile(filename, MEComboEntry::ComboName)) {}
 
 
-inline TSVFile::TSVFile(const std::string& filename, MEComboEntry::Column column)
+inline TSVFile::TSVFile(const std::string& filename, const MEComboEntry::Column& column)
     : _filename(filename)
     , tsvFileInfo(readTSVFile(filename, column)) {}
 
@@ -201,7 +200,7 @@ inline TSVFile::vector_ref TSVFile::get(const std::vector<std::string>& me_combo
 template <typename T>
 inline std::vector<T> TSVFile::getField(const std::vector<std::string>& me_combos,
                                         const std::vector<std::string>& morphologies,
-                                        const MEComboEntry::Column column) const {
+                                        const MEComboEntry::Column& column) const {
     std::vector<T> entries;
     entries.reserve(me_combos.size());
     for (const MEComboEntry& item: get(me_combos, morphologies)) {
@@ -209,7 +208,6 @@ inline std::vector<T> TSVFile::getField(const std::vector<std::string>& me_combo
     }
     return entries;
 }
-
 
 
 }  // namespace TSV

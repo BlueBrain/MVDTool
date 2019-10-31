@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
+ * Copyright (C) 2019, Blue Brain Project, EPFL.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,8 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD3_HPP
-#define MVD3_HPP
+#pragma once
 
 #ifndef H5_USE_BOOST
 #define H5_USE_BOOST
@@ -271,9 +270,11 @@ public:
 
 
 protected:
+    using TSVColumn = TSV::MEComboEntry::Column;
+
     template <typename T = std::string>
-    std::vector<T> getDataFromTSV(const TSV::MEComboEntry::Column col,
-                                  const Range range) const;
+    std::vector<T> getDataFromTSV(const TSVColumn& col,
+                                  const Range& range) const;
 
     template <typename T = std::string>
     std::vector<T> getDataFromMVD(const std::string& field,
@@ -283,7 +284,7 @@ protected:
     template <typename T = std::string>
     std::vector<T> getDataFromTSVorMVD(const std::string& field,
                                        const std::string& library,
-                                       const TSV::MEComboEntry::Column col,
+                                       const TSVColumn& col,
                                        const Range& range) const;
 
 private:
@@ -297,5 +298,3 @@ private:
 }  // namespace MVD3
 
 #include "bits/mvd3_misc.hpp"
-
-#endif // MVD3_HPP

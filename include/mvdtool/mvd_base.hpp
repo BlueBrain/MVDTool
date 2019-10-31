@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
- *               2017 Fernando Pereira <fernando.pereira@epfl.ch>
- *               2019 Matthias Wolf <matthias.wolf@epfl.ch>
+ * Copyright (C) 2019, Blue Brain Project, EPFL.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -105,8 +103,6 @@ public:
 
 
 
-
-
 inline MVDType::MVDType _mvd_format(const std::string & filename) {
     using boost::algorithm::ends_with;
     // mvd2
@@ -122,5 +118,4 @@ inline MVDType::MVDType _mvd_format(const std::string & filename) {
 }
 
 
-
-} // ::MVD
+}  // namespace MVD
