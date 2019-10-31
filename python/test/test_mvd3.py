@@ -77,6 +77,12 @@ def test_etype_values_indices(circuit):
     assert etypes[2] == "cADpyr"
 
 
+def test_etype_values_ranges(circuit):
+    etypes = circuit.etypes(20, 10)
+    assert len(etypes) == 10
+    assert etypes[0] == "cADpyr"
+
+
 def test_mtype_values(circuit):
     mtypes = circuit.mtypes()
 

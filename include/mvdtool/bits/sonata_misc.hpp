@@ -48,7 +48,7 @@ const std::string did_holding_current = "holding_current";
 const std::string did_model_template = "model_template";
 
 inline auto select(const MVD::Range& range, size_t size) {
-    auto range_end = (range.count > 0)? range.offset + range.count : size - range.offset;
+    auto range_end = (range.count > 0)? range.offset + range.count : size;
     return sonata::Selection({{range.offset, range_end}});
 }
 
