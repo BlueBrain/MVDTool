@@ -344,7 +344,7 @@ inline TSV::TSVFile::vector_ref MVD3File::getTSVInfo(const Range& range) const {
     if(!_tsv_file) {
         throw MVDException("No TSV file is opened with MVD3. Unable to get the TSVInfo");
     }
-    const auto& f = [this](const vec_string& combos, const vec_string& morphos) {
+    const auto& f = [&](const vec_string& combos, const vec_string& morphos) {
         return  _tsv_file->get(combos, morphos);
     };
     using T = std::reference_wrapper<const TSV::MEComboEntry>;
@@ -362,7 +362,7 @@ inline std::vector<T> MVD3File::getDataFromTSV(const TSVColumn& col,
         throw MVDException("No TSV file is opened with MVD3. Unable to extract col #"
                            + std::to_string(col));
     }
-    const auto& f = [this, col](const vec_string& combos, const vec_string& morphos) {
+    const auto& f = [&](const vec_string& combos, const vec_string& morphos) {
        return  _tsv_file->getField<T>(combos, morphos, col);
     };
     return tsv_get_chunked<T>(*this, f, range);

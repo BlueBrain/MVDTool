@@ -33,13 +33,15 @@ namespace TSV {
 
 namespace detail {
 
-inline void split(const std::string& s, char delim, std::vector<std::string>& elems) {
+inline std::vector<std::string> split(const std::string& s, char delim) {
     std::stringstream ss;
+    std::vector<std::string> elems;
     ss.str(s);
     std::string item;
     while (std::getline(ss, item, delim)) {
         elems.push_back(item);
     }
+    return elems;
 }
 
 inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
@@ -53,7 +55,7 @@ inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
     int line_index = 0;
     std::getline(file, line);
     line_index++;
-    split(line, '\t', line_info);
+    line_info = split(line, '\t');
     if (line_info.size() != 6 && line_info.size() != 8) {
         std::ostringstream ss;
         ss << "Error in " << filename << " line " << line_index << ", unexpected nfields "
@@ -65,7 +67,7 @@ inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
     while (std::getline(file, line)) {
         line_index++;
         MEComboEntry MEComboEntryLine;
-        split(line, '\t', line_info);
+        line_info = split(line, '\t');
         if (line_info.size() != 6 && line_info.size() != 8) {
             std::ostringstream ss;
             ss << "Error in " << filename << " line " << line_index << ". "
