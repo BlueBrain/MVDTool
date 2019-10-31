@@ -284,9 +284,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestEmodel )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<std::string> emodels;
-
-    emodels = file.getEmodels();
+    std::vector<std::string> emodels{file.getEmodels()};
 
     BOOST_CHECK_EQUAL(emodels[0], "CA1_int_cAC_990611HP2_2019032816214");
     BOOST_CHECK_EQUAL(emodels[42], "CA1_pyr_cACpyr_oh140807_A0_idJ_2019032814272");
@@ -299,9 +297,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestEtype )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<std::string> eTypes;
-
-    eTypes = file.getEtypes();
+    std::vector<std::string> eTypes{file.getEtypes()};
 
     BOOST_CHECK_EQUAL(eTypes[0], "cAC");
     BOOST_CHECK_EQUAL(eTypes[41], "cACpyr");
@@ -313,7 +309,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestThresholdCurrent )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<double> thresholdCurrents = file.getThresholdCurrents();
+    std::vector<double> thresholdCurrents{file.getThresholdCurrents()};
 
     BOOST_CHECK_EQUAL(thresholdCurrents[0], static_cast<double>(0.33203125));
     BOOST_CHECK_EQUAL(thresholdCurrents[42], static_cast<double>(0.5078125));
@@ -325,7 +321,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestHoldingCurrent )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<double> holdingCurrents = file.getHoldingCurrents();
+    std::vector<double> holdingCurrents{file.getHoldingCurrents()};
 
     BOOST_CHECK_EQUAL(holdingCurrents[0], static_cast<double>(0.0058290600165378202));
     BOOST_CHECK_EQUAL(holdingCurrents[42], static_cast<double>(-0.22734983535883702));
@@ -336,7 +332,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestAllMtypes )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<std::string> allMtypes = file.listAllMtypes();
+    std::vector<std::string> allMtypes{file.listAllMtypes()};
 
     BOOST_CHECK_EQUAL(allMtypes[0], "SO_BP");
     BOOST_CHECK_EQUAL(allMtypes[1], "SO_BS");
@@ -347,7 +343,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestAllLayers )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<std::string> allLayers = file.listAllLayers();
+    std::vector<std::string> allLayers{file.listAllLayers()};
 
     BOOST_CHECK_EQUAL(allLayers[0], "SR");
     BOOST_CHECK_EQUAL(allLayers[1], "SP");

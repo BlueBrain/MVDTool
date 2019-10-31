@@ -34,19 +34,15 @@ BOOST_AUTO_TEST_CASE( ReadTSVFile )
     auto infos = mecombofile.get({"dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"},
                                  {"87dd39e6b0255ec053001f16da85b0e0"});
 
-    std::string referenceTSVInfo("87dd39e6b0255ec053001f16da85b0e0, 1, L1_DAC, dSTUT, dSTUT_321707905, dSTUT_1_87dd39e6b0255ec053001f16da85b0e0, 0, 0.1");
-    const MEComboEntry& entry = infos[0];
-    std::stringstream ss;
-    ss << entry.morphologyName << ", "
-       << entry.layer << ", "
-       << entry.fullMType << ", "
-       << entry.eType << ", "
-       << entry.eModel << ", "
-       << entry.comboName << ", "
-       << entry.thresholdCurrent  << ", "
-       << entry.holdingCurrent;
-
-    BOOST_CHECK_EQUAL(referenceTSVInfo, ss.str());
+    const MEComboEntry& info = infos[0];
+    BOOST_CHECK_EQUAL(info.morphologyName, "87dd39e6b0255ec053001f16da85b0e0");
+    BOOST_CHECK_EQUAL(info.layer, 1);
+    BOOST_CHECK_EQUAL(info.fullMType, "L1_DAC");
+    BOOST_CHECK_EQUAL(info.eType, "dSTUT");
+    BOOST_CHECK_EQUAL(info.eModel, "dSTUT_321707905");
+    BOOST_CHECK_EQUAL(info.comboName, "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0");
+    BOOST_CHECK_EQUAL(info.thresholdCurrent, 0);
+    BOOST_CHECK_EQUAL(info.holdingCurrent, 0.1);
 
 }
 
