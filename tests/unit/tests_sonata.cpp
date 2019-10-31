@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE( basicTestMorphologies )
 {
     SonataFile file(SONATA_FILENAME);
 
-    std::vector<std::string> morpho = file.getMorphologies();
+    const auto morpho = file.getMorphologies();
 
     BOOST_CHECK_EQUAL(morpho[0], "sm090227a1-2_idC");
     BOOST_CHECK_EQUAL(morpho[20], "dend-C280998A-P3_axon-sm110131a1-3_INT_idA");
@@ -145,8 +145,8 @@ BOOST_AUTO_TEST_CASE( basicTestMorphologiesRange )
 {
     SonataFile file(SONATA_FILENAME);
 
-    std::vector<std::string> morpho = file.getMorphologies(Range(10,10));
-    std::vector<std::string> all_morpho = file.getMorphologies();
+    const auto morpho = file.getMorphologies(Range(10,10));
+    const auto all_morpho = file.getMorphologies();
 
     BOOST_CHECK_EQUAL(morpho.size(), 10);
 
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE( basicTestEtype )
 {
     SonataFile file(SONATA_FILENAME);
 
-    std::vector<std::string> etype = file.getEtypes();
+    const auto etype = file.getEtypes();
 
     BOOST_CHECK_EQUAL(etype[0], "cACint");
     BOOST_CHECK_EQUAL(etype[10], "cACint");
@@ -176,9 +176,9 @@ BOOST_AUTO_TEST_CASE( basicTestEtypeRange )
 {
     SonataFile file(SONATA_FILENAME);
 
-    std::vector<std::string> etype = file.getEtypes(Range(10,10));
-    std::vector<std::string> etype_all = file.getEtypes();
-    std::vector<std::string> list_etypes = file.listAllEtypes();
+    const auto etype = file.getEtypes(Range(10,10));
+    const auto etype_all = file.getEtypes();
+    const auto list_etypes = file.listAllEtypes();
 
     BOOST_CHECK_EQUAL(etype.size(), 10);
 
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE( basicTestMypes )
 {
     SonataFile file(SONATA_FILENAME);
 
-    std::vector<std::string> mtype = file.getMtypes();
+    const auto mtype = file.getMtypes();
 
     BOOST_CHECK_EQUAL(mtype[0], "L1_SLAC");
     BOOST_CHECK_EQUAL(mtype[10], "L1_SLAC");
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE( basicTestRegions )
 {
     SonataFile file(SONATA_FILENAME);
 
-    std::vector<std::string> region = file.getRegions();
+    const auto region = file.getRegions();
 
     BOOST_CHECK_EQUAL(region[1], "L1");
     BOOST_CHECK_EQUAL(region[9], "L2");
@@ -222,9 +222,9 @@ BOOST_AUTO_TEST_CASE( basicTestMtypeRange )
 {
     SonataFile file(SONATA_FILENAME);
 
-    std::vector<std::string> mtype = file.getMtypes(Range(10,10));
-    std::vector<std::string> mtype_all = file.getMtypes();
-    std::vector<std::string> list_mtype = file.listAllMtypes();
+    const auto mtype = file.getMtypes(Range(10,10));
+    const auto mtype_all = file.getMtypes();
+    const auto list_mtype = file.listAllMtypes();
 
     BOOST_CHECK_EQUAL(mtype.size(), 10);
 
@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE( basicTestSynClass )
 {
     SonataFile file(SONATA_FILENAME);
 
-    std::vector<std::string> morpho = file.getSynapseClass();
+    const auto morpho = file.getSynapseClass();
 
     BOOST_CHECK_EQUAL(morpho[0], "INH");
     BOOST_CHECK_EQUAL(morpho[10], "INH");
@@ -255,9 +255,9 @@ BOOST_AUTO_TEST_CASE( basicTestSynClassRange )
 {
     SonataFile file(SONATA_FILENAME);
 
-    std::vector<std::string> syn_class = file.getSynapseClass();
-    std::vector<std::string> syn_class_all = file.getSynapseClass();
-    std::vector<std::string> list_syn_class = file.listAllSynapseClass();
+    const auto syn_class = file.getSynapseClass();
+    const auto syn_class_all = file.getSynapseClass();
+    const auto list_syn_class = file.listAllSynapseClass();
 
     for(int i =0; i < 10; ++i){
         BOOST_CHECK_EQUAL(syn_class[i], syn_class_all[i+10]);
@@ -284,7 +284,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestEmodel )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<std::string> emodels{file.getEmodels()};
+    const auto emodels = file.getEmodels();
 
     BOOST_CHECK_EQUAL(emodels[0], "CA1_int_cAC_990611HP2_2019032816214");
     BOOST_CHECK_EQUAL(emodels[42], "CA1_pyr_cACpyr_oh140807_A0_idJ_2019032814272");
@@ -297,7 +297,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestEtype )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<std::string> eTypes{file.getEtypes()};
+    const auto eTypes = file.getEtypes();
 
     BOOST_CHECK_EQUAL(eTypes[0], "cAC");
     BOOST_CHECK_EQUAL(eTypes[41], "cACpyr");
@@ -309,7 +309,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestThresholdCurrent )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<double> thresholdCurrents{file.getThresholdCurrents()};
+    const auto thresholdCurrents = file.getThresholdCurrents();
 
     BOOST_CHECK_EQUAL(thresholdCurrents[0], static_cast<double>(0.33203125));
     BOOST_CHECK_EQUAL(thresholdCurrents[42], static_cast<double>(0.5078125));
@@ -321,7 +321,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestHoldingCurrent )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<double> holdingCurrents{file.getHoldingCurrents()};
+    const auto holdingCurrents = file.getHoldingCurrents();
 
     BOOST_CHECK_EQUAL(holdingCurrents[0], static_cast<double>(0.0058290600165378202));
     BOOST_CHECK_EQUAL(holdingCurrents[42], static_cast<double>(-0.22734983535883702));
@@ -332,7 +332,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestAllMtypes )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<std::string> allMtypes{file.listAllMtypes()};
+    const auto allMtypes = file.listAllMtypes();
 
     BOOST_CHECK_EQUAL(allMtypes[0], "SO_BP");
     BOOST_CHECK_EQUAL(allMtypes[1], "SO_BS");
@@ -343,7 +343,7 @@ BOOST_AUTO_TEST_CASE( newSonataTestAllLayers )
 {
     SonataFile file(SONATA_FILENAME_NEW_FORMAT);
 
-    std::vector<std::string> allLayers{file.listAllLayers()};
+    const auto allLayers = file.listAllLayers();
 
     BOOST_CHECK_EQUAL(allLayers[0], "SR");
     BOOST_CHECK_EQUAL(allLayers[1], "SP");
