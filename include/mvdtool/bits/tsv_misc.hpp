@@ -46,54 +46,47 @@ inline std::vector<std::string> split(const std::string& s, char delim) {
 
 inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
                                                const MEComboEntry::Column& column) {
+    TSVFile::unordered_pair_map combo_entries;
     std::ifstream file(filename);
     std::string line;
-    std::vector<std::string> line_info;
-    TSVFile::unordered_pair_map MEComboEntrys;
-
-    // Read first line to calculate the number of columns/info
     int line_index = 0;
+
+    auto ensure_correct_n_fields = [&](size_t found_fields){
+        if (found_fields != 6 && found_fields != 8) {
+            std::ostringstream ss;
+            ss << "Error in " << filename << " line " << line_index << ": "
+               << "Unexpected " << found_fields << " fields. "
+               << "Expecting 6 (Currents = 0) or 8" << std::endl;
+            throw TSVParserException(ss.str());
+        }
+    };
+
+    // Read Header (field names)
     std::getline(file, line);
-    line_index++;
-    line_info = split(line, '\t');
-    if (line_info.size() != 6 && line_info.size() != 8) {
-        std::ostringstream ss;
-        ss << "Error in " << filename << " line " << line_index << ", unexpected nfields "
-           << line_info.size() << "; expecting 6 (hippocampus) or 8 (somatosensory)" << std::endl;
-        throw TSVParserException(ss.str());
-    }
-    line_info.clear();
+    ensure_correct_n_fields(split(line, '\t').size());
 
     while (std::getline(file, line)) {
         line_index++;
-        MEComboEntry MEComboEntryLine;
-        line_info = split(line, '\t');
-        if (line_info.size() != 6 && line_info.size() != 8) {
-            std::ostringstream ss;
-            ss << "Error in " << filename << " line " << line_index << ". "
-               << "Unexpected nfields " << line_info.size() << ". "
-               << "Expecting 6 (hippocampus) or 8 (somatosensory)" << std::endl;
-            throw TSVParserException(ss.str());
-        }
-        MEComboEntryLine.morphologyName = line_info[MEComboEntry::MorphologyName];
-        MEComboEntryLine.layer = std::stoi(line_info[MEComboEntry::Layer]);
-        MEComboEntryLine.fullMType = line_info[MEComboEntry::FullMType];
-        MEComboEntryLine.eType = line_info[MEComboEntry::EType];
-        MEComboEntryLine.eModel = line_info[MEComboEntry::EModel];
-        MEComboEntryLine.comboName = line_info[MEComboEntry::ComboName];
-        if (line_info.size() == 6) {
-            MEComboEntryLine.thresholdCurrent = 0;
-            MEComboEntryLine.holdingCurrent = 0;
-        } else if (line_info.size() == 8) {
-            MEComboEntryLine.thresholdCurrent = std::stod(line_info[MEComboEntry::ThresholdCurrent]);
-            MEComboEntryLine.holdingCurrent = std::stod(line_info[MEComboEntry::HoldingCurrent]);
-        }
-        MEComboEntrys.insert(
-            {{line_info[column], MEComboEntryLine.morphologyName}, MEComboEntryLine});
-        line_info.clear();
+        auto line_info = split(line, '\t');
+        ensure_correct_n_fields(line_info.size());
+
+        auto morph_name = line_info[MEComboEntry::MorphologyName];
+        combo_entries.insert({
+            {line_info[column], morph_name},
+            MEComboEntry {  // rvalue gets moved
+                morph_name,
+                std::stoi(line_info[MEComboEntry::Layer]),
+                line_info[MEComboEntry::FullMType],
+                line_info[MEComboEntry::EType],
+                line_info[MEComboEntry::EModel],
+                line_info[MEComboEntry::ComboName],
+                (line_info.size() == 8)? std::stod(line_info[MEComboEntry::ThresholdCurrent]) : .0,
+                (line_info.size() == 8)? std::stod(line_info[MEComboEntry::HoldingCurrent]) : .0
+            }
+        });
     }
 
-    return MEComboEntrys;
+    return combo_entries;
 }
 
 }  // namespace detail
