@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
- *               2017 Fernando Pereira <fernando.pereira@epfl.ch>
+ * Copyright (C) 2019, Blue Brain Project, EPFL.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,8 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD2_MISC_HPP
-#define MVD2_MISC_HPP
+#pragma once
 
 #include <cstdlib>
 #include <cstdio>
@@ -354,5 +352,3 @@ inline void MVD2File::init_counter() const {
 
 
 } // ::MVD2
-
-#endif // MVD2_MISC_HPP

@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
- *               2017 Fernando Pereira <fernando.pereira@epfl.ch>
+ * Copyright (C) 2019, Blue Brain Project, EPFL.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,34 +16,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD2_HPP
-#define MVD2_HPP
+#pragma once
 
-/**
- * @file mvd2.hpp
- *
- * mvd2 file parser
- *
- * */
-
-#include <vector>
-#include <set>
-#include <string>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <cstdlib>
-#include "mvd_base.hpp"
+#include <set>
+#include <string>
+#include <vector>
 
+#include "mvd_base.hpp"
 
 ///
 /// MVD2 parsing / helper functions
 ///
-namespace MVD2{
+namespace MVD2 {
 
 ///
 /// \brief data type in the current MVD2 line
 ///
-enum DataSet{
+enum DataSet {
     None = 0,
     NeuronLoaded = 1,
     MicroBoxData = 2,
@@ -105,7 +96,7 @@ public:
     /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
     ///  of each selected neurons ( all by default )
     ///
-    MVD::Positions getPositions(const MVD::Range & range = MVD::Range(0,0)) const;
+    MVD::Positions getPositions(const MVD::Range & range = MVD::Range::all()) const;
 
 
     ///
@@ -113,7 +104,7 @@ public:
     /// \return a double vector of size N with the rotations
     /// of each selected neurons ( all by default )
     ///
-    MVD::Rotations getRotations(const MVD::Range & range = MVD::Range(0,0)) const;
+    MVD::Rotations getRotations(const MVD::Range & range = MVD::Range::all()) const;
 
 
 
@@ -129,7 +120,6 @@ private:
     // It can be safely reconstructed without affecting bahvior, only performance
     mutable Counter counter;
     void init_counter() const;
-
 };
 
 
@@ -157,5 +147,3 @@ void parseMorphTypeLine(const char* line, std::string & name, std::string & name
 
 
 #include "bits/mvd2_misc.hpp"
-
-#endif // MVD2_HPP

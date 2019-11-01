@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
- *               2017 Fernando Pereira <fernando.pereira@epfl.ch>
- *               2019 Matthias Wolf <matthias.wolf@epfl.ch>
+ * Copyright (C) 2019, Blue Brain Project, EPFL.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,8 +23,10 @@
 #include <algorithm>
 #include <boost/multi_array.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/integer.hpp>
 
 #include "mvd_except.hpp"
+#include "tsv.hpp"
 
 namespace MVD {
 
@@ -45,9 +45,12 @@ enum MVDType{
 }
 
 
-struct Range{
+class Range{
+public:
     inline Range(const size_t offset_=0, const size_t count_=0) : offset(offset_), count(count_) {}
 
+    inline static Range all() { return Range(0,0); }
+    inline bool is_empty() const { return count == 0; }
     size_t offset;
     size_t count;
 };
@@ -58,8 +61,8 @@ public:
     inline MVDFile() {}
     inline virtual ~MVDFile() {}
     virtual size_t getNbNeuron() const = 0;
-    virtual Positions getPositions(const Range & range = Range(0,0)) const = 0;
-    virtual Rotations getRotations(const Range & range = Range(0,0)) const = 0;
+    virtual Positions getPositions(const Range & range = Range::all()) const = 0;
+    virtual Rotations getRotations(const Range & range = Range::all()) const = 0;
 };
 
 
@@ -70,43 +73,46 @@ class File : public MVDFile {
 public:
     inline File() = default;
     inline virtual ~File() = default;
-    virtual size_t size() const { return getNbNeuron(); }
+    virtual size_t size() const {
+        return getNbNeuron();
+    }
+
+    virtual void openComboTsv(const std::string& filename) = 0;
 
     virtual bool hasRotations() const = 0;
 
-    virtual std::vector<std::string> getMorphologies(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getEtypes(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getMtypes(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getEmodels(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getRegions(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getSynapseClass(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<std::string> getMorphologies(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getEtypes(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getMtypes(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getEmodels(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getRegions(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getSynapseClass(const Range& range = Range::all()) const = 0;
 
     virtual bool hasCurrents() const = 0;
-    virtual std::vector<double> getThresholdCurrents(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<double> getHoldingCurrents(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<double> getThresholdCurrents(const Range& range = Range::all()) const = 0;
+    virtual std::vector<double> getHoldingCurrents(const Range& range = Range::all()) const = 0;
 
-    virtual std::vector<size_t> getIndexEtypes(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<size_t> getIndexMtypes(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<size_t> getIndexRegions(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<size_t> getIndexSynapseClass(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<size_t> getIndexEtypes(const Range& range = Range::all()) const = 0;
+    virtual std::vector<size_t> getIndexMtypes(const Range& range = Range::all()) const = 0;
+    virtual std::vector<size_t> getIndexRegions(const Range& range = Range::all()) const = 0;
+    virtual std::vector<size_t> getIndexSynapseClass(const Range& range = Range::all()) const = 0;
 
     virtual std::vector<std::string> listAllEtypes() const = 0;
     virtual std::vector<std::string> listAllMtypes() const = 0;
+    virtual std::vector<std::string> listAllEmodels() const = 0;
     virtual std::vector<std::string> listAllRegions() const = 0;
     virtual std::vector<std::string> listAllSynapseClass() const = 0;
 };
 
 
 
-
-
 inline MVDType::MVDType _mvd_format(const std::string & filename) {
     using boost::algorithm::ends_with;
     // mvd2
-    const std::string mvd_ext = ".mvd2";
     if (ends_with(filename, ".mvd2")) {
         return MVDType::MVD2;
     }
+    // mvd3
     if (ends_with(filename, ".mvd3")) {
         return MVDType::MVD3;
     }
@@ -115,5 +121,4 @@ inline MVDType::MVDType _mvd_format(const std::string & filename) {
 }
 
 
-
-} // ::MVD
+}  // namespace MVD

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
+ * Copyright (C) 2019, Blue Brain Project, EPFL.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,18 +20,18 @@
 
 #include <string>
 #include <vector>
-#include <unordered_set>
 
 #include <boost/math/quaternion.hpp>
 
 #include <highfive/H5DataSet.hpp>
 
 #include "../sonata.hpp"
-
+#include "../utils.hpp"
 
 namespace {
 
 using namespace bbp;
+using namespace MVD::utils;
 
 // Naming convention
 const std::string default_population_name = "default";
@@ -45,10 +45,10 @@ const std::string did_synapse_class = "synapse_class";
 
 const std::string did_threshold_current = "threshold_current";
 const std::string did_holding_current = "holding_current";
-
+const std::string did_model_template = "model_template";
 
 inline auto select(const MVD::Range& range, size_t size) {
-    auto range_end = (range.count > 0)? range.offset + range.count : size - range.offset;
+    auto range_end = (range.count > 0)? range.offset + range.count : size;
     return sonata::Selection({{range.offset, range_end}});
 }
 
@@ -57,7 +57,7 @@ inline decltype(auto) open_population(const std::string &filename, std::string p
     sonata::NodeStorage _storage(filename);
     const auto& populations = _storage.populationNames();
     if (populations.empty()) {
-        throw MVDException("Sonata file doesnt constain any population");
+        throw MVDException("Sonata file doesn't contain any population");
     }
     // Attempt to load the default or single population
     if (pop_name.empty()) {
@@ -71,18 +71,6 @@ inline decltype(auto) open_population(const std::string &filename, std::string p
         }
     }
     return std::make_unique<sonata::NodePopulation>(filename, "", pop_name);
-}
-
-
-// An implementation to drop duplicates without changing order
-template <typename T>
-inline void vector_remove_dups(std::vector<T>& vec) {
-    std::unordered_set<T> set;
-    std::size_t pos = 0;
-    for (T& v : vec) if(set.insert(v).second) {
-        std::swap(vec[pos++], v);  // works even if src-dst are same
-    }
-    vec.resize(pos);
 }
 
 
@@ -106,12 +94,12 @@ namespace MVD {
 
 using namespace bbp::sonata;
 
-inline SonataFile::SonataFile(const std::string &filename, const std::string& pop_name)
-    : pop_(open_population(filename, pop_name))
-    , size_(pop_->size())
-{ }
+inline SonataFile::SonataFile(const std::string &filename, const std::string &pop_name)
+        : pop_(open_population(filename, pop_name)), size_(pop_->size()) {}
 
-inline Positions SonataFile::getPositions(const Range & range) const{
+inline void SonataFile::openComboTsv(const std::string&) {}
+
+inline Positions SonataFile::getPositions(const Range &range) const {
     Positions res{boost::extents[range.count > 0 ? range.count : size_][3]};
 
     auto xs = pop_->getAttribute<double>("x", select(range, size_));
@@ -128,7 +116,7 @@ inline Positions SonataFile::getPositions(const Range & range) const{
     return res;
 }
 
-inline Rotations SonataFile::getQuaternionRotations(const Range & range) const{
+inline Rotations SonataFile::getQuaternionRotations(const Range &range) const {
     Positions res{boost::extents[range.count > 0 ? range.count : size_][4]};
 
     auto xs = pop_->getAttribute<double>("orientation_x", select(range, size_));
@@ -147,7 +135,7 @@ inline Rotations SonataFile::getQuaternionRotations(const Range & range) const{
     return res;
 }
 
-inline Rotations SonataFile::getAngularRotations(const Range & range) const{
+inline Rotations SonataFile::getAngularRotations(const Range &range) const {
     using Quaternion = boost::math::quaternion<double>;
 
     Positions res{boost::extents[range.count > 0 ? range.count : size_][4]};
@@ -207,20 +195,23 @@ inline bool SonataFile::hasRotations() const {
     return quat or angle;
 }
 
-
-inline std::vector<std::string> SonataFile::getMorphologies(const Range & range) const{
+inline std::vector<std::string> SonataFile::getMorphologies(const Range& range) const{
     return pop_->getAttribute<std::string>(did_morpho, select(range, size_));
 }
 
-inline std::vector<std::string> SonataFile::getEtypes(const Range & range) const{
+inline std::vector<std::string> SonataFile::getEtypes(const Range& range) const{
     return pop_->getAttribute<std::string>(did_etypes, select(range, size_));
 }
 
-inline std::vector<std::string> SonataFile::getMtypes(const Range & range) const{
+inline std::vector<std::string> SonataFile::getMtypes(const Range& range) const{
     return pop_->getAttribute<std::string>(did_mtypes, select(range, size_));
 }
 
-inline std::vector<std::string> SonataFile::getEmodels(const Range & range) const{
+inline std::vector<std::string> SonataFile::getLayers(const Range& range) const{
+    return pop_->getAttribute<std::string>(did_layer, select(range, size_));
+}
+
+inline std::vector<std::string> SonataFile::getEmodels(const Range& range) const{
     auto model_tpl = pop_->getAttribute<std::string>(did_emodel, select(range, size_));
     for (auto& model : model_tpl) {
         model = model.substr(model.find(':') + 1);
@@ -271,6 +262,14 @@ inline std::vector<std::string> SonataFile::listAllEtypes() const{
 
 inline std::vector<std::string> SonataFile::listAllMtypes() const{
     return listAllValues(pop_.get(), did_mtypes);
+}
+
+inline std::vector<std::string> SonataFile::listAllLayers() const{
+    return listAllValues(pop_.get(), did_layer);
+}
+
+inline std::vector<std::string> SonataFile::listAllEmodels() const{
+    return listAllValues(pop_.get(), did_emodel);
 }
 
 inline std::vector<std::string> SonataFile::listAllRegions() const{
