@@ -96,7 +96,7 @@ public:
     /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
     ///  of each selected neurons ( all by default )
     ///
-    MVD::Positions getPositions(const MVD::Range & range = MVD::Range(0,0)) const;
+    MVD::Positions getPositions(const MVD::Range & range = MVD::Range::all()) const;
 
 
     ///
@@ -104,7 +104,7 @@ public:
     /// \return a double vector of size N with the rotations
     /// of each selected neurons ( all by default )
     ///
-    MVD::Rotations getRotations(const MVD::Range & range = MVD::Range(0,0)) const;
+    MVD::Rotations getRotations(const MVD::Range & range = MVD::Range::all()) const;
 
 
 

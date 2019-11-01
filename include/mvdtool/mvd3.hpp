@@ -73,7 +73,7 @@ public:
     /// \return a double vector of size [N][3] with the position (x,y,z) coordinates
     ///  of each selected neurons ( all by default )
     ///
-    Positions getPositions(const Range & range = Range(0,0)) const override;
+    Positions getPositions(const Range & range = Range::all()) const override;
 
     ///
     /// \brief getRotations
@@ -81,7 +81,7 @@ public:
     /// \return a double vector of size [N][4] with the rotation quaternions in the order (x,y,z,w)
     /// of each selected neurons ( all by default )
     ///
-    Rotations getRotations(const Range & range = Range(0,0)) const override;
+    Rotations getRotations(const Range & range = Range::all()) const override;
 
     ///
     /// \brief hasRotations
@@ -94,56 +94,56 @@ public:
     /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return vector of string with the morphology name associated with each neuron
     ///
-    std::vector<std::string> getMorphologies(const Range & range = Range(0,0)) const override;
+    std::vector<std::string> getMorphologies(const Range & range = Range::all()) const override;
 
     ///
     /// \brief getEtypes
     /// \param range: selection range, a null range (0,0) select the entire dataset
     /// \return vector of string with the eEtype name associated with each neuron
     ///
-    std::vector<std::string> getEtypes(const Range & range = Range(0,0)) const override;
+    std::vector<std::string> getEtypes(const Range & range = Range::all()) const override;
 
     ///
     /// \brief getMtypes
     /// \return vector of string with the Mtype name associated with each neuron
     ///
-    std::vector<std::string> getMtypes(const Range & range = Range(0,0)) const override;
+    std::vector<std::string> getMtypes(const Range & range = Range::all()) const override;
 
     ///
     /// \brief getEmodels
     /// \return vector of string with the Emodel name associated with each neuron
     ///
-    std::vector<std::string> getEmodels(const Range& range = Range(0, 0)) const override;
+    std::vector<std::string> getEmodels(const Range& range = Range::all()) const override;
 
     ///
     /// \brief getRegions
     /// \return vector of string with the region name associated with each neuron
     ///
-    std::vector<std::string> getRegions(const Range & range = Range(0,0)) const override;
+    std::vector<std::string> getRegions(const Range & range = Range::all()) const override;
 
     ///
     /// \brief getHyperColumns
     /// \return vector of int32 with the hyper-column associated with each neuron
     ///
-    std::vector<int32_t> getHyperColumns(const Range & range = Range(0,0)) const;
+    std::vector<int32_t> getHyperColumns(const Range & range = Range::all()) const;
 
     ///
     /// \brief getMiniColumns
     /// \return vector of int32 with the mini-column associated with each neuron
     ///
-    std::vector<int32_t> getMiniColumns(const Range & range = Range(0,0)) const;
+    std::vector<int32_t> getMiniColumns(const Range & range = Range::all()) const;
 
     ///
     /// \brief getLayer
     /// \return vector of int32 with the layer associated with each neuron
     ///
-    std::vector<int32_t> getLayers(const Range & range = Range(0,0)) const;
+    std::vector<int32_t> getLayers(const Range & range = Range::all()) const;
 
     ///
     /// \brief getSynapseClass
     /// \return vector of string with the synapse type associated with each neuron
     ///
-    std::vector<std::string> getSynapseClass(const Range & range = Range(0,0)) const override;
+    std::vector<std::string> getSynapseClass(const Range & range = Range::all()) const override;
 
 
     // index related infos
@@ -153,7 +153,7 @@ public:
     /// \param range
     /// \return values of the morphology index for neurons in the range, default: entire dataset
     ///
-    std::vector<size_t> getIndexMorphologies(const Range & range = Range(0,0)) const;
+    std::vector<size_t> getIndexMorphologies(const Range & range = Range::all()) const;
 
 
 
@@ -162,7 +162,7 @@ public:
     /// \param range
     /// \return values of the Etypes index for neurons in the range, default: entire dataset
     ///
-    std::vector<size_t> getIndexEtypes(const Range & range = Range(0,0)) const override;
+    std::vector<size_t> getIndexEtypes(const Range & range = Range::all()) const override;
 
 
     ///
@@ -170,21 +170,21 @@ public:
     /// \param range
     /// \return values of the Mtypes index for neurons in the range, default: entire dataset
     ///
-    std::vector<size_t> getIndexMtypes(const Range & range = Range(0,0)) const override;
+    std::vector<size_t> getIndexMtypes(const Range & range = Range::all()) const override;
 
     ///
     /// \brief getIndexSynapseClass
     /// \param range
     /// \return values of the Synapse class index for neurons in the range, default: entire dataset
     ///
-    std::vector<size_t> getIndexSynapseClass(const Range & range = Range(0,0)) const override;
+    std::vector<size_t> getIndexSynapseClass(const Range & range = Range::all()) const override;
 
     ///
     /// \brief getIndexRegions
     /// \param range
     /// \return values of the Regions index for neurons in the range, default: entire dataset
     ///
-    std::vector<size_t> getIndexRegions(const Range & range = Range(0,0)) const override;
+    std::vector<size_t> getIndexRegions(const Range & range = Range::all()) const override;
 
     // Data related infos
 
@@ -234,13 +234,13 @@ public:
     /// \brief Retrieves the threshold currents
     /// \return a vector<double> with all the neurons threshold currents
     ///
-    std::vector<double> getThresholdCurrents(const Range& range = Range(0, 0)) const override;
+    std::vector<double> getThresholdCurrents(const Range& range = Range::all()) const override;
 
     ///
     /// \brief Retrieves the holding currents
     /// \return a vector<double> with all the neurons holding currents
     ///
-    std::vector<double> getHoldingCurrents(const Range& range = Range(0, 0)) const override;
+    std::vector<double> getHoldingCurrents(const Range& range = Range::all()) const override;
 
     // Specific properties
     // ===================
@@ -248,7 +248,7 @@ public:
     /// \brief getMeCombo - The specific MECombo property in mvd3
     /// \return vector of string with the MECombo name associated with each neuron
     ///
-    std::vector<std::string> getMECombos(const Range& range = Range(0,0)) const;
+    std::vector<std::string> getMECombos(const Range& range = Range::all()) const;
 
 
     // circuit infos
@@ -266,7 +266,7 @@ public:
     /// \brief Get all the ME combo entries from the TSV for the requested cells
     ///
     std::vector<std::reference_wrapper<const TSV::MEComboEntry>>
-        getTSVInfo(const Range& range = Range(0,0)) const;
+        getTSVInfo(const Range& range = Range::all()) const;
 
 
 protected:

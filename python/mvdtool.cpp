@@ -19,56 +19,56 @@ class PyFile : public File {
     size_t getNbNeuron() const override {
         PYBIND11_OVERLOAD_PURE_NAME(size_t, File, "__len__", getNbNeuron);
     }
-    Positions getPositions(const Range & = Range(0,0)) const override {
+    Positions getPositions(const Range & = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(Positions, File, "positions", getPositions);
     }
-    Rotations getRotations(const Range & = Range(0,0)) const override {
+    Rotations getRotations(const Range & = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(Rotations, File,"rotations", getRotations);
     }
     bool hasRotations() const override {
         PYBIND11_OVERLOAD_PURE_NAME(bool, File, "rotated", hasRotations);
     }
-    std::vector<std::string> getMorphologies(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getMorphologies(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<std::string>, File, "morphologies", getMorphologies);
     }
-    std::vector<std::string> getEtypes(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getEtypes(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "etypes", getEtypes);
     }
-    std::vector<std::string> getMtypes(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getMtypes(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "mtypes", getMtypes);
     }
-    std::vector<std::string> getEmodels(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getEmodels(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "emodels", getEmodels);
     }
-    std::vector<std::string> getRegions(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getRegions(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "regions", getRegions);
     }
-    std::vector<std::string> getSynapseClass(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getSynapseClass(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<std::string>, File, "synapse_classes", getSynapseClass);
     }
     bool hasCurrents() const override {
         PYBIND11_OVERLOAD_PURE_NAME(bool, File, "hasCurrents", hasCurrents);
     }
-    std::vector<double> getThresholdCurrents(const Range& = Range(0, 0)) const override {
+    std::vector<double> getThresholdCurrents(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<double>, File, "threshold_currents", getThresholdCurrents);
     }
-    std::vector<double> getHoldingCurrents(const Range& = Range(0, 0)) const override {
+    std::vector<double> getHoldingCurrents(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<double>, File, "holding_currents", getHoldingCurrents);
     }
-    std::vector<size_t> getIndexEtypes(const Range& = Range(0, 0)) const override {
+    std::vector<size_t> getIndexEtypes(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_etypes", getIndexEtypes);
     }
-    std::vector<size_t> getIndexMtypes(const Range& = Range(0, 0)) const override {
+    std::vector<size_t> getIndexMtypes(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_mtypes", getIndexMtypes);
     }
-    std::vector<size_t> getIndexRegions(const Range& = Range(0, 0)) const override {
+    std::vector<size_t> getIndexRegions(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_regions", getIndexRegions);
     }
-    std::vector<size_t> getIndexSynapseClass(const Range& = Range(0, 0)) const override {
+    std::vector<size_t> getIndexSynapseClass(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<size_t>, File, "raw_synapse_classes", getIndexSynapseClass);
     }

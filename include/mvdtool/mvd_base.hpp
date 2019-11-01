@@ -45,9 +45,12 @@ enum MVDType{
 }
 
 
-struct Range{
+class Range{
+public:
     inline Range(const size_t offset_=0, const size_t count_=0) : offset(offset_), count(count_) {}
 
+    inline static Range all() { return Range(0,0); }
+    inline bool is_empty() const { return count == 0; }
     size_t offset;
     size_t count;
 };
@@ -58,8 +61,8 @@ public:
     inline MVDFile() {}
     inline virtual ~MVDFile() {}
     virtual size_t getNbNeuron() const = 0;
-    virtual Positions getPositions(const Range & range = Range(0,0)) const = 0;
-    virtual Rotations getRotations(const Range & range = Range(0,0)) const = 0;
+    virtual Positions getPositions(const Range & range = Range::all()) const = 0;
+    virtual Rotations getRotations(const Range & range = Range::all()) const = 0;
 };
 
 
@@ -78,21 +81,21 @@ public:
 
     virtual bool hasRotations() const = 0;
 
-    virtual std::vector<std::string> getMorphologies(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getEtypes(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getMtypes(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getEmodels(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getRegions(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<std::string> getSynapseClass(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<std::string> getMorphologies(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getEtypes(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getMtypes(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getEmodels(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getRegions(const Range& range = Range::all()) const = 0;
+    virtual std::vector<std::string> getSynapseClass(const Range& range = Range::all()) const = 0;
 
     virtual bool hasCurrents() const = 0;
-    virtual std::vector<double> getThresholdCurrents(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<double> getHoldingCurrents(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<double> getThresholdCurrents(const Range& range = Range::all()) const = 0;
+    virtual std::vector<double> getHoldingCurrents(const Range& range = Range::all()) const = 0;
 
-    virtual std::vector<size_t> getIndexEtypes(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<size_t> getIndexMtypes(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<size_t> getIndexRegions(const Range& range = Range(0, 0)) const = 0;
-    virtual std::vector<size_t> getIndexSynapseClass(const Range& range = Range(0, 0)) const = 0;
+    virtual std::vector<size_t> getIndexEtypes(const Range& range = Range::all()) const = 0;
+    virtual std::vector<size_t> getIndexMtypes(const Range& range = Range::all()) const = 0;
+    virtual std::vector<size_t> getIndexRegions(const Range& range = Range::all()) const = 0;
+    virtual std::vector<size_t> getIndexSynapseClass(const Range& range = Range::all()) const = 0;
 
     virtual std::vector<std::string> listAllEtypes() const = 0;
     virtual std::vector<std::string> listAllMtypes() const = 0;
