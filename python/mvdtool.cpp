@@ -143,6 +143,11 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 f.openComboTsv(filename);
              },
              "filename"_a)
+        .def("positions", [](const File& f, int offset) {
+                auto res = f.getPositions(Range(offset, 1));
+                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+             },
+             "offset"_a)
         .def("positions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getPositions(r);
@@ -150,6 +155,11 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("rotations", [](const File& f, int offset) {
+                auto res = f.getRotations(Range(offset, 1));
+                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+             },
+             "offset"_a)
         .def("rotations", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getRotations(r);
@@ -157,6 +167,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("etypes", [](const File& f, int offset) {
+                return f.getEtypes(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("etypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getEtypes(r);
@@ -167,6 +181,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getEtypes(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("mtypes", [](const File& f, int offset) {
+                return f.getMtypes(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("mtypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getMtypes(r);
@@ -177,6 +195,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMtypes(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("emodels", [](const File& f, int offset) {
+                return f.getEmodels(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("emodels", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getEmodels(r);
@@ -187,6 +209,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getEmodels(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("threshold_currents", [](const File& f, int offset) {
+                return f.getThresholdCurrents(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("threshold_currents", [](const File& f, int offset, int count) {
                 auto res = f.getThresholdCurrents(Range(offset, count));
                 return py::array(res.size(), res.data());
@@ -198,6 +224,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 auto values = _atIndices<double>(func, f.size(), idx);
                 return py::array(values.size(), values.data());
              })
+        .def("holding_currents", [](const File& f, int offset) {
+                return f.getHoldingCurrents(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("holding_currents", [](const File& f, int offset, int count) {
                 auto res = f.getHoldingCurrents(Range(offset, count));
                 return py::array(res.size(), res.data());
@@ -209,6 +239,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 auto values = _atIndices<double>(func, f.size(), idx);
                 return py::array(values.size(), values.data());
              })
+        .def("morphologies", [](const File& f, int offset) {
+                return f.getMorphologies(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("morphologies", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getMorphologies(r);
@@ -219,6 +253,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMorphologies(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("synapse_classes", [](const File& f, int offset) {
+                return f.getSynapseClass(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("synapse_classes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getSynapseClass(r);
@@ -229,6 +267,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getSynapseClass(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("regions", [](const File& f, int offset) {
+                return f.getRegions(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("regions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getRegions(r);
@@ -239,6 +281,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getRegions(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("raw_etypes", [](const File& f, int offset) {
+                return f.getIndexEtypes(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("raw_etypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexEtypes(r);
@@ -246,6 +292,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("raw_mtypes", [](const File& f, int offset) {
+                return f.getIndexMtypes(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("raw_mtypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexMtypes(r);
@@ -253,6 +303,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("raw_synapse_classes", [](const File& f, int offset) {
+                return f.getIndexSynapseClass(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("raw_synapse_classes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexSynapseClass(r);
@@ -260,6 +314,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("raw_regions", [](const File& f, int offset) {
+                return f.getIndexRegions(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("raw_regions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexRegions(r);
@@ -278,6 +336,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
 
     py::class_<MVD3File, std::shared_ptr<MVD3File>>(mvd3, "File", file)
         .def(py::init<const std::string&>())
+        .def("raw_morphologies", [](const MVD3File& f, int offset) {
+                return f.getIndexMorphologies(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("raw_morphologies", [](const MVD3File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexMorphologies(r);
@@ -285,6 +347,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("me_combos", [](const MVD3File& f, int offset) {
+                return f.getMECombos(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("me_combos", [](const MVD3File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getMECombos(r);
@@ -295,6 +361,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMECombos(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("layers", [](const MVD3File& f, int offset) {
+                return f.getLayers(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("layers", [](const MVD3File& f, int offset, int count) {
                 return f.getLayers(Range(offset, count));
              },
@@ -309,6 +379,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
 
     py::class_<SonataFile, std::shared_ptr<SonataFile>>(sonata, "File", file)
         .def(py::init<const std::string&>())
+        .def("layers", [](const SonataFile& f, int offset) {
+                return f.getLayers(Range(offset, 1))[0];
+             },
+             "offset"_a)
         .def("layers", [](const SonataFile& f, int offset, int count) {
                 return f.getLayers(Range(offset, count));
              },

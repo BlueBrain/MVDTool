@@ -28,6 +28,12 @@ def test_position_values(circuit):
     assert numpy.allclose(posics[0], [40.821_401, 1986.506_637, 10.788_424])
 
 
+def test_position_value(circuit):
+    posic_0 = circuit.positions(0)
+    assert posic_0.shape[0] == 1
+    assert numpy.allclose(posic_0, [40.821_401, 1986.506_637, 10.788_424])
+
+
 def test_rotation_values(circuit):
     assert circuit.rotated
 
@@ -35,6 +41,15 @@ def test_rotation_values(circuit):
     assert posics.shape[0] == 1000
     assert numpy.allclose(posics[0], [0, -0.010_005_561, 0, 0.999_949_943])
     assert numpy.allclose(posics[20], [0, 0.923_706, 0, 0.383_102])
+
+
+def test_rotation_value(circuit):
+    assert circuit.rotated
+
+    posic_0 = circuit.rotations(0)
+    assert posic_0.shape[0] == 1
+    assert numpy.allclose(posic_0, [0, -0.010_005_561, 0, 0.999_949_943])
+
 
 def test_position_range(circuit):
     posics = circuit.positions()
@@ -50,6 +65,12 @@ def test_morphology_values(circuit):
     assert morphos[0] == "sm090227a1-2_idC"
     assert morphos[20] == "dend-C280998A-P3_axon-sm110131a1-3_INT_idA"
     assert morphos[21] == "dend-rr110114C1_idA_axon-sm110131a1-3_INT_idA"
+
+
+def test_morphology_value(circuit):
+    morpho = circuit.morphologies(0)
+
+    assert morpho == "sm090227a1-2_idC"
 
 
 def test_morphology_values_indices(circuit):
@@ -106,6 +127,12 @@ def test_classes_values(circuit):
     assert classes[0] == "INH"
     assert classes[10] == "INH"
     assert classes[20] == "EXC"
+
+
+def test_raw_etype(circuit):
+    raw_etype = circuit.raw_etypes(22)
+
+    assert raw_etype == 1
 
 
 @pytest.mark.parametrize(
@@ -177,6 +204,12 @@ def test_tsv_emodels_indices(circuit_mvd3_tsv):
     assert emodels[2] == "L6_cADpyr_471819401"
 
 
+def test_mvd3_mecombos_value(circuit_mvd3_tsv):
+    me_combo = circuit_mvd3_tsv.me_combos(9)
+
+    assert me_combo == "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"
+
+
 def test_mvd3_mecombos_indices(circuit_mvd3_tsv):
     me_combos = circuit_mvd3_tsv.me_combos([0,9,33])
 
@@ -192,12 +225,30 @@ def test_tsv_threshold_current(circuit_mvd3_tsv):
     assert threshold_currents[9] == 0
     assert threshold_currents[33] == 0.2
 
+
 def test_tsv_holding_current(circuit_mvd3_tsv):
     holding_currents = circuit_mvd3_tsv.holding_currents()
 
     assert holding_currents[0] == 0
     assert holding_currents[9] == 0.1
     assert holding_currents[33] == 0.15
+
+
+def test_tsv_pybind_api(circuit_mvd3_tsv):
+    holding_current = circuit_mvd3_tsv.holding_currents(0)
+
+    assert holding_current == 0
+    assert type(holding_current) is float
+
+    holding_currents = circuit_mvd3_tsv.holding_currents(0,10)
+
+    assert holding_currents[9] == 0.1
+    assert len(holding_currents) == 10
+
+    holding_currents = circuit_mvd3_tsv.holding_currents()
+
+    assert holding_currents[33] == 0.15
+    assert len(holding_currents) == 34
 
 
 @pytest.fixture
@@ -226,6 +277,13 @@ def test_layers(circuit_new_sonata):
     assert layers[0] == "SR"
     assert layers[42] == "SP"
     assert layers[2615] == "SO"
+
+
+def test_layer(circuit_new_sonata):
+    layer = circuit_new_sonata.layers(42)
+
+    assert layer == "SP"
+    assert type(layer) is str
 
 
 def test_list_allLayers(circuit_new_sonata):
