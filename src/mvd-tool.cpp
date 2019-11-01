@@ -16,11 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#include <iostream>
 #include <exception>
-
-#include <mvd/mvd2.hpp>
-#include <mvd/mvd3.hpp>
+#include <iostream>
+#include <mvdtool/mvd2.hpp>
+#include <mvdtool/mvd3.hpp>
+#include <mvdtool/mvd_generic.hpp>
 
 #include "converter.hpp"
 
@@ -46,7 +46,6 @@ int offset_command(const char* argv){
     const std::string cmds[] = { convert, print, summary, help, version };
     return std::find(cmds, cmds+ n_cmd, argv) - cmds;
 }
-
 
 void print_csv(const std::string & filename){
     using namespace MVD3;
@@ -99,8 +98,7 @@ void print_csv(const std::string & filename){
     }
 }
 
-
-void help(char** argv){
+void help(char** argv) {
     std::cout << "Usage: " << argv[0] << " [COMMAND]\n";
     std::cout << "  List of commands :\n";
     std::cout << "             convert [mvd2_file] [mvd3_file]";

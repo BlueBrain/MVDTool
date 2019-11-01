@@ -1,4 +1,4 @@
-#include <mvd/mvd_generic.hpp>
+#include <mvdtool/mvd_generic.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
@@ -8,63 +8,67 @@ namespace py = pybind11;
 using namespace pybind11::literals;
 using namespace MVD;
 using namespace MVD3;
+using namespace TSV;
 
 class PyFile : public File {
     using File::File;
 
+    void openComboTsv(const std::string & ) override {
+        PYBIND11_OVERLOAD_PURE_NAME(void, File, "open_combo_tsv", openComboTsv);
+    }
     size_t getNbNeuron() const override {
         PYBIND11_OVERLOAD_PURE_NAME(size_t, File, "__len__", getNbNeuron);
     }
-    Positions getPositions(const Range & = Range(0,0)) const override {
+    Positions getPositions(const Range & = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(Positions, File, "positions", getPositions);
     }
-    Rotations getRotations(const Range & = Range(0,0)) const override {
+    Rotations getRotations(const Range & = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(Rotations, File,"rotations", getRotations);
     }
     bool hasRotations() const override {
         PYBIND11_OVERLOAD_PURE_NAME(bool, File, "rotated", hasRotations);
     }
-    std::vector<std::string> getMorphologies(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getMorphologies(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<std::string>, File, "morphologies", getMorphologies);
     }
-    std::vector<std::string> getEtypes(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getEtypes(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "etypes", getEtypes);
     }
-    std::vector<std::string> getMtypes(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getMtypes(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "mtypes", getMtypes);
     }
-    std::vector<std::string> getEmodels(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getEmodels(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "emodels", getEmodels);
     }
-    std::vector<std::string> getRegions(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getRegions(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "regions", getRegions);
     }
-    std::vector<std::string> getSynapseClass(const Range& = Range(0, 0)) const override {
+    std::vector<std::string> getSynapseClass(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<std::string>, File, "synapse_classes", getSynapseClass);
     }
     bool hasCurrents() const override {
         PYBIND11_OVERLOAD_PURE_NAME(bool, File, "hasCurrents", hasCurrents);
     }
-    std::vector<double> getThresholdCurrents(const Range& = Range(0, 0)) const override {
+    std::vector<double> getThresholdCurrents(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<double>, File, "threshold_currents", getThresholdCurrents);
     }
-    std::vector<double> getHoldingCurrents(const Range& = Range(0, 0)) const override {
+    std::vector<double> getHoldingCurrents(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<double>, File, "holding_currents", getHoldingCurrents);
     }
-    std::vector<size_t> getIndexEtypes(const Range& = Range(0, 0)) const override {
+    std::vector<size_t> getIndexEtypes(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_etypes", getIndexEtypes);
     }
-    std::vector<size_t> getIndexMtypes(const Range& = Range(0, 0)) const override {
+    std::vector<size_t> getIndexMtypes(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_mtypes", getIndexMtypes);
     }
-    std::vector<size_t> getIndexRegions(const Range& = Range(0, 0)) const override {
+    std::vector<size_t> getIndexRegions(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<size_t>, File, "raw_regions", getIndexRegions);
     }
-    std::vector<size_t> getIndexSynapseClass(const Range& = Range(0, 0)) const override {
+    std::vector<size_t> getIndexSynapseClass(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<size_t>, File, "raw_synapse_classes", getIndexSynapseClass);
     }
@@ -73,6 +77,9 @@ class PyFile : public File {
     }
     std::vector<std::string> listAllMtypes() const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_mtypes", listAllMtypes);
+    }
+    std::vector<std::string> listAllEmodels() const override {
+        PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_emodels", listAllEmodels);
     }
     std::vector<std::string> listAllRegions() const override {
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_regions", listAllRegions);
@@ -124,6 +131,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
     mvd.doc() = "Module to read neuron circuits";
     py::module mvd3 = mvd.def_submodule("MVD3", "Support for the MVD3 format");
     py::module sonata = mvd.def_submodule("sonata", "Support for the SONATA format");
+    py::module tsv = mvd.def_submodule("tsv", "Support for the TSV format");
 
     mvd.def("open", &open, "filename"_a, "population"_a = "");
 
@@ -131,6 +139,10 @@ PYBIND11_MODULE(mvdtool, mvd) {
     file
         .def(py::init<>())
         .def("__len__", &File::size)
+        .def("open_combo_tsv", [](File& f, const std::string & filename) {
+                f.openComboTsv(filename);
+             },
+             "filename"_a)
         .def("positions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getPositions(r);
@@ -259,18 +271,13 @@ PYBIND11_MODULE(mvdtool, mvd) {
         .def_property_readonly("rotated", &File::hasRotations)
         .def_property_readonly("all_etypes", &File::listAllEtypes)
         .def_property_readonly("all_mtypes", &File::listAllMtypes)
+        .def_property_readonly("all_emodels", &File::listAllEmodels)
         .def_property_readonly("all_regions", &File::listAllRegions)
         .def_property_readonly("all_synapse_classes", &File::listAllSynapseClass)
         ;
 
     py::class_<MVD3File, std::shared_ptr<MVD3File>>(mvd3, "File", file)
         .def(py::init<const std::string&>())
-        .def("layers", [](const MVD3File& f, int offset, int count) {
-                Range r(offset, count);
-                return f.getLayers(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
         .def("raw_morphologies", [](const MVD3File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexMorphologies(r);
@@ -278,10 +285,53 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
+        .def("me_combos", [](const MVD3File& f, int offset, int count) {
+                Range r(offset, count);
+                return f.getMECombos(r);
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("me_combos", [](const MVD3File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getMECombos(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
+        .def("layers", [](const MVD3File& f, int offset, int count) {
+                return f.getLayers(Range(offset, count));
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("layers", [](const MVD3File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
+                return _atIndices<boost::int32_t>(func, f.size(), idx);
+             })
         .def_property_readonly("all_morphologies", &MVD3File::listAllMorphologies)
         ;
 
     py::class_<SonataFile, std::shared_ptr<SonataFile>>(sonata, "File", file)
         .def(py::init<const std::string&>())
+        .def("layers", [](const SonataFile& f, int offset, int count) {
+                return f.getLayers(Range(offset, count));
+             },
+             "offset"_a = 0,
+             "count"_a = 0)
+        .def("layers", [](const SonataFile& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
+                return _atIndices<std::string>(func, f.size(), idx);
+             })
+        .def_property_readonly("all_layers", &SonataFile::listAllLayers)
+        ;
+    py::class_<TSVFile, std::shared_ptr<TSVFile>>(tsv, "File", file)
+        .def(py::init<const std::string&>())
+        ;
+    py::class_<MEComboEntry>(tsv, "MEComboEntry")
+        .def(py::init<>())
+        .def_readonly("morphologyName", &MEComboEntry::morphologyName)
+        .def_readonly("layer", &MEComboEntry::layer)
+        .def_readonly("fullMType", &MEComboEntry::fullMType)
+        .def_readonly("eType", &MEComboEntry::eType)
+        .def_readonly("eModel", &MEComboEntry::eModel)
+        .def_readonly("comboName", &MEComboEntry::comboName)
+        .def_readonly("thresholdCurrent", &MEComboEntry::thresholdCurrent)
+        .def_readonly("holdingCurrent", &MEComboEntry::holdingCurrent)
         ;
 }

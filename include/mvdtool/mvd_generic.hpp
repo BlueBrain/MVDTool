@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2015 Adrien Devresse <adrien.devresse@epfl.ch>
- *               2017 Fernando Pereira <fernando.pereira@epfl.ch>
+ * Copyright (C) 2019, Blue Brain Project, EPFL.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,10 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef MVD_GENERIC_HPP
-#define MVD_GENERIC_HPP
+#pragma once
 
-#include "mvd_base.hpp"
 #include "mvd2.hpp"
 #include "mvd3.hpp"
 #include "sonata.hpp"
@@ -57,36 +54,34 @@ inline MVDFile* open_mvd(const std::string & filename) {
 /// performed, but no guarantees about file correctness are made.
 ///
 /// \param filename the path of the file to open
+/// \param population population parameter
 /// \return a shared pointer to a mvd::File object
 ///
 inline std::shared_ptr<File> open(const std::string& filename,
                                   const std::string& population="") {
     std::shared_ptr<File> mvdfile;
-    switch(_mvd_format(filename)) {
-        case MVDType::MVD2:
-            throw std::runtime_error("MVD2 not supported in the new MVD API");
-        case MVDType::MVD3:
-            try {
-                mvdfile.reset(new MVD3::MVD3File(filename));
-                mvdfile->size();
-            } catch (...) {
-                throw std::runtime_error("invalid MVD3 file");
-            }
-            break;
-        default:
-            try {
-                mvdfile.reset(new SonataFile(filename, population));
-                mvdfile->size();
-            } catch (...) {
-                throw std::runtime_error("invalid Sonata file");
-            }
-            break;
+    switch (_mvd_format(filename)) {
+    case MVDType::MVD2:
+        throw std::runtime_error("MVD2 not supported in the new MVD API");
+    case MVDType::MVD3:
+        try {
+            mvdfile.reset(new MVD3::MVD3File(filename));
+            mvdfile->size();
+        } catch (...) {
+            throw std::runtime_error("invalid MVD3 file");
+        }
+        break;
+    default:
+        try {
+            mvdfile.reset(new SonataFile(filename, population));
+            mvdfile->size();
+        } catch (...) {
+            throw std::runtime_error("invalid Sonata file");
+        }
+        break;
     }
     return mvdfile;
 }
 
 
-} //MVD
-
-
-#endif // MVD_GENERIC_HPP
+}  // namespace MVD
