@@ -401,7 +401,7 @@ BOOST_AUTO_TEST_CASE( mvdTsvMtypes )
     MVD3File file(MVD3_TSV_FILENAME);
     file.openComboTsv(TSV_FILENAME);
 
-    std::vector<std::string> mTypes{file.getMtypes()};
+    const auto mTypes = file.getMtypes();
 
     BOOST_CHECK_EQUAL(mTypes[0], "L1_DAC");
     BOOST_CHECK_EQUAL(mTypes[9], "L1_DAC");
@@ -416,7 +416,7 @@ BOOST_AUTO_TEST_CASE( mvdTsvEmodels )
     MVD3File file(MVD3_TSV_FILENAME);
     file.openComboTsv(TSV_FILENAME);
 
-    std::vector<std::string> eModels{file.getEmodels()};
+    const auto eModels = file.getEmodels();
 
     BOOST_CHECK_EQUAL(eModels[0], "bAC_327962063");
     BOOST_CHECK_EQUAL(eModels[9], "dSTUT_321707905");
@@ -431,7 +431,7 @@ BOOST_AUTO_TEST_CASE( mvdTsvLayers )
     MVD3File file(MVD3_TSV_FILENAME);
     file.openComboTsv(TSV_FILENAME);
 
-    std::vector<int32_t> layers{file.getLayers()};
+    const auto layers = file.getLayers();
 
     BOOST_CHECK_EQUAL(layers[0], static_cast<int32_t>(1));
     BOOST_CHECK_EQUAL(layers[9], static_cast<int32_t>(1));
