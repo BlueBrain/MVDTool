@@ -27,6 +27,26 @@ def test_position_values(circuit):
     assert posics.shape[0] == 1000
     assert numpy.allclose(posics[0], [40.821_401, 1986.506_637, 10.788_424])
 
+    posics = circuit.positions(0, 0)
+    assert posics.shape[0] == 1000
+    assert numpy.allclose(posics[0], [40.821_401, 1986.506_637, 10.788_424])
+
+    posic = circuit.positions(995)
+    assert posic.shape[0] == 1
+    assert numpy.allclose(posic, posics[995])
+
+    posics_995 = circuit.positions(995, 0)
+    assert posics_995.shape[0] == 5
+    assert numpy.allclose(posics_995[0], posics[995])
+
+    posics_995 = circuit.positions(995, 1)
+    assert posics_995.shape[0] == 1
+    assert numpy.allclose(posics_995[0], posics[995])
+
+    posics_995 = circuit.positions(995, 3)
+    assert posics_995.shape[0] == 3
+    assert numpy.allclose(posics_995[2], posics[997])
+
 
 def test_position_value(circuit):
     posic_0 = circuit.positions(0)
@@ -99,9 +119,30 @@ def test_etype_values_indices(circuit):
 
 
 def test_etype_values_ranges(circuit):
-    etypes = circuit.etypes(20, 10)
-    assert len(etypes) == 10
-    assert etypes[0] == "cADpyr"
+    etypes = circuit.etypes()
+    assert len(etypes) == 1000
+    assert etypes[0] == "cACint"
+
+    etypes = circuit.etypes(0, 0)
+    assert len(etypes) == 1000
+    assert etypes[0] == "cACint"
+
+    etype = circuit.etypes(20)
+    assert type(etype) is str
+    assert etype == etypes[20]
+
+    etypes_20 = circuit.etypes(20, 0)
+    assert len(etypes_20) == 980
+    assert etypes_20[0] == etypes[20]
+
+    etypes_20 = circuit.etypes(20, 1)
+    assert type(etypes_20) is not str
+    assert len(etypes_20) == 1
+    assert etypes_20[0] == etypes[20]
+
+    etypes_20 = circuit.etypes(20, 10)
+    assert len(etypes_20) == 10
+    assert etypes_20[0] == etypes[20]
 
 
 def test_mtype_values(circuit):
@@ -196,6 +237,33 @@ def test_tsv_emodels(circuit_mvd3_tsv):
     assert emodels[33] == "L6_cADpyr_471819401"
 
 
+def test_tsv_emodels_ranges(circuit_mvd3_tsv):
+    emodels = circuit_mvd3_tsv.emodels()
+    assert len(emodels) == 34
+    assert emodels[0] == "bAC_327962063"
+
+    emodels = circuit_mvd3_tsv.emodels(0, 0)
+    assert len(emodels) == 34
+    assert emodels[0] == "bAC_327962063"
+
+    emodel = circuit_mvd3_tsv.emodels(9)
+    assert type(emodel) is str
+    assert emodel == emodels[9]
+
+    emodels_9 = circuit_mvd3_tsv.emodels(9, 0)
+    assert len(emodels_9) == 25
+    assert emodels_9[0] == emodels[9]
+
+    emodels_9 = circuit_mvd3_tsv.emodels(9, 1)
+    assert type(emodels_9) is not str
+    assert len(emodels_9) == 1
+    assert emodels_9[0] == emodels[9]
+
+    emodels_9 = circuit_mvd3_tsv.emodels(9, 10)
+    assert len(emodels_9) == 10
+    assert emodels_9[0] == emodels[9]
+
+
 def test_tsv_emodels_indices(circuit_mvd3_tsv):
     emodels = circuit_mvd3_tsv.emodels([0,9,33])
 
@@ -277,6 +345,33 @@ def test_layers(circuit_new_sonata):
     assert layers[0] == "SR"
     assert layers[42] == "SP"
     assert layers[2615] == "SO"
+
+
+def test_layers_ranges(circuit_new_sonata):
+    layers = circuit_new_sonata.layers()
+    assert len(layers) == 2616
+    assert layers[0] == "SR"
+
+    layers = circuit_new_sonata.layers(0, 0)
+    assert len(layers) == 2616
+    assert layers[0] == "SR"
+
+    layer = circuit_new_sonata.layers(42)
+    assert type(layer) is str
+    assert layer == layers[42]
+
+    layers_42 = circuit_new_sonata.layers(42, 0)
+    assert len(layers_42) == 2574
+    assert layers_42[0] == layers[42]
+
+    layers_42 = circuit_new_sonata.layers(42, 1)
+    assert type(layers_42) is not str
+    assert len(layers_42) == 1
+    assert layers_42[0] == layers[42]
+
+    layers_42 = circuit_new_sonata.layers(42, 10)
+    assert len(layers_42) == 10
+    assert layers_42[0] == layers[20]
 
 
 def test_layer(circuit_new_sonata):

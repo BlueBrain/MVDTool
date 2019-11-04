@@ -35,11 +35,12 @@ template <typename T>
 inline std::vector<T> get_data_for_selection(const HighFive::DataSet& dataset,
                                              const MVD3::Range& range) {
     std::vector<T> data_values;
+    const size_t n_elem = dataset.getSpace().getDimensions()[0];
 
     if (!range.is_empty()) {
         dataset.select({range.offset}, {range.count}).read(data_values);
     } else {
-        dataset.read(data_values);
+        dataset.select({range.offset}, {n_elem - range.offset}).read(data_values);
     }
     return data_values;
 }
@@ -173,9 +174,10 @@ inline Positions MVD3File::getPositions(const Range& range) const {
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_positions);
     if (!range.is_empty()) {
         set.select({range.offset, 0}, {range.count, 3}).read(res);
-        return res;
+    } else {
+        const auto size = set.getSpace().getDimensions()[0];
+        set.select({range.offset, 0}, {size - range.offset, 3}).read(res);
     }
-    set.read(res);
     return res;
 }
 
@@ -185,9 +187,10 @@ inline Rotations MVD3File::getRotations(const Range& range) const {
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_rotations);
     if (!range.is_empty()) {
         set.select({range.offset, 0}, {range.count, 4}).read(res);
-        return res;
+    } else {
+        const auto size = set.getSpace().getDimensions()[0];
+        set.select({range.offset, 0}, {size - range.offset, 4}).read(res);
     }
-    set.read(res);
     return res;
 }
 
