@@ -237,8 +237,8 @@ def test_tsv_holding_current(circuit_mvd3_tsv):
 def test_tsv_pybind_api(circuit_mvd3_tsv):
     holding_current = circuit_mvd3_tsv.holding_currents(0)
 
-    assert holding_current == 0
     assert type(holding_current) is float
+    assert holding_current == 0
 
     holding_currents = circuit_mvd3_tsv.holding_currents(0,10)
 

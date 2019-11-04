@@ -142,123 +142,151 @@ PYBIND11_MODULE(mvdtool, mvd) {
         .def("open_combo_tsv", [](File& f, const std::string & filename) {
                 f.openComboTsv(filename);
              })
+        .def("positions", [](const File& f) {
+                auto res = f.getPositions(Range::all());
+                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+             })
         .def("positions", [](const File& f, int offset) {
-                auto res = f.getPositions(Range(offset, 1));
+                Range r(offset, 1);
+                auto res = f.getPositions(r);
                 return py::array({res.shape()[0], res.shape()[1]}, res.data());
              })
         .def("positions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getPositions(r);
                 return py::array({res.shape()[0], res.shape()[1]}, res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
+        .def("rotations", [](const File& f) {
+                auto res = f.getRotations(Range::all());
+                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+             })
         .def("rotations", [](const File& f, int offset) {
-                auto res = f.getRotations(Range(offset, 1));
+                Range r(offset, 1);
+                auto res = f.getRotations(r);
                 return py::array({res.shape()[0], res.shape()[1]}, res.data());
              })
         .def("rotations", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getRotations(r);
                 return py::array({res.shape()[0], res.shape()[1]}, res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
+        .def("etypes", [](const File& f) {
+                return f.getEtypes(Range::all());
+             })
         .def("etypes", [](const File& f, int offset) {
-                return f.getEtypes(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getEtypes(r)[0];
              })
         .def("etypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getEtypes(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
         .def("etypes", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getEtypes(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("mtypes", [](const File& f) {
+                return f.getMtypes(Range::all());
+             })
         .def("mtypes", [](const File& f, int offset) {
-                return f.getMtypes(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getMtypes(r)[0];
              })
         .def("mtypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getMtypes(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
         .def("mtypes", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMtypes(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("emodels", [](const File& f) {
+                return f.getEmodels(Range::all());
+             })
         .def("emodels", [](const File& f, int offset) {
-                return f.getEmodels(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getEmodels(r)[0];
              })
         .def("emodels", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getEmodels(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
         .def("emodels", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getEmodels(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("threshold_currents", [](const File& f) {
+                auto res = f.getThresholdCurrents(Range::all());
+                return py::array(res.size(), res.data());
+             })
         .def("threshold_currents", [](const File& f, int offset) {
-                return f.getThresholdCurrents(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getThresholdCurrents(r)[0];
              })
         .def("threshold_currents", [](const File& f, int offset, int count) {
-                auto res = f.getThresholdCurrents(Range(offset, count));
+                Range r(offset, count);
+                auto res = f.getThresholdCurrents(r);
                 return py::array(res.size(), res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
         .def("threshold_currents", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getThresholdCurrents(r);};
                 auto values = _atIndices<double>(func, f.size(), idx);
                 return py::array(values.size(), values.data());
              })
+        .def("holding_currents", [](const File& f) {
+                auto res = f.getHoldingCurrents(Range::all());
+                return py::array(res.size(), res.data());
+             })
         .def("holding_currents", [](const File& f, int offset) {
-                return f.getHoldingCurrents(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getHoldingCurrents(r)[0];
              })
         .def("holding_currents", [](const File& f, int offset, int count) {
-                auto res = f.getHoldingCurrents(Range(offset, count));
+                Range r(offset, count);
+                auto res = f.getHoldingCurrents(r);
                 return py::array(res.size(), res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
         .def("holding_currents", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getHoldingCurrents(r);};
                 auto values = _atIndices<double>(func, f.size(), idx);
                 return py::array(values.size(), values.data());
              })
+        .def("morphologies", [](const File& f) {
+                return f.getMorphologies(Range::all());
+             })
         .def("morphologies", [](const File& f, int offset) {
-                return f.getMorphologies(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getMorphologies(r)[0];
              })
         .def("morphologies", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getMorphologies(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
         .def("morphologies", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMorphologies(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("synapse_classes", [](const File& f) {
+                return f.getSynapseClass(Range::all());
+             })
         .def("synapse_classes", [](const File& f, int offset) {
-                return f.getSynapseClass(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getSynapseClass(r)[0];
              })
         .def("synapse_classes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getSynapseClass(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
         .def("synapse_classes", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getSynapseClass(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("regions", [](const File& f) {
+                return f.getRegions(Range::all());
+             })
         .def("regions", [](const File& f, int offset) {
-                return f.getRegions(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getRegions(r)[0];
              })
         .def("regions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
@@ -270,46 +298,58 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 const auto& func = [&f](const MVD::Range& r){return f.getRegions(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("raw_etypes", [](const File& f) {
+                auto res = f.getIndexEtypes(Range::all());
+                return py::array(res.size(), res.data());
+             })
         .def("raw_etypes", [](const File& f, int offset) {
-                return f.getIndexEtypes(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getIndexEtypes(r)[0];
              })
         .def("raw_etypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexEtypes(r);
                 return py::array(res.size(), res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
+        .def("raw_mtypes", [](const File& f) {
+                auto res = f.getIndexMtypes(Range::all());
+                return py::array(res.size(), res.data());
+             })
         .def("raw_mtypes", [](const File& f, int offset) {
-                return f.getIndexMtypes(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getIndexMtypes(r)[0];
              })
         .def("raw_mtypes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexMtypes(r);
                 return py::array(res.size(), res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
+        .def("raw_synapse_classes", [](const File& f) {
+                auto res = f.getIndexSynapseClass(Range::all());
+                return py::array(res.size(), res.data());
+             })
         .def("raw_synapse_classes", [](const File& f, int offset) {
-                return f.getIndexSynapseClass(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getIndexSynapseClass(r)[0];
              })
         .def("raw_synapse_classes", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexSynapseClass(r);
                 return py::array(res.size(), res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
+        .def("raw_regions", [](const File& f) {
+                auto res = f.getIndexRegions(Range::all());
+                return py::array(res.size(), res.data());
+             })
         .def("raw_regions", [](const File& f, int offset) {
-                return f.getIndexRegions(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getIndexRegions(r)[0];
              })
         .def("raw_regions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexRegions(r);
                 return py::array(res.size(), res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
         .def("hasCurrents", &File::hasCurrents)
         .def_property_readonly("rotated", &File::hasRotations)
         .def_property_readonly("all_etypes", &File::listAllEtypes)
@@ -321,37 +361,45 @@ PYBIND11_MODULE(mvdtool, mvd) {
 
     py::class_<MVD3File, std::shared_ptr<MVD3File>>(mvd3, "File", file)
         .def(py::init<const std::string&>())
+        .def("raw_morphologies", [](const MVD3File& f) {
+                auto res = f.getIndexMorphologies(Range::all());
+                return py::array(res.size(), res.data());
+             })
         .def("raw_morphologies", [](const MVD3File& f, int offset) {
-                return f.getIndexMorphologies(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getIndexMorphologies(r)[0];
              })
         .def("raw_morphologies", [](const MVD3File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getIndexMorphologies(r);
                 return py::array(res.size(), res.data());
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
+        .def("me_combos", [](const MVD3File& f) {
+                return f.getMECombos(Range::all());
+             })
         .def("me_combos", [](const MVD3File& f, int offset) {
-                return f.getMECombos(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getMECombos(r)[0];
              })
         .def("me_combos", [](const MVD3File& f, int offset, int count) {
                 Range r(offset, count);
                 return f.getMECombos(r);
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+             })
         .def("me_combos", [](const MVD3File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMECombos(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
+        .def("layers", [](const MVD3File& f) {
+                return f.getLayers(Range::all());
+             })
         .def("layers", [](const MVD3File& f, int offset) {
-                return f.getLayers(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getLayers(r)[0];
              })
         .def("layers", [](const MVD3File& f, int offset, int count) {
-                return f.getLayers(Range(offset, count));
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+                Range r(offset, count);
+                return f.getLayers(r);
+             })
         .def("layers", [](const MVD3File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
                 return _atIndices<boost::int32_t>(func, f.size(), idx);
@@ -361,14 +409,17 @@ PYBIND11_MODULE(mvdtool, mvd) {
 
     py::class_<SonataFile, std::shared_ptr<SonataFile>>(sonata, "File", file)
         .def(py::init<const std::string&>())
+        .def("layers", [](const SonataFile& f) {
+                return f.getLayers(Range::all());
+             })
         .def("layers", [](const SonataFile& f, int offset) {
-                return f.getLayers(Range(offset, 1))[0];
+                Range r(offset, 1);
+                return f.getLayers(r)[0];
              })
         .def("layers", [](const SonataFile& f, int offset, int count) {
-                return f.getLayers(Range(offset, count));
-             },
-             "offset"_a = 0,
-             "count"_a = 0)
+                Range r(offset, count);
+                return f.getLayers(r);
+             })
         .def("layers", [](const SonataFile& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
