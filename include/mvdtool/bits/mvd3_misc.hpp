@@ -35,12 +35,9 @@ template <typename T>
 inline std::vector<T> get_data_for_selection(const HighFive::DataSet& dataset,
                                              const MVD3::Range& range) {
     std::vector<T> data_values;
+    const size_t n_elem = dataset.getSpace().getDimensions()[0];
 
-    if (!range.is_empty()) {
-        dataset.select({range.offset}, {range.count}).read(data_values);
-    } else {
-        dataset.read(data_values);
-    }
+    dataset.select({range.offset}, {range.adjust_count(n_elem)}).read(data_values);
     return data_values;
 }
 
@@ -84,8 +81,9 @@ std::vector<T> tsv_get_chunked(const MVD3::MVD3File& mvd,
                                const MVD3::Range& range) {
     const size_t CHUNK_SIZE = 256;
     std::vector<T> output;
-    const size_t end = range.is_empty()? mvd.getNbNeuron() : range.offset + range.count;
-    output.reserve(end - range.offset);
+    const size_t total_size = mvd.getNbNeuron();
+    const size_t end = range.calculate_end(total_size);
+    output.reserve(range.adjust_count(total_size));
 
     for (auto index = range.offset; index < end; index += CHUNK_SIZE) {
         const MVD::Range subrange(index, std::min(CHUNK_SIZE, end - index));
@@ -171,11 +169,8 @@ inline size_t MVD3File::getNbNeuron() const {
 inline Positions MVD3File::getPositions(const Range& range) const {
     Positions res;
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_positions);
-    if (!range.is_empty()) {
-        set.select({range.offset, 0}, {range.count, 3}).read(res);
-        return res;
-    }
-    set.read(res);
+    const auto size = set.getSpace().getDimensions()[0];
+    set.select({range.offset, 0}, {range.adjust_count(size), 3}).read(res);
     return res;
 }
 
@@ -183,11 +178,8 @@ inline Positions MVD3File::getPositions(const Range& range) const {
 inline Rotations MVD3File::getRotations(const Range& range) const {
     Rotations res;
     HighFive::DataSet set = _hdf5_file.getDataSet(did_cells_rotations);
-    if (!range.is_empty()) {
-        set.select({range.offset, 0}, {range.count, 4}).read(res);
-        return res;
-    }
-    set.read(res);
+    const auto size = set.getSpace().getDimensions()[0];
+    set.select({range.offset, 0}, {range.adjust_count(size), 4}).read(res);
     return res;
 }
 

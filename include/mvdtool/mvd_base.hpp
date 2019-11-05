@@ -50,7 +50,8 @@ public:
     inline Range(const size_t offset_=0, const size_t count_=0) : offset(offset_), count(count_) {}
 
     inline static Range all() { return Range(0,0); }
-    inline bool is_empty() const { return count == 0; }
+    inline size_t adjust_count(const size_t total_range) const { return count > 0 ? count : total_range - offset; }
+    inline size_t calculate_end(const size_t total_range) const { return count > 0 ? offset + count : total_range; }
     size_t offset;
     size_t count;
 };
