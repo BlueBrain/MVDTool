@@ -12,6 +12,6 @@ matrix:
   - name: "Python Build"
     before_install:
       - docker pull bluebrain/spack
-      - docker run -v $PWD:/source -w /source bluebrain/spack:latest spack diy --test=root py-mvdtool@develop
+      - docker run -v $PWD:/source -w /source bluebrain/spack:latest spack diy --test=root "py-mvdtool@develop^python@3:"
 
 script: "ruby -ne 'puts $_ if /^==>.*make.*test/../.*phase.*install/ and not /^==>|make: \\*\\*\\*/' spack-build.out"
