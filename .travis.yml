@@ -3,8 +3,15 @@ language: generic
 services:
   - docker
 
-before_install:
-  - docker pull bluebrain/spack
-  - docker run -v $PWD:/source -w /source bluebrain/spack:latest spack diy --test=root mvdtool@develop
+matrix:
+  include:
+  - name: "C++ Build"
+    before_install:
+      - docker pull bluebrain/spack
+      - docker run -v $PWD:/source -w /source bluebrain/spack:latest spack diy --test=root mvdtool@develop
+  - name: "Python Build"
+    before_install:
+      - docker pull bluebrain/spack
+      - docker run -v $PWD:/source -w /source bluebrain/spack:latest spack diy --test=root "py-mvdtool@develop^python@3:"
 
-script: "ruby -ne 'puts $_ if /^==>.*make.*test/../.*phase.*install/ and not /^==>|make: \\*\\*\\*/' spack-build.out"
+script: "ruby -ne 'puts $_ if /^==>.*make.*test|^==>.*python.*setup\\.py.*test/../.*phase.*install/ and not /^==>|make: \\*\\*\\*/' spack-build.out"
