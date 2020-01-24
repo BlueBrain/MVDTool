@@ -48,6 +48,14 @@ class PyFile : public File {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<std::string>, File, "synapse_classes", getSynapseClass);
     }
+    std::vector<double> getExcMiniFrequencies(const Range& = Range::all()) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(
+            std::vector<double>, File, "exc_mini_frequencies", getExcMiniFrequencies);
+    }
+    std::vector<double> getInhMiniFrequencies(const Range& = Range::all()) const override {
+        PYBIND11_OVERLOAD_PURE_NAME(
+            std::vector<double>, File, "inh_mini_frequencies", getInhMiniFrequencies);
+    }
     bool hasCurrents() const override {
         PYBIND11_OVERLOAD_PURE_NAME(bool, File, "hasCurrents", hasCurrents);
     }
@@ -280,6 +288,42 @@ PYBIND11_MODULE(mvdtool, mvd) {
         .def("synapse_classes", [](const File& f, pyarray<size_t> idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getSynapseClass(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
+             })
+        .def("exc_mini_frequencies", [](const File& f) {
+                auto res = f.getExcMiniFrequencies(Range::all());
+                return py::array(res.size(), res.data());
+             })
+        .def("exc_mini_frequencies", [](const File& f, int offset) {
+                Range r(offset, 1);
+                return f.getExcMiniFrequencies(r)[0];
+             })
+        .def("exc_mini_frequencies", [](const File& f, int offset, int count) {
+                Range r(offset, count);
+                auto res = f.getExcMiniFrequencies(r);
+                return py::array(res.size(), res.data());
+             })
+        .def("exc_mini_frequencies", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getExcMiniFrequencies(r);};
+                auto values = _atIndices<double>(func, f.size(), idx);
+                return py::array(values.size(), values.data());
+             })
+        .def("inh_mini_frequencies", [](const File& f) {
+                auto res = f.getInhMiniFrequencies(Range::all());
+                return py::array(res.size(), res.data());
+             })
+        .def("inh_mini_frequencies", [](const File& f, int offset) {
+                Range r(offset, 1);
+                return f.getInhMiniFrequencies(r)[0];
+             })
+        .def("inh_mini_frequencies", [](const File& f, int offset, int count) {
+                Range r(offset, count);
+                auto res = f.getInhMiniFrequencies(r);
+                return py::array(res.size(), res.data());
+             })
+        .def("inh_mini_frequencies", [](const File& f, pyarray<size_t> idx) {
+                const auto& func = [&f](const MVD::Range& r){return f.getInhMiniFrequencies(r);};
+                auto values = _atIndices<double>(func, f.size(), idx);
+                return py::array(values.size(), values.data());
              })
         .def("regions", [](const File& f) {
                 return f.getRegions(Range::all());

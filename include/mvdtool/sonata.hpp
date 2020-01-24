@@ -144,6 +144,18 @@ public:
     std::vector<std::string> getLayers(const Range & range = Range::all()) const;
 
     ///
+    /// \brief getExcMiniFrequencies
+    /// \return vector of double with the excitatory mini frequencies
+    ///
+    std::vector<double> getExcMiniFrequencies(const Range & range = Range::all()) const override;
+
+    ///
+    /// \brief getInhMiniFrequencies
+    /// \return vector of double with the inhibitory mini frequencies
+    ///
+    std::vector<double> getInhMiniFrequencies(const Range & range = Range::all()) const override;
+
+    ///
     /// \brief getRegions
     /// \return vector of string with the region name associated with each neuron
     ///

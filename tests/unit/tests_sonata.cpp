@@ -251,6 +251,32 @@ BOOST_AUTO_TEST_CASE( basicTestSynClass )
 }
 
 
+BOOST_AUTO_TEST_CASE( basicExcFreq )
+{
+    SonataFile file(SONATA_FILENAME_NEW_FORMAT);
+
+    std::vector<double> exc_frequencies = file.getExcMiniFrequencies();
+
+    BOOST_CHECK_EQUAL(exc_frequencies[0], static_cast<double>(0.63));
+    BOOST_CHECK_EQUAL(exc_frequencies[100], static_cast<double>(0.122));
+    BOOST_CHECK_EQUAL(exc_frequencies[200], static_cast<double>(0.04));
+
+}
+
+
+BOOST_AUTO_TEST_CASE( basicInhFreq )
+{
+    SonataFile file(SONATA_FILENAME_NEW_FORMAT);
+
+    std::vector<double> inh_frequencies = file.getInhMiniFrequencies();
+
+    BOOST_CHECK_EQUAL(inh_frequencies[0], static_cast<double>(0.012));
+    BOOST_CHECK_EQUAL(inh_frequencies[100], static_cast<double>(0.013));
+    BOOST_CHECK_EQUAL(inh_frequencies[200], static_cast<double>(0.014));
+
+}
+
+
 BOOST_AUTO_TEST_CASE( basicTestSynClassRange )
 {
     SonataFile file(SONATA_FILENAME);

@@ -102,6 +102,8 @@ const std::string did_cells_rotations = "/cells/orientations";
 const std::string did_cells_hypercolumn = "/cells/properties/hypercolumn";
 const std::string did_cells_minicolmun = "/cells/properties/minicolumn";
 const std::string did_cells_layer = "/cells/properties/layer";
+const std::string did_cells_exc_mini_freq = "/cells/properties/exc_mini_frequency";
+const std::string did_cells_inh_mini_freq = "/cells/properties/inh_mini_frequency";
 
 // cells index
 const std::string did_cells_index_morpho = "/cells/properties/morphology";
@@ -233,6 +235,16 @@ inline std::vector<int32_t> MVD3File::getMiniColumns(const Range& range) const {
 
 inline std::vector<int32_t> MVD3File::getLayers(const Range& range) const {
     return getDataFromTSVorMVD<int32_t>(did_cells_layer, did_lib_NONE, TSVColumn::Layer, range);
+}
+
+
+inline std::vector<double> MVD3File::getExcMiniFrequencies(const Range& range) const {
+    return getDataFromMVD<double>(did_cells_exc_mini_freq, did_lib_NONE, range);
+}
+
+
+inline std::vector<double> MVD3File::getInhMiniFrequencies(const Range& range) const {
+    return getDataFromMVD<double>(did_cells_inh_mini_freq, did_lib_NONE, range);
 }
 
 
