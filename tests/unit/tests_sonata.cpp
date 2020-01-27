@@ -56,9 +56,9 @@ BOOST_AUTO_TEST_CASE( basicTestPosition )
     Positions neurons_pos = file.getPositions();
 
     BOOST_CHECK_EQUAL(neurons_pos.shape()[0], 1000);
-    BOOST_CHECK_EQUAL(neurons_pos[0][0], static_cast<double>(40.821401));
-    BOOST_CHECK_EQUAL(neurons_pos[0][1], static_cast<double>(1986.506637));
-    BOOST_CHECK_EQUAL(neurons_pos[0][2], static_cast<double>(10.788424));
+    BOOST_CHECK_EQUAL(neurons_pos[0][0], 40.821401);
+    BOOST_CHECK_EQUAL(neurons_pos[0][1], 1986.506637);
+    BOOST_CHECK_EQUAL(neurons_pos[0][2], 10.788424);
 
 }
 
@@ -257,9 +257,9 @@ BOOST_AUTO_TEST_CASE( basicExcFreq )
 
     std::vector<double> exc_frequencies = file.getExcMiniFrequencies();
 
-    BOOST_CHECK_EQUAL(exc_frequencies[0], static_cast<double>(0.63));
-    BOOST_CHECK_EQUAL(exc_frequencies[100], static_cast<double>(0.122));
-    BOOST_CHECK_EQUAL(exc_frequencies[200], static_cast<double>(0.04));
+    BOOST_CHECK_EQUAL(exc_frequencies[0], 0.63);
+    BOOST_CHECK_EQUAL(exc_frequencies[100], 0.122);
+    BOOST_CHECK_EQUAL(exc_frequencies[200], 0.04);
 
 }
 
@@ -270,9 +270,9 @@ BOOST_AUTO_TEST_CASE( basicInhFreq )
 
     std::vector<double> inh_frequencies = file.getInhMiniFrequencies();
 
-    BOOST_CHECK_EQUAL(inh_frequencies[0], static_cast<double>(0.012));
-    BOOST_CHECK_EQUAL(inh_frequencies[100], static_cast<double>(0.013));
-    BOOST_CHECK_EQUAL(inh_frequencies[200], static_cast<double>(0.014));
+    BOOST_CHECK_EQUAL(inh_frequencies[0], 0.012);
+    BOOST_CHECK_EQUAL(inh_frequencies[100], 0.013);
+    BOOST_CHECK_EQUAL(inh_frequencies[200], 0.014);
 
 }
 
@@ -300,9 +300,9 @@ BOOST_AUTO_TEST_CASE( genericMVDFile )
     Positions neurons_pos = file->getPositions();
 
     BOOST_CHECK_EQUAL(neurons_pos.shape()[0], 1000);
-    BOOST_CHECK_EQUAL(neurons_pos[0][0], static_cast<double>(40.821401));
-    BOOST_CHECK_EQUAL(neurons_pos[0][1], static_cast<double>(1986.506637));
-    BOOST_CHECK_EQUAL(neurons_pos[0][2], static_cast<double>(10.788424));
+    BOOST_CHECK_EQUAL(neurons_pos[0][0], 40.821401);
+    BOOST_CHECK_EQUAL(neurons_pos[0][1], 1986.506637);
+    BOOST_CHECK_EQUAL(neurons_pos[0][2], 10.788424);
 }
 
 
@@ -337,9 +337,9 @@ BOOST_AUTO_TEST_CASE( newSonataTestThresholdCurrent )
 
     const auto thresholdCurrents = file.getThresholdCurrents();
 
-    BOOST_CHECK_EQUAL(thresholdCurrents[0], static_cast<double>(0.33203125));
-    BOOST_CHECK_EQUAL(thresholdCurrents[42], static_cast<double>(0.5078125));
-    BOOST_CHECK_EQUAL(thresholdCurrents[2615], static_cast<double>(0.3515625));
+    BOOST_CHECK_EQUAL(thresholdCurrents[0], 0.33203125);
+    BOOST_CHECK_EQUAL(thresholdCurrents[42], 0.5078125);
+    BOOST_CHECK_EQUAL(thresholdCurrents[2615], 0.3515625);
 }
 
 
@@ -349,9 +349,9 @@ BOOST_AUTO_TEST_CASE( newSonataTestHoldingCurrent )
 
     const auto holdingCurrents = file.getHoldingCurrents();
 
-    BOOST_CHECK_EQUAL(holdingCurrents[0], static_cast<double>(0.0058290600165378202));
-    BOOST_CHECK_EQUAL(holdingCurrents[42], static_cast<double>(-0.22734983535883702));
-    BOOST_CHECK_EQUAL(holdingCurrents[2615], static_cast<double>(-0.0028034338583893302));
+    BOOST_CHECK_EQUAL(holdingCurrents[0], 0.0058290600165378202);
+    BOOST_CHECK_EQUAL(holdingCurrents[42], -0.22734983535883702);
+    BOOST_CHECK_EQUAL(holdingCurrents[2615], -0.0028034338583893302);
 }
 
 BOOST_AUTO_TEST_CASE( newSonataTestAllMtypes )

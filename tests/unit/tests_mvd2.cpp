@@ -162,9 +162,9 @@ BOOST_AUTO_TEST_CASE( basicTestPosition )
     MVD::Positions neurons_pos = file.getPositions();
 
     BOOST_CHECK_EQUAL(neurons_pos.shape()[0], 1000);
-    BOOST_CHECK_EQUAL(neurons_pos[0][0], static_cast<double>(40.821401));
-    BOOST_CHECK_EQUAL(neurons_pos[0][1], static_cast<double>(1986.506637));
-    BOOST_CHECK_EQUAL(neurons_pos[0][2], static_cast<double>(10.788424));
+    BOOST_CHECK_EQUAL(neurons_pos[0][0], 40.821401);
+    BOOST_CHECK_EQUAL(neurons_pos[0][1], 1986.506637);
+    BOOST_CHECK_EQUAL(neurons_pos[0][2], 10.788424);
 
 }
 
@@ -197,8 +197,8 @@ BOOST_AUTO_TEST_CASE( basicTestRotations )
     MVD::Positions neurons_pos = file.getRotations();
 
     BOOST_CHECK_EQUAL(neurons_pos.shape()[0], 1000);
-    BOOST_CHECK_EQUAL(neurons_pos[0][0], static_cast<double>(-1.146572));
-    BOOST_CHECK_EQUAL(neurons_pos[146][0], static_cast<double>(-125.718090));
+    BOOST_CHECK_EQUAL(neurons_pos[0][0], -1.146572);
+    BOOST_CHECK_EQUAL(neurons_pos[146][0], -125.718090);
 
 }
 
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE( basicTestRotationsRange )
     MVD::Positions neurons_pos = file.getRotations(MVD::Range(100, 50));
 
     BOOST_CHECK_EQUAL(neurons_pos.shape()[0], 50);
-    BOOST_CHECK_EQUAL(neurons_pos[46][0], static_cast<double>(-125.718090));
+    BOOST_CHECK_EQUAL(neurons_pos[46][0], -125.718090);
 
 }
 
