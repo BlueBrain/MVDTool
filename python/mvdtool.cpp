@@ -189,7 +189,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 Range r(offset, count);
                 return f.getEtypes(r);
              })
-        .def("etypes", [](const File& f, pyarray<size_t> idx) {
+        .def("etypes", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getEtypes(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
@@ -204,7 +204,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 Range r(offset, count);
                 return f.getMtypes(r);
              })
-        .def("mtypes", [](const File& f, pyarray<size_t> idx) {
+        .def("mtypes", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMtypes(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
@@ -219,7 +219,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 Range r(offset, count);
                 return f.getEmodels(r);
              })
-        .def("emodels", [](const File& f, pyarray<size_t> idx) {
+        .def("emodels", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getEmodels(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
@@ -236,7 +236,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 auto res = f.getThresholdCurrents(r);
                 return py::array(res.size(), res.data());
              })
-        .def("threshold_currents", [](const File& f, pyarray<size_t> idx) {
+        .def("threshold_currents", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getThresholdCurrents(r);};
                 auto values = _atIndices<double>(func, f.size(), idx);
                 return py::array(values.size(), values.data());
@@ -254,7 +254,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 auto res = f.getHoldingCurrents(r);
                 return py::array(res.size(), res.data());
              })
-        .def("holding_currents", [](const File& f, pyarray<size_t> idx) {
+        .def("holding_currents", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getHoldingCurrents(r);};
                 auto values = _atIndices<double>(func, f.size(), idx);
                 return py::array(values.size(), values.data());
@@ -270,7 +270,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 Range r(offset, count);
                 return f.getMorphologies(r);
              })
-        .def("morphologies", [](const File& f, pyarray<size_t> idx) {
+        .def("morphologies", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMorphologies(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
@@ -285,7 +285,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 Range r(offset, count);
                 return f.getSynapseClass(r);
              })
-        .def("synapse_classes", [](const File& f, pyarray<size_t> idx) {
+        .def("synapse_classes", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getSynapseClass(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
@@ -302,7 +302,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 auto res = f.getExcMiniFrequencies(r);
                 return py::array(res.size(), res.data());
              })
-        .def("exc_mini_frequencies", [](const File& f, pyarray<size_t> idx) {
+        .def("exc_mini_frequencies", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getExcMiniFrequencies(r);};
                 auto values = _atIndices<double>(func, f.size(), idx);
                 return py::array(values.size(), values.data());
@@ -320,7 +320,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 auto res = f.getInhMiniFrequencies(r);
                 return py::array(res.size(), res.data());
              })
-        .def("inh_mini_frequencies", [](const File& f, pyarray<size_t> idx) {
+        .def("inh_mini_frequencies", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getInhMiniFrequencies(r);};
                 auto values = _atIndices<double>(func, f.size(), idx);
                 return py::array(values.size(), values.data());
@@ -338,7 +338,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
              },
              "offset"_a = 0,
              "count"_a = 0)
-        .def("regions", [](const File& f, pyarray<size_t> idx) {
+        .def("regions", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getRegions(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
@@ -429,7 +429,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 Range r(offset, count);
                 return f.getMECombos(r);
              })
-        .def("me_combos", [](const MVD3File& f, pyarray<size_t> idx) {
+        .def("me_combos", [](const MVD3File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getMECombos(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
@@ -444,7 +444,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 Range r(offset, count);
                 return f.getLayers(r);
              })
-        .def("layers", [](const MVD3File& f, pyarray<size_t> idx) {
+        .def("layers", [](const MVD3File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
                 return _atIndices<boost::int32_t>(func, f.size(), idx);
              })
@@ -464,7 +464,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 Range r(offset, count);
                 return f.getLayers(r);
              })
-        .def("layers", [](const SonataFile& f, pyarray<size_t> idx) {
+        .def("layers", [](const SonataFile& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
                 return _atIndices<std::string>(func, f.size(), idx);
              })
