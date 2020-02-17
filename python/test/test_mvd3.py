@@ -176,6 +176,35 @@ def test_raw_etype(circuit):
     assert raw_etype == 1
 
 
+@pytest.fixture(params=["circuit.mvd3", "nodes.h5"])
+def circuit_with_freq(request):
+    """Provide access to an circuit file
+    """
+    filename = path.join(_dir, request.param)
+    return mt.open(filename)
+
+
+def test_mini_frequencies(circuit_with_freq):
+
+    exc_mini_frequencies = circuit_with_freq.exc_mini_frequencies()
+    assert exc_mini_frequencies[0] == 0.63
+    assert circuit_with_freq.exc_mini_frequencies(0) == 0.63
+    assert exc_mini_frequencies[100] == 0.122
+    assert circuit_with_freq.exc_mini_frequencies(95, 6)[5] == 0.122
+    assert exc_mini_frequencies[200] == 0.04
+    assert numpy.array_equal(circuit_with_freq.exc_mini_frequencies(
+        [0, 100, 200]), [0.63, 0.122, 0.04])
+
+    inh_mini_frequencies = circuit_with_freq.inh_mini_frequencies()
+    assert inh_mini_frequencies[0] == 0.012
+    assert circuit_with_freq.inh_mini_frequencies(0) == 0.012
+    assert inh_mini_frequencies[100] == 0.013
+    assert circuit_with_freq.inh_mini_frequencies(95, 6)[5] == 0.013
+    assert inh_mini_frequencies[200] == 0.014
+    assert numpy.array_equal(circuit_with_freq.inh_mini_frequencies(
+        [0, 100, 200]), [0.012, 0.013, 0.014])
+
+
 @pytest.mark.parametrize(
     "attr", ["morphologies", "etypes", "mtypes", "regions", "synapse_classes"]
 )
@@ -265,7 +294,7 @@ def test_tsv_emodels_ranges(circuit_mvd3_tsv):
 
 
 def test_tsv_emodels_indices(circuit_mvd3_tsv):
-    emodels = circuit_mvd3_tsv.emodels([0,9,33])
+    emodels = circuit_mvd3_tsv.emodels([0, 9, 33])
 
     assert emodels[0] == "bAC_327962063"
     assert emodels[1] == "dSTUT_321707905"
@@ -279,7 +308,7 @@ def test_mvd3_mecombos_value(circuit_mvd3_tsv):
 
 
 def test_mvd3_mecombos_indices(circuit_mvd3_tsv):
-    me_combos = circuit_mvd3_tsv.me_combos([0,9,33])
+    me_combos = circuit_mvd3_tsv.me_combos([0, 9, 33])
 
     assert me_combos[0] == "bAC_1_02583f52ff47b88961e4216e2972ee8c"
     assert me_combos[1] == "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"
@@ -308,7 +337,7 @@ def test_tsv_pybind_api(circuit_mvd3_tsv):
     assert type(holding_current) is float
     assert holding_current == 0
 
-    holding_currents = circuit_mvd3_tsv.holding_currents(0,10)
+    holding_currents = circuit_mvd3_tsv.holding_currents(0, 10)
 
     assert holding_currents[9] == 0.1
     assert len(holding_currents) == 10
@@ -320,14 +349,9 @@ def test_tsv_pybind_api(circuit_mvd3_tsv):
 
 
 @pytest.fixture
-def new_sonata_file():
-    return path.join(_dir, "nodes.h5")
-
-
-@pytest.fixture
-def circuit_new_sonata(new_sonata_file):
-    sonatafilename = path.join(_dir, new_sonata_file)
-    sonata = mt.open(new_sonata_file)
+def circuit_new_sonata():
+    sonatafilename = path.join(_dir, "nodes.h5")
+    sonata = mt.open(sonatafilename)
     return sonata
 
 

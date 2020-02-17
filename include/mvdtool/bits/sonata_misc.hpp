@@ -36,6 +36,8 @@ using namespace MVD::utils;
 // Naming convention
 const std::string default_population_name = "default";
 const std::string did_layer = "layer";
+const std::string did_exc_mini_freq = "exc_mini_frequency";
+const std::string did_inh_mini_freq = "inh_mini_frequency";
 const std::string did_morpho = "morphology";
 const std::string did_etypes = "etype";
 const std::string did_mtypes = "mtype";
@@ -211,6 +213,14 @@ inline std::vector<std::string> SonataFile::getMtypes(const Range& range) const{
 
 inline std::vector<std::string> SonataFile::getLayers(const Range& range) const{
     return pop_->getAttribute<std::string>(did_layer, select(range, size_));
+}
+
+inline std::vector<double> SonataFile::getExcMiniFrequencies(const Range& range) const{
+    return pop_->getAttribute<double>(did_exc_mini_freq, select(range, size_));
+}
+
+inline std::vector<double> SonataFile::getInhMiniFrequencies(const Range& range) const{
+    return pop_->getAttribute<double>(did_inh_mini_freq, select(range, size_));
 }
 
 inline std::vector<std::string> SonataFile::getEmodels(const Range& range) const{

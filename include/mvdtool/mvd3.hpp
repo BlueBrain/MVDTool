@@ -134,7 +134,7 @@ public:
     std::vector<int32_t> getMiniColumns(const Range & range = Range::all()) const;
 
     ///
-    /// \brief getLayer
+    /// \brief getLayers
     /// \return vector of int32 with the layer associated with each neuron
     ///
     std::vector<int32_t> getLayers(const Range & range = Range::all()) const;
@@ -145,6 +145,17 @@ public:
     ///
     std::vector<std::string> getSynapseClass(const Range & range = Range::all()) const override;
 
+    ///
+    /// \brief getExcMiniFrequencies
+    /// \return vector of double with the excitatory mini frequencies
+    ///
+    std::vector<double> getExcMiniFrequencies(const Range & range = Range::all()) const override;
+
+    ///
+    /// \brief getInhMiniFrequencies
+    /// \return vector of double with the inhibitory mini frequencies
+    ///
+    std::vector<double> getInhMiniFrequencies(const Range & range = Range::all()) const override;
 
     // index related infos
 
