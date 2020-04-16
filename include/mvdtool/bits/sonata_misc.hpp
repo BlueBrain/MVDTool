@@ -34,20 +34,20 @@ using namespace bbp;
 using namespace MVD::utils;
 
 // Naming convention
-const std::string default_population_name = "default";
-const std::string did_layer = "layer";
-const std::string did_exc_mini_freq = "exc_mini_frequency";
-const std::string did_inh_mini_freq = "inh_mini_frequency";
-const std::string did_morpho = "morphology";
-const std::string did_etypes = "etype";
-const std::string did_mtypes = "mtype";
-const std::string did_emodel = "model_template";
-const std::string did_regions = "region";
-const std::string did_synapse_class = "synapse_class";
+constexpr char default_population_name[] = "default";
+constexpr char did_layer[] = "layer";
+constexpr char did_exc_mini_freq[] = "exc_mini_frequency";
+constexpr char did_inh_mini_freq[] = "inh_mini_frequency";
+constexpr char did_morpho[] = "morphology";
+constexpr char did_etypes[] = "etype";
+constexpr char did_mtypes[] = "mtype";
+constexpr char did_emodel[] = "model_template";
+constexpr char did_regions[] = "region";
+constexpr char did_synapse_class[] = "synapse_class";
 
-const std::string did_threshold_current = "threshold_current";
-const std::string did_holding_current = "holding_current";
-const std::string did_model_template = "model_template";
+constexpr char did_threshold_current[] = "threshold_current";
+constexpr char did_holding_current[] = "holding_current";
+constexpr char did_model_template[] = "model_template";
 
 inline auto select(const MVD::Range& range, size_t size) {
     return sonata::Selection({{range.offset, range.calculate_end(size)}});
