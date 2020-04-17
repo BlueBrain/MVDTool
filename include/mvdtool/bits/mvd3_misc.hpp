@@ -93,6 +93,8 @@ std::vector<T> tsv_get_chunked(const MVD3::MVD3File& mvd,
     return output;
 }
 
+// Use constexpr char[] as const std::string is initialized too late for
+// static objects using MVD::File in certain cases
 
 // cells properties
 constexpr char did_cells_positions[] = "/cells/positions";

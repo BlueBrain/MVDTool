@@ -34,6 +34,9 @@ using namespace bbp;
 using namespace MVD::utils;
 
 // Naming convention
+//
+// Use constexpr char[] as const std::string is initialized too late for
+// static objects using MVD::File in certain cases
 constexpr char default_population_name[] = "default";
 constexpr char did_layer[] = "layer";
 constexpr char did_exc_mini_freq[] = "exc_mini_frequency";

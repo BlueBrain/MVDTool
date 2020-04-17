@@ -41,6 +41,14 @@ add_executable(test_mvd3 tests_mvd3.cpp)
 target_link_libraries(test_mvd3 Boost::unit_test_framework MVDTool)
 add_test(NAME test_parser_mvd3 COMMAND test_mvd3)
 
+# library
+add_library(test_library tests_library.cpp)
+target_link_libraries(test_library MVDTool)
+
+add_executable(test_encapsulation tests_encapsulation.cpp)
+target_link_libraries(test_encapsulation test_library Boost::unit_test_framework)
+add_test(NAME test_encapsulation COMMAND test_encapsulation)
+
 # sonata
 add_executable(test_sonata tests_sonata.cpp)
 target_link_libraries(test_sonata Boost::unit_test_framework MVDTool)
