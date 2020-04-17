@@ -93,39 +93,41 @@ std::vector<T> tsv_get_chunked(const MVD3::MVD3File& mvd,
     return output;
 }
 
+// Use constexpr char[] as const std::string is initialized too late for
+// static objects using MVD::File in certain cases
 
 // cells properties
-const std::string did_cells_positions = "/cells/positions";
-const std::string did_cells_rotations = "/cells/orientations";
+constexpr char did_cells_positions[] = "/cells/positions";
+constexpr char did_cells_rotations[] = "/cells/orientations";
 
 // cells properties namespace
-const std::string did_cells_hypercolumn = "/cells/properties/hypercolumn";
-const std::string did_cells_minicolmun = "/cells/properties/minicolumn";
-const std::string did_cells_layer = "/cells/properties/layer";
-const std::string did_cells_exc_mini_freq = "/cells/properties/exc_mini_frequency";
-const std::string did_cells_inh_mini_freq = "/cells/properties/inh_mini_frequency";
+constexpr char did_cells_hypercolumn[] = "/cells/properties/hypercolumn";
+constexpr char did_cells_minicolmun[] = "/cells/properties/minicolumn";
+constexpr char did_cells_layer[] = "/cells/properties/layer";
+constexpr char did_cells_exc_mini_freq[] = "/cells/properties/exc_mini_frequency";
+constexpr char did_cells_inh_mini_freq[] = "/cells/properties/inh_mini_frequency";
 
 // cells index
-const std::string did_cells_index_morpho = "/cells/properties/morphology";
-const std::string did_cells_index_etypes = "/cells/properties/etype";
-const std::string did_cells_index_mtypes = "/cells/properties/mtype";
-const std::string did_cells_index_mecombo = "/cells/properties/me_combo";
-const std::string did_cells_index_regions = "/cells/properties/region";
-const std::string did_cells_index_synapse_class = "/cells/properties/synapse_class";
+constexpr char did_cells_index_morpho[] = "/cells/properties/morphology";
+constexpr char did_cells_index_etypes[] = "/cells/properties/etype";
+constexpr char did_cells_index_mtypes[] = "/cells/properties/mtype";
+constexpr char did_cells_index_mecombo[] = "/cells/properties/me_combo";
+constexpr char did_cells_index_regions[] = "/cells/properties/region";
+constexpr char did_cells_index_synapse_class[] = "/cells/properties/synapse_class";
 
 // data
-const std::string did_lib_data_morpho = "/library/morphology";
-const std::string did_lib_data_etypes = "/library/etype";
-const std::string did_lib_data_mtypes = "/library/mtype";
-const std::string did_lib_data_mecombo = "/library/me_combo";
-const std::string did_lib_data_regions = "/library/region";
-const std::string did_lib_data_syn_class = "/library/synapse_class";
+constexpr char did_lib_data_morpho[] = "/library/morphology";
+constexpr char did_lib_data_etypes[] = "/library/etype";
+constexpr char did_lib_data_mtypes[] = "/library/mtype";
+constexpr char did_lib_data_mecombo[] = "/library/me_combo";
+constexpr char did_lib_data_regions[] = "/library/region";
+constexpr char did_lib_data_syn_class[] = "/library/synapse_class";
 
-const std::string did_lib_NONE = "";
+constexpr char did_lib_NONE[] = "";
 const MVD::Range range_ALL(0, 0);
 
 // circuit
-const std::string did_lib_circuit_seeds = "/circuit/seeds";
+constexpr char did_lib_circuit_seeds[] = "/circuit/seeds";
 
 using vec_string = std::vector<std::string>;
 
