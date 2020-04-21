@@ -175,10 +175,20 @@ def test_raw_etype(circuit):
 
     assert raw_etype == 1
 
+@pytest.fixture(params=["circuit_tsv.mvd3", "sonata.h5"])
+def circuit_without_freq(request):
+    """Provide access to a circuit file
+    """
+    filename = path.join(_dir, request.param)
+    return mt.open(filename)
+
+def test_has_mini_frequencies(circuit_without_freq):
+
+    assert circuit_without_freq.hasMiniFrequencies() == False
 
 @pytest.fixture(params=["circuit.mvd3", "nodes.h5"])
 def circuit_with_freq(request):
-    """Provide access to an circuit file
+    """Provide access to a circuit file
     """
     filename = path.join(_dir, request.param)
     return mt.open(filename)
@@ -186,6 +196,7 @@ def circuit_with_freq(request):
 
 def test_mini_frequencies(circuit_with_freq):
 
+    assert circuit_with_freq.hasMiniFrequencies()
     exc_mini_frequencies = circuit_with_freq.exc_mini_frequencies()
     assert exc_mini_frequencies[0] == 0.63
     assert circuit_with_freq.exc_mini_frequencies(0) == 0.63

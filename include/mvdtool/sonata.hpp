@@ -144,6 +144,12 @@ public:
     std::vector<std::string> getLayers(const Range & range = Range::all()) const;
 
     ///
+    /// \brief Checks whether exc_mini_frequency and inh_mini_frequency are available
+    /// \return bool whether the two mini frequency properties are available
+    ///
+    bool hasMiniFrequencies() const override;
+
+    ///
     /// \brief getExcMiniFrequencies
     /// \return vector of double with the excitatory mini frequencies
     ///
@@ -169,7 +175,7 @@ public:
 
     ///
     /// \brief Checks whether these two extra fields are available
-    /// \return bool whether thw two current properties are available
+    /// \return bool whether the two current properties are available
     ///
     bool hasCurrents() const override;
 

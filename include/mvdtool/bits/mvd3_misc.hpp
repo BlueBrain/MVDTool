@@ -239,6 +239,9 @@ inline std::vector<int32_t> MVD3File::getLayers(const Range& range) const {
     return getDataFromTSVorMVD<int32_t>(did_cells_layer, did_lib_NONE, TSVColumn::Layer, range);
 }
 
+inline bool MVD3File::hasMiniFrequencies() const {
+    return _hdf5_file.exist(did_cells_exc_mini_freq) && _hdf5_file.exist(did_cells_inh_mini_freq);
+}
 
 inline std::vector<double> MVD3File::getExcMiniFrequencies(const Range& range) const {
     return getDataFromMVD<double>(did_cells_exc_mini_freq, did_lib_NONE, range);

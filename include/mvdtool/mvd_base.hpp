@@ -88,6 +88,8 @@ public:
     virtual std::vector<std::string> getEmodels(const Range& range = Range::all()) const = 0;
     virtual std::vector<std::string> getRegions(const Range& range = Range::all()) const = 0;
     virtual std::vector<std::string> getSynapseClass(const Range& range = Range::all()) const = 0;
+
+    virtual bool hasMiniFrequencies() const = 0;
     virtual std::vector<double> getExcMiniFrequencies(const Range & range = Range::all()) const = 0;
     virtual std::vector<double> getInhMiniFrequencies(const Range & range = Range::all()) const = 0;
 
