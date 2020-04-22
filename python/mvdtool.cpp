@@ -48,6 +48,9 @@ class PyFile : public File {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<std::string>, File, "synapse_classes", getSynapseClass);
     }
+    bool hasMiniFrequencies() const override {
+        PYBIND11_OVERLOAD_PURE_NAME(bool, File, "hasMiniFrequencies", hasMiniFrequencies);
+    }
     std::vector<double> getExcMiniFrequencies(const Range& = Range::all()) const override {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<double>, File, "exc_mini_frequencies", getExcMiniFrequencies);
@@ -80,7 +83,7 @@ class PyFile : public File {
         PYBIND11_OVERLOAD_PURE_NAME(
             std::vector<size_t>, File, "raw_synapse_classes", getIndexSynapseClass);
     }
-    std::vector<std::string> listAllEtypes() const {
+    std::vector<std::string> listAllEtypes() const override{
         PYBIND11_OVERLOAD_PURE_NAME(std::vector<std::string>, File, "all_etypes", listAllEtypes);
     }
     std::vector<std::string> listAllMtypes() const override {
@@ -394,6 +397,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 auto res = f.getIndexRegions(r);
                 return py::array(res.size(), res.data());
              })
+        .def("hasMiniFrequencies", &File::hasMiniFrequencies)
         .def("hasCurrents", &File::hasCurrents)
         .def_property_readonly("rotated", &File::hasRotations)
         .def_property_readonly("all_etypes", &File::listAllEtypes)

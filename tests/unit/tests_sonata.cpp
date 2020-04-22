@@ -250,6 +250,19 @@ BOOST_AUTO_TEST_CASE( basicTestSynClass )
 
 }
 
+BOOST_AUTO_TEST_CASE( basicHasFreq )
+{
+    using namespace MVD3;
+
+    SonataFile file_without_frequencies(SONATA_FILENAME);
+
+    BOOST_CHECK_EQUAL(file_without_frequencies.hasMiniFrequencies(), false);
+
+    SonataFile file_with_frequencies(SONATA_FILENAME_NEW_FORMAT);
+
+    BOOST_CHECK(file_with_frequencies.hasMiniFrequencies());
+
+}
 
 BOOST_AUTO_TEST_CASE( basicExcFreq )
 {

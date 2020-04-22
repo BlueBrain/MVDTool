@@ -321,6 +321,19 @@ BOOST_AUTO_TEST_CASE( basicTestSynClass )
 
 }
 
+BOOST_AUTO_TEST_CASE( basicHasFreq )
+{
+    using namespace MVD3;
+
+    MVD3File file_without_frequencies(MVD3_TSV_FILENAME);
+
+    BOOST_CHECK_EQUAL(file_without_frequencies.hasMiniFrequencies(), false);
+
+    MVD3File file_with_frequencies(MVD3_FILENAME);
+
+    BOOST_CHECK(file_with_frequencies.hasMiniFrequencies());
+
+}
 
 BOOST_AUTO_TEST_CASE( basicExcFreq )
 {

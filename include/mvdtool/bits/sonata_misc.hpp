@@ -218,6 +218,11 @@ inline std::vector<std::string> SonataFile::getLayers(const Range& range) const{
     return pop_->getAttribute<std::string>(did_layer, select(range, size_));
 }
 
+inline bool SonataFile::hasMiniFrequencies() const {
+    const auto attrs = pop_->attributeNames();
+    return attrs.count(did_exc_mini_freq) && attrs.count(did_inh_mini_freq);
+}
+
 inline std::vector<double> SonataFile::getExcMiniFrequencies(const Range& range) const{
     return pop_->getAttribute<double>(did_exc_mini_freq, select(range, size_));
 }
