@@ -1,4 +1,12 @@
-add_subdirectory(pybind11)
+if( NOT EXISTS "${CMAKE_SOURCE_DIR}/python/pybind11/CMakeLists.txt" )
+  message( WARNING "pybind11 submodule not cloned. Trying to find pybind11 package externally" )
+  find_package(pybind11 REQUIRED)
+  if(pybind11_FOUND)
+    message( STATUS "Found pybind11 externally in ${pybind11_DIR}" )
+  endif()
+else()
+  add_subdirectory(pybind11)
+endif()
 
 pybind11_add_module(mvdtool mvdtool.cpp)
 target_link_libraries(mvdtool PUBLIC MVDTool HighFive)
