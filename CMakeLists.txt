@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 if(NOT MVDTool_VERSION)
     execute_process(COMMAND git describe --tags
-                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
                     RESULT_VARIABLE GIT_VERSION_FAILED
                     OUTPUT_VARIABLE GIT_PKG_VERSION_FULL
                     ERROR_VARIABLE GIT_VERSION_ERROR
