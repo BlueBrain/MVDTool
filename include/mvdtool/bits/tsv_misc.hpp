@@ -71,11 +71,17 @@ inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
         ensure_correct_n_fields(line_info.size());
 
         auto morph_name = line_info[MEComboEntry::MorphologyName];
+        int32_t layer = 0;
+        try {
+            layer = std::stoi(line_info[MEComboEntry::Layer]);
+        } catch (std::invalid_argument& e) {
+            layer = -1;
+        }
         combo_entries.insert({
             {line_info[column], morph_name},
             MEComboEntry {  // rvalue gets moved
                 morph_name,
-                std::stoi(line_info[MEComboEntry::Layer]),
+                layer,
                 line_info[MEComboEntry::FullMType],
                 line_info[MEComboEntry::EType],
                 line_info[MEComboEntry::EModel],
