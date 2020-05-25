@@ -114,6 +114,7 @@ constexpr char did_cells_index_mtypes[] = "/cells/properties/mtype";
 constexpr char did_cells_index_mecombo[] = "/cells/properties/me_combo";
 constexpr char did_cells_index_regions[] = "/cells/properties/region";
 constexpr char did_cells_index_synapse_class[] = "/cells/properties/synapse_class";
+constexpr char did_cells_index_layer[] = "/cells/properties/layer";
 
 // data
 constexpr char did_lib_data_morpho[] = "/library/morphology";
@@ -122,6 +123,7 @@ constexpr char did_lib_data_mtypes[] = "/library/mtype";
 constexpr char did_lib_data_mecombo[] = "/library/me_combo";
 constexpr char did_lib_data_regions[] = "/library/region";
 constexpr char did_lib_data_syn_class[] = "/library/synapse_class";
+constexpr char did_lib_data_layer[] = "/library/layer";
 
 constexpr char did_lib_NONE[] = "";
 const MVD::Range range_ALL(0, 0);
@@ -235,8 +237,12 @@ inline std::vector<int32_t> MVD3File::getMiniColumns(const Range& range) const {
 }
 
 
-inline std::vector<int32_t> MVD3File::getLayers(const Range& range) const {
-    return getDataFromTSVorMVD<int32_t>(did_cells_layer, did_lib_NONE, TSVColumn::Layer, range);
+inline std::vector<std::string> MVD3File::getLayers(const Range& range) const {
+    if (!_tsv_file) {
+        throw MVDException("No TSV file is opened with MVD3 to extract the layer info.");
+    }
+
+    return getDataFromTSV<std::string>(TSVColumn::Layer, range);
 }
 
 inline bool MVD3File::hasMiniFrequencies() const {

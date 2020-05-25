@@ -48,7 +48,7 @@ class TSVFile;  // Fwd decl
 ///
 struct MEComboEntry {
     std::string morphologyName;
-    int32_t layer;
+    std::string layer;
     std::string fullMType;
     std::string eType;
     std::string eModel;
@@ -144,9 +144,9 @@ class TSVFile {
     /// throw TSVException, if me_combo or morphology don't match
     /// an entry in tsvFileInfo
     ///
-    inline std::vector<int32_t> getLayers(const std::vector<std::string>& me_combos,
-                                          const std::vector<std::string>& morphologies) const {
-        return getField<int32_t>(me_combos, morphologies, MEComboEntry::Layer);
+    inline std::vector<std::string> getLayers(const std::vector<std::string>& me_combos,
+                                              const std::vector<std::string>& morphologies) const {
+        return getField<std::string>(me_combos, morphologies, MEComboEntry::Layer);
     }
 
     ///
