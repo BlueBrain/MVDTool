@@ -450,7 +450,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
              })
         .def("layers", [](const MVD3File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getLayers(r);};
-                return _atIndices<boost::int32_t>(func, f.size(), idx);
+                return _atIndices<std::string>(func, f.size(), idx);
              })
         .def_property_readonly("all_morphologies", &MVD3File::listAllMorphologies)
         ;
