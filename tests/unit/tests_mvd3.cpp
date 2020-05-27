@@ -269,6 +269,9 @@ BOOST_AUTO_TEST_CASE( basicTestminicolumns )
 
 }
 
+bool check_error_msg(const MVDException& ex) {
+    return strcmp(ex.what(), "No TSV file is opened with MVD3 to extract the layer info.") == 0;
+}
 
 BOOST_AUTO_TEST_CASE( basicLayer )
 {
@@ -276,12 +279,7 @@ BOOST_AUTO_TEST_CASE( basicLayer )
 
     MVD3File file(MVD3_FILENAME);
 
-    std::vector<boost::int32_t> layer = file.getLayers();
-
-    BOOST_CHECK_EQUAL(layer[0], 1);
-    BOOST_CHECK_EQUAL(layer[100], 2);
-    BOOST_CHECK_EQUAL(layer[200], 3);
-
+    BOOST_CHECK_EXCEPTION(file.getLayers(), MVDException, check_error_msg);
 }
 
 
@@ -427,7 +425,7 @@ BOOST_AUTO_TEST_CASE( mvdTsvFiles )
     const TSV::MEComboEntry& info = TSVInfos[9];
 
     BOOST_CHECK_EQUAL(info.morphologyName, "87dd39e6b0255ec053001f16da85b0e0");
-    BOOST_CHECK_EQUAL(info.layer, 1);
+    BOOST_CHECK_EQUAL(info.layer, "1");
     BOOST_CHECK_EQUAL(info.fullMType, "L1_DAC");
     BOOST_CHECK_EQUAL(info.eType, "dSTUT");
     BOOST_CHECK_EQUAL(info.eModel, "dSTUT_321707905");
@@ -476,9 +474,9 @@ BOOST_AUTO_TEST_CASE( mvdTsvLayers )
 
     const auto layers = file.getLayers();
 
-    BOOST_CHECK_EQUAL(layers[0], static_cast<int32_t>(1));
-    BOOST_CHECK_EQUAL(layers[9], static_cast<int32_t>(1));
-    BOOST_CHECK_EQUAL(layers[33], static_cast<int32_t>(6));
+    BOOST_CHECK_EQUAL(layers[0], "1");
+    BOOST_CHECK_EQUAL(layers[9], "1");
+    BOOST_CHECK_EQUAL(layers[33], "6");
 }
 
 

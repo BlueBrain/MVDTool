@@ -137,7 +137,7 @@ public:
     /// \brief getLayers
     /// \return vector of int32 with the layer associated with each neuron
     ///
-    std::vector<int32_t> getLayers(const Range & range = Range::all()) const;
+    std::vector<std::string> getLayers(const Range& range = Range::all()) const;
 
     ///
     /// \brief getSynapseClass

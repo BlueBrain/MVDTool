@@ -264,9 +264,9 @@ def circuit_mvd3_tsv(mvd3_file, tsv_file):
 def test_tsv_layer(circuit_mvd3_tsv):
     layers = circuit_mvd3_tsv.layers()
 
-    assert layers[0] == 1
-    assert layers[9] == 1
-    assert layers[33] == 6
+    assert layers[0] == "1"
+    assert layers[9] == "1"
+    assert layers[33] == "6"
 
 
 def test_tsv_emodels(circuit_mvd3_tsv):

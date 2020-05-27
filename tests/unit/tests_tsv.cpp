@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE( ReadTSVFile )
 
     const MEComboEntry& info = infos[0];
     BOOST_CHECK_EQUAL(info.morphologyName, "87dd39e6b0255ec053001f16da85b0e0");
-    BOOST_CHECK_EQUAL(info.layer, 1);
+    BOOST_CHECK_EQUAL(info.layer, "1");
     BOOST_CHECK_EQUAL(info.fullMType, "L1_DAC");
     BOOST_CHECK_EQUAL(info.eType, "dSTUT");
     BOOST_CHECK_EQUAL(info.eModel, "dSTUT_321707905");

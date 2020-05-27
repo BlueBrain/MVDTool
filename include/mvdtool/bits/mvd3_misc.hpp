@@ -235,8 +235,11 @@ inline std::vector<int32_t> MVD3File::getMiniColumns(const Range& range) const {
 }
 
 
-inline std::vector<int32_t> MVD3File::getLayers(const Range& range) const {
-    return getDataFromTSVorMVD<int32_t>(did_cells_layer, did_lib_NONE, TSVColumn::Layer, range);
+inline std::vector<std::string> MVD3File::getLayers(const Range& range) const {
+    if (!_tsv_file) {
+        throw MVDException("No TSV file is opened with MVD3 to extract the layer info.");
+    }
+    return getDataFromTSV<std::string>(TSVColumn::Layer, range);
 }
 
 inline bool MVD3File::hasMiniFrequencies() const {

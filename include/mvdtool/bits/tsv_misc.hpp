@@ -71,19 +71,21 @@ inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
         ensure_correct_n_fields(line_info.size());
 
         auto morph_name = line_info[MEComboEntry::MorphologyName];
-        combo_entries.insert({
-            {line_info[column], morph_name},
-            MEComboEntry {  // rvalue gets moved
-                morph_name,
-                std::stoi(line_info[MEComboEntry::Layer]),
-                line_info[MEComboEntry::FullMType],
-                line_info[MEComboEntry::EType],
-                line_info[MEComboEntry::EModel],
-                line_info[MEComboEntry::ComboName],
-                (line_info.size() == 8)? std::stod(line_info[MEComboEntry::ThresholdCurrent]) : .0,
-                (line_info.size() == 8)? std::stod(line_info[MEComboEntry::HoldingCurrent]) : .0
-            }
-        });
+        combo_entries.insert(
+            {{line_info[column], morph_name},
+             MEComboEntry{// rvalue gets moved
+                          morph_name,
+                          line_info[MEComboEntry::Layer],
+                          line_info[MEComboEntry::FullMType],
+                          line_info[MEComboEntry::EType],
+                          line_info[MEComboEntry::EModel],
+                          line_info[MEComboEntry::ComboName],
+                          (line_info.size() == 8)
+                              ? std::stod(line_info[MEComboEntry::ThresholdCurrent])
+                              : .0,
+                          (line_info.size() == 8)
+                              ? std::stod(line_info[MEComboEntry::HoldingCurrent])
+                              : .0}});
     }
 
     return combo_entries;
@@ -109,6 +111,8 @@ inline std::string MEComboEntry::get<std::string>(const Column col_id) const {
         return eModel;
     case ComboName:
         return comboName;
+    case Layer:
+        return layer;
     default:
         throw MVDException(
             std::string("Cannot fetch field ") + std::to_string(col_id) + " as string");
@@ -125,17 +129,6 @@ inline double MEComboEntry::get<double>(const Column col_id) const {
     default:
         throw MVDException(
             std::string("Cannot fetch field ") + std::to_string(col_id) + " as double");
-    }
-}
-
-template <>
-inline int32_t MEComboEntry::get<int32_t>(const Column col_id) const {
-    switch (col_id) {
-    case Layer:
-        return layer;
-    default:
-        throw MVDException(
-            std::string("Cannot fetch field ") + std::to_string(col_id) + " as int32_t");
     }
 }
 
