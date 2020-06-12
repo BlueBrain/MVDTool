@@ -479,4 +479,21 @@ BOOST_AUTO_TEST_CASE( mvdTsvLayers )
     BOOST_CHECK_EQUAL(layers[33], "6");
 }
 
+BOOST_AUTO_TEST_CASE( mvdTsvFilesWithTabs )
+{
+    using namespace MVD3;
+    MVD3File file(MVD3_TSV_FILENAME);
+    file.openComboTsv(TSV_TABS_FILENAME);
 
+    auto TSVInfos = file.getTSVInfo();
+    const TSV::MEComboEntry& info = TSVInfos[9];
+
+    BOOST_CHECK_EQUAL(info.morphologyName, "87dd39e6b0255ec053001f16da85b0e0");
+    BOOST_CHECK_EQUAL(info.layer, "1");
+    BOOST_CHECK_EQUAL(info.fullMType, "L1_DAC");
+    BOOST_CHECK_EQUAL(info.eType, "dSTUT");
+    BOOST_CHECK_EQUAL(info.eModel, "dSTUT_321707905");
+    BOOST_CHECK_EQUAL(info.comboName, "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0");
+    BOOST_CHECK_EQUAL(info.thresholdCurrent, 0);
+    BOOST_CHECK_EQUAL(info.holdingCurrent, 0.1);
+}

@@ -58,3 +58,24 @@ BOOST_AUTO_TEST_CASE( TSVFileParsing )
                       TSVException);
 
 }
+
+BOOST_AUTO_TEST_CASE( ReadTSVFileWithTabs )
+{
+    using namespace TSV;
+
+    TSVFile mecombofile(TSV_TABS_FILENAME);
+
+    auto infos = mecombofile.get({"dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"},
+                                 {"87dd39e6b0255ec053001f16da85b0e0"});
+
+    const MEComboEntry& info = infos[0];
+    BOOST_CHECK_EQUAL(info.morphologyName, "87dd39e6b0255ec053001f16da85b0e0");
+    BOOST_CHECK_EQUAL(info.layer, "1");
+    BOOST_CHECK_EQUAL(info.fullMType, "L1_DAC");
+    BOOST_CHECK_EQUAL(info.eType, "dSTUT");
+    BOOST_CHECK_EQUAL(info.eModel, "dSTUT_321707905");
+    BOOST_CHECK_EQUAL(info.comboName, "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0");
+    BOOST_CHECK_EQUAL(info.thresholdCurrent, 0);
+    BOOST_CHECK_EQUAL(info.holdingCurrent, 0.1);
+
+}
