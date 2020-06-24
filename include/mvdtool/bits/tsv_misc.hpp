@@ -20,6 +20,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <sstream>
 #include <stdexcept>
 #include <unordered_map>
@@ -63,10 +64,14 @@ inline TSVFile::unordered_pair_map readTSVFile(const std::string& filename,
 
     // Read Header (field names)
     std::getline(file, line);
+    // remove leading and trailing tabs
+    line = std::regex_replace(line, std::regex("^\t+|\t+$"), "");
     ensure_correct_n_fields(split(line, '\t').size());
 
     while (std::getline(file, line)) {
         line_index++;
+        // remove leading and trailing tabs
+        line = std::regex_replace(line, std::regex("^\t+|\t+$"), "");
         auto line_info = split(line, '\t');
         ensure_correct_n_fields(line_info.size());
 

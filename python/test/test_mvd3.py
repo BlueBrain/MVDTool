@@ -253,6 +253,10 @@ def tsv_file():
 
 
 @pytest.fixture
+def tsv_file_tabs():
+    return path.join(_dir, "mecombo_emodel_tabs.tsv")
+
+
 def circuit_mvd3_tsv(mvd3_file, tsv_file):
     mvd3filename = path.join(_dir, mvd3_file)
     tsvfilename = path.join(_dir, tsv_file)
@@ -261,7 +265,24 @@ def circuit_mvd3_tsv(mvd3_file, tsv_file):
     return mvd3file
 
 
-def test_tsv_layer(circuit_mvd3_tsv):
+def test_circuit_mvd3_tsv(mvd3_file, tsv_file):
+    circuit = circuit_mvd3_tsv(mvd3_file, tsv_file)
+    _test_tsv_layer(circuit)
+    _test_tsv_emodels(circuit)
+    _test_tsv_emodels_ranges(circuit)
+    _test_tsv_emodels_indices(circuit)
+    _test_mvd3_mecombos_value(circuit)
+    _test_mvd3_mecombos_indices(circuit)
+    _test_tsv_threshold_current(circuit)
+    _test_tsv_holding_current(circuit)
+    _test_tsv_pybind_api(circuit)
+
+
+def test_circuit_mvd3_tsv_tabs(mvd3_file, tsv_file_tabs):
+    test_circuit_mvd3_tsv(mvd3_file, tsv_file_tabs)
+
+
+def _test_tsv_layer(circuit_mvd3_tsv):
     layers = circuit_mvd3_tsv.layers()
 
     assert layers[0] == "1"
@@ -269,7 +290,7 @@ def test_tsv_layer(circuit_mvd3_tsv):
     assert layers[33] == "6"
 
 
-def test_tsv_emodels(circuit_mvd3_tsv):
+def _test_tsv_emodels(circuit_mvd3_tsv):
     emodels = circuit_mvd3_tsv.emodels()
 
     assert emodels[0] == "bAC_327962063"
@@ -277,7 +298,7 @@ def test_tsv_emodels(circuit_mvd3_tsv):
     assert emodels[33] == "L6_cADpyr_471819401"
 
 
-def test_tsv_emodels_ranges(circuit_mvd3_tsv):
+def _test_tsv_emodels_ranges(circuit_mvd3_tsv):
     emodels = circuit_mvd3_tsv.emodels()
     assert len(emodels) == 34
     assert emodels[0] == "bAC_327962063"
@@ -304,7 +325,7 @@ def test_tsv_emodels_ranges(circuit_mvd3_tsv):
     assert emodels_9[0] == emodels[9]
 
 
-def test_tsv_emodels_indices(circuit_mvd3_tsv):
+def _test_tsv_emodels_indices(circuit_mvd3_tsv):
     emodels = circuit_mvd3_tsv.emodels([0, 9, 33])
 
     assert emodels[0] == "bAC_327962063"
@@ -312,13 +333,13 @@ def test_tsv_emodels_indices(circuit_mvd3_tsv):
     assert emodels[2] == "L6_cADpyr_471819401"
 
 
-def test_mvd3_mecombos_value(circuit_mvd3_tsv):
+def _test_mvd3_mecombos_value(circuit_mvd3_tsv):
     me_combo = circuit_mvd3_tsv.me_combos(9)
 
     assert me_combo == "dSTUT_1_87dd39e6b0255ec053001f16da85b0e0"
 
 
-def test_mvd3_mecombos_indices(circuit_mvd3_tsv):
+def _test_mvd3_mecombos_indices(circuit_mvd3_tsv):
     me_combos = circuit_mvd3_tsv.me_combos([0, 9, 33])
 
     assert me_combos[0] == "bAC_1_02583f52ff47b88961e4216e2972ee8c"
@@ -326,7 +347,7 @@ def test_mvd3_mecombos_indices(circuit_mvd3_tsv):
     assert me_combos[2] == "cADpyr_6_97957c6ebc6ac6397bf0fa077d39580c"
 
 
-def test_tsv_threshold_current(circuit_mvd3_tsv):
+def _test_tsv_threshold_current(circuit_mvd3_tsv):
     threshold_currents = circuit_mvd3_tsv.threshold_currents()
 
     assert threshold_currents[0] == 0
@@ -334,7 +355,7 @@ def test_tsv_threshold_current(circuit_mvd3_tsv):
     assert threshold_currents[33] == 0.2
 
 
-def test_tsv_holding_current(circuit_mvd3_tsv):
+def _test_tsv_holding_current(circuit_mvd3_tsv):
     holding_currents = circuit_mvd3_tsv.holding_currents()
 
     assert holding_currents[0] == 0
@@ -342,7 +363,7 @@ def test_tsv_holding_current(circuit_mvd3_tsv):
     assert holding_currents[33] == 0.15
 
 
-def test_tsv_pybind_api(circuit_mvd3_tsv):
+def _test_tsv_pybind_api(circuit_mvd3_tsv):
     holding_current = circuit_mvd3_tsv.holding_currents(0)
 
     assert type(holding_current) is float
