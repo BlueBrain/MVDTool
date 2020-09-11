@@ -1,3 +1,9 @@
 [submodule "python/pybind11"]
 	path = python/pybind11
 	url = https://github.com/pybind/pybind11.git
+[submodule "extlib/libsonata"]
+	path = extlib/libsonata
+	url = https://github.com/BlueBrain/libsonata.git
+[submodule "extlib/HighFive"]
+	path = extlib/HighFive
+	url = https://github.com/BlueBrain/HighFive.git

@@ -36,6 +36,8 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
       ${PROJECT_SOURCE_DIR}/CMake/packages
       ${PROJECT_SOURCE_DIR}/CMake/config)
 
+option(EXTLIB_FROM_SUBMODULES "Use Git submodules for header-only dependencies" OFF)
+
 include(CTest)
 include(GNUInstallDirs)
 include(ReleaseDebugAutoFlags)
@@ -47,8 +49,15 @@ set(Boost_NO_BOOST_CMAKE TRUE)
 ## find dependencies
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
 find_package(HDF5 QUIET REQUIRED)
-find_package(HighFive QUIET REQUIRED)
-find_package(sonata QUIET REQUIRED)
+find_package(HighFive QUIET)
+if(NOT HighFive_FOUND AND EXTLIB_FROM_SUBMODULES)
+    include(AddHighFiveSubmodule)
+endif()
+find_package(sonata QUIET)
+if(NOT sonata_FOUND AND EXTLIB_FROM_SUBMODULES)
+    include(AddLibsonataSubmodule)
+endif()
+
 
 include(PackageConfig)
 
