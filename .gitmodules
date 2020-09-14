@@ -4,6 +4,3 @@
 [submodule "extlib/libsonata"]
 	path = extlib/libsonata
 	url = https://github.com/BlueBrain/libsonata.git
-[submodule "extlib/HighFive"]
-	path = extlib/HighFive
-	url = https://github.com/BlueBrain/HighFive.git

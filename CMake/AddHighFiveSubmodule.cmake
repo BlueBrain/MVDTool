@@ -6,10 +6,14 @@
 
 find_package(FindPkgConfig QUIET)
 
+# Try to find HighFive in libsonata subpackage
+# HighFive from libsonata is used to avoid having conflicting versions
+# of HighFive
+
 find_path(
   HighFive_PROJ
   NAMES CMakeLists.txt
-  PATHS "${PROJECT_SOURCE_DIR}/extlib/HighFive")
+  PATHS "${PROJECT_SOURCE_DIR}/extlib/libsonata/extlib/HighFive")
 
 find_package_handle_standard_args(HighFive REQUIRED_VARS HighFive_PROJ)
 
@@ -22,10 +26,10 @@ if(NOT HighFive_FOUND)
   execute_process(
     COMMAND
       ${GIT_EXECUTABLE} submodule update --init --recursive --
-      ${PROJECT_SOURCE_DIR}/extlib/HighFive
+      ${PROJECT_SOURCE_DIR}/extlib/libsonata
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 else()
   message(STATUS "Using HighFive submodule from ${HighFive_PROJ}")
 endif()
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/extlib/HighFive)
+add_subdirectory(${PROJECT_SOURCE_DIR}/extlib/libsonata/extlib/HighFive)
