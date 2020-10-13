@@ -64,16 +64,16 @@ inline std::shared_ptr<File> open(const std::string& filename,
     case MVDType::MVD2:
         throw std::runtime_error("MVD2 not supported in the new MVD API");
     case MVDType::MVD3:
+        mvdfile.reset(new MVD3::MVD3File(filename));
         try {
-            mvdfile.reset(new MVD3::MVD3File(filename));
             mvdfile->size();
         } catch (...) {
             throw std::runtime_error("invalid MVD3 file");
         }
         break;
     default:
+        mvdfile.reset(new SonataFile(filename, population));
         try {
-            mvdfile.reset(new SonataFile(filename, population));
             mvdfile->size();
         } catch (...) {
             throw std::runtime_error("invalid Sonata file");
