@@ -66,18 +66,13 @@ inline std::shared_ptr<File> open(const std::string& filename,
     case MVDType::MVD3:
         mvdfile.reset(new MVD3::MVD3File(filename));
         try {
-            mvdfile->size();
+            mvdfile->size();  // triggers struct initialization
         } catch (...) {
             throw std::runtime_error("invalid MVD3 file");
         }
         break;
     default:
         mvdfile.reset(new SonataFile(filename, population));
-        try {
-            mvdfile->size();
-        } catch (...) {
-            throw std::runtime_error("invalid Sonata file");
-        }
         break;
     }
     return mvdfile;
