@@ -72,7 +72,14 @@ inline std::shared_ptr<File> open(const std::string& filename,
         }
         break;
     default:
-        mvdfile.reset(new SonataFile(filename, population));
+        try {
+            mvdfile.reset(new SonataFile(filename, population));
+        } catch(std::runtime_error& e) {
+            throw e;
+        } catch(...) {
+            throw std::runtime_error("Invalid Sonata File. Undefined exception");
+        }
+
         break;
     }
     return mvdfile;
