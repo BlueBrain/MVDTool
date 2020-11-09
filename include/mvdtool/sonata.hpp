@@ -261,6 +261,25 @@ public:
     ///
     std::vector<std::string> listAllSynapseClass() const override;
 
+    ///
+    /// \brief hasAttribute
+    /// \return bool whether the queried attribute exists
+    ///
+    bool hasAttribute(const std::string& name) const;
+
+    ///
+    /// \brief getAttributeDataType
+    /// \return string the data type of the queried attribute
+    ///
+    std::string getAttributeDataType(const std::string& name) const;
+
+    ///
+    /// \brief getAttribute
+    /// \return vector of the queried attribute data
+    ///
+    template <typename T>
+    std::vector<T> getAttribute(const std::string& name, const Range& range = Range::all()) const;
+
 private:
     std::unique_ptr<bbp::sonata::NodePopulation> pop_;
     size_t size_;

@@ -443,3 +443,23 @@ def test_list_allLayers(circuit_new_sonata):
     assert allLayers[0] == "SR"
     assert allLayers[1] == "SP"
     assert allLayers[2] == "SO"
+
+
+def test_query_arbitrary_parameters(circuit_new_sonata):
+    assert circuit_new_sonata.hasAttribute("abcd") == False
+    assert circuit_new_sonata.hasAttribute("layer") == True
+    assert circuit_new_sonata.getAttribute("layer")[0] == "SR"
+    assert numpy.array_equal(circuit_new_sonata.getAttribute("layer", 2, 5),
+                             ['SR', 'SR', 'SR', 'SP', 'SP'])
+    assert numpy.array_equal(circuit_new_sonata.getAttribute("layer", [0, 100, 200]),
+                             ['SR', 'SP', 'SP'])
+    assert circuit_new_sonata.getAttribute("exc_mini_frequency")[0] == 0.63
+    assert numpy.array_equal(circuit_new_sonata.getAttribute("exc_mini_frequency", 2, 5),
+                             [0.63, 0.63, 0.63, 0.63, 0.63])
+    assert numpy.array_equal(circuit_new_sonata.getAttribute("exc_mini_frequency", [0, 100, 200]),
+                             [0.63, 0.122, 0.04])
+    assert circuit_new_sonata.getAttribute("mtype")[0] == 10
+    assert numpy.array_equal(circuit_new_sonata.getAttribute("mtype", 2, 5),
+                             [10, 10, 10,  8,  8])
+    assert numpy.array_equal(circuit_new_sonata.getAttribute("mtype", [0, 100, 200]),
+                             [10,  8,  8])
