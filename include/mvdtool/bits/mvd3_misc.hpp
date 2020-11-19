@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "boost/lexical_cast.hpp"
 #include <algorithm>
 #include <set>
 #include <string>
@@ -236,10 +237,19 @@ inline std::vector<int32_t> MVD3File::getMiniColumns(const Range& range) const {
 
 
 inline std::vector<std::string> MVD3File::getLayers(const Range& range) const {
-    if (!_tsv_file) {
-        throw MVDException("No TSV file is opened with MVD3 to extract the layer info.");
+    const auto raw_data = _hdf5_file.getDataSet(did_cells_layer);
+    HighFive::DataType dset_type = raw_data.getDataType();
+    if (dset_type == HighFive::AtomicType<std::string>())
+        return getDataFromMVD<std::string>(did_cells_layer, did_lib_NONE, range);
+    else {
+        auto vec_int = getDataFromMVD<int32_t>(did_cells_layer, did_lib_NONE, range);
+        std::vector<std::string> res;
+        std::transform(std::begin(vec_int), std::end(vec_int),
+                       std::back_inserter(res),
+                       [](double d) {return boost::lexical_cast<std::string>(d);}
+                      );
+        return res;
     }
-    return getDataFromTSV<std::string>(TSVColumn::Layer, range);
 }
 
 inline bool MVD3File::hasMiniFrequencies() const {

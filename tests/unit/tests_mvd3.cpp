@@ -279,7 +279,11 @@ BOOST_AUTO_TEST_CASE( basicLayer )
 
     MVD3File file(MVD3_FILENAME);
 
-    BOOST_CHECK_EXCEPTION(file.getLayers(), MVDException, check_error_msg);
+    const auto layers = file.getLayers();
+
+    BOOST_CHECK_EQUAL(layers[0], "1");
+    BOOST_CHECK_EQUAL(layers[9], "1");
+    BOOST_CHECK_EQUAL(layers[33], "2");
 }
 
 

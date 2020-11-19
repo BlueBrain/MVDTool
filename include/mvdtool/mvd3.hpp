@@ -135,7 +135,7 @@ public:
 
     ///
     /// \brief getLayers
-    /// \return vector of int32 with the layer associated with each neuron
+    /// \return vector of string with the layer associated with each neuron
     ///
     std::vector<std::string> getLayers(const Range& range = Range::all()) const;
 
