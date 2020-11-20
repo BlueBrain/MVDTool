@@ -244,10 +244,10 @@ inline std::vector<std::string> MVD3File::getLayers(const Range& range) const {
     else {
         auto vec_int = getDataFromMVD<int32_t>(did_cells_layer, did_lib_NONE, range);
         std::vector<std::string> res;
-        std::transform(std::begin(vec_int), std::end(vec_int),
+        std::transform(std::begin(vec_int),
+                       std::end(vec_int),
                        std::back_inserter(res),
-                       [](double d) {return boost::lexical_cast<std::string>(d);}
-                      );
+                       [](double d) { return boost::lexical_cast<std::string>(d); });
         return res;
     }
 }
