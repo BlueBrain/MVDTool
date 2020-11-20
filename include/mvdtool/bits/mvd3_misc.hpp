@@ -18,8 +18,8 @@
  */
 #pragma once
 
-#include "boost/lexical_cast.hpp"
 #include <algorithm>
+#include <boost/lexical_cast.hpp>
 #include <set>
 #include <string>
 #include <vector>
