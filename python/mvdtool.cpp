@@ -473,6 +473,52 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 return _atIndices<std::string>(func, f.size(), idx);
              })
         .def_property_readonly("all_layers", &SonataFile::listAllLayers)
+        .def("hasAttribute", [](const SonataFile& f, const std::string& name){
+                return f.hasAttribute(name);
+             })
+        .def("getAttribute", [](const SonataFile& f, const std::string& name) {
+                const std::string dtype = f.getAttributeDataType(name);
+                if (dtype == "double" || dtype == "float") {
+                    auto res = f.getAttribute<double>(name);
+                    return py::array(res.size(), res.data());
+                } else if (dtype == "string") {
+                    auto res = f.getAttribute<std::string>(name);
+                    return py::array(py::cast(res));
+                } else {
+                    auto res = f.getAttribute<size_t>(name);
+                    return py::array(res.size(), res.data());
+                }
+             })
+        .def("getAttribute", [](const SonataFile& f, const std::string& name, int offset, int count){
+                const std::string dtype = f.getAttributeDataType(name);
+                Range r(offset, count);
+                if (dtype == "string") {
+                    auto res = f.getAttribute<std::string>(name, r);
+                    return py::array(py::cast(res));
+                } else if (dtype == "double" || dtype == "float") {
+                    auto res = f.getAttribute<double>(name, r);
+                    return py::array(res.size(), res.data());
+                } else {
+                    auto res = f.getAttribute<int>(name, r);
+                    return py::array(res.size(), res.data());
+                }
+             })
+        .def("getAttribute", [](const SonataFile& f, const std::string& name, const pyarray<size_t>& idx) {
+                const std::string dtype = f.getAttributeDataType(name);
+                if (dtype == "string") {
+                    const auto& func = [&f, &name](const MVD::Range& r) {return f.getAttribute<std::string>(name, r);};
+                    auto res = _atIndices<std::string>(func, f.size(), idx);
+                    return py::array(py::cast(res));
+                } else if (dtype == "double" || dtype == "float") {
+                    const auto& func = [&f, &name](const MVD::Range& r) {return f.getAttribute<double>(name, r);};
+                    auto res = _atIndices<double>(func, f.size(), idx);
+                    return py::array(res.size(), res.data());
+                } else {
+                    const auto& func = [&f, &name](const MVD::Range& r) {return f.getAttribute<size_t>(name, r);};
+                    auto res = _atIndices<size_t>(func, f.size(), idx);
+                    return py::array(res.size(), res.data());
+                }
+             })
         ;
     py::class_<TSVFile, std::shared_ptr<TSVFile>>(tsv, "File", file)
         .def(py::init<const std::string&>())

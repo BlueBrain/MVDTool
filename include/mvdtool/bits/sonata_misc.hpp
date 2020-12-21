@@ -300,4 +300,18 @@ inline std::vector<std::string> SonataFile::listAllSynapseClass() const{
     return listAllValues(pop_.get(), did_synapse_class);
 }
 
+inline bool SonataFile::hasAttribute(const std::string& name) const {
+    const auto attrs = pop_->attributeNames();
+    return attrs.count(name);
+}
+
+inline std::string SonataFile::getAttributeDataType(const std::string& name) const {
+    return pop_->_attributeDataType(name);
+}
+
+template <typename T>
+inline std::vector<T> SonataFile::getAttribute(const std::string& name, const Range& range) const {
+    return pop_->getAttribute<T>(name, select(range, size_));
+}
+
 }
