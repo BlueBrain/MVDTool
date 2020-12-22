@@ -10,6 +10,9 @@ using namespace MVD;
 using namespace MVD3;
 using namespace TSV;
 
+//typedef MVD::Positions Positions;
+//typedef MVD::Rotations Rotations;
+
 class PyFile : public File {
     using File::File;
 
@@ -135,6 +138,44 @@ inline std::vector<T> _atIndices(const FuncT& f,
     return v;
 }
 
+template <typename T, int width, typename FuncT>
+inline std::vector<std::array<typename T::element, width>> _atIndicesPos(const FuncT& f,
+                                 const size_t n_records,
+                                 const pyarray<size_t>& idx) {
+    const size_t CHUNK_SIZE = 256;
+    const auto indices = idx.template unchecked<1>();
+    const auto count = static_cast<size_t>(indices.size());
+    std::vector<std::array<typename T::element, width>> v(count);
+    typename T::index_gen indices_gen;
+
+    printf("I'm inside the function!\n");
+
+    size_t offset = 0;
+    T chunk;
+
+    for (size_t i=0; i < count; i++) {
+        printf("For Cycle time!\n");
+        typename T::index elem_i = indices[i];
+        printf("Assigned elem_i!\n");
+        if(elem_i - offset >= chunk.size()) {
+            printf("Chunk check!\n");
+            auto chunk2 = f(Range(offset, std::min(CHUNK_SIZE, n_records - offset)));
+            std::vector<size_t> ex;
+            const size_t* shape = chunk2.shape();
+            ex.assign(shape, shape+chunk2.num_dimensions() );
+            chunk.resize(ex);
+            chunk = chunk2;
+            offset = elem_i;
+            printf("Chunk check over!\n");
+        }
+        //auto subarray = chunk [elem_i - offset];
+        printf("Copying stuff!\n");
+        std::memcpy(&v[i], chunk[elem_i - offset].origin(), sizeof(typename T::element)*width);
+        printf("Stuff Copied!\n");
+    }
+    return v;
+}
+
 } // namespace (unnamed)
 
 
@@ -166,6 +207,14 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 Range r(offset, count);
                 auto res = f.getPositions(r);
                 return py::array({res.shape()[0], res.shape()[1]}, res.data());
+             })
+        .def("positions", [](const File& f, const pyarray<size_t>& idx) {
+                printf("About to fetch positions!\n");
+                const auto& func = [&f](const MVD::Range& r){return f.getPositions(r);};
+                printf("Step1!\n");
+                const auto res = _atIndicesPos<Positions, 3>(func, f.size(), idx);
+                printf("Step2!\n");
+                return py::array({res.size(), res[0].size()}, res.data());
              })
         .def("rotations", [](const File& f) {
                 auto res = f.getRotations(Range::all());
