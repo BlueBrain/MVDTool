@@ -474,7 +474,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
              })
         .def_property_readonly("all_layers", &SonataFile::listAllLayers)
         .def("hasAttribute", [](const SonataFile& f, const std::string& name){
-                return f.hasAttribute(name);
+                return f.hasAttribute(name) || f.hasDynamicsAttribute(name);
              })
         .def("getAttribute", [](const SonataFile& f, const std::string& name) {
                 const std::string dtype = f.getAttributeDataType(name);

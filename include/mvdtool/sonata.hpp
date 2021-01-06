@@ -268,6 +268,12 @@ public:
     bool hasAttribute(const std::string& name) const;
 
     ///
+    /// \brief hasDynamicsAttribute
+    /// \return bool whether the queried dynamics attribute exists
+    ///
+    bool hasDynamicsAttribute(const std::string& name) const;
+
+    ///
     /// \brief getAttributeDataType
     /// \return string the data type of the queried attribute
     ///

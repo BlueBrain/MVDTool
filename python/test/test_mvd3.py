@@ -448,6 +448,7 @@ def test_list_allLayers(circuit_new_sonata):
 def test_query_arbitrary_parameters(circuit_new_sonata):
     assert circuit_new_sonata.hasAttribute("abcd") == False
     assert circuit_new_sonata.hasAttribute("layer") == True
+    assert circuit_new_sonata.hasAttribute("holding_current") == True
     assert circuit_new_sonata.getAttribute("layer")[0] == "SR"
     assert numpy.array_equal(circuit_new_sonata.getAttribute("layer", 2, 5),
                              ['SR', 'SR', 'SR', 'SP', 'SP'])
@@ -463,3 +464,5 @@ def test_query_arbitrary_parameters(circuit_new_sonata):
                              [10, 10, 10,  8,  8])
     assert numpy.array_equal(circuit_new_sonata.getAttribute("mtype", [0, 100, 200]),
                              [10,  8,  8])
+    assert circuit_new_sonata.getAttribute("holding_current")[0] == pytest.approx(0.00582906)
+    assert circuit_new_sonata.getAttribute("threshold_current")[0] == pytest.approx(0.33203125)

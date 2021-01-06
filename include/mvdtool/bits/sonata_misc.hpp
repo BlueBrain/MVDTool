@@ -305,12 +305,23 @@ inline bool SonataFile::hasAttribute(const std::string& name) const {
     return attrs.count(name);
 }
 
+inline bool SonataFile::hasDynamicsAttribute(const std::string& name) const {
+    const auto dynAttrs = pop_->dynamicsAttributeNames();
+    return dynAttrs.count(name);
+}
+
 inline std::string SonataFile::getAttributeDataType(const std::string& name) const {
+    if (hasDynamicsAttribute(name)) {
+        return pop_->_dynamicsAttributeDataType(name);
+    }
     return pop_->_attributeDataType(name);
 }
 
 template <typename T>
 inline std::vector<T> SonataFile::getAttribute(const std::string& name, const Range& range) const {
+    if (hasDynamicsAttribute(name)) {
+        return pop_->getDynamicsAttribute<T>(name, select(range, size_));
+    }
     return pop_->getAttribute<T>(name, select(range, size_));
 }
 
