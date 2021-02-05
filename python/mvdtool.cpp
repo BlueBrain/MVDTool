@@ -148,37 +148,22 @@ inline std::vector<std::array<typename T::element, width>> _atIndicesMulti(const
     std::vector<std::array<typename T::element, width>> v(count);
     typename T::index_gen indices_gen;
 
-    printf("I'm inside the function!\n");
-
     size_t offset = 0;
     T chunk;
-    std::cout << idx << std::endl;
 
     for (size_t i=0; i < count; i++) {
-        printf("For Cycle time!\n");
         typename T::index elem_i = indices[i];
-        std::cout << i << std::endl;
-        std::cout << indices[i] << std::endl;
-        std::cout << elem_i << std::endl;
-        printf("Assigned elem_i!\n");
         if(elem_i - offset >= chunk.size()) {
-            printf("Chunk check!\n");
-            std::cout << "n_records: " << n_records << " offset: " << offset << std::endl;
             auto chunk2 = f(Range(elem_i, std::min(CHUNK_SIZE, n_records - elem_i)));
             offset = elem_i;
             std::vector<size_t> ex;
-            std::cout << elem_i << std::endl;
             const size_t* shape = chunk2.shape();
             ex.assign(shape, shape+chunk2.num_dimensions());  
             chunk.resize(ex); 
             chunk = chunk2;
-            printf("Chunk check over!\n");
         }
-        printf("Copying stuff!\n");
         std::memcpy(&v[i], chunk[elem_i - offset].origin(), sizeof(typename T::element)*width);
-        printf("Stuff Copied!\n");
     }
-    std::cout << "v type: " << typeid(v).name() << std::endl;
     return v;
 }
 
@@ -215,12 +200,8 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 return py::array({res.shape()[0], res.shape()[1]}, res.data());
              })
         .def("positions", [](const File& f, const pyarray<size_t>& idx) {
-                printf("About to fetch positions!\n");
-                const auto& func = [&f](const MVD::Range& r){return f.getPositions(r);};
-                printf("Step1!\n");
+                const auto& func = [&f](const MVD::Range& r){return f.getPositions(r);};                
                 const auto res = _atIndicesMulti<Positions, 3>(func, f.size(), idx);
-                printf("Step2!\n");
-                std::cout << "res zero: " << res[0].size() << " " << res[0].size() << std::endl;
                 return py::array({res.size(), res[0].size()}, res[0].data());
              })
         .def("rotations", [](const File& f) {
@@ -238,10 +219,9 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 return py::array({res.shape()[0], res.shape()[1]}, res.data());
              })
         .def("rotations", [](const File& f, const pyarray<size_t>& idx) {
-                printf("About to fetch rotations!\n");
                 const auto& func = [&f](const MVD::Range& r){return f.getRotations(r);};
-                const auto res = _atIndicesMulti<Rotations, 3>(func, f.size(), idx);
-                return py::array({res.size(), res[0].size()}, res.data());
+                const auto res = _atIndicesMulti<Rotations, 4>(func, f.size(), idx);
+                return py::array({res.size(), res[0].size()}, res[0].data());
              })
         .def("etypes", [](const File& f) {
                 return f.getEtypes(Range::all());
