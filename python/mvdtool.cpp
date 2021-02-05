@@ -10,9 +10,6 @@ using namespace MVD;
 using namespace MVD3;
 using namespace TSV;
 
-//typedef MVD::Positions Positions;
-//typedef MVD::Rotations Rotations;
-
 class PyFile : public File {
     using File::File;
 
@@ -156,6 +153,8 @@ inline std::vector<std::array<typename T::element, width>> _atIndicesMulti(const
         if(elem_i - offset >= chunk.size()) {
             auto chunk2 = f(Range(elem_i, std::min(CHUNK_SIZE, n_records - elem_i)));
             offset = elem_i;
+            
+            //Dirty trick to copy a boost::multiarray
             std::vector<size_t> ex;
             const size_t* shape = chunk2.shape();
             ex.assign(shape, shape+chunk2.num_dimensions());  
