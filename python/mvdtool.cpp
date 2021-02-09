@@ -109,42 +109,31 @@ template <typename T>
 using pyarray = py::array_t<T, py::array::c_style | py::array::forcecast>;
 
 /// Size of the chunk to retrieve
-constexpr size_t CHUNK_SIZE = 128u;  // 1KB of doubles
+constexpr size_t CHUNK_SIZE = 128u;  // 1KB of doubles, more for strings
 
+/// Generic routine to copy data item
+template <typename T>
+inline void copy_element(T& dst, const T& src) {
+    dst = src;
+}
 
+/// Copy routine for boost multi_index view to std::array
+template <typename T, size_t Width, typename T2>
+inline void copy_element(std::array<T, Width>& dst, const T2& src) {
+    std::memcpy(&dst[0], src.origin(), sizeof(T) * Width);
+}
 
 /**
  * Extract several elements given their indices from a function accepting a range
  * NOTE: Indexes must be in ascending order
  */
 template <typename T, typename FuncT>
-inline std::vector<T> _atIndices(const FuncT& f,
-                                 const size_t n_records,
-                                 const pyarray<size_t>& idx) {
+inline std::vector<T>_atIndices(const FuncT& f,
+                                const size_t n_records,
+                                const pyarray<size_t>& idx) {
     const auto indices = idx.template unchecked<1>();
     const auto count = static_cast<size_t>(indices.size());
-    std::vector<T> v(count), chunk;
-
-    for (size_t offset=0, i=0; i < count; i++) {
-        const size_t elem_i = indices[i];
-        if(elem_i - offset >= chunk.size()) {
-            offset = elem_i;
-            chunk = f(Range(offset, std::min(CHUNK_SIZE, n_records - offset)));
-        }
-        v[i] = chunk[elem_i - offset];
-    }
-    return v;
-}
-
-template <typename T, int width, typename FuncT,
-          typename InnerT=std::array<typename T::element, width>>
-inline std::vector<InnerT>_atIndicesMulti(const FuncT& f,
-                                          const size_t n_records,
-                                          const pyarray<size_t>& idx) {
-    constexpr auto nbytes = sizeof(typename T::element) * width;
-    const auto indices = idx.template unchecked<1>();
-    const auto count = static_cast<size_t>(indices.size());
-    std::vector<InnerT> out_v(count);
+    std::vector<T> out_v(count);
 
     for (size_t i=0; i < count;) {
         const size_t offset = indices[i];
@@ -152,7 +141,7 @@ inline std::vector<InnerT>_atIndicesMulti(const FuncT& f,
         const auto chunk = f(Range(offset, limit));
         const auto high_i = offset + limit;
         for(size_t elem_i=indices[i]; i < count && elem_i < high_i; elem_i=indices[++i]) {
-            std::memcpy(&out_v[i], chunk[elem_i - offset].origin(), nbytes);
+            copy_element(out_v[i], chunk[elem_i - offset]);
         }
     }
     return out_v;
@@ -193,8 +182,9 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 return py::array({res.shape()[0], POSITION_WIDTH}, res.data());
              })
         .def("positions", [](const File& f, const pyarray<size_t>& idx) {
+                using position_t = std::array<typename Positions::element, POSITION_WIDTH>;
                 const auto& func = [&f](const MVD::Range& r){return f.getPositions(r);};
-                const auto res = _atIndicesMulti<Positions, 3>(func, f.size(), idx);
+                const auto res = _atIndices<position_t>(func, f.size(), idx);
                 return py::array({res.size(), POSITION_WIDTH}, res[0].data());
              })
         .def("rotations", [](const File& f) {
@@ -212,8 +202,9 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 return py::array({res.shape()[0], ROTATION_WIDTH}, res.data());
              })
         .def("rotations", [](const File& f, const pyarray<size_t>& idx) {
+                using rotation_t = std::array<typename Rotations::element, ROTATION_WIDTH>;
                 const auto& func = [&f](const MVD::Range& r){return f.getRotations(r);};
-                const auto res = _atIndicesMulti<Rotations, 4>(func, f.size(), idx);
+                const auto res = _atIndices<rotation_t>(func, f.size(), idx);
                 return py::array({res.size(), ROTATION_WIDTH}, res[0].data());
              })
         .def("etypes", [](const File& f) {
