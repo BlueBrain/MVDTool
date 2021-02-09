@@ -108,6 +108,11 @@ namespace {  // Intenal
 template <typename T>
 using pyarray = py::array_t<T, py::array::c_style | py::array::forcecast>;
 
+/// Size of the chunk to retrieve
+constexpr size_t CHUNK_SIZE = 128u;  // 1KB of doubles
+
+
+
 /**
  * Extract several elements given their indices from a function accepting a range
  * NOTE: Indexes must be in ascending order
@@ -116,15 +121,11 @@ template <typename T, typename FuncT>
 inline std::vector<T> _atIndices(const FuncT& f,
                                  const size_t n_records,
                                  const pyarray<size_t>& idx) {
-    const size_t CHUNK_SIZE = 256;
     const auto indices = idx.template unchecked<1>();
     const auto count = static_cast<size_t>(indices.size());
-    std::vector<T> v(count);
+    std::vector<T> v(count), chunk;
 
-    size_t offset = 0;
-    std::vector<T> chunk;
-
-    for (size_t i=0; i < count; i++) {
+    for (size_t offset=0, i=0; i < count; i++) {
         const size_t elem_i = indices[i];
         if(elem_i - offset >= chunk.size()) {
             offset = elem_i;
@@ -135,35 +136,26 @@ inline std::vector<T> _atIndices(const FuncT& f,
     return v;
 }
 
-template <typename T, int width, typename FuncT>
-inline std::vector<std::array<typename T::element, width>> _atIndicesMulti(const FuncT& f,
-                                 const size_t n_records,
-                                 const pyarray<size_t>& idx) {
-    const size_t CHUNK_SIZE = 256;
+template <typename T, int width, typename FuncT,
+          typename InnerT=std::array<typename T::element, width>>
+inline std::vector<InnerT>_atIndicesMulti(const FuncT& f,
+                                          const size_t n_records,
+                                          const pyarray<size_t>& idx) {
+    constexpr auto nbytes = sizeof(typename T::element) * width;
     const auto indices = idx.template unchecked<1>();
     const auto count = static_cast<size_t>(indices.size());
-    std::vector<std::array<typename T::element, width>> v(count);
-    typename T::index_gen indices_gen;
+    std::vector<InnerT> out_v(count);
 
-    size_t offset = 0;
-    T chunk;
-
-    for (size_t i=0; i < count; i++) {
-        typename T::index elem_i = indices[i];
-        if(elem_i - offset >= chunk.size()) {
-            auto chunk2 = f(Range(elem_i, std::min(CHUNK_SIZE, n_records - elem_i)));
-            offset = elem_i;
-            
-            //Dirty trick to copy a boost::multiarray
-            std::vector<size_t> ex;
-            const size_t* shape = chunk2.shape();
-            ex.assign(shape, shape+chunk2.num_dimensions());  
-            chunk.resize(ex); 
-            chunk = chunk2;
+    for (size_t i=0; i < count;) {
+        const size_t offset = indices[i];
+        const auto limit = std::min(CHUNK_SIZE, n_records - offset);
+        const auto chunk = f(Range(offset, limit));
+        const auto high_i = offset + limit;
+        for(size_t elem_i=indices[i]; i < count && elem_i < high_i; elem_i=indices[++i]) {
+            std::memcpy(&out_v[i], chunk[elem_i - offset].origin(), nbytes);
         }
-        std::memcpy(&v[i], chunk[elem_i - offset].origin(), sizeof(typename T::element)*width);
     }
-    return v;
+    return out_v;
 }
 
 } // namespace (unnamed)
@@ -176,6 +168,8 @@ PYBIND11_MODULE(mvdtool, mvd) {
     py::module tsv = mvd.def_submodule("tsv", "Support for the TSV format");
 
     mvd.def("open", &open, "filename"_a, "population"_a = "");
+    constexpr size_t POSITION_WIDTH = 3;
+    constexpr size_t ROTATION_WIDTH = 4;
 
     py::class_<File, PyFile> file(mvd, "__File");
     file
@@ -186,41 +180,41 @@ PYBIND11_MODULE(mvdtool, mvd) {
              })
         .def("positions", [](const File& f) {
                 auto res = f.getPositions(Range::all());
-                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+                return py::array({res.shape()[0], POSITION_WIDTH}, res.data());
              })
         .def("positions", [](const File& f, int offset) {
                 Range r(offset, 1);
                 auto res = f.getPositions(r);
-                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+                return py::array({res.shape()[0], POSITION_WIDTH}, res.data());
              })
         .def("positions", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getPositions(r);
-                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+                return py::array({res.shape()[0], POSITION_WIDTH}, res.data());
              })
         .def("positions", [](const File& f, const pyarray<size_t>& idx) {
-                const auto& func = [&f](const MVD::Range& r){return f.getPositions(r);};                
+                const auto& func = [&f](const MVD::Range& r){return f.getPositions(r);};
                 const auto res = _atIndicesMulti<Positions, 3>(func, f.size(), idx);
-                return py::array({res.size(), res[0].size()}, res[0].data());
+                return py::array({res.size(), POSITION_WIDTH}, res[0].data());
              })
         .def("rotations", [](const File& f) {
                 auto res = f.getRotations(Range::all());
-                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+                return py::array({res.shape()[0], ROTATION_WIDTH}, res.data());
              })
         .def("rotations", [](const File& f, int offset) {
                 Range r(offset, 1);
                 auto res = f.getRotations(r);
-                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+                return py::array({res.shape()[0], ROTATION_WIDTH}, res.data());
              })
         .def("rotations", [](const File& f, int offset, int count) {
                 Range r(offset, count);
                 auto res = f.getRotations(r);
-                return py::array({res.shape()[0], res.shape()[1]}, res.data());
+                return py::array({res.shape()[0], ROTATION_WIDTH}, res.data());
              })
         .def("rotations", [](const File& f, const pyarray<size_t>& idx) {
                 const auto& func = [&f](const MVD::Range& r){return f.getRotations(r);};
                 const auto res = _atIndicesMulti<Rotations, 4>(func, f.size(), idx);
-                return py::array({res.size(), res[0].size()}, res[0].data());
+                return py::array({res.size(), ROTATION_WIDTH}, res[0].data());
              })
         .def("etypes", [](const File& f) {
                 return f.getEtypes(Range::all());

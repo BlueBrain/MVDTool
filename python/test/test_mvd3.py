@@ -49,13 +49,13 @@ def test_position_values(circuit):
 
 
 def test_position_indices(circuit):
-    posics_multi = circuit.positions([995, 996, 997])
+    posics_multi = circuit.positions([2, 995, 996, 997])
     posics = circuit.positions(0, 0)
-    assert posics_multi.shape[0] == 3
-
-    assert numpy.allclose(posics_multi[0], posics[995])
-    assert numpy.allclose(posics_multi[1], posics[996])
-    assert numpy.allclose(posics_multi[2], posics[997])
+    assert posics_multi.shape == (4, 3)
+    assert numpy.allclose(posics_multi[0], posics[2])
+    assert numpy.allclose(posics_multi[1], posics[995])
+    assert numpy.allclose(posics_multi[2], posics[996])
+    assert numpy.allclose(posics_multi[3], posics[997])
 
 
 def test_position_value(circuit):
