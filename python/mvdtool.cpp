@@ -139,7 +139,7 @@ inline std::vector<T>_atIndices(const FuncT& f,
         const auto limit = std::min(CHUNK_SIZE, n_records - offset);
         const auto chunk = f(Range(offset, limit));
         const auto high_i = offset + limit;
-        for(size_t elem_i=indices[i]; i < count && elem_i < high_i; elem_i=indices[++i]) {
+        for(size_t elem_i=offset; i < count && (elem_i=indices[i]) < high_i; ++i) {
             copy_element(out_v[i], chunk[elem_i - offset]);
         }
     }
