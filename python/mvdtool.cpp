@@ -108,8 +108,6 @@ namespace {  // Intenal
 template <typename T>
 using pyarray = py::array_t<T, py::array::c_style | py::array::forcecast>;
 
-/// Size of the chunk to retrieve
-constexpr size_t CHUNK_SIZE = 128u;  // 1KB of doubles, more for strings
 
 /// Generic routine to copy data item
 template <typename T>
@@ -131,6 +129,7 @@ template <typename T, typename FuncT>
 inline std::vector<T>_atIndices(const FuncT& f,
                                 const size_t n_records,
                                 const pyarray<size_t>& idx) {
+    constexpr size_t CHUNK_SIZE = 128u;  // 1KB of doubles, more for strings
     const auto indices = idx.template unchecked<1>();
     const auto count = static_cast<size_t>(indices.size());
     std::vector<T> out_v(count);
