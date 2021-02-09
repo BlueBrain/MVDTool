@@ -49,6 +49,7 @@ def test_position_values(circuit):
 
 
 def test_position_indices(circuit):
+    empty_posics = circuit.positions([])
     posics_multi = circuit.positions([2, 995, 996, 997])
     posics = circuit.positions(0, 0)
     assert posics_multi.shape == (4, 3)

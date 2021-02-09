@@ -185,7 +185,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 using position_t = std::array<typename Positions::element, POSITION_WIDTH>;
                 const auto& func = [&f](const MVD::Range& r){return f.getPositions(r);};
                 const auto res = _atIndices<position_t>(func, f.size(), idx);
-                return py::array({res.size(), POSITION_WIDTH}, res[0].data());
+                return py::array({res.size(), POSITION_WIDTH}, res.empty()? nullptr: res[0].data());
              })
         .def("rotations", [](const File& f) {
                 auto res = f.getRotations(Range::all());
@@ -205,7 +205,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 using rotation_t = std::array<typename Rotations::element, ROTATION_WIDTH>;
                 const auto& func = [&f](const MVD::Range& r){return f.getRotations(r);};
                 const auto res = _atIndices<rotation_t>(func, f.size(), idx);
-                return py::array({res.size(), ROTATION_WIDTH}, res[0].data());
+                return py::array({res.size(), ROTATION_WIDTH}, res.empty()? nullptr: res[0].data());
              })
         .def("etypes", [](const File& f) {
                 return f.getEtypes(Range::all());
