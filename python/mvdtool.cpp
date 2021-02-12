@@ -118,7 +118,7 @@ inline void copy_element(T& dst, const T& src) {
 /// Copy routine for boost multi_index view to std::array
 template <typename T, size_t Width, typename T2>
 inline void copy_element(std::array<T, Width>& dst, const T2& src) {
-    std::memcpy(&dst[0], src.origin(), sizeof(T) * Width);
+    std::memcpy(dst.data(), src.origin(), sizeof(T) * Width);
 }
 
 /**
@@ -137,7 +137,7 @@ inline std::vector<T>_atIndices(const FuncT& f,
     for (size_t i=0; i < count;) {
         const size_t offset = indices[i];
         const auto limit = std::min(CHUNK_SIZE, n_records - offset);
-        const auto chunk = f(Range(offset, limit));
+        const auto& chunk = f(Range(offset, limit));
         const auto high_i = offset + limit;
         for(size_t elem_i=offset; i < count && (elem_i=indices[i]) < high_i; ++i) {
             copy_element(out_v[i], chunk[elem_i - offset]);
@@ -184,7 +184,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 using position_t = std::array<typename Positions::element, POSITION_WIDTH>;
                 const auto& func = [&f](const MVD::Range& r){return f.getPositions(r);};
                 const auto res = _atIndices<position_t>(func, f.size(), idx);
-                return py::array({res.size(), POSITION_WIDTH}, res.empty()? nullptr: res[0].data());
+                return py::array({res.size(), POSITION_WIDTH}, res.empty()? nullptr: res.front().data());
              })
         .def("rotations", [](const File& f) {
                 auto res = f.getRotations(Range::all());
@@ -204,7 +204,7 @@ PYBIND11_MODULE(mvdtool, mvd) {
                 using rotation_t = std::array<typename Rotations::element, ROTATION_WIDTH>;
                 const auto& func = [&f](const MVD::Range& r){return f.getRotations(r);};
                 const auto res = _atIndices<rotation_t>(func, f.size(), idx);
-                return py::array({res.size(), ROTATION_WIDTH}, res.empty()? nullptr: res[0].data());
+                return py::array({res.size(), ROTATION_WIDTH}, res.empty()? nullptr: res.front().data());
              })
         .def("etypes", [](const File& f) {
                 return f.getEtypes(Range::all());
