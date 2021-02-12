@@ -48,6 +48,17 @@ def test_position_values(circuit):
     assert numpy.allclose(posics_995[2], posics[997])
 
 
+def test_position_indices(circuit):
+    empty_posics = circuit.positions([])
+    posics_multi = circuit.positions([2, 995, 996, 997])
+    posics = circuit.positions(0, 0)
+    assert posics_multi.shape == (4, 3)
+    assert numpy.allclose(posics_multi[0], posics[2])
+    assert numpy.allclose(posics_multi[1], posics[995])
+    assert numpy.allclose(posics_multi[2], posics[996])
+    assert numpy.allclose(posics_multi[3], posics[997])
+
+
 def test_position_value(circuit):
     posic_0 = circuit.positions(0)
     assert posic_0.shape[0] == 1
@@ -69,6 +80,14 @@ def test_rotation_value(circuit):
     posic_0 = circuit.rotations(0)
     assert posic_0.shape[0] == 1
     assert numpy.allclose(posic_0, [0, -0.010_005_561, 0, 0.999_949_943])
+
+def test_rotation_indices(circuit):
+    assert circuit.rotated
+
+    posic_multi_rot = circuit.rotations([0, 20])
+    assert posic_multi_rot.shape[0] == 2
+    assert numpy.allclose(posic_multi_rot[0], [0, -0.010_005_561, 0, 0.999_949_943])
+    assert numpy.allclose(posic_multi_rot[1], [0, 0.923_706, 0, 0.383_102])
 
 
 def test_position_range(circuit):
