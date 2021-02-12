@@ -115,8 +115,8 @@ inline void copy_element(T& dst, const T& src) {
     dst = src;
 }
 
-/// Copy routine for boost multi_index view to std::array
-template <typename T, size_t Width, typename T2>
+/// Copy routine for boost multi_array view to std::array
+template <typename T, size_t Width, typename T2, typename = decltype(&T2::origin)>
 inline void copy_element(std::array<T, Width>& dst, const T2& src) {
     std::memcpy(dst.data(), src.origin(), sizeof(T) * Width);
 }
