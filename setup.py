@@ -43,6 +43,7 @@ class CMakeBuild(build_ext):
             "-DBUILD_UNIT_TESTS:BOOL=OFF",
             "-DMVDTool_VERSION=" + self.distribution.get_version(),
             "-DPYTHON_EXECUTABLE=" + sys.executable,
+            "-DEXTLIB_FROM_SUBMODULES:BOOL=ON",
         ]
 
         cfg = "Debug" if self.debug else "Release"
