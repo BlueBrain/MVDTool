@@ -43,6 +43,8 @@ class CMakeBuild(build_ext):
             "-DBUILD_UNIT_TESTS:BOOL=OFF",
             "-DMVDTool_VERSION=" + self.distribution.get_version(),
             "-DPYTHON_EXECUTABLE=" + sys.executable,
+            "-DEXTLIB_FROM_SUBMODULES=ON",
+            "-DMVD_GEN_PROJECT_EXPORTS=OFF",
         ]
 
         cfg = "Debug" if self.debug else "Release"
@@ -57,6 +59,7 @@ class CMakeBuild(build_ext):
             build_args += ["--", "/m"]
         else:
             cmake_args += ["-DCMAKE_BUILD_TYPE=" + cfg]
+            build_args += ["--", "-j4"]
 
         env = os.environ.copy()
         env["CXXFLAGS"] = '{} -DVERSION_INFO=\\"{}\\"'.format(
@@ -84,7 +87,8 @@ setup(
         CMakeExtension('mvdtool')
     ],
     install_requires=[
-        'numpy'
+        'numpy',
+        'libsonata'
     ],
     setup_requires=['pytest-runner', 'setuptools_scm'],
     tests_require=['pytest'],
