@@ -44,7 +44,7 @@ class CMakeBuild(build_ext):
             "-DMVDTool_VERSION=" + self.distribution.get_version(),
             "-DPYTHON_EXECUTABLE=" + sys.executable,
             "-DEXTLIB_FROM_SUBMODULES=ON",
-            "-DMVD_GEN_PROJECT_EXPORTS=OFF",
+            "-DMVD_INSTALL_EXPORTS=OFF",
         ]
 
         cfg = "Debug" if self.debug else "Release"
@@ -88,7 +88,6 @@ setup(
     ],
     install_requires=[
         'numpy',
-        'libsonata'
     ],
     setup_requires=['pytest-runner', 'setuptools_scm'],
     tests_require=['pytest'],
