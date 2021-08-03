@@ -44,7 +44,7 @@ class CMakeBuild(build_ext):
             "-DMVDTool_VERSION=" + self.distribution.get_version(),
             "-DPYTHON_EXECUTABLE=" + sys.executable,
             "-DEXTLIB_FROM_SUBMODULES=ON",
-            "-DMVD_INSTALL_EXPORTS=OFF",
+            "-DMVD_INSTALL_DEV=OFF",
         ]
 
         cfg = "Debug" if self.debug else "Release"

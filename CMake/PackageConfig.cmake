@@ -20,7 +20,7 @@ install(FILES ${PROJECT_BINARY_DIR}/MVDToolConfig.cmake
 # Generate ${PROJECT_NAME}Targets.cmake; is written after the CMake run
 # succeeds. Provides IMPORTED targets when using this project from the install
 # tree.
-if(MVD_INSTALL_EXPORTS)  # E.g. Python installations dont need this
+if(MVD_INSTALL_DEV)  # E.g. Python installations dont need this
 
 install(EXPORT ${PROJECT_NAME}Targets FILE ${PROJECT_NAME}Targets.cmake
   DESTINATION share/${PROJECT_NAME}/CMake)
@@ -30,8 +30,5 @@ install(TARGETS MVDTool EXPORT ${PROJECT_NAME}Targets
 
 export(EXPORT ${PROJECT_NAME}Targets
   FILE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake")
-
-else()
-  install(TARGETS MVDTool INCLUDES DESTINATION include)
 
 endif()

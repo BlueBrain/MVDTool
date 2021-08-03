@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 option(EXTLIB_FROM_SUBMODULES "External libs from submodules" OFF)
-option(MVD_INSTALL_EXPORTS "Generate Cmake project exports" ON)
+option(MVD_INSTALL_DEV "Install MVD headers and project exports" ON)
 
 if(NOT MVDTool_VERSION)
     execute_process(COMMAND git describe --tags
