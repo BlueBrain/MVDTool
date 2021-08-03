@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 
+option(EXTLIB_FROM_SUBMODULES "External libs from submodules" OFF)
+option(MVD_INSTALL_DEV "Install MVD headers and project exports" ON)
+
 if(NOT MVDTool_VERSION)
     execute_process(COMMAND git describe --tags
                     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -30,6 +33,7 @@ string(REGEX
                "${MVDTool_VERSION}")
 
 project(MVDTool VERSION ${MVDTool_VERSION})
+message(STATUS "Version: ${MVDTool_VERSION}")
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
       ${PROJECT_SOURCE_DIR}/CMake/portability
@@ -47,8 +51,27 @@ set(Boost_NO_BOOST_CMAKE TRUE)
 ## find dependencies
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
 find_package(HDF5 QUIET REQUIRED)
-find_package(HighFive QUIET REQUIRED)
-find_package(sonata QUIET REQUIRED)
+
+if(EXTLIB_FROM_SUBMODULES)
+    message("Using dependencies from Submodules. (EXTLIB_FROM_SUBMODULES=ON)")
+    if(NOT EXISTS "${PROJECT_SOURCE_DIR}/deps/libsonata/CMakeLists.txt")
+        message(STATUS "Fetching submodules...")
+        find_package(Git REQUIRED QUIET)
+        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+    endif()
+    set(SONATA_TESTS OFF CACHE BOOL "" FORCE)
+    # Sonata brings both Sonata and Highfive. However Sonata target must be aliased
+    add_subdirectory("deps/libsonata" EXCLUDE_FROM_ALL)
+    add_library(Sonata ALIAS sonata_static)
+else()
+    message(STATUS "Submodules not used. Looking for dependencies in the system")
+    find_package(HighFive QUIET REQUIRED)
+    find_package(sonata QUIET REQUIRED)
+    # Sonata is not a global target, hence we cant simply create an alias
+    add_library(Sonata INTERFACE)
+    target_link_libraries(Sonata INTERFACE sonata::sonata_shared)
+endif()
 
 include(PackageConfig)
 
@@ -59,11 +82,12 @@ set(MVDTOOL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Stop on first error
 add_compile_options("-Wfatal-errors")
 
 
 if(BUILD_PYTHON_BINDINGS)
-  add_subdirectory(python)
+    add_subdirectory(python)
 endif()
 
 add_subdirectory(src)

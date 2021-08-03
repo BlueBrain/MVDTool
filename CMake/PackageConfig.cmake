@@ -3,7 +3,7 @@ add_library(MVDTool INTERFACE)
 target_include_directories(MVDTool INTERFACE
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>")
 target_include_directories(MVDTool SYSTEM INTERFACE ${Boost_INCLUDE_DIR})
-target_link_libraries(MVDTool INTERFACE HighFive sonata::sonata_shared)
+target_link_libraries(MVDTool INTERFACE Sonata HighFive)
 target_compile_definitions(MVDTool INTERFACE -DH5_USE_BOOST)
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/
@@ -20,6 +20,8 @@ install(FILES ${PROJECT_BINARY_DIR}/MVDToolConfig.cmake
 # Generate ${PROJECT_NAME}Targets.cmake; is written after the CMake run
 # succeeds. Provides IMPORTED targets when using this project from the install
 # tree.
+if(MVD_INSTALL_DEV)  # E.g. Python installations dont need this
+
 install(EXPORT ${PROJECT_NAME}Targets FILE ${PROJECT_NAME}Targets.cmake
   DESTINATION share/${PROJECT_NAME}/CMake)
 
@@ -29,4 +31,4 @@ install(TARGETS MVDTool EXPORT ${PROJECT_NAME}Targets
 export(EXPORT ${PROJECT_NAME}Targets
   FILE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake")
 
-
+endif()
