@@ -57,10 +57,24 @@ if(EXTLIB_FROM_SUBMODULES)
     if(NOT EXISTS "${PROJECT_SOURCE_DIR}/deps/libsonata/CMakeLists.txt")
         message(STATUS "Fetching submodules...")
         find_package(Git REQUIRED QUIET)
-        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-                        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+        if(EXISTS "${PROJECT_SOURCE_DIR}/.git/config")
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            )
+        else()
+            # Probably a tarball without .git. Fetch recent
+            set(COMPATIBLE_LIBSONATA_V "v0.1.9")
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} clone https://github.com/BlueBrain/libsonata.git --branch=${COMPATIBLE_LIBSONATA_V} --depth=1 --recursive deps/libsonata
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            )
+            execute_process(
+                COMMAND cmake -E create_symlink "${PROJECT_SOURCE_DIR}/deps/libsonata/python/pybind11" "python/pybind11"
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            )
+        endif()
     endif()
-    set(SONATA_TESTS OFF CACHE BOOL "" FORCE)
     # Sonata brings both Sonata and Highfive. However Sonata target must be aliased
     add_subdirectory("deps/libsonata" EXCLUDE_FROM_ALL)
     add_library(Sonata ALIAS sonata_static)
