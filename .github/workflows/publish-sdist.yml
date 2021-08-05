@@ -1,9 +1,9 @@
 name: Publish sdist on pypi
 
-on:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+on: push
+  #push:
+  #  tags:
+  #    - 'v[0-9]+.[0-9]+.[0-9]+'
 
 env:
   CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
