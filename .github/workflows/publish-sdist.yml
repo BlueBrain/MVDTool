@@ -1,0 +1,51 @@
+name: Publish sdist on pypi
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.*'
+    branches:
+      - main
+      - master
+
+env:
+  CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+  MACOSX_DEPLOYMENT_TARGET: '10.13'
+  CIBW_BUILD_VERBOSITY: 2
+  # Only build on Python 3.x
+  CIBW_BUILD: 'cp3?-*'
+  CIBW_SKIP: 'cp35-* cp39-* *-manylinux_i686'
+  CIBW_BEFORE_TEST: pip install pytest
+
+jobs:
+  build_sdist:
+    name: Build sdist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 20
+      - run: |
+          git fetch --tags
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Build a source tarball
+        run:
+          python setup.py sdist
+
+      - name: Store sdist as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages_dir: dist/

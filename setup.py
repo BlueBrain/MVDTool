@@ -76,7 +76,7 @@ class CMakeBuild(build_ext):
 
 setup(
     name='MVDTool',
-    use_scm_version=True,
+    use_scm_version={'local_scheme': "no-local-version"},
     author='Blue Brain Project, EPFL',
     author_email='bbp-ou-hpc@groupes.epfl.ch',
     url='https://github.com/BlueBrain/MVDTool',
