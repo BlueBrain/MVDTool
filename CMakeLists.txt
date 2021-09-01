@@ -77,14 +77,10 @@ if(EXTLIB_FROM_SUBMODULES)
     endif()
     # Sonata brings both Sonata and Highfive. However Sonata target must be aliased
     add_subdirectory("deps/libsonata" EXCLUDE_FROM_ALL)
-    add_library(Sonata ALIAS sonata_static)
 else()
     message(STATUS "Submodules not used. Looking for dependencies in the system")
     find_package(HighFive QUIET REQUIRED)
     find_package(sonata QUIET REQUIRED)
-    # Sonata is not a global target, hence we cant simply create an alias
-    add_library(Sonata INTERFACE)
-    target_link_libraries(Sonata INTERFACE sonata::sonata_shared)
 endif()
 
 include(PackageConfig)

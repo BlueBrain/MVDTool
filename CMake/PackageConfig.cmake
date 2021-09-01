@@ -3,8 +3,14 @@ add_library(MVDTool INTERFACE)
 target_include_directories(MVDTool INTERFACE
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>")
 target_include_directories(MVDTool SYSTEM INTERFACE ${Boost_INCLUDE_DIR})
-target_link_libraries(MVDTool INTERFACE Sonata HighFive)
+target_link_libraries(MVDTool INTERFACE HighFive)
 target_compile_definitions(MVDTool INTERFACE -DH5_USE_BOOST)
+
+if(EXTLIB_FROM_SUBMODULES)
+  target_link_libraries(MVDTool INTERFACE sonata_static)
+  else()
+  target_link_libraries(MVDTool INTERFACE sonata::sonata_shared)
+endif()
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/
         DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR})
