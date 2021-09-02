@@ -8,7 +8,7 @@ target_compile_definitions(MVDTool INTERFACE -DH5_USE_BOOST)
 
 if(EXTLIB_FROM_SUBMODULES)
   target_link_libraries(MVDTool INTERFACE sonata_static)
-  else()
+else()
   target_link_libraries(MVDTool INTERFACE sonata::sonata_shared)
 endif()
 
