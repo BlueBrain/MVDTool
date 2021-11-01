@@ -45,6 +45,7 @@ class CMakeBuild(build_ext):
             "-DPYTHON_EXECUTABLE=" + sys.executable,
             "-DEXTLIB_FROM_SUBMODULES=ON",
             "-DMVD_INSTALL_DEV=OFF",
+            "-DSONATA_TESTS:BOOL=OFF"
         ]
 
         cfg = "Debug" if self.debug else "Release"
