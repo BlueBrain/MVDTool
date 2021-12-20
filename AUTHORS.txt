@@ -6,5 +6,6 @@ Fernando L. Pereira (maintainer)
 Ioannis Magkanaris
 Matthias Wolf
 Michael Gevaert
+Sergio Rivas-Gomez
 Tristan Carel
 Weina Ji
