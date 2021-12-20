@@ -1,0 +1,11 @@
+Adrien Devresse 
+Antonio Bellotta
+Arseny V. Povolotsky
+Daniel Nachbaur
+Fernando L. Pereira (maintainer)
+Ioannis Magkanaris
+Matthias Wolf
+Michael Gevaert
+Sergio Rivas-Gomez
+Tristan Carel
+Weina Ji
