@@ -19,7 +19,7 @@ jobs:
           python-version: 3.7
 
       - name: Build a source tarball
-        run:
+        run: |
           pip install build
           python -mbuild -s
 
