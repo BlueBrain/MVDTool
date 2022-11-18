@@ -42,7 +42,6 @@ include(ReleaseDebugAutoFlags)
 
 option(BUILD_UNIT_TESTS "Enable or disable unit tests" ON)
 option(BUILD_PYTHON_BINDINGS "Build python bindings?" OFF)
-set(Boost_NO_BOOST_CMAKE TRUE)
 
 ## find dependencies
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
