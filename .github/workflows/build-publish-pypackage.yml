@@ -61,8 +61,8 @@ jobs:
       - name: Build wheels on Linux
         env:
           CIBW_BEFORE_ALL: |
-            export AEC_VERSION="1.0.4"
-            export HDF5_VERSION="1.12.1"
+            HDF5_VERSION="1.12.1"
+            AEC_VERSION="1.0.4"
 
             yum update -y
             yum -y install zlib-devel
