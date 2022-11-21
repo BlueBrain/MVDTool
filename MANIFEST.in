@@ -1,0 +1,25 @@
+recursive-include src *
+recursive-include include *
+include CMakeLists.txt
+
+include python/CMakeLists.txt
+include python/mvdtool.cpp
+
+recursive-include python/pybind11/include *
+recursive-include python/pybind11/tools *.cmake
+include python/pybind11/CMakeLists.txt
+include python/pybind11/LICENSE
+
+# include all of libsonata, would be best to source their MANIFEST.in, but I don't think
+# that is possible
+graft deps/libsonata
+prune deps/libsonata/extlib/*/doc*
+prune deps/libsonata/extlib/*/test*
+prune deps/libsonata/extlib/*/projects
+prune deps/libsonata/extlib/*/single_include
+prune deps/libsonata/extlib/*/deps/*/doc*
+prune deps/libsonata/extlib/*/deps/*/test*
+prune deps/libsonata/extlib/*/deps/*/projects
+prune deps/libsonata/extlib/*/deps/*/single_include
+prune deps/libsonata/python/pybind11/docs
+prune deps/libsonata/python/pybind11/tests
