@@ -75,7 +75,7 @@ class CMakeBuild(build_ext):
             ["cmake", "--build", "."] + build_args, cwd=self.build_temp
         )
 
-with open('README.rst') as f:
+with open('README.md') as f:
     README = f.read()
 
 setup(
