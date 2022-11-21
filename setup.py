@@ -75,6 +75,9 @@ class CMakeBuild(build_ext):
             ["cmake", "--build", "."] + build_args, cwd=self.build_temp
         )
 
+with open('README.rst') as f:
+    README = f.read()
+
 setup(
     name='MVDTool',
     use_scm_version={'local_scheme': "no-local-version"},
@@ -82,7 +85,8 @@ setup(
     author_email='bbp-ou-hpc@groupes.epfl.ch',
     url='https://github.com/BlueBrain/MVDTool',
     description='Python bindings to the MVD3 neuroscience file format',
-    long_description='',
+    long_description=README,
+    long_description_content_type='text/markdown',
     packages=[],
     ext_modules=[
         CMakeExtension('mvdtool')
