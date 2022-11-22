@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.11)
 
 option(EXTLIB_FROM_SUBMODULES "External libs from submodules" OFF)
 option(MVD_INSTALL_DEV "Install MVD headers and project exports" ON)
@@ -51,15 +51,21 @@ option(BUILD_PYTHON_BINDINGS "Build python bindings?" OFF)
 find_package(Boost 1.41 QUIET REQUIRED COMPONENTS system)
 find_package(HDF5 QUIET REQUIRED)
 
+include(FetchContent)
 if(EXTLIB_FROM_SUBMODULES)
     message("Using dependencies from Submodules. (EXTLIB_FROM_SUBMODULES=ON)")
     if(NOT EXISTS "${PROJECT_SOURCE_DIR}/deps/libsonata/CMakeLists.txt")
-        message(ERROR "Please fetch the submodules")
+        message(STATUS "Downloading libsonata")
+        FetchContent_Declare(
+            libsonata
+            GIT_REPOSITORY https://github.com/BlueBrain/libsonata.git
+            GIT_TAG        v0.1.16
+            GIT_SHALLOW ON
+            GIT_SUBMODULES_RECURSE ON
+            SOURCE_DIR ${PROJECT_SOURCE_DIR}/deps/libsonata
+        )
+        FetchContent_Populate(libsonata)
     endif()
-    # Sonata brings both Sonata and Highfive.
-    # TODO Update the version number here when updating the submodule.
-    #      This prevents build failures when running from `sdist`.
-    set(SONATA_VERSION 0.1.16)
     add_subdirectory("deps/libsonata" EXCLUDE_FROM_ALL)
 else()
     message(STATUS "Submodules not used. Looking for dependencies in the system")
