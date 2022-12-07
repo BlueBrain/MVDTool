@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 20
+          submodules: recursive
 
       - run: |
           git fetch --tags
@@ -69,7 +70,8 @@ jobs:
             make install
             ldconfig
             popd
-          CIBW_BEFORE_BUILD: 'yum update -y; yum -y install boost169-devel'
+
+            yum update -y; yum -y install boost169-devel
           CIBW_ENVIRONMENT: BOOST_INCLUDEDIR='/usr/include/boost169' BOOST_LIBRARYDIR='/usr/lib64/boost169'
         run: |
           python -m cibuildwheel --output-dir dist
