@@ -1,5 +1,8 @@
 # MVD-tool
 
+This project has been archived, the dataformats addressed herein should be replaced by
+SONATA and read with [libsonata](https://github.com/BlueBrain/libsonata).
+
 ## Information
 
 A simple C++ parser and tool for the MVD3 and Sonata neuroscience file formats
